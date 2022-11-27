@@ -14,10 +14,6 @@ class HerramientasController extends Controller
 
     public function metadatos(Request $request){
 
-        // $validation = $request->validate([
-        //     'busqueda' => 'required|string',
-        // ]);
-
         $url = env('DEEZER_API');
         $busqueda = $request->input('busqueda');
 
@@ -44,13 +40,12 @@ class HerramientasController extends Controller
                         'Caratula' => $record->album->cover_xl,
                         'DeezerID' => $record->id,
                         'DeezerURL' => $record->link,
-                        'ImagenArtista' => $record->artist->picture_xl,
                         'Titulo' => $record->title
                     ]], 200);
                 }
             }
 
-            return response()->json(['code' => 404 , 'message' => 'Error', 'result' => 'Not found'], 200);
+            return response()->json(['code' => 404 , 'message' => 'Not found', 'result' => 'Not found'], 200);
 
         } else{
             return response()->json(['code' => 500 , 'message' => 'Error', 'result' => $response->body()], 200);

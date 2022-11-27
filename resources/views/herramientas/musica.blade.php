@@ -20,7 +20,10 @@
 
                 <div class="row h-100">
 
-                    <div class="col-md-6 m-auto padding" id="caja-cancion">
+
+                    <div class="col m-auto padding"></div>
+
+                    <div class="col-5 m-auto padding" id="caja-cancion">
 
                         <div class="row">
                             <div class="col-12">
@@ -31,9 +34,14 @@
                         </div>
 
                         <div class="row py-1">
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <span id="informacion-cancion" class="col-12 text-center pt-1 text-capitalize fuente">Título</span>
+                            <div class="col">
+                                <div class="form-group text-start">
+                                    <span id="informacion-cancion" class="pt-1 text-capitalize fuente">Título</span>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group text-end">
+                                    <span id="nombre-artista" class="pt-1 text-capitalize fuente">Artista</span>
                                 </div>
                             </div>
                         </div>
@@ -96,27 +104,8 @@
 
                     </div>
 
-                    <div class="col-md-1 m-auto padding"></div>
+                    <div class="col m-auto padding"></div>
 
-                    <div class="col-md-5 m-auto padding" id="caja-artista">
-
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <img id="imagen-artista" class="img-fluid text-center" crossorigin="anonymous" />
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row py-1">
-
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <span id="nombre-artista" class="text-center pt-1 text-capitalize fuente">Artista</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
                 </div>
 

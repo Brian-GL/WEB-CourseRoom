@@ -43,19 +43,17 @@ async function ObtenerMetadatos(nombreArchivo) {
             document.getElementById('informacion-cancion').innerText = result.Titulo;
             document.getElementById('nombre-artista').innerText = 'By '.concat(result.Artista);
             document.getElementById('deezer').href = result.DeezerURL;
-            document.getElementById('imagen-artista').src =  result.ImagenArtista;
 
         } else {
             document.getElementById('caratula').src =  "";
             document.getElementById('informacion-cancion').innerText = nombreArchivo;
             document.getElementById('nombre-artista').innerText = "Desconocido";
             document.getElementById('deezer').href = "https://www.deezer.com";
-            document.getElementById('imagen-artista').src =  "";
         }
     }).catch((ex) => {
         Swal.fire({
             title: '¡Error!',
-            text: ex.responseText,
+            html: ex,
             imageUrl: baseURL.concat("/assets/templates/SadOwl.png"),
             imageWidth: 100,
             imageHeight: 123,
@@ -64,8 +62,6 @@ async function ObtenerMetadatos(nombreArchivo) {
             imageAlt: 'Error Image'
         });
     });
-
-
 }
 
 function loadTrack(track_index) {
