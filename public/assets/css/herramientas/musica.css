@@ -1,0 +1,19 @@
+#reproductor-musica {
+    background-image: 'linear-gradient (to right, rgb(0,0,0),rgb(0,0,0))';
+    background-size: cover;
+    background-position: center;
+    background-attachment: scroll;
+}
+
+.fuente {
+    font-family: 'Albert Sans', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 900;
+}
+
+@media (max-width: 767px){
+    .padding{
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+    }
+}

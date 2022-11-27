@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\InicioController;
+use App\Http\Controllers\HerramientasController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,6 +17,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/',  [InicioController::class, 'acceso']);
 Route::get('/recuperacion',  [InicioController::class, 'recuperacion']);
+
+Route::get('/herramientas/musica',  [HerramientasController::class, 'musica'])->name('herramientas.musica');
+Route::post('/herramientas/metadatos',  [HerramientasController::class, 'metadatos'])->name('herramientas.metadatos');
 
 Auth::routes();
 
