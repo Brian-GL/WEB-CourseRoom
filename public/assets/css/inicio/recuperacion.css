@@ -1,0 +1,107 @@
+#fondo {
+    color: #000;
+    overflow-x: hidden;
+    height: 100%;
+    background: rgb(14,30,64);
+    background: linear-gradient(45deg, rgba(14,30,64,1) 0%, rgba(104,194,232,1) 100%);
+}
+
+input, textarea {
+    background-color: #F3E5F5;
+    border-radius: 50px !important;
+    padding: 12px 15px 12px 15px !important;
+    width: 100%;
+    box-sizing: border-box;
+    border: none !important;
+    border: 1px solid #F3E5F5 !important;
+    font-size: 16px !important;
+    color: #000 !important;
+    font-weight: 400;
+}
+
+input:focus, textarea:focus {
+    -moz-box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    border: 1px solid rgb(10,14,64) !important;
+    outline-width: 0;
+    font-weight: 400;
+}
+
+button:focus {
+    -moz-box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    outline-width: 0;
+}
+
+#contenedor {
+    box-shadow: 0px 0px 20px 0px rgba(0,0,0,1);
+    -webkit-box-shadow: 0px 0px 20px 0px rgba(0,0,0,1);
+    -moz-box-shadow: 0px 0px 20px 0px rgba(0,0,0,1);
+}
+
+.card {
+    border-radius: 0;
+    border: none;
+}
+
+.card1 {
+    width: 100%;
+    padding: 2rem 1.6rem 0.75rem 1.6rem;
+    background: radial-gradient(ellipse at right, rgba(104,194,232,1), rgba(14,30,64,0.1));
+}
+
+#logo {
+    width: 200px;
+    height: 175px;
+}
+
+.heading {
+    margin-bottom: 2rem !important;
+}
+
+.form-control-label {
+    font-size: 1rem;
+    margin-left: 15px;
+    padding-bottom: 0.25rem;
+}
+
+.btn-color {
+    border-radius: 50px;
+    color: #fff;
+    background: linear-gradient(90deg, rgba(14,30,64,1) 0%, rgba(104,194,232,1) 100%);
+    padding: 15px;
+    cursor: pointer;
+    border: none !important;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.btn-color:hover {
+    color: #fff;
+    background: linear-gradient(90deg,rgba(104,194,232,1) 0%, rgba(14,30,64,1) 100%);
+}
+
+@media screen and (max-width: 992px) {
+    .card1 {
+        width: 100%;
+        padding: 40px 30px 10px 30px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .container {
+        padding: 10px !important;
+    }
+}
+
+.fuente {
+    font-family: 'Albert Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.fuenteNormal {
+    font-family: 'Albert Sans', sans-serif;
+}

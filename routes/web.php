@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\InicioController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,10 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/',  [InicioController::class, 'acceso']);
+Route::get('/recuperacion',  [InicioController::class, 'recuperacion']);
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
