@@ -19,7 +19,9 @@ Route::get('/',  [InicioController::class, 'acceso']);
 Route::get('/recuperacion',  [InicioController::class, 'recuperacion']);
 
 Route::get('/herramientas/musica',  [HerramientasController::class, 'musica'])->name('herramientas.musica');
+Route::get('/herramientas/matematicas',  [HerramientasController::class, 'matematicas'])->name('herramientas.matematicas');
 Route::post('/herramientas/metadatos',  [HerramientasController::class, 'metadatos'])->name('herramientas.metadatos');
+Route::post('/herramientas/operador',  [HerramientasController::class, 'operador'])->name('herramientas.operador');
 
 Auth::routes();
 

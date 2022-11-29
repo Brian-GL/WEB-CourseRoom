@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
 async function ObtenerMetadatos(nombreArchivo) {
 
     const csrfToken = document.head.querySelector("[name~=csrf-token][content]").content;
-    const baseURL = document.head.querySelector("[name~=base-url][content]").content;
+    let baseURL = window.location.origin;
 
     fetch(baseURL.concat('/herramientas/metadatos'), {
         method: 'POST',
@@ -34,15 +34,15 @@ async function ObtenerMetadatos(nombreArchivo) {
             "busqueda": nombreArchivo
         })
     }).then((response) => response.json())
-    .then((data) => {
+    .then((result) => {
 
-         if (data.code === 200) {
-            var result = data.result;
+         if (result.code === 200) {
+            let data = result.data;
 
-            document.getElementById('caratula').src = result.Caratula;
-            document.getElementById('informacion-cancion').innerText = result.Titulo;
-            document.getElementById('nombre-artista').innerText = 'By '.concat(result.Artista);
-            document.getElementById('deezer').href = result.DeezerURL;
+            document.getElementById('caratula').src = data.Caratula;
+            document.getElementById('informacion-cancion').innerText = data.Titulo;
+            document.getElementById('nombre-artista').innerText = 'By '.concat(data.Artista);
+            document.getElementById('deezer').href = data.DeezerURL;
 
         } else {
             document.getElementById('caratula').src =  "";
@@ -70,7 +70,7 @@ function loadTrack(track_index) {
         clearInterval(updateTimer);
         reset();
 
-        var cancion = music_list[track_index];
+        let cancion = music_list[track_index];
 
         curr_track.src = cancion.Ruta;
 
@@ -164,11 +164,11 @@ document.getElementById("caratula").addEventListener('load', function() {
 
         document.getElementById("informacion-cancion").style.color = colorLetra;
 
-        for(var elemento of document.getElementsByClassName("icono-reproductor")){
+        for(let elemento of document.getElementsByClassName("icono-reproductor")){
             elemento.style.color = colorLetra;
         }
 
-        for(var elemento of document.getElementsByClassName("tiempo")){
+        for(let elemento of document.getElementsByClassName("tiempo")){
             elemento.style.color = colorLetra;
         }
 
