@@ -19,8 +19,8 @@ document.getElementById("solucionar").addEventListener('click', function () {
             'X-CSRF-TOKEN': csrfToken
         },
         body: JSON.stringify({
-            "expresion": expresion,
-            "operacion": operacion
+            "Expresion": expresion,
+            "Operacion": operacion
         })
     }).then((response) => response.json())
     .then((result) => {

@@ -7,13 +7,29 @@ use Illuminate\Http\Request;
 class InicioController extends Controller
 {
 
-    public function acceso()
-    {
+    #region Views
+
+    public function acceso(Request $request) {
+
+        $request->session()->push('login', 'value');
         return view('inicio.acceso');
+
     }
 
-    public function recuperacion()
-    {
-        return view('inicio.recuperacion');
+    public function recuperacion() { return view('inicio.recuperacion');}
+
+    #endregion
+
+    #region Ajax
+
+    public function login(){
+
     }
+
+    public function recuperacion_credenciales()
+    {
+
+    }
+
+    #endregion
 }

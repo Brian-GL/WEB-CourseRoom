@@ -1,82 +1,53 @@
 document.addEventListener('DOMContentLoaded', function() {document.getElementById("preloader").hidden = true; }, false);
 
-        // $("#iniciarSesion").on('click', function () {
+document.getElementById("iniciarSesion").addEventListener('click', function () {
 
-        //     $('.preloader').show();
+    document.getElementById("preloader").hidden = false;
 
-        //     var correoElectronico = $("#CorreoElectronico").val();
-        //     var contrasena = $("#Password").val();
+    var correoElectronico = document.getElementById("CorreoElectronico").value;
+    var contrasena = document.getElementById("Password").value;
 
-        //     try {
+    const csrfToken = document.head.querySelector("[name~=csrf-token][content]").content;
+    let baseURL = window.location.origin;
 
-        //         $.ajax({
-        //             url: '@Url.Action("IniciarSesion", "Inicio")',
-        //             type: "POST",
-        //             dataType: "JSON",
-        //             data: {
-        //                 CorreoElectronico: correoElectronico,
-        //                 Contrasenia: contrasena,
-        //                 __RequestVerificationToken: Token()
-        //             },
-        //             async: true,
-        //             success: successFunc,
-        //             error: errorFunc
-        //         });
+    fetch(baseURL.concat('/login'), {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken
+        },
+        body: JSON.stringify({
+            "CorreoElectronico": correoElectronico,
+            "Contrasena": contrasena
+        })
+    }).then((response) => response.json())
+    .then((result) => {
 
-        //         function successFunc(response) {
-        //             $('.preloader').hide();
-        //             if (response.Codigo === 200) {
-
+         if (result.code === 200) {
+            let data = result.data;
 
 
-        //             } else {
+        } else {
+            Swal.fire({
+                title: '¡Alerta!',
+                text: result.data,
+                imageUrl: baseURL.concat("/assets/templates/IndiferentOwl.png"),
+                imageWidth: 100,
+                imageHeight: 123,
+                imageAlt: 'Alert Image'
+            });
+        }
+    }).catch((ex) => {
+        Swal.fire({
+            title: '¡Error!',
+            html: ex,
+            imageUrl: baseURL.concat("/assets/templates/SadOwl.png"),
+            imageWidth: 100,
+            imageHeight: 123,
+            background: '#000000',
+            color: '#FFFFFF',
+            imageAlt: 'Error Image'
+        });
+    });
 
-        //                 Swal.fire({
-        //                     title: '¡Alerta!',
-        //                     text: response.Mensaje,
-        //                     imageUrl: '@Url.Content("~/Templates/IndiferentOwl.png")',
-        //                     imageWidth: 100,
-        //                     imageHeight: 123,
-        //                     imageAlt: 'Alert Image',
-        //                     footer: response.Fecha
-        //                 });
-        //             }
-        //         }
-
-        //         function errorFunc(error) {
-        //             $('.preloader').hide();
-        //             Swal.fire({
-        //                 title: '¡Error!',
-        //                 html: error.responseText,
-        //                 imageUrl: '@Url.Content("~/Templates/SadOwl.png")',
-        //                 imageWidth: 100,
-        //                 imageHeight: 123,
-        //                 background: '#000000',
-        //                 color: '#FFFFFF',
-        //                 imageAlt: 'Error Image',
-        //                 footer: error.Fecha
-        //             });
-        //         }
-
-        //     }
-        //     catch (ex) {
-        //         $('.preloader').hide();
-        //          Swal.fire({
-        //             title: '¡Error!',
-        //             html: ex.responseText,
-        //             imageUrl: '@Url.Content("~/Templates/SadOwl.png")',
-        //             imageWidth: 100,
-        //             imageHeight: 123,
-        //             background: '#000000',
-        //             color: '#FFFFFF',
-        //             imageAlt: 'Error Image',
-        //             footer: '@DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss tt")'
-        //         });
-        //     }
-
-        // });
-
-
-        // function Token() {
-        //     return $('input[name="__RequestVerificationToken"]').val();
-        // }
+});

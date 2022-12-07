@@ -40,11 +40,11 @@
                                                 <input type="password" id="Password" name="Password" placeholder="Contraseña" class="form-control fuenteNormal" required>
                                             </div>
 
-                                            <div class="row justify-content-center py-1 px-2">
-                                                <button class="btn-block btn-color fuente" type="submit" id="iniciarSesion">Iniciar Sesión</button>
+                                            <div class="row justify-content-center py-2 px-2">
+                                                <button class="btn-block btn-color fuente my-2" type="submit" id="iniciarSesion">Iniciar Sesión</button>
                                             </div>
 
-                                            <div class="row justify-content-center py-1 text-center">
+                                            <div class="row justify-content-center py-2 text-center">
                                                 <span class="text-muted fuenteNormal">
                                                     ¿Hás Olvidado Tu Contraseña?
                                                     <a href="{{url('/recuperacion')}}"><strong class="text-muted fuente">Recuperar Credenciales</strong></a>

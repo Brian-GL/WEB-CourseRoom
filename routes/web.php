@@ -15,13 +15,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/',  [InicioController::class, 'acceso']);
-Route::get('/recuperacion',  [InicioController::class, 'recuperacion']);
+#region Inicio
+
+Route::get('/',  [InicioController::class, 'acceso'])->name('inicio.acceso');
+Route::get('/recuperacion',  [InicioController::class, 'recuperacion'])->name('inicio.recuperacion');
+Route::post('/login',  [InicioController::class, 'login']);
+Route::post('/recuperacion',  [InicioController::class, 'recuperacion_credenciales']);
+
+#endregion
+
+#region Herramientas
 
 Route::get('/herramientas/musica',  [HerramientasController::class, 'musica'])->name('herramientas.musica');
-Route::get('/herramientas/matematicas',  [HerramientasController::class, 'matematicas'])->name('herramientas.matematicas');
-Route::post('/herramientas/metadatos',  [HerramientasController::class, 'metadatos'])->name('herramientas.metadatos');
-Route::post('/herramientas/operador',  [HerramientasController::class, 'operador'])->name('herramientas.operador');
+Route::get('/herramientas/matematicas',  [HerramientasController::class, 'matematicas'])->name('herramientas.matematicas')->middleware('auth');
+Route::post('/herramientas/metadatos',  [HerramientasController::class, 'metadatos']);
+Route::post('/herramientas/operador',  [HerramientasController::class, 'operador']);
+
+#endregion
 
 Auth::routes();
 

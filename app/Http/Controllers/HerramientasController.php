@@ -5,12 +5,22 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Entities\OperacionMatematica;
+use Illuminate\Support\Facades\Validator;
 
 class HerramientasController extends Controller
 {
-    public function musica()
-    {
-        return view('herramientas.musica');
+
+    #region Views
+
+    public function musica(Request $request) {
+
+        $login = $request->session()->get('login', '');
+
+        if($login != ''){
+            return view('herramientas.musica');
+        }
+
+        return redirect()->route('inicio.acceso');
     }
 
     public function matematicas(){
@@ -36,66 +46,113 @@ class HerramientasController extends Controller
         return view('herramientas.matematicas', compact('operaciones'));
     }
 
+    #endregion
+
+    #region Ajax
+
     public function metadatos(Request $request){
 
-        $url = env('DEEZER_API');
-        $busqueda = $request->input('busqueda');
+        try {
 
-        $response = Http::get($url, [
-            'q' => $busqueda
-        ]);
+            $validator = Validator::make($request->all(), [
+                'Busqueda' => ['required', 'regex:/^(?![\&]).*/'],
+            ]);
 
-        if ($response->ok()){
+            if ($validator->fails()) {
+                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
+            } else {
 
-            $result = json_decode($response->body());
+                $url = env('DEEZER_API');
+                $busqueda = trim($request->input('Busqueda'));
 
-            foreach($result->data as $record){
+                if($url != ''){
 
-                $concatArtistTitle = $record->artist->name." - ".$record->title;
-                $concatTitleArtist = $record->title." - ".$record->artist->name;
+                    $response = Http::get($url, [
+                        'q' => $busqueda
+                    ]);
 
-                if(str_contains($concatArtistTitle, $busqueda)
-                    || str_contains($busqueda, $concatArtistTitle)
-                    || str_contains($concatTitleArtist, $busqueda)
-                    || str_contains($busqueda, $concatTitleArtist))
-                {
-                    return response()->json(['code' => 200,  'data' => [
-                        'Artista' => $record->artist->name,
-                        'Caratula' => $record->album->cover_xl,
-                        'DeezerID' => $record->id,
-                        'DeezerURL' => $record->link,
-                        'Titulo' => $record->title
-                    ]], 200);
+                    if ($response->ok()){
+
+                        $result = json_decode($response->body());
+
+                        foreach($result->data as $record){
+
+                            $concatArtistTitle = $record->artist->name." - ".$record->title;
+                            $concatTitleArtist = $record->title." - ".$record->artist->name;
+
+                            if(str_contains($concatArtistTitle, $busqueda)
+                                || str_contains($busqueda, $concatArtistTitle)
+                                || str_contains($concatTitleArtist, $busqueda)
+                                || str_contains($busqueda, $concatTitleArtist))
+                            {
+                                return response()->json(['code' => 200,  'data' => [
+                                    'Artista' => $record->artist->name,
+                                    'Caratula' => $record->album->cover_xl,
+                                    'DeezerID' => $record->id,
+                                    'DeezerURL' => $record->link,
+                                    'Titulo' => $record->title
+                                ]], 200);
+                            }
+                        }
+
+                        return response()->json(['code' => 404 , 'data' => 'Not found'], 200);
+
+                    } else{
+                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                    }
+
+                } else{
+                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
                 }
             }
 
-            return response()->json(['code' => 404 , 'data' => 'Not found'], 200);
-
-        } else{
-            return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+        } catch (\Throwable $th) {
+            return response()->json(['code' => 500 , 'data' => $th->getMessage()], 200);
         }
     }
 
     public function operador(Request $request){
 
-        $url = env('NEWTON_API');
+        try {
 
-        $operacion = $request->input('operacion');
-        $expresion = $request->input('expresion');
+            $validator = Validator::make($request->all(), [
+                'Operacion' => ['required'],
+                'Expresion' => ['required']
+            ]);
 
-        $response = Http::get($url.$operacion.'/'.$expresion);
+            if ($validator->fails()) {
+                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
+            } else {
 
-        if ($response->ok()){
+                $url = env('NEWTON_API');
 
-            $result = json_decode($response->body());
+                if($url != ''){
 
-            return response()->json(['code' => 200, 'data' => [
-                'expresion' => $result->expression,
-                'resultado' => $result->result
-            ]], 200);
+                    $operacion = trim($request->input('Operacion'));
+                    $expresion = trim($request->input('Expresion'));
 
-        } else{
-            return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                    $response = Http::get($url.$operacion.'/'.$expresion);
+
+                    if ($response->ok()){
+
+                        $result = json_decode($response->body());
+
+                        return response()->json(['code' => 200, 'data' => [
+                            'expresion' => $result->expression,
+                            'resultado' => $result->result
+                        ]], 200);
+
+                    } else{
+                        return response()->json(['code' => 500 , 'data' => 'Not found'], 200);
+                    }
+                } else{
+                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
+                }
+            }
+        } catch (\Throwable $th) {
+            return response()->json(['code' => 500 , 'data' => $th->getMessage()], 500);
         }
     }
+
+    #endregion
 }

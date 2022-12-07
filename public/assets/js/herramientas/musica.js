@@ -31,25 +31,52 @@ async function ObtenerMetadatos(nombreArchivo) {
             'X-CSRF-TOKEN': csrfToken
         },
         body: JSON.stringify({
-            "busqueda": nombreArchivo
+            "Busqueda": nombreArchivo
         })
     }).then((response) => response.json())
     .then((result) => {
 
-         if (result.code === 200) {
-            let data = result.data;
 
-            document.getElementById('caratula').src = data.Caratula;
-            document.getElementById('informacion-cancion').innerText = data.Titulo;
-            document.getElementById('nombre-artista').innerText = 'By '.concat(data.Artista);
-            document.getElementById('deezer').href = data.DeezerURL;
+        switch(result.code){
+            case 200:
+                {
+                    let data = result.data;
 
-        } else {
-            document.getElementById('caratula').src =  "";
-            document.getElementById('informacion-cancion').innerText = nombreArchivo;
-            document.getElementById('nombre-artista').innerText = "Desconocido";
-            document.getElementById('deezer').href = "https://www.deezer.com";
+                    document.getElementById('caratula').src = data.Caratula;
+                    document.getElementById('informacion-cancion').innerText = data.Titulo;
+                    document.getElementById('nombre-artista').innerText = 'By '.concat(data.Artista);
+                    document.getElementById('deezer').href = data.DeezerURL;
+                }
+                break;
+            case 500:
+                {
+                    Swal.fire({
+                        title: '¡Error!',
+                        html: result.data,
+                        imageUrl: baseURL.concat("/assets/templates/SadOwl.png"),
+                        imageWidth: 100,
+                        imageHeight: 123,
+                        background: '#000000',
+                        color: '#FFFFFF',
+                        imageAlt: 'Error Image'
+                    });
+
+                    document.getElementById('caratula').src =  "";
+                    document.getElementById('informacion-cancion').innerText = nombreArchivo;
+                    document.getElementById('nombre-artista').innerText = "Desconocido";
+                    document.getElementById('deezer').href = "https://www.deezer.com";
+                }
+            break;
+            default:
+                {
+                    document.getElementById('caratula').src =  "";
+                    document.getElementById('informacion-cancion').innerText = nombreArchivo;
+                    document.getElementById('nombre-artista').innerText = "Desconocido";
+                    document.getElementById('deezer').href = "https://www.deezer.com";
+                }
+                break;
         }
+
     }).catch((ex) => {
         Swal.fire({
             title: '¡Error!',

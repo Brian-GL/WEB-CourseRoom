@@ -1,92 +1,51 @@
 document.addEventListener('DOMContentLoaded', function() {document.getElementById("preloader").hidden = true; }, false);
 
-/*
-$("#recuperarCredenciales").on('click', function () {
+document.getElementById("recuperarCredenciales").addEventListener('click', function () {
 
-    $('.preloader').show();
+    document.getElementById("preloader").hidden = false;
 
-    var correoElectronico = $("#CorreoElectronico").val();
+    var correoElectronico = document.getElementById("CorreoElectronico").value;
 
-    try {
+    const csrfToken = document.head.querySelector("[name~=csrf-token][content]").content;
+    let baseURL = window.location.origin;
 
-        $.ajax({
-            url: '@Url.Action("RecuperarCredenciales", "Inicio")',
-            type: "POST",
-            dataType: "JSON",
-            data: {
-                CorreoElectronico: correoElectronico,
-                __RequestVerificationToken: Token()
-            },
-            async: true,
-            success: successFunc,
-            error: errorFunc
-        });
+    fetch(baseURL.concat('/recuperacion'), {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken
+        },
+        body: JSON.stringify({
+            "CorreoElectronico": correoElectronico
+        })
+    }).then((response) => response.json())
+    .then((result) => {
 
-        function successFunc(response) {
-            $('.preloader').hide();
-            if (response.Codigo === 200) {
-
-                    Swal.fire({
-                    title: '¡Correcto!',
-                    text: response.Mensaje,
-                    imageUrl: '@Url.Content("~/Templates/HappyOwl.png")',
-                    imageWidth: 100,
-                    imageHeight: 123,
-                    imageAlt: 'Alert Image',
-                    footer: response.Fecha
-                });
+         if (result.code === 200) {
+            let data = result.data;
 
 
-            } else {
-
-                Swal.fire({
-                    title: '¡Alerta!',
-                    text: response.Mensaje,
-                    imageUrl: '@Url.Content("~/Templates/IndiferentOwl.png")',
-                    imageWidth: 100,
-                    imageHeight: 123,
-                    imageAlt: 'Alert Image',
-                    footer: response.Fecha
-                });
-            }
-        }
-
-        function errorFunc(error) {
-            $('.preloader').hide();
+        } else {
             Swal.fire({
-                title: '¡Error!',
-                html: error.responseText,
-                imageUrl: '@Url.Content("~/Templates/SadOwl.png")',
+                title: '¡Alerta!',
+                text: result.data,
+                imageUrl: baseURL.concat("/assets/templates/IndiferentOwl.png"),
                 imageWidth: 100,
                 imageHeight: 123,
-                background: '#000000',
-                color: '#FFFFFF',
-                imageAlt: 'Error Image',
-                footer: error.Fecha
+                imageAlt: 'Alert Image'
             });
         }
-
-    }
-    catch (ex) {
-        $('.preloader').hide();
-            Swal.fire({
+    }).catch((ex) => {
+        Swal.fire({
             title: '¡Error!',
-            html: ex.responseText,
-            imageUrl: '@Url.Content("~/Templates/SadOwl.png")',
+            html: ex,
+            imageUrl: baseURL.concat("/assets/templates/SadOwl.png"),
             imageWidth: 100,
             imageHeight: 123,
             background: '#000000',
             color: '#FFFFFF',
-            imageAlt: 'Error Image',
-            footer: '@DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss tt")'
+            imageAlt: 'Error Image'
         });
-    }
+    });
 
 });
-
-
-function Token() {
-    return $('input[name="__RequestVerificationToken"]').val();
-}
-
-*/
