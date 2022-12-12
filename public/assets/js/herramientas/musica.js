@@ -38,7 +38,6 @@ async function ObtenerMetadatos(nombreArchivo) {
     }).then((response) => response.json())
     .then((result) => {
 
-
         switch(result.code){
             case 200:
                 {

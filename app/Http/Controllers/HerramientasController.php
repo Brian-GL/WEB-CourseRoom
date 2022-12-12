@@ -83,7 +83,9 @@ class HerramientasController extends Controller
                             if(str_contains($concatArtistTitle, $busqueda)
                                 || str_contains($busqueda, $concatArtistTitle)
                                 || str_contains($concatTitleArtist, $busqueda)
-                                || str_contains($busqueda, $concatTitleArtist))
+                                || str_contains($busqueda, $concatTitleArtist)
+                                || $concatArtistTitle = $busqueda
+                                || $concatTitleArtist = $busqueda)
                             {
                                 return response()->json(['code' => 200,  'data' => [
                                     'Artista' => $record->artist->name,
@@ -176,7 +178,7 @@ class HerramientasController extends Controller
                         'part' => 'snippet',
                         'q' => $busqueda,
                         'type' => 'video',
-                        'maxResults' => 10,
+                        'maxResults' => 5,
                         'key' => env('YOUTUBE_API_KEY')
                     ]);
 
