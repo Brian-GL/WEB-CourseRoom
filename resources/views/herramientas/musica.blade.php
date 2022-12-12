@@ -8,6 +8,17 @@
 
 @section('content')
 
+<div style="position: fixed; z-index: -99; width: 100%; height: 100%; filter: brightness(50%);">
+
+    <iframe id="video-frame"
+      frameborder="0"
+      height="100%"
+      width="100%"
+      src=""
+    >
+    </iframe>
+</div>
+
 <div class="vh-100" id="reproductor-musica">
 
     <input type="file" id="fileUpload" name="fileUpload" accept="audio/mp3, audio/flac" multiple hidden />
@@ -20,28 +31,23 @@
 
                 <div class="row h-100">
 
+                    <div class="col-3 m-auto padding bg-dark bg-opacity-25" id="caja-cancion">
 
-                    <div class="col m-auto padding"></div>
-
-                    <div class="col-5 m-auto padding" id="caja-cancion">
-
-                        <div class="row">
+                        <div class="row p-1">
                             <div class="col-12">
                                 <div class="form-group">
-                                    <img id="caratula" class="img-fluid text-center" crossorigin="anonymous" />
+                                    <img id="caratula" class="img-fluid text-center"/>
                                 </div>
                             </div>
                         </div>
 
                         <div class="row py-1">
-                            <div class="col">
-                                <div class="form-group text-start">
-                                    <span id="informacion-cancion" class="pt-1 text-capitalize fuente">Título</span>
+                            <div class="col-12">
+                                <div class="form-group text-center">
+                                    <span id="informacion-cancion" class="pt-1 text-capitalize fuente text-white">Título</span>
                                 </div>
-                            </div>
-                            <div class="col">
-                                <div class="form-group text-end">
-                                    <span id="nombre-artista" class="pt-1 text-capitalize fuente">Artista</span>
+                                <div class="form-group text-center py-1">
+                                    <span id="nombre-artista" class="pt-1 text-capitalize fuente text-white">Artista</span>
                                 </div>
                             </div>
                         </div>
@@ -50,18 +56,18 @@
 
                             <div class="col-3">
                                 <div class="form-group">
-                                    <span class="tiempo" id="progreso">00:00</span>
+                                    <span class="tiempo text-white text-center" id="progreso">00:00</span>
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="form-group">
-                                    <input class="tiempo form-range" type="range" value="0" id="slider" />
+                                    <input class="tiempo form-range text-white" type="range" value="0" id="slider" />
                                 </div>
                             </div>
 
                             <div class="col-3">
                                 <div class="form-group">
-                                    <span class="tiempo text-center" id="duracion">00:00</span>
+                                    <span class="tiempo text-center text-white" id="duracion">00:00</span>
                                 </div>
                             </div>
 
@@ -70,25 +76,25 @@
                         <div class="row py-1">
                             <div class="col-2 text-center">
                                 <div class="form-group">
-                                    <i class="icon-fa fa fa-folder fa-2x icono-reproductor" title="Abrir archivos" id="open-files"></i>
+                                    <i class="icon-fa fa fa-folder fa-2x icono-reproductor text-white" title="Abrir archivos" id="open-files"></i>
                                 </div>
                             </div>
 
                             <div class="col-2 text-center">
                                 <div class="form-group">
-                                    <i class="icon-fa fa fa-step-backward fa-2x icono-reproductor" title="Pista anterior" id="anterior"></i>
+                                    <i class="icon-fa fa fa-step-backward fa-2x icono-reproductor text-white" title="Pista anterior" id="anterior"></i>
                                 </div>
                             </div>
 
                             <div class="col-4 text-center">
                                 <div class="form-group">
-                                    <i class="icon-fa fa fa-2x fa-play-circle icono-reproductor" title="Reproducir/Pausar" id="play-pause"></i>
+                                    <i class="icon-fa fa fa-2x fa-play-circle icono-reproductor text-white" title="Reproducir/Pausar" id="play-pause"></i>
                                 </div>
                             </div>
 
                             <div class="col-2 text-center">
                                 <div class="form-group">
-                                    <i class="icon-fa fa fa-step-forward fa-2x icono-reproductor" title="Pista siguiente" id="siguiente"></i>
+                                    <i class="icon-fa fa fa-step-forward fa-2x icono-reproductor text-white" title="Pista siguiente" id="siguiente"></i>
                                 </div>
                             </div>
 
@@ -117,13 +123,11 @@
 
 </div>
 
-
 @stop
 
 
 @push('scripts')
 
-<script type="text/javascript" src=" {{asset('assets/js/color-thief.min.js')}}"></script>
-<script type="text/javascript" src=" {{asset('assets/js/herramientas/musica.js')}}"></script>
+<script type="module" src=" {{asset('assets/js/herramientas/musica.js')}}"></script>
 
 @endpush

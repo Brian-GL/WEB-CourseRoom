@@ -154,5 +154,74 @@ class HerramientasController extends Controller
         }
     }
 
+    public function multimedia(Request $request){
+        try {
+
+            $validator = Validator::make($request->all(), [
+                'Busqueda' => ['required', 'regex:/^(?![\&]).*/'],
+                'Artista' => ['required', 'regex:/^(?![\&]).*/']
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
+            } else {
+
+                $url = env('YOUTUBE_API');
+                $busqueda = trim($request->input('Busqueda'));
+                $artista = trim($request->input('Artista'));
+
+                if($url != ''){
+
+                    $response = Http::get($url, [
+                        'part' => 'snippet',
+                        'q' => $busqueda,
+                        'type' => 'video',
+                        'maxResults' => 10,
+                        'key' => env('YOUTUBE_API_KEY')
+                    ]);
+
+                    if ($response->ok()){
+
+                        $result = json_decode($response->body());
+
+                        foreach($result->items as $record){
+
+                            $channel_title = $record->snippet->channelTitle;
+                            $video_title = $record->snippet->title;
+
+                            if($artista == $channel_title){
+
+                                if(str_contains($busqueda, $video_title)
+                                || str_contains($video_title, $busqueda))
+                                {
+                                    return response()->json(['code' => 200,  'data' => [
+                                        'Id' => $record->id->videoId
+                                    ]], 200);
+                                }
+                            }
+                        }
+
+                        if(count($result->items) > 0){
+                            return response()->json(['code' => 200,  'data' => [
+                                'Id' => $result->items[0]->id->videoId
+                            ]], 200);
+                        }
+
+                        return response()->json(['code' => 404 , 'data' => 'Not found'], 404);
+
+                    } else{
+                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                    }
+
+                } else{
+                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
+                }
+            }
+
+        } catch (\Throwable $th) {
+            return response()->json(['code' => 500 , 'data' => $th->getMessage()], 200);
+        }
+    }
+
     #endregion
 }

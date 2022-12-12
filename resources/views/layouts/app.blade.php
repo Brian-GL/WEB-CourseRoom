@@ -19,8 +19,7 @@
     @stack('styles')
 
     <!-- Scripts -->
-    @vite('resources/js/app.js')
-    <script type="text/javascript" src="{{asset('assets/js/sweetalert2.all.min.js')}}"></script>
+    @vite(['resources/js/app.js'])
 
 </head>
 <body>

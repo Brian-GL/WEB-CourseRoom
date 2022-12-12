@@ -26,7 +26,7 @@ document.getElementById("recuperarCredenciales").addEventListener('click', funct
 
 
         } else {
-            Swal.fire({
+            SweetAlert.fire({
                 title: '¡Alerta!',
                 text: result.data,
                 imageUrl: baseURL.concat("/assets/templates/IndiferentOwl.png"),
@@ -36,7 +36,7 @@ document.getElementById("recuperarCredenciales").addEventListener('click', funct
             });
         }
     }).catch((ex) => {
-        Swal.fire({
+        SweetAlert.fire({
             title: '¡Error!',
             html: ex,
             imageUrl: baseURL.concat("/assets/templates/SadOwl.png"),

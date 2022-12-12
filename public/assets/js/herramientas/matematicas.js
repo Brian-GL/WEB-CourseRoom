@@ -35,8 +35,7 @@ document.getElementById("solucionar").addEventListener('click', function () {
         } else {
             document.getElementById("resultado").innerText = "";
 
-
-            Swal.fire({
+            SweetAlert.fire({
                 title: '¡Alerta!',
                 text: result.data,
                 imageUrl:  baseURL.concat("/assets/templates/IndiferentOwl.png"),
@@ -50,7 +49,7 @@ document.getElementById("solucionar").addEventListener('click', function () {
 
         document.getElementById('preloader').hidden = true;
 
-        Swal.fire({
+        SweetAlert.fire({
             title: '¡Error!',
             html: ex,
             imageUrl: baseURL.concat("/assets/templates/SadOwl.png"),

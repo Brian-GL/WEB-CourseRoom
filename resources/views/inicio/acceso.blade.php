@@ -82,5 +82,5 @@
 
 
 @push('scripts')
-<script type="text/javascript" src="{{ asset ('assets/js/inicio/login.js')}}"></script>
+<script type="module" src="{{ asset ('assets/js/inicio/login.js')}}"></script>
 @endpush

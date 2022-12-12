@@ -26,9 +26,8 @@ document.getElementById("iniciarSesion").addEventListener('click', function () {
          if (result.code === 200) {
             let data = result.data;
 
-
         } else {
-            Swal.fire({
+            SweetAlert.fire({
                 title: '¡Alerta!',
                 text: result.data,
                 imageUrl: baseURL.concat("/assets/templates/IndiferentOwl.png"),
@@ -38,7 +37,7 @@ document.getElementById("iniciarSesion").addEventListener('click', function () {
             });
         }
     }).catch((ex) => {
-        Swal.fire({
+        SweetAlert.fire({
             title: '¡Error!',
             html: ex,
             imageUrl: baseURL.concat("/assets/templates/SadOwl.png"),

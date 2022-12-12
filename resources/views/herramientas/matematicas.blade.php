@@ -89,5 +89,5 @@
 
 
 @push('scripts')
-<script type="text/javascript" src=" {{asset('assets/js/herramientas/matematicas.js')}}"></script>
+<script type="module" src=" {{asset('assets/js/herramientas/matematicas.js')}}"></script>
 @endpush

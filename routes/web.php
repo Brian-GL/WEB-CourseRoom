@@ -30,6 +30,7 @@ Route::get('/herramientas/musica',  [HerramientasController::class, 'musica'])->
 Route::get('/herramientas/matematicas',  [HerramientasController::class, 'matematicas'])->name('herramientas.matematicas')->middleware('auth');
 Route::post('/herramientas/metadatos',  [HerramientasController::class, 'metadatos']);
 Route::post('/herramientas/operador',  [HerramientasController::class, 'operador']);
+Route::post('/herramientas/multimedia',  [HerramientasController::class, 'multimedia']);
 
 #endregion
 

@@ -1,3 +1,6 @@
+import Swal from 'sweetalert2'
+window.SweetAlert = Swal;
+
 import _ from 'lodash';
 window._ = _;
 

@@ -4,7 +4,8 @@ var isPlaying;
 var updateTimer;
 var music_list;
 
-document.addEventListener('DOMContentLoaded', function() {
+
+document.addEventListener('DOMContentLoaded', async function() {
     document.getElementById('preloader').hidden = true;
 
     document.getElementById('slider').disabled =  true;
@@ -18,6 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
     music_list = [];
 
 }, false);
+
 
 async function ObtenerMetadatos(nombreArchivo) {
 
@@ -42,15 +44,18 @@ async function ObtenerMetadatos(nombreArchivo) {
                 {
                     let data = result.data;
 
+                    ObtenerVideo(data.Titulo, data.Artista);
+
                     document.getElementById('caratula').src = data.Caratula;
                     document.getElementById('informacion-cancion').innerText = data.Titulo;
                     document.getElementById('nombre-artista').innerText = 'By '.concat(data.Artista);
                     document.getElementById('deezer').href = data.DeezerURL;
+
                 }
                 break;
             case 500:
                 {
-                    Swal.fire({
+                    SweetAlert.fire({
                         title: '¡Error!',
                         html: result.data,
                         imageUrl: baseURL.concat("/assets/templates/SadOwl.png"),
@@ -65,6 +70,7 @@ async function ObtenerMetadatos(nombreArchivo) {
                     document.getElementById('informacion-cancion').innerText = nombreArchivo;
                     document.getElementById('nombre-artista').innerText = "Desconocido";
                     document.getElementById('deezer').href = "https://www.deezer.com";
+                    document.getElementById("video-frame").src = "";
                 }
             break;
             default:
@@ -73,12 +79,13 @@ async function ObtenerMetadatos(nombreArchivo) {
                     document.getElementById('informacion-cancion').innerText = nombreArchivo;
                     document.getElementById('nombre-artista').innerText = "Desconocido";
                     document.getElementById('deezer').href = "https://www.deezer.com";
+                    document.getElementById("video-frame").src = "";
                 }
                 break;
         }
 
     }).catch((ex) => {
-        Swal.fire({
+        SweetAlert.fire({
             title: '¡Error!',
             html: ex,
             imageUrl: baseURL.concat("/assets/templates/SadOwl.png"),
@@ -88,6 +95,70 @@ async function ObtenerMetadatos(nombreArchivo) {
             color: '#FFFFFF',
             imageAlt: 'Error Image'
         });
+        document.getElementById("video-frame").src = "";
+    });
+}
+
+async function ObtenerVideo(titulo, artista){
+
+    let busqueda = artista.concat(" - ",titulo);
+    const csrfToken = document.head.querySelector("[name~=csrf-token][content]").content;
+    let baseURL = window.location.origin;
+
+    fetch(baseURL.concat('/herramientas/multimedia'), {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken
+        },
+        body: JSON.stringify({
+            "Busqueda": busqueda,
+            "Artista": artista
+        })
+    }).then((response) => response.json())
+    .then((result) => {
+
+        switch(result.code){
+            case 200:
+                {
+                    document.getElementById("video-frame").src = "https://www.youtube.com/embed/".concat(result.data.Id,"?controls=0&rel=0&autoplay=1&mute=1&disablekb=1&loop=1&modestbranding=1&showinfo=0");
+                }
+                break;
+            case 500:
+                {
+                    SweetAlert.fire({
+                        title: '¡Error!',
+                        html: result.data,
+                        imageUrl: baseURL.concat("/assets/templates/SadOwl.png"),
+                        imageWidth: 100,
+                        imageHeight: 123,
+                        background: '#000000',
+                        color: '#FFFFFF',
+                        imageAlt: 'Error Image'
+                    });
+
+                    document.getElementById("video-frame").src = "";
+                }
+            break;
+            default:
+                {
+                    document.getElementById("video-frame").src = "";
+                }
+                break;
+        }
+
+    }).catch((ex) => {
+        SweetAlert.fire({
+            title: '¡Error!',
+            html: ex,
+            imageUrl: baseURL.concat("/assets/templates/SadOwl.png"),
+            imageWidth: 100,
+            imageHeight: 123,
+            background: '#000000',
+            color: '#FFFFFF',
+            imageAlt: 'Error Image'
+        });
+        document.getElementById("video-frame").src = "";
     });
 }
 
@@ -179,29 +250,31 @@ document.getElementById('open-files').addEventListener('click', (e) => {
 
 document.getElementById("caratula").addEventListener('load', function() {
     try {
-        const colorThief = new ColorThief();
-        let palette = colorThief.getPalette(this, 3,400);
 
-        let fondo = "linear-gradient(90deg,rgba(".concat(palette[0], ",1) 0% ,rgba(", palette[1],
-            ",1) 50%, rgba(",palette[2],",1) 100%)");
 
-        document.getElementById("reproductor-musica").style.background = fondo;
+        // const colorThief = new ColorThief();
+        // let palette = colorThief.getPalette(this, 3,400);
 
-        let colorLetra = palette[0][0] >= 127 ? "#000000" : "#FFFFFF";
+        // let fondo = "linear-gradient(90deg,rgba(".concat(palette[0], ",1) 0% ,rgba(", palette[1],
+        //     ",1) 50%, rgba(",palette[2],",1) 100%)");
 
-        document.getElementById("informacion-cancion").style.color = colorLetra;
+        // document.getElementById("reproductor-musica").style.background = fondo;
 
-        for(let elemento of document.getElementsByClassName("icono-reproductor")){
-            elemento.style.color = colorLetra;
-        }
+        // let colorLetra = palette[0][0] >= 127 ? "#000000" : "#FFFFFF";
 
-        for(let elemento of document.getElementsByClassName("tiempo")){
-            elemento.style.color = colorLetra;
-        }
+        // document.getElementById("informacion-cancion").style.color = colorLetra;
 
-        colorLetra = palette[2][0] >= 127 ? "#000000" : "#FFFFFF";
+        // for(let elemento of document.getElementsByClassName("icono-reproductor")){
+        //     elemento.style.color = colorLetra;
+        // }
 
-        document.getElementById("nombre-artista").style.color = colorLetra;
+        // for(let elemento of document.getElementsByClassName("tiempo")){
+        //     elemento.style.color = colorLetra;
+        // }
+
+        // colorLetra = palette[2][0] >= 127 ? "#000000" : "#FFFFFF";
+
+        // document.getElementById("nombre-artista").style.color = colorLetra;
 
 
     } catch (e) {
