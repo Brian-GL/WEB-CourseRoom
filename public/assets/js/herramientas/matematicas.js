@@ -4,7 +4,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 document.getElementById("solucionar").addEventListener('click', function () {
 
-    document.getElementById('preloader').hidden = false;
+    let preloader = document.getElementById('preloader');
+    preloader.hidden = false;
 
     const csrfToken = document.head.querySelector("[name~=csrf-token][content]").content;
     let baseURL = window.location.origin;
@@ -25,7 +26,7 @@ document.getElementById("solucionar").addEventListener('click', function () {
     }).then((response) => response.json())
     .then((result) => {
 
-        document.getElementById('preloader').hidden = true;
+        preloader.hidden = true;
 
          if (result.code === 200) {
 
@@ -47,7 +48,7 @@ document.getElementById("solucionar").addEventListener('click', function () {
         }
     }).catch((ex) => {
 
-        document.getElementById('preloader').hidden = true;
+        preloader.hidden = true;
 
         SweetAlert.fire({
             title: '¡Error!',

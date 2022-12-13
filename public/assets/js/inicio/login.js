@@ -2,10 +2,12 @@ document.addEventListener('DOMContentLoaded', function() {document.getElementByI
 
 document.getElementById("iniciarSesion").addEventListener('click', function () {
 
-    document.getElementById("preloader").hidden = false;
+    let preloader = document.getElementById("preloader");
 
-    var correoElectronico = document.getElementById("CorreoElectronico").value;
-    var contrasena = document.getElementById("Password").value;
+    preloader.hidden = false;
+
+    let correoElectronico = document.getElementById("CorreoElectronico").value;
+    let contrasena = document.getElementById("Password").value;
 
     const csrfToken = document.head.querySelector("[name~=csrf-token][content]").content;
     let baseURL = window.location.origin;
@@ -23,6 +25,8 @@ document.getElementById("iniciarSesion").addEventListener('click', function () {
     }).then((response) => response.json())
     .then((result) => {
 
+        preloader.hidden = true;
+
          if (result.code === 200) {
             let data = result.data;
 
@@ -37,6 +41,9 @@ document.getElementById("iniciarSesion").addEventListener('click', function () {
             });
         }
     }).catch((ex) => {
+
+        preloader.hidden = true;
+
         SweetAlert.fire({
             title: '¡Error!',
             html: ex,

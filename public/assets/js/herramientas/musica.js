@@ -200,12 +200,13 @@ function loadTrack(track_index) {
 
 document.getElementById("fileUpload").addEventListener('change', (e) => {
 
-    document.getElementById("preloader").hidden = false;
+    let preloader = document.getElementById('preloader');
+    preloader.hidden = false;
 
     track_index = 0
     let blob = window.URL || window.webkitURL;
     if (!blob) {
-        document.getElementById("preloader").hidden = true;
+        preloader.hidden = true;
         alert('Your browser does not support Blob URL!');
         return;
     }
@@ -237,7 +238,7 @@ document.getElementById("fileUpload").addEventListener('change', (e) => {
 
     });
 
-    document.getElementById("preloader").hidden = true;
+    preloader.hidden = true;
 
     loadTrack(track_index);
 

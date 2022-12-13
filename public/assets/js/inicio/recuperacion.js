@@ -2,7 +2,9 @@ document.addEventListener('DOMContentLoaded', function() {document.getElementByI
 
 document.getElementById("recuperarCredenciales").addEventListener('click', function () {
 
-    document.getElementById("preloader").hidden = false;
+    let preloader = document.getElementById("preloader");
+
+    preloader.hidden = false;
 
     var correoElectronico = document.getElementById("CorreoElectronico").value;
 
@@ -21,6 +23,8 @@ document.getElementById("recuperarCredenciales").addEventListener('click', funct
     }).then((response) => response.json())
     .then((result) => {
 
+        preloader.hidden = true;
+
          if (result.code === 200) {
             let data = result.data;
 
@@ -36,6 +40,9 @@ document.getElementById("recuperarCredenciales").addEventListener('click', funct
             });
         }
     }).catch((ex) => {
+
+        preloader.hidden = true;
+
         SweetAlert.fire({
             title: '¡Error!',
             html: ex,
