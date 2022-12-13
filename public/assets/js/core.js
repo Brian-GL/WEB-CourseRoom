@@ -31,3 +31,12 @@ document.addEventListener('DOMContentLoaded', function() {
 function Acentuacion(value){
     return [241, 209, 192, 239, 180, 186, 211, 201, 193, 205, 218, 225, 233, 237, 243, 250].includes(value);
 }
+
+/**
+ *
+ * @param {string} value - value to kinda validate
+ * @returns trim value or null value
+ */
+function AvailableStringValue(value){
+    return value === '' || value === null || value === undefined ? null : value.trim();
+}

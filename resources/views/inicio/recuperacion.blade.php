@@ -48,7 +48,7 @@
                                                 <button class="btn-block btn-color fuente" type="submit" id="recuperarCredenciales">Recuperar Credenciales</button>
                                             </div>
 
-                                            <a class="position-absolute top-0 start-0 px-1 fuenteNormal" href=" {{url('/')}}">
+                                            <a class="position-absolute top-0 start-0 px-1 fuenteNormal" href=" {{route('inicio.acceso')}}">
                                                 <i class="fa-regular fa-circle-left fa-4x pt-3 ps-2"></i>
                                             </a>
 

@@ -3,10 +3,9 @@ document.addEventListener('DOMContentLoaded', function() {document.getElementByI
 document.getElementById("recuperarCredenciales").addEventListener('click', function () {
 
     let preloader = document.getElementById("preloader");
-
     preloader.hidden = false;
 
-    var correoElectronico = document.getElementById("CorreoElectronico").value;
+    let correoElectronico = document.getElementById("CorreoElectronico").value;
 
     const csrfToken = document.head.querySelector("[name~=csrf-token][content]").content;
     let baseURL = window.location.origin;

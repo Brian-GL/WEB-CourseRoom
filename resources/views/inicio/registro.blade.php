@@ -29,14 +29,14 @@
                     <div class="container px-4 py-5 mx-auto">
                         <div class="card rounded-3 card0" id="contenedor">
                             <div class="d-flex flex-lg-row flex-column-reverse">
-                                <div class="card card2">
+                                <div class="card" id="card2">
                                     <span class="text-capitalize text-center fuente bg-black text-white w-50 position-absolute bottom-0 end-50 opacity-75"> Powered By <a href="https://www.unsplash.com" target="_blank" class="text-white stretched-link">Unsplash</a></span>
                                 </div>
-                                <div class="card card1">
+                                <div class="card" id="card1">
                                     <div class="py-3 text-center">
                                         <img id="logo" class="img-fluid" src="{{asset('assets/templates/Course_Room_Brand.png')}}">
-                                        <h2 class="display-4 pt-2">Formulario de registro</h2>
-                                        <p class="lead py-3">Completa los campos para poder generar tu cuenta y seas capaz de aprender/enseñar de forma divertida y eficaz</p>
+                                        <h2 class="display-4 pt-2 letrado">Formulario de registro</h2>
+                                        <p class="lead py-3 letrado">Completa los campos para poder generar tu cuenta y seas capaz de aprender/enseñar de forma divertida y eficaz</p>
                                     </div>
 
                                     <div class="row">
@@ -159,12 +159,12 @@
                                                         <div class="form-group">
                                                             <label for="seleccionar-imagen" class="form-label">Imagen</label>
                                                             <div class="d-flex justify-content-center mb-4" id="seleccionar-imagen">
-                                                                <img src="https://mdbootstrap.com/img/Photos/Others/placeholder-avatar.jpg" class="rounded-circle img-fluid" alt="Imagen de perfil" style="width: 250px;" />
+                                                                <img id="imagen-seleccionada" src="https://mdbootstrap.com/img/Photos/Others/placeholder-avatar.jpg" class="rounded img-fluid" alt="Imagen de perfil"/>
                                                             </div>
                                                             <div class="d-flex justify-content-center">
                                                                 <div class="btn btn-primary btn-rounded">
-                                                                    <label class="form-label text-white m-1" for="customFile2">Seleccionar archivo</label>
-                                                                    <input type="file" class="form-control d-none" id="seleccionar-imagen" accept="image/png, imagejpg, image/jpeg"/>
+                                                                    <label class="form-label text-white m-1" for="imagen">Seleccionar imagen</label>
+                                                                    <input type="file" class="form-control d-none" id="imagen" accept="image/png, imagejpg, image/jpeg"/>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -181,6 +181,10 @@
                                                 </div>
 
                                             </form>
+
+                                            <a class="position-absolute top-0 start-0 px-1 fuenteNormal" href=" {{route('inicio.acceso')}}">
+                                                <i class="fa-regular fa-circle-left fa-4x pt-3 ps-2"></i>
+                                            </a>
                                         </div>
                                     </div>
 
@@ -201,5 +205,6 @@
 @stop
 
 @push('scripts')
+<script type="text/javascript" src="{{ asset ('assets/js/color-thief.min.js')}}"></script>
 <script type="module" src="{{ asset ('assets/js/inicio/registro.js')}}"></script>
 @endpush

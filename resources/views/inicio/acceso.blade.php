@@ -47,14 +47,14 @@
                                             <div class="row justify-content-center py-2 text-center">
                                                 <span class="text-muted fuenteNormal">
                                                     ¿Hás Olvidado Tu Contraseña?
-                                                    <a href="{{url('/recuperacion')}}"><strong class="text-muted fuente">Recuperar Credenciales</strong></a>
+                                                    <a href="{{route('inicio.recuperacion')}}"><strong class="text-muted fuente">Recuperar Credenciales</strong></a>
                                                 </span>
                                             </div>
 
                                             <div class="row justify-content-center py-1 text-center">
                                                 <span class="text-muted fuenteNormal">
                                                     ¿No Tienes Cuenta?
-                                                    <a href=""><strong class="text-muted fuente">Crear Una Nueva Cuenta</strong></a>
+                                                    <a href="{{route('inicio.registro')}}"><strong class="text-muted fuente">Crear Una Nueva Cuenta</strong></a>
                                                 </span>
                                             </div>
 

@@ -248,40 +248,6 @@ document.getElementById('open-files').addEventListener('click', (e) => {
     document.getElementById('fileUpload').click();
 });
 
-document.getElementById("caratula").addEventListener('load', function() {
-    try {
-
-
-        // const colorThief = new ColorThief();
-        // let palette = colorThief.getPalette(this, 3,400);
-
-        // let fondo = "linear-gradient(90deg,rgba(".concat(palette[0], ",1) 0% ,rgba(", palette[1],
-        //     ",1) 50%, rgba(",palette[2],",1) 100%)");
-
-        // document.getElementById("reproductor-musica").style.background = fondo;
-
-        // let colorLetra = palette[0][0] >= 127 ? "#000000" : "#FFFFFF";
-
-        // document.getElementById("informacion-cancion").style.color = colorLetra;
-
-        // for(let elemento of document.getElementsByClassName("icono-reproductor")){
-        //     elemento.style.color = colorLetra;
-        // }
-
-        // for(let elemento of document.getElementsByClassName("tiempo")){
-        //     elemento.style.color = colorLetra;
-        // }
-
-        // colorLetra = palette[2][0] >= 127 ? "#000000" : "#FFFFFF";
-
-        // document.getElementById("nombre-artista").style.color = colorLetra;
-
-
-    } catch (e) {
-        document.getElementById("reproductor-musica").style.background = "linear-gradient (to right, rgb(0,0,0),rgb(0,0,0))";
-    }
-});
-
 document.getElementById("play-pause").addEventListener('click', (e) => {
     isPlaying ? pauseTrack() : playTrack();
 });

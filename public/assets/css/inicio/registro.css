@@ -32,14 +32,20 @@
   border: none;
 }
 
-.card1 {
+#card1 {
   width: 100%;
   padding: 2rem 1.6rem 0.75rem 1.6rem;
   background: radial-gradient(ellipse at right, rgba(104,194,232,1), rgba(14,30,64,0.1));
 }
 
-.card2 {
+#card2 {
   width: 50%;
   background-image: url('https://source.unsplash.com/random/?sunset,night');
   background-size: cover;
+}
+
+
+#imagen-seleccionada{
+  max-width: 300px;
+  max-height: 300px;
 }

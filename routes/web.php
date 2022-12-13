@@ -23,6 +23,7 @@ Route::get('/registro',  [InicioController::class, 'registro'])->name('inicio.re
 
 Route::post('/login',  [InicioController::class, 'login']);
 Route::post('/recuperacion',  [InicioController::class, 'recuperacion_credenciales']);
+Route::post('/registrar',  [InicioController::class, 'registrar_usuario']);
 
 #endregion
 
