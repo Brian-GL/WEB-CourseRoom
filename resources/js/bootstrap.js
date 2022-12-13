@@ -1,6 +1,9 @@
 import Swal from 'sweetalert2'
 window.SweetAlert = Swal;
 
+import $ from 'jquery'
+window.$ = $;
+
 import _ from 'lodash';
 window._ = _;
 

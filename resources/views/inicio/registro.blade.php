@@ -49,21 +49,21 @@
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
                                                             <label for="nombre" class="form-label">Nombre(s)*</label>
-                                                            <input type="text" class="form-control" id="nombre" placeholder="Ingresa tu nombre aquí" required>
+                                                            <input type="text" class="form-control alphabetic" id="nombre" placeholder="Ingresa tu nombre aquí" required minlength="3">
                                                         </div>
                                                     </div>
 
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
                                                             <label for="paterno" class="form-label">Apellido Paterno*</label>
-                                                            <input type="text" class="form-control" id="paterno" placeholder="Ingresa tu apellido paterno aquí" required>
+                                                            <input type="text" class="form-control alphabetic" id="paterno" placeholder="Ingresa tu apellido paterno aquí" required minlength="3">
                                                         </div>
                                                     </div>
 
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
                                                             <label for="materno" class="form-label">Apellido Materno</label>
-                                                            <input type="text" class="form-control" id="materno" placeholder="Ingresa tu apellido materno aquí">
+                                                            <input type="text" class="form-control alphabetic" id="materno" placeholder="Ingresa tu apellido materno aquí">
                                                         </div>
                                                     </div>
 
@@ -74,7 +74,7 @@
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
                                                             <label for="genero" class="form-label">Género</label>
-                                                            <input type="text" class="form-control" id="genero" placeholder="Ingresa tu género aquí">
+                                                            <input type="text" class="form-control alphabetic" id="genero" placeholder="Ingresa tu género aquí">
                                                         </div>
                                                     </div>
 
@@ -88,9 +88,12 @@
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
                                                             <label for="localidad" class="form-label">Localidad</label>
-                                                            <input class="form-control" list="localidades" id="localidad" placeholder="Seleccione una localidad">
+                                                            <input class="form-control alphabetic" list="localidades" id="localidad" placeholder="Seleccione una localidad">
                                                             <datalist id="localidades">
-                                                                <option value="Privado">Prefiero no decirlo</option>
+                                                                <option label="" value="Prefiero no decirlo">0</option>
+                                                                @foreach ($localidades as $localidad)
+                                                                    <option label="{{$localidad->estado}}" value="{{$localidad->localidad}}">{{$localidad->idLocalidad}}</option>
+                                                                @endforeach
                                                             </datalist>
                                                         </div>
                                                     </div>
@@ -104,17 +107,18 @@
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label for="correo-electronico" class="form-label">Correo Electrónico*</label>
-                                                            <input type="email" class="form-control" id="correo-electronico" placeholder="Ingresa tu correo electrónico aquí" required>
+                                                            <input type="email" class="form-control" id="correo-electronico" placeholder="Ingresa tu correo electrónico aquí" required minlength="5">
                                                         </div>
                                                     </div>
 
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label for="tipo-usuario" class="form-label">Tipo de usuario*</label>
-                                                            <input class="form-control" list="tipos-usuario" id="tipo-usuario" placeholder="Eres estudiante o profesor?">
+                                                            <input class="form-control alphabetic" list="tipos-usuario" id="tipo-usuario" placeholder="Eres estudiante o profesor?" required>
                                                             <datalist id="tipos-usuario">
-                                                                <option value="Estudiante">Soy un estudiante</option>
-                                                                <option value="Profesor">Soy un profesor</option>
+                                                                @foreach ($tipos_usuario as $tipo_usuario)
+                                                                    <option label="" value="{{$tipo_usuario->tipoUsuario}}">{{tipo_usuario->idTipoUsuario}}</option>
+                                                                @endforeach
                                                             </datalist>
                                                         </div>
                                                     </div>
@@ -195,8 +199,6 @@
 </div>
 
 @stop
-
-
 
 @push('scripts')
 <script type="module" src="{{ asset ('assets/js/inicio/registro.js')}}"></script>

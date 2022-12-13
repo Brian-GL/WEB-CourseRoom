@@ -44,7 +44,6 @@
                                                 <input class="form-control email fuenteNormal" type="email" id="CorreoElectronico" name="CorreoElectronico" placeholder="Correo electrónico de recuperación" maxlength="150" required>
                                             </div>
 
-
                                             <div class="row justify-content-center py-1 px-2">
                                                 <button class="btn-block btn-color fuente" type="submit" id="recuperarCredenciales">Recuperar Credenciales</button>
                                             </div>

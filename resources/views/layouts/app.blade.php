@@ -31,6 +31,6 @@
     </div>
 
     @stack('scripts')
-
+    <script type="module" src="{{ asset ('assets/js/core.js')}}"></script>
 </body>
 </html>

@@ -7,15 +7,28 @@ use Illuminate\Http\Request;
 class InicioController extends Controller
 {
 
-    //$request->session()->push('login', 'value');
-
     #region Views
 
-    public function acceso() { return view('inicio.acceso');}
+    public function acceso(Request $request) {
 
-    public function recuperacion() { return view('inicio.recuperacion');}
+        $session = $request->session()->get('AUTH_TOKEN', '');
+        if(empty($session))
+            $request->session()->push('AUTH_TOKEN', env("APP_KEY"));
 
-    public function registro() { return view('inicio.registro');}
+        return view('inicio.acceso');
+    }
+
+    public function recuperacion(Request $request) { return view('inicio.recuperacion');}
+
+    public function registro() {
+
+
+        $localidades = array();
+        $tipos_usuario = array();
+        return view('inicio.registro', compact('localidades','tipos_usuario'));
+
+
+    }
 
     #endregion
 

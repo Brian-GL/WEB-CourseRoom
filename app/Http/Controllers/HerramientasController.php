@@ -12,16 +12,7 @@ class HerramientasController extends Controller
 
     #region Views
 
-    public function musica(Request $request) {
-
-        $login = $request->session()->get('login', '');
-
-        if($login != ''){
-            return view('herramientas.musica');
-        }
-
-        return redirect()->route('inicio.acceso');
-    }
+    public function musica(Request $request) { return view('herramientas.musica');}
 
     public function matematicas(){
 
