@@ -19,8 +19,11 @@ class InicioController extends Controller
         $localidades = array();
         $tipos_usuario = array();
         return view('inicio.registro', compact('localidades','tipos_usuario'));
+    }
 
+    public function inicio(){
 
+        return view('inicio.inicio');
     }
 
     #endregion

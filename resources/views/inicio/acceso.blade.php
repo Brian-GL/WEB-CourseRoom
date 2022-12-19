@@ -3,7 +3,7 @@
 @section('title', 'Acceso')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset ('assets/css/inicio/login.css')}}">
+<link rel="stylesheet" href="{{ asset ('assets/css/inicio/acceso.css')}}">
 @endpush
 
 @section('content')
@@ -82,5 +82,5 @@
 
 
 @push('scripts')
-<script type="module" src="{{ asset ('assets/js/inicio/login.js')}}"></script>
+<script type="module" src="{{ asset ('assets/js/inicio/acceso.js')}}"></script>
 @endpush
