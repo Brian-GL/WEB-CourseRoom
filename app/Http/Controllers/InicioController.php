@@ -21,10 +21,7 @@ class InicioController extends Controller
         return view('inicio.registro', compact('localidades','tipos_usuario'));
     }
 
-    public function inicio(){
-
-        return view('inicio.inicio');
-    }
+    public function inicio(){ return view('inicio.inicio'); }
 
     #endregion
 

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\InicioController;
+use App\Http\Controllers\AvisosController;
 use App\Http\Controllers\HerramientasController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,6 +26,14 @@ Route::get('/inicio',  [InicioController::class, 'inicio'])->name('inicio.inicio
 Route::post('/login',  [InicioController::class, 'login']);
 Route::post('/recuperacion',  [InicioController::class, 'recuperacion_credenciales']);
 Route::post('/registrar',  [InicioController::class, 'registrar_usuario']);
+
+#endregion
+
+
+#region Avisos
+
+Route::put('/avisos/actualizar',  [AvisosController::class, 'aviso_actualizar'])->middleware('session.token');
+Route::post('/avisos/registrar',  [AvisosController::class, 'aviso_registrar'])->middleware('session.token');
 
 #endregion
 
