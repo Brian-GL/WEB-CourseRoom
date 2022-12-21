@@ -3,6 +3,7 @@
 use App\Http\Controllers\InicioController;
 use App\Http\Controllers\AvisosController;
 use App\Http\Controllers\HerramientasController;
+use App\Http\Controllers\UsuariosController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,7 +30,6 @@ Route::post('/registrar',  [InicioController::class, 'registrar_usuario']);
 
 #endregion
 
-
 #region Avisos
 
 Route::put('/avisos/actualizar',  [AvisosController::class, 'aviso_actualizar'])->middleware('session.token');
@@ -44,6 +44,13 @@ Route::get('/herramientas/matematicas',  [HerramientasController::class, 'matema
 Route::post('/herramientas/metadatos',  [HerramientasController::class, 'metadatos'])->middleware('session.token');
 Route::post('/herramientas/operador',  [HerramientasController::class, 'operador'])->middleware('session.token');
 Route::post('/herramientas/multimedia',  [HerramientasController::class, 'multimedia'])->middleware('session.token');
+
+#endregion
+
+
+#region Usuarios
+
+Route::put('/usuarios/actualizar',  [UsuariosController::class, 'usuario_actualizar'])->middleware('session.token');
 
 #endregion
 
