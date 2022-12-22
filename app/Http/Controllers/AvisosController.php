@@ -27,16 +27,16 @@ class AvisosController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idAviso = $request->input('IdAviso');
-                $idUsuario = $request->input('IdUsuario');
+                $IdAviso = $request->input('IdAviso');
+                $IdUsuario = $request->input('IdUsuario');
 
                 if($url != ''){
 
                     $response = Http::withHeaders([
                         'Authorization' => env('COURSEROOM_API_KEY'),
                     ])->put($url.'/api/avisos/actualizar', [
-                        'IdAviso' => $idAviso,
-                        'IdUsuario' => $idUsuario
+                        'idAviso' => $IdAviso,
+                        'idUsuario' => $IdUsuario
                     ]);
 
                     if ($response->ok()){
