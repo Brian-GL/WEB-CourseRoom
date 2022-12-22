@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\InicioController;
+use App\Http\Controllers\ChatsController;
 use App\Http\Controllers\AvisosController;
 use App\Http\Controllers\HerramientasController;
 use App\Http\Controllers\UsuariosController;
@@ -27,6 +28,12 @@ Route::get('/inicio',  [InicioController::class, 'inicio'])->name('inicio.inicio
 Route::post('/login',  [InicioController::class, 'login']);
 Route::post('/recuperacion',  [InicioController::class, 'recuperacion_credenciales']);
 Route::post('/registrar',  [InicioController::class, 'registrar_usuario']);
+
+#endregion
+
+#region Chats
+
+Route::post('/chats/registrar',  [ChatsController::class, 'chat_registrar'])->middleware('session.token');
 
 #endregion
 
