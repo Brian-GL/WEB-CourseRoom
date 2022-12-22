@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\InicioController;
 use App\Http\Controllers\AvisosController;
+use App\Http\Controllers\GruposController;
 use App\Http\Controllers\HerramientasController;
 use App\Http\Controllers\UsuariosController;
 use Illuminate\Support\Facades\Route;
@@ -34,6 +35,12 @@ Route::post('/registrar',  [InicioController::class, 'registrar_usuario']);
 
 Route::put('/avisos/actualizar',  [AvisosController::class, 'aviso_actualizar'])->middleware('session.token');
 Route::post('/avisos/registrar',  [AvisosController::class, 'aviso_registrar'])->middleware('session.token');
+
+#endregion
+
+#region Grupos
+
+Route::put('/grupos/actualizar',  [GruposController::class, 'grupo_actualizar'])->middleware('session.token');
 
 #endregion
 

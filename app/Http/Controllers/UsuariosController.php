@@ -44,14 +44,14 @@ class UsuariosController extends Controller
                     $response = Http::withHeaders([
                         'Authorization' => env('COURSEROOM_API_KEY'),
                     ])->put($url.'/api/usuarios/actualizar', [
-                        'IdUsuario' => $idUsuario,
-                        'Nombre' => $nombre,
-                        'Paterno' => $paterno,
-                        'Materno' => $materno,
-                        'FechaNacimiento' => $fechaNacimiento,
-                        'Genero' => $genero,
-                        'Descripcion' => $descripcion,
-                        'IdLocalidad' => $idLocalidad,
+                        'idUsuario' => $idUsuario,
+                        'nombre' => $nombre,
+                        'paterno' => $paterno,
+                        'materno' => $materno,
+                        'fechaNacimiento' => $fechaNacimiento,
+                        'genero' => $genero,
+                        'descripcion' => $descripcion,
+                        'idLocalidad' => $idLocalidad,
                     ]);
 
                     if ($response->ok()){
