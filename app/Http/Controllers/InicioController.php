@@ -13,8 +13,10 @@ class InicioController extends Controller
 
     public function recuperacion() { return view('inicio.recuperacion');}
 
-    public function registro() {
-
+    public function registro(Request $request) {
+        $session = $request->session()->get('AUTH_TOKEN', '');
+        if(empty($session))
+            $request->session()->push('AUTH_TOKEN', env("APP_KEY"));
 
         $localidades = array();
         $tipos_usuario = array();

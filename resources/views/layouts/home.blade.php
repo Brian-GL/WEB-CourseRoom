@@ -1,4 +1,11 @@
-<!doctype html>
+@php
+    use Carbon\Carbon;
+
+    $year = Carbon::now()->format('Y');
+
+@endphp
+
+<!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
@@ -38,45 +45,96 @@
 
         <div class="offcanvas-body">
 
-            <div class="row mb-3">
-                <div class="col-10 m-auto">
+            <div class="row mb-4">
+                <div class="col-10 m-auto" align="center">
                     <!--Imagen del usuario-->
-                    <img id="imagen-usuario" class="img-fluid rounded-circle mb-4" src="https://colorlib.com/etc/bootstrap-sidebar/sidebar-01/images/logo.jpg" />
+                    <img id="imagen-usuario" style="max-height: 250px;" class="img-fluid rounded-circle mb-4" src="https://colorlib.com/etc/bootstrap-sidebar/sidebar-01/images/logo.jpg" />
                     <!--Nombre del usuario-->
                     <h5 id="nombre-usuario" class="text-center text-truncated h5 text-white">Susana Alegria</h5>
                     <h6 id="tipo-usuario" class="text-center text-white">Estudiante</h6>
                 </div>
             </div>
-            <ul class="list-unstyled components mb-5">
-                <div class="row ustify-content-center">
+            <div class="components my-4">
+                <div class="row justify-content-center">
 
                     <div class="col-5">
-                        <button class="btn btn-dark text-white">
+                        <a type="button" class="btn btn-lg btn-dark text-white" {{--href="{{route('cursos.inicio')}}"--}}>
                             <i class="fa-solid fa-chalkboard-user"></i> Cursos
-                        </button>
+                        </a>
                     </div>
 
                     <div class="col-5">
-                        <button class="btn btn-dark text-white">
+                        <a type="button" class="btn btn-lg btn-dark text-white" {{--href="{{route('grupos.inicio')}}"--}}>
                             <i class="fa-solid fa-users-rectangle"></i> Grupos
-                        </button>
+                        </a>
                     </div>
 
                 </div>
 
-                </li>
-                <li>
-                    <a href="#">Contact</a>
-                </li>
-            </ul>
-            <div class="footer">
-                <p>
-                Copyright &copy;
-                <script>document.write(new Date().getFullYear());</script>. All rights reserved.
-                </p>
+                <div class="row justify-content-center">
+
+                    <div class="col-5">
+                        <a type="button" class="btn btn-lg btn-dark text-white" {{--href="{{route('tareas.inicio')}}"--}}>
+                            <i class="fa-solid fa-house-laptop"></i> Tareas
+                        </a>
+                    </div>
+
+                    <div class="col-5">
+                        <a type="button" class="btn btn-lg btn-dark text-white" {{--href="{{route('chats.inicio')}}"--}}>
+                            <i class="fa-solid fa-comments"></i> Chats
+                        </a>
+                    </div>
+
+                </div>
+
+                <div class="row justify-content-center">
+
+                    <div class="col-5">
+                        <a type="button" class="btn btn-lg btn-dark text-white" {{--href="{{route('preguntas.inicio')}}"--}}>
+                            <i class="fa-solid fa-person-circle-question"></i> Q&A
+                        </a>
+                    </div>
+
+                    <div class="col-5">
+                        <a type="button" class="btn btn-lg btn-dark text-white" {{--href="{{route('inicio.acerca')}}"--}}>
+                            <i class="fa-solid fa-circle-info"></i> Acerca
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-12 text-center d-flex align-items-center justify-content-center">
+                    <span class="lead text-white">
+                        CourseRoom &copy; {{$year}}.
+                    </span>
+                </div>
             </div>
         </div>
     </div>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" id="barra-navegacion">
+        <div class="container-fluid">
+            <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#inicio-offcanvas" aria-controls="inicio-offcanvas-label">
+                <i class="fa fa-bars"></i>
+            </button>
+            <a type="button" id="boton-notificaciones" class="btn btn-success" type="button" title="Notificaciones" {{--href="{{route('avisos.inicio')}}"--}}>
+                <i class="fa-solid fa-bell"></i>
+            </a>
+            <div class="dropdown dropstart">
+                <button class="btn btn-info dropdown-toggle" type="button" id="boton-perfil" data-bs-toggle="dropdown" aria-expanded="false">
+                    <!-- Nombre usuario -->
+                    Susana Alegria
+                </button>
+                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="boton-perfil">
+                    <li><a class="dropdown-item" {{--href="{{route(usuarios.perfil)}}"--}}><i class="fa-solid fa-user"></i> Perfil</a></li>
+                    <li><a class="dropdown-item" {{--href="{{route('usuarios.sesiones')}}"--}}><i class="fa-solid fa-desktop"></i> Sesiones</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" {{--href="{{route('inicio.cerrar')}}"--}}><i class="fa-solid fa-person-walking-arrow-right"></i> Cerrar sesión</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
     <div id="contenido">
         @yield('content')

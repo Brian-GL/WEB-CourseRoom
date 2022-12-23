@@ -8,7 +8,7 @@
 
 @section('content')
 
-<div style="position: fixed; z-index: -99; width: 100%; height: 100%; filter: brightness(50%);">
+<div style="position: fixed; z-index: -99; width: 100%; height: 100%; filter: brightness(60%);">
 
     <iframe id="video-frame"
       frameborder="0"
