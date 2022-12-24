@@ -22,7 +22,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
     <!-- Styles -->
-    <link rel="stylesheet" href="{{asset('assets/css/core.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/css/layout/home.css')}}">
     @stack('styles')
 
     <!-- Scripts -->
@@ -33,12 +33,12 @@
 
     <div id="preloader"></div>
 
-    <div class="offcanvas offcanvas-start shadow-lg rounded-end bg-dark" data-bs-scroll="true" tabindex="-1" id="inicio-offcanvas" aria-labelledby="inicio-offcanvas-label">
+    <div id="inicio-offcanvas" class="offcanvas offcanvas-start shadow-lg rounded-end" data-bs-scroll="true" tabindex="-1" aria-labelledby="inicio-offcanvas-label">
 
         <div class="offcanvas-header">
-            <img style="max-height: 30px;" class="img-fluid" src="https://raw.githubusercontent.com/Brian-GL/CourseRoom/main/src/recursos/imagenes/Course_Room_Brand_Readme.png" />
-            <span class="offcanvas-title text-white">CourseRoom</span>
-            <button type="button" class="btn btn-primary" data-bs-dismiss="offcanvas" aria-label="Close" id="cerrar-offcanvas">
+            <img id="offcanvas-logo" class="img-fluid" src="https://raw.githubusercontent.com/Brian-GL/CourseRoom/main/src/recursos/imagenes/Course_Room_Brand_Readme.png" />
+            <span class="offcanvas-title letra">CourseRoom</span>
+            <button type="button" class="btn letra fondo-boton" data-bs-dismiss="offcanvas" aria-label="Close" id="cerrar-offcanvas">
                 <i class="fa fa-bars"></i>
             </button>
         </div>
@@ -48,23 +48,23 @@
             <div class="row mb-4">
                 <div class="col-10 m-auto" align="center">
                     <!--Imagen del usuario-->
-                    <img id="imagen-usuario" style="max-height: 250px;" class="img-fluid rounded-circle mb-4" src="https://colorlib.com/etc/bootstrap-sidebar/sidebar-01/images/logo.jpg" />
+                    <img id="imagen-usuario" class="img-fluid rounded-circle mb-4" alt="Imagen del usuario" crossorigin="anonymous"/>
                     <!--Nombre del usuario-->
-                    <h5 id="nombre-usuario" class="text-center text-truncated h5 text-white">Susana Alegria</h5>
-                    <h6 id="tipo-usuario" class="text-center text-white">Estudiante</h6>
+                    <h5 id="nombre-usuario" class="text-center text-truncated h5 letra">Susana Alegria</h5>
+                    <h6 id="tipo-usuario" class="text-center letra">Estudiante</h6>
                 </div>
             </div>
             <div class="components my-4">
                 <div class="row justify-content-center">
 
                     <div class="col-5">
-                        <a type="button" class="btn btn-lg btn-dark text-white" {{--href="{{route('cursos.inicio')}}"--}}>
+                        <a type="button" class="btn btn-lg letra fondo-boton" {{--href="{{route('cursos.inicio')}}"--}} title="Ir a mis cursos">
                             <i class="fa-solid fa-chalkboard-user"></i> Cursos
                         </a>
                     </div>
 
                     <div class="col-5">
-                        <a type="button" class="btn btn-lg btn-dark text-white" {{--href="{{route('grupos.inicio')}}"--}}>
+                        <a type="button" class="btn btn-lg letra fondo-boton" {{--href="{{route('grupos.inicio')}}"--}} title="Ir a mis grupos">
                             <i class="fa-solid fa-users-rectangle"></i> Grupos
                         </a>
                     </div>
@@ -74,13 +74,13 @@
                 <div class="row justify-content-center">
 
                     <div class="col-5">
-                        <a type="button" class="btn btn-lg btn-dark text-white" {{--href="{{route('tareas.inicio')}}"--}}>
+                        <a type="button" class="btn btn-lg letra fondo-boton" {{--href="{{route('tareas.inicio')}}"--}} title="Ir a mis tareas">
                             <i class="fa-solid fa-house-laptop"></i> Tareas
                         </a>
                     </div>
 
                     <div class="col-5">
-                        <a type="button" class="btn btn-lg btn-dark text-white" {{--href="{{route('chats.inicio')}}"--}}>
+                        <a type="button" class="btn btn-lg letra fondo-boton" {{--href="{{route('chats.inicio')}}"--}} title="Ir a mis chats">
                             <i class="fa-solid fa-comments"></i> Chats
                         </a>
                     </div>
@@ -90,13 +90,13 @@
                 <div class="row justify-content-center">
 
                     <div class="col-5">
-                        <a type="button" class="btn btn-lg btn-dark text-white" {{--href="{{route('preguntas.inicio')}}"--}}>
+                        <a type="button" class="btn btn-lg letra fondo-boton" {{--href="{{route('preguntas.inicio')}}"--}} title="Buscar/realizar preguntas">
                             <i class="fa-solid fa-person-circle-question"></i> Q&A
                         </a>
                     </div>
 
                     <div class="col-5">
-                        <a type="button" class="btn btn-lg btn-dark text-white" {{--href="{{route('inicio.acerca')}}"--}}>
+                        <a type="button" class="btn btn-lg letra fondo-boton" {{--href="{{route('inicio.acerca')}}"--}} title="Acerca de CourseRoom">
                             <i class="fa-solid fa-circle-info"></i> Acerca
                         </a>
                     </div>
@@ -105,7 +105,7 @@
             </div>
             <div class="row mt-4">
                 <div class="col-12 text-center d-flex align-items-center justify-content-center">
-                    <span class="lead text-white">
+                    <span class="lead letra">
                         CourseRoom &copy; {{$year}}.
                     </span>
                 </div>
@@ -141,6 +141,7 @@
      </div>
 
     @stack('scripts')
-    <script type="module" src="{{ asset ('assets/js/core.js')}}"></script>
+    <script type="text/javascript" src="{{ asset ('assets/js/layout/color-thief.min.js')}}"></script>
+    <script type="module" src="{{ asset ('assets/js/layout/home.js')}}"></script>
 </body>
 </html>

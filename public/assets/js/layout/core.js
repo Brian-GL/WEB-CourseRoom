@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
 
+    document.getElementById("preloader").hidden = true;
+
     $('.alphabetic').on("keyup blur keypress", function(e){
 
         let value = $(this).val();

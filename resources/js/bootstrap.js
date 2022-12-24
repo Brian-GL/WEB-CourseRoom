@@ -4,6 +4,9 @@ window.SweetAlert = Swal;
 import $ from 'jquery'
 window.$ = $;
 
+import * as Memes from 'random-memes'
+window.Memes = Memes;
+
 import _ from 'lodash';
 window._ = _;
 
