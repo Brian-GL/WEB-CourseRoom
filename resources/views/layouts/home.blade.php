@@ -37,34 +37,34 @@
 
         <div class="offcanvas-header">
             <img id="offcanvas-logo" class="img-fluid" src="https://raw.githubusercontent.com/Brian-GL/CourseRoom/main/src/recursos/imagenes/Course_Room_Brand_Readme.png" />
-            <span class="offcanvas-title letra">CourseRoom</span>
-            <button type="button" class="btn letra fondo-boton" data-bs-dismiss="offcanvas" aria-label="Close" id="cerrar-offcanvas">
+            <span class="offcanvas-title primer-color-letra">CourseRoom</span>
+            <button type="button" class="btn primer-color-letra primer-color-fondo" data-bs-dismiss="offcanvas" aria-label="Close" id="cerrar-offcanvas">
                 <i class="fa fa-bars"></i>
             </button>
         </div>
 
         <div class="offcanvas-body">
 
-            <div class="row mb-4">
+            <div class="row mb-3">
                 <div class="col-10 m-auto" align="center">
                     <!--Imagen del usuario-->
                     <img id="imagen-usuario" class="img-fluid rounded-circle mb-4" alt="Imagen del usuario" crossorigin="anonymous"/>
                     <!--Nombre del usuario-->
-                    <h5 id="nombre-usuario" class="text-center text-truncated h5 letra">Susana Alegria</h5>
-                    <h6 id="tipo-usuario" class="text-center letra">Estudiante</h6>
+                    <h5 id="nombre-usuario" class="text-center text-truncated h5 segundo-color-letra">Susana Alegria</h5>
+                    <h6 id="tipo-usuario" class="text-center segundo-color-letra">Estudiante</h6>
                 </div>
             </div>
-            <div class="components my-4">
+            <div class="components my-2">
                 <div class="row justify-content-center">
 
                     <div class="col-5">
-                        <a type="button" class="btn btn-lg letra fondo-boton" {{--href="{{route('cursos.inicio')}}"--}} title="Ir a mis cursos">
+                        <a type="button" class="btn btn-lg tercer-color-letra" {{--href="{{route('cursos.inicio')}}"--}} title="Ir a mis cursos">
                             <i class="fa-solid fa-chalkboard-user"></i> Cursos
                         </a>
                     </div>
 
                     <div class="col-5">
-                        <a type="button" class="btn btn-lg letra fondo-boton" {{--href="{{route('grupos.inicio')}}"--}} title="Ir a mis grupos">
+                        <a type="button" class="btn btn-lg tercer-color-letra" {{--href="{{route('grupos.inicio')}}"--}} title="Ir a mis grupos">
                             <i class="fa-solid fa-users-rectangle"></i> Grupos
                         </a>
                     </div>
@@ -74,13 +74,13 @@
                 <div class="row justify-content-center">
 
                     <div class="col-5">
-                        <a type="button" class="btn btn-lg letra fondo-boton" {{--href="{{route('tareas.inicio')}}"--}} title="Ir a mis tareas">
+                        <a type="button" class="btn btn-lg tercer-color-letra" {{--href="{{route('tareas.inicio')}}"--}} title="Ir a mis tareas">
                             <i class="fa-solid fa-house-laptop"></i> Tareas
                         </a>
                     </div>
 
                     <div class="col-5">
-                        <a type="button" class="btn btn-lg letra fondo-boton" {{--href="{{route('chats.inicio')}}"--}} title="Ir a mis chats">
+                        <a type="button" class="btn btn-lg tercer-color-letra" {{--href="{{route('chats.inicio')}}"--}} title="Ir a mis chats">
                             <i class="fa-solid fa-comments"></i> Chats
                         </a>
                     </div>
@@ -90,22 +90,38 @@
                 <div class="row justify-content-center">
 
                     <div class="col-5">
-                        <a type="button" class="btn btn-lg letra fondo-boton" {{--href="{{route('preguntas.inicio')}}"--}} title="Buscar/realizar preguntas">
+                        <a type="button" class="btn btn-lg tercer-color-letra" href="{{route('herramientas.musica')}}" title="Ir a mi reproductor de música">
+                            <i class="fa-solid fa-compact-disc"></i> Música
+                        </a>
+                    </div>
+
+                    <div class="col-5">
+                        <a type="button" class="btn btn-lg tercer-color-letra" href="{{route('herramientas.matematicas')}}" title="Ir al resolvedor matemático">
+                            <i class="fa-solid fa-square-root-variable"></i> Maths
+                        </a>
+                    </div>
+
+                </div>
+
+                <div class="row justify-content-center">
+
+                    <div class="col-5">
+                        <a type="button" class="btn btn-lg tercer-color-letra" {{--href="{{route('preguntas.inicio')}}"--}} title="Buscar/realizar preguntas">
                             <i class="fa-solid fa-person-circle-question"></i> Q&A
                         </a>
                     </div>
 
                     <div class="col-5">
-                        <a type="button" class="btn btn-lg letra fondo-boton" {{--href="{{route('inicio.acerca')}}"--}} title="Acerca de CourseRoom">
+                        <a type="button" class="btn btn-lg tercer-color-letra" {{--href="{{route('inicio.acerca')}}"--}} title="Acerca de CourseRoom">
                             <i class="fa-solid fa-circle-info"></i> Acerca
                         </a>
                     </div>
 
                 </div>
             </div>
-            <div class="row mt-4">
+            <div class="row mt-2">
                 <div class="col-12 text-center d-flex align-items-center justify-content-center">
-                    <span class="lead letra">
+                    <span class="lead tercer-color-letra">
                         CourseRoom &copy; {{$year}}.
                     </span>
                 </div>
@@ -113,16 +129,16 @@
         </div>
     </div>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light" id="barra-navegacion">
+    <nav class="navbar navbar-expand-lg shadow" id="barra-navegacion">
         <div class="container-fluid">
-            <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#inicio-offcanvas" aria-controls="inicio-offcanvas-label">
+            <button class="btn primer-color-letra primer-color-fondo" type="button" data-bs-toggle="offcanvas" data-bs-target="#inicio-offcanvas" aria-controls="inicio-offcanvas-label">
                 <i class="fa fa-bars"></i>
             </button>
-            <a type="button" id="boton-notificaciones" class="btn btn-success" type="button" title="Notificaciones" {{--href="{{route('avisos.inicio')}}"--}}>
+            <a type="button" id="boton-notificaciones" class="btn tercer-color-letra tercer-color-fondo" type="button" title="Notificaciones" {{--href="{{route('avisos.inicio')}}"--}}>
                 <i class="fa-solid fa-bell"></i>
             </a>
             <div class="dropdown dropstart">
-                <button class="btn btn-info dropdown-toggle" type="button" id="boton-perfil" data-bs-toggle="dropdown" aria-expanded="false">
+                <button class="btn btn-dark dropdown-toggle text-white" type="button" id="boton-perfil" data-bs-toggle="dropdown" aria-expanded="false">
                     <!-- Nombre usuario -->
                     Susana Alegria
                 </button>

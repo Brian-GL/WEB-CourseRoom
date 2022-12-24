@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.home')
 
 @section('title', 'Reproductor de música')
 
@@ -24,8 +24,6 @@
     <input type="file" id="fileUpload" name="fileUpload" accept="audio/mp3, audio/flac" multiple hidden />
 
     <div class="container h-100">
-
-
         <div class="row h-100">
 
             <div class="m-auto col-6 col-md-4 bg-dark bg-opacity-25" id="caja-cancion">

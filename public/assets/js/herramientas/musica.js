@@ -8,6 +8,9 @@ var music_list;
 document.addEventListener('DOMContentLoaded', async function() {
     document.getElementById('preloader').hidden = true;
 
+    let fondo = "linear-gradient(to top, rgba(".concat(sessionStorage.getItem("PrimerColor"), ",1), rgba(",sessionStorage.getItem("TercerColor"),",1))");
+    document.getElementById("reproductor-musica").style.background = fondo;
+
     document.getElementById('slider').disabled =  true;
     document.getElementById('anterior').disabled =  true;
     document.getElementById('play-pause').disabled =  true;
@@ -19,7 +22,6 @@ document.addEventListener('DOMContentLoaded', async function() {
     music_list = [];
 
 }, false);
-
 
 async function ObtenerMetadatos(nombreArchivo) {
 
@@ -120,7 +122,10 @@ async function ObtenerVideo(titulo, artista){
         switch(result.code){
             case 200:
                 {
-                    document.getElementById("video-frame").src = "https://www.youtube.com/embed/".concat(result.data.Id,"?controls=0&rel=0&autoplay=1&mute=1&disablekb=1&loop=1&modestbranding=1&showinfo=0");
+                    console.log(result.data.Body);
+                    let embedURL = "https://www.youtube.com/embed/".concat(result.data.Id,"?controls=0&rel=0&autoplay=1&mute=1&disablekb=1&modestbranding=1&showinfo=0");
+                    console.log(embedURL);
+                    document.getElementById("video-frame").src = embedURL;
                 }
                 break;
             case 500:

@@ -9,9 +9,8 @@
 
 @section('content')
 
-
-<div id="content" class="p-4">
-    <h2 class="mb-2 display-5 text-center">¡Bienvenido! </h2>
+<div class="p-4" id="fondo-inicio">
+    <h2 class="mb-2 display-5 text-center text-white">¡Bienvenido! </h2>
     <div class="text-center">
         <img id="imagen-meme" class="img-fluid" alt="Meme image">
     </div>

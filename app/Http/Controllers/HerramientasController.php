@@ -188,7 +188,8 @@ class HerramientasController extends Controller
                                 || str_contains($video_title, $busqueda))
                                 {
                                     return response()->json(['code' => 200,  'data' => [
-                                        'Id' => $record->id->videoId
+                                        'Id' => $record->id->videoId,
+                                        'Body' => $result
                                     ]], 200);
                                 }
                             }
@@ -196,7 +197,8 @@ class HerramientasController extends Controller
 
                         if(count($result->items) > 0){
                             return response()->json(['code' => 200,  'data' => [
-                                'Id' => $result->items[0]->id->videoId
+                                'Id' => $result->items[0]->id->videoId,
+                                'Body' => $result
                             ]], 200);
                         }
 
