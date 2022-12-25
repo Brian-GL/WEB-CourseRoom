@@ -129,7 +129,7 @@
         </div>
     </div>
 
-    <nav class="navbar navbar-expand-lg shadow" id="barra-navegacion">
+    <nav class="navbar fixed-top navbar-expand-lg shadow" id="barra-navegacion">
         <div class="container-fluid">
             <button class="btn primer-color-letra primer-color-fondo" type="button" data-bs-toggle="offcanvas" data-bs-target="#inicio-offcanvas" aria-controls="inicio-offcanvas-label">
                 <i class="fa fa-bars"></i>

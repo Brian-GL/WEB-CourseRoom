@@ -205,6 +205,6 @@
 @stop
 
 @push('scripts')
-<script type="text/javascript" src="{{ asset ('assets/js/color-thief.min.js')}}"></script>
+<script type="text/javascript" src="{{ asset ('assets/js/layout/color-thief.min.js')}}"></script>
 <script type="module" src="{{ asset ('assets/js/inicio/registro.js')}}"></script>
 @endpush
