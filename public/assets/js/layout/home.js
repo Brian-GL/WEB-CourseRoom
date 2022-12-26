@@ -5,7 +5,37 @@ document.addEventListener('DOMContentLoaded', function() {
     let elemento_imagen = document.getElementById("imagen-usuario");
     elemento_imagen.src = "https://colorlib.com/etc/bootstrap-sidebar/sidebar-01/images/logo.jpg";
 
+    $('.alphabetic').on("keyup blur keypress", function(e){
+
+        let value = $(this).val();
+
+        $(this).val(value.replace(/^\s+/, ''));
+
+        if((e.which < 65 && e.which != 32) && (e.which < 65 && e.which != 16) ||
+        (e.which > 90 && e.which < 97) || (e.which > 122 && !Acentuacion(e.which))){
+            e.preventDefault();
+        }
+
+    });
+
+    $('.numeric').on("keyup blur keypress", function(e){
+
+        let value = $(this).val();
+
+        $(this).val(value.replace(/^\s+/, ''));
+
+        if(e.which < 48 && e.which > 57){
+            e.preventDefault();
+        }
+
+    });
+
 }, false);
+
+function Acentuacion(value){
+    return [241, 209, 192, 239, 180, 186, 211, 201, 193, 205, 218, 225, 233, 237, 243, 250].includes(value);
+}
+
 
 document.getElementById("imagen-usuario").addEventListener("load", function(){
 
@@ -60,12 +90,18 @@ document.getElementById("imagen-usuario").addEventListener("load", function(){
 
         document.getElementById("barra-navegacion").style.background = "rgba(".concat(segundoColor, ",1)");
 
+        //Inicio:
+        fondo = "linear-gradient(to top, rgba(".concat(primerColor, ",1), rgba(",sessionStorage.getItem("TercerColor"),",1))");
+        document.getElementById("contenido").style.background = fondo;
+
+        //Primer color
+        colorLetra = primerColor[0] >= 127 ? "#000000" : "#FFFFFF";
+        $("#titulo").css("color", colorLetra);
+
     } catch (e) {
-        document.getElementById("inicio-offcanvas").style.background = "linear-gradient (to right, rgb(0,0,0),rgb(0,0,0))";
         console.error(e);
     }
 });
-
 
 function getRandomInt(min, max) {
     min = Math.ceil(min);

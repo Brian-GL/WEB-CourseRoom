@@ -24,6 +24,7 @@ class InicioController extends Controller
     }
 
     public function inicio(){ return view('inicio.inicio'); }
+    public function acerca(){ return view('inicio.acerca'); }
 
     #endregion
 

@@ -129,7 +129,6 @@
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label for="contrasena" class="form-label">Contraseña*</label>
-                                                            <i class="fa-solid fa-eye"></i>
                                                             <input type="password" class="form-control" id="contrasena" minlength="8" maxlength="30" required>
                                                         </div>
                                                     </div>
@@ -137,7 +136,6 @@
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label for="repetir-contrasena" class="form-label">Repetir Contraseña*</label>
-                                                            <i class="fa-regular fa-eye-slash"></i>
                                                             <input type="password" class="form-control" id="repetir-contrasena" minlength="8" maxlength="30" required>
                                                         </div>
                                                     </div>

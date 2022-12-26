@@ -1,0 +1,24 @@
+.fuente {
+    font-family: 'Albert Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  .fuenteNormal {
+    font-family: 'Albert Sans', sans-serif;
+  }
+
+  #imagen-seleccionada{
+    max-width: 300px;
+    max-height: 300px;
+  }
+
+input{
+    background-color:transparent !important;
+    border:none !important;
+    text-align: center !important;
+}
+
+.form-group{
+    text-align: center;
+}

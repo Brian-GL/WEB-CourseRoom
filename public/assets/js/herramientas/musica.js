@@ -9,12 +9,26 @@ document.addEventListener('DOMContentLoaded', async function() {
     document.getElementById('preloader').hidden = true;
 
     let fondo = "linear-gradient(to top, rgba(".concat(sessionStorage.getItem("PrimerColor"), ",1), rgba(",sessionStorage.getItem("TercerColor"),",1))");
-    document.getElementById("reproductor-musica").style.background = fondo;
+    document.getElementById("contenido").style.background = fondo;
 
     document.getElementById('slider').disabled =  true;
     document.getElementById('anterior').disabled =  true;
     document.getElementById('play-pause').disabled =  true;
     document.getElementById('siguiente').disabled =  true;
+
+    let colorLetra = sessionStorage.getItem("SegundoColor")[0] >= 127 ? "#000000" : "#FFFFFF";
+
+    document.getElementById("informacion-cancion").style.color = colorLetra;
+
+    let elementos = document.getElementsByClassName("icono-reproductor");
+    for(var elemento of elementos){
+        elemento.style.color = colorLetra;
+    }
+
+    elementos = document.getElementsByClassName("tiempo");
+    for(var elemento of elementos){
+        elemento.style.color = colorLetra;
+    }
 
     curr_track = document.createElement('audio');
     track_index = 0;
@@ -22,41 +36,6 @@ document.addEventListener('DOMContentLoaded', async function() {
     music_list = [];
 
 }, false);
-
-document.getElementById("caratula").addEventListener('load', function() {
-    try {
-        const colorThief = new ColorThief();
-        let palette = colorThief.getPalette(this, 3,400);
-
-        let primerColor = palette[0];
-        let segundoColor = palette[1];
-        let tercerColor = palette[2];
-
-        let fondo = "linear-gradient(to bottom, rgba(".concat(primerColor, ",1), rgba(",segundoColor,",1), rgba(",tercerColor,",1))");
-
-        document.getElementById("caja-cancion").style.background = fondo;
-
-        let colorLetra = segundoColor[0] >= 127 ? "#000000" : "#FFFFFF";
-
-        document.getElementById("informacion-cancion").style.color = colorLetra;
-
-        for(var elemento of document.getElementsByClassName("icono-reproductor")){
-            elemento.style.color = colorLetra;
-        }
-
-        for(var elemento of document.getElementsByClassName("tiempo")){
-            elemento.style.color = colorLetra;
-        }
-
-        colorLetra = palette[2][0] >= 127 ? "#000000" : "#FFFFFF";
-
-        document.getElementById("nombre-artista").style.color = colorLetra;
-
-
-    } catch (e) {
-        document.getElementById("caja-cancion").style.background = "linear-gradient (to right, rgb(0,0,0),rgb(0,0,0))";
-    }
-});
 
 async function ObtenerMetadatos(nombreArchivo) {
 

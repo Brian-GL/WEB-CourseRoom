@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('preloader').hidden = true;
+    let fondo = "linear-gradient(to top, rgba(".concat(sessionStorage.getItem("PrimerColor"), ",1), rgba(",sessionStorage.getItem("TercerColor"),",1))");
+    document.getElementById("contenido").style.background = fondo;
 });
 
 document.getElementById("solucionar").addEventListener('click', function () {

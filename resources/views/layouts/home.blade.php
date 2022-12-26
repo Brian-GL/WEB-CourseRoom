@@ -29,9 +29,32 @@
     @vite(['resources/js/app.js'])
 
 </head>
-<body>
+<body id="contenido">
 
     <div id="preloader"></div>
+
+    <nav class="navbar shadow mt-2 mx-3 rounded navbar-expand-md" id="barra-navegacion">
+        <div class="container-fluid">
+            <button class="btn primer-color-letra primer-color-fondo" type="button" data-bs-toggle="offcanvas" data-bs-target="#inicio-offcanvas" aria-controls="inicio-offcanvas-label">
+                <i class="fa fa-bars"></i>
+            </button>
+            <a type="button" id="boton-notificaciones" class="btn tercer-color-letra tercer-color-fondo" type="button" title="Notificaciones" {{--href="{{route('avisos.inicio')}}"--}}>
+                <i class="fa-solid fa-bell"></i>
+            </a>
+            <div class="dropdown dropstart">
+                <button class="btn btn-dark dropdown-toggle text-white" type="button" id="boton-perfil" data-bs-toggle="dropdown" aria-expanded="false">
+                    <!-- Nombre usuario -->
+                    Susana Alegria
+                </button>
+                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="boton-perfil">
+                    <li><a class="dropdown-item" href="{{route('usuarios.perfil')}}"><i class="fa-solid fa-user"></i> Perfil</a></li>
+                    <li><a class="dropdown-item" {{--href="{{route('usuarios.sesiones')}}"--}}><i class="fa-solid fa-desktop"></i> Sesiones</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" {{--href="{{route('inicio.cerrar')}}"--}}><i class="fa-solid fa-person-walking-arrow-right"></i> Cerrar sesión</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
     <div id="inicio-offcanvas" class="offcanvas offcanvas-start shadow-lg rounded-end" data-bs-scroll="true" tabindex="-1" aria-labelledby="inicio-offcanvas-label">
 
@@ -112,7 +135,7 @@
                     </div>
 
                     <div class="col-5">
-                        <a type="button" class="btn btn-lg tercer-color-letra" {{--href="{{route('inicio.acerca')}}"--}} title="Acerca de CourseRoom">
+                        <a type="button" class="btn btn-lg tercer-color-letra" href="{{route('inicio.acerca')}}" title="Acerca de CourseRoom">
                             <i class="fa-solid fa-circle-info"></i> Acerca
                         </a>
                     </div>
@@ -129,35 +152,11 @@
         </div>
     </div>
 
-    <nav class="navbar fixed-top navbar-expand-lg shadow" id="barra-navegacion">
-        <div class="container-fluid">
-            <button class="btn primer-color-letra primer-color-fondo" type="button" data-bs-toggle="offcanvas" data-bs-target="#inicio-offcanvas" aria-controls="inicio-offcanvas-label">
-                <i class="fa fa-bars"></i>
-            </button>
-            <a type="button" id="boton-notificaciones" class="btn tercer-color-letra tercer-color-fondo" type="button" title="Notificaciones" {{--href="{{route('avisos.inicio')}}"--}}>
-                <i class="fa-solid fa-bell"></i>
-            </a>
-            <div class="dropdown dropstart">
-                <button class="btn btn-dark dropdown-toggle text-white" type="button" id="boton-perfil" data-bs-toggle="dropdown" aria-expanded="false">
-                    <!-- Nombre usuario -->
-                    Susana Alegria
-                </button>
-                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="boton-perfil">
-                    <li><a class="dropdown-item" {{--href="{{route(usuarios.perfil)}}"--}}><i class="fa-solid fa-user"></i> Perfil</a></li>
-                    <li><a class="dropdown-item" {{--href="{{route('usuarios.sesiones')}}"--}}><i class="fa-solid fa-desktop"></i> Sesiones</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" {{--href="{{route('inicio.cerrar')}}"--}}><i class="fa-solid fa-person-walking-arrow-right"></i> Cerrar sesión</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    @yield('content')
 
-    <div id="contenido">
-        @yield('content')
-     </div>
-
-    @stack('scripts')
     <script type="text/javascript" src="{{ asset ('assets/js/layout/color-thief.min.js')}}"></script>
     <script type="module" src="{{ asset ('assets/js/layout/home.js')}}"></script>
+    @stack('scripts')
+
 </body>
 </html>

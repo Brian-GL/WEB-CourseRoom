@@ -24,7 +24,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/',  [InicioController::class, 'acceso'])->name('inicio.acceso');
 Route::get('/recuperacion',  [InicioController::class, 'recuperacion'])->name('inicio.recuperacion');
 Route::get('/registro',  [InicioController::class, 'registro'])->name('inicio.registro');
-Route::get('/inicio',  [InicioController::class, 'inicio'])->name('inicio.inicio');
+Route::get('/inicio',  [InicioController::class, 'inicio'])->name('inicio.inicio')->middleware('session.token');
+Route::get('/acerca',  [InicioController::class, 'acerca'])->name('inicio.acerca')->middleware('session.token');
 
 Route::post('/login',  [InicioController::class, 'login']);
 Route::post('/recuperacion',  [InicioController::class, 'recuperacion_credenciales']);
@@ -63,6 +64,7 @@ Route::post('/herramientas/multimedia',  [HerramientasController::class, 'multim
 
 
 #region Usuarios
+Route::get('/perfil',  [UsuariosController::class, 'perfil'])->name('usuarios.perfil')->middleware('session.token');
 
 Route::put('/usuarios/actualizar',  [UsuariosController::class, 'usuario_actualizar'])->middleware('session.token');
 

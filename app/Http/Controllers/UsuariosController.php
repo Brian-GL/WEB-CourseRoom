@@ -8,6 +8,13 @@ class UsuariosController extends Controller
 {
     #region View
 
+    public function perfil(){
+
+        $localidades = array();
+        $tipos_usuario = array();
+        return view('usuarios.perfil', compact('localidades','tipos_usuario'));
+    }
+
     #endregion
 
 
