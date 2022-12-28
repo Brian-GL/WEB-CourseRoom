@@ -7,6 +7,9 @@ window.$ = $;
 import * as Memes from 'random-memes'
 window.Memes = Memes;
 
+import * as DataTables from 'datatables.net-bs5'
+window.dt = DataTables;
+
 import _ from 'lodash';
 window._ = _;
 

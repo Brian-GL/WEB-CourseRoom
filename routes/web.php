@@ -5,6 +5,7 @@ use App\Http\Controllers\ChatsController;
 use App\Http\Controllers\AvisosController;
 use App\Http\Controllers\GruposController;
 use App\Http\Controllers\HerramientasController;
+use App\Http\Controllers\PreguntasRespuestasController;
 use App\Http\Controllers\UsuariosController;
 use Illuminate\Support\Facades\Route;
 
@@ -62,6 +63,11 @@ Route::post('/herramientas/multimedia',  [HerramientasController::class, 'multim
 
 #endregion
 
+#region PreguntasRespuestas
+
+Route::get('/preguntasrespuestas/inicio',  [PreguntasRespuestasController::class, 'inicio'])->name('preguntasrespuestas.inicio')->middleware('session.token');
+
+#endregion
 
 #region Usuarios
 Route::get('/perfil',  [UsuariosController::class, 'perfil'])->name('usuarios.perfil')->middleware('session.token');

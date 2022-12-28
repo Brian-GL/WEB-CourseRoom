@@ -129,7 +129,7 @@
                 <div class="row justify-content-center">
 
                     <div class="col-5">
-                        <a type="button" class="btn btn-lg tercer-color-letra" {{--href="{{route('preguntas.inicio')}}"--}} title="Buscar/realizar preguntas">
+                        <a type="button" class="btn btn-lg tercer-color-letra" href="{{route('preguntasrespuestas.inicio')}}" title="Buscar/realizar preguntas">
                             <i class="fa-solid fa-person-circle-question"></i> Q&A
                         </a>
                     </div>

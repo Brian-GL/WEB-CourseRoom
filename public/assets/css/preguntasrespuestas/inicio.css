@@ -1,0 +1,26 @@
+.fuente {
+    font-family: 'Albert Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.fuenteNormal {
+    font-family: 'Albert Sans', sans-serif;
+}
+
+#contenedor{
+    --padding: 1.25rem;
+    padding-left: var(--padding);
+    padding-right: var(--padding);
+}
+
+.dataTables_filter {
+    display: grid !important;
+    place-content: end !important;
+}
+
+#table-mis-preguntas_paginate{
+    display: grid !important;
+    place-content: center !important;
+}
+
