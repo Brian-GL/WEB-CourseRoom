@@ -29,20 +29,22 @@
                                             </div>
                                             <h3 class="mb-1 text-center heading display-6">Bienvenido A CourseRoom</h3>
 
+                                            <form id="form-acceso" method="HEAD">
+                                                @csrf
+                                                <div class="form-group py-1">
+                                                    <label class="form-control-label text-black fuenteNormal" for="correo-electronico">Correo Electrónico</label>
+                                                    <input class="form-control email fuenteNormal" type="email" id="correo-electronico" name="correo-electronico" placeholder="Correo electrónico" maxlength="150" required>
+                                                </div>
 
-                                            <div class="form-group py-1">
-                                                <label class="form-control-label text-black fuenteNormal">Correo Electrónico</label>
-                                                <input class="form-control email fuenteNormal" type="email" id="CorreoElectronico" name="CorreoElectronico" placeholder="Correo electrónico" maxlength="150" required>
-                                            </div>
+                                                <div class="form-group py-1">
+                                                    <label class="form-control-label text-black fuenteNormal" for="contrasena">Contraseña</label>
+                                                    <input type="password" id="contrasena" name="contrasena" placeholder="Contraseña" class="form-control fuenteNormal" required maxlength="30">
+                                                </div>
 
-                                            <div class="form-group py-1">
-                                                <label class="form-control-label text-black fuenteNormal">Contraseña</label>
-                                                <input type="password" id="Password" name="Password" placeholder="Contraseña" class="form-control fuenteNormal" required>
-                                            </div>
-
-                                            <div class="row justify-content-center py-2 px-2">
-                                                <button class="btn-block btn-color fuente my-2" type="submit" id="iniciarSesion">Iniciar Sesión</button>
-                                            </div>
+                                                <div class="row justify-content-center py-2 px-2">
+                                                    <button class="btn-block btn-color fuente my-2" type="submit" id="iniciar-sesion">Iniciar Sesión</button>
+                                                </div>
+                                            </form>
 
                                             <div class="row justify-content-center py-2 text-center">
                                                 <span class="text-muted fuenteNormal">

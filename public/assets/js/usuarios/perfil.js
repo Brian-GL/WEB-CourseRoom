@@ -17,7 +17,7 @@ function Colorear(){
         elemento.style.color = colorLetra;
     }
 
-    colorLetra = tercerColor[0] >= 127 ? "#000000" : "#FFFFFF";
+    colorLetra = tercerColor[0] >= 127 ? "0,0,0" : "255,255,255";
     elementos = document.getElementsByClassName("tercer-color-letra");
 
     for(let elemento of elementos){

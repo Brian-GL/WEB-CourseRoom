@@ -27,23 +27,19 @@
   -moz-box-shadow: 0px 0px 20px 0px rgba(0,0,0,1);
 }
 
-.card {
+#card1 {
+  padding: 2rem 1.6rem 0.75rem 1.6rem;
+  background: radial-gradient(ellipse at right, rgba(104,194,232,1), rgba(14,30,64,0.1));
   border-radius: 0;
   border: none;
 }
 
-#card1 {
-  width: 100%;
-  padding: 2rem 1.6rem 0.75rem 1.6rem;
-  background: radial-gradient(ellipse at right, rgba(104,194,232,1), rgba(14,30,64,0.1));
-}
-
 #card2 {
-  width: 50%;
   background-image: url('https://source.unsplash.com/random/?sunset,night');
   background-size: cover;
+  border-radius: 0;
+  border: none;
 }
-
 
 #imagen-seleccionada{
   max-width: 300px;

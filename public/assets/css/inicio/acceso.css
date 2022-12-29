@@ -122,3 +122,12 @@ a {
 .fuenteNormal {
     font-family: 'Albert Sans', sans-serif;
 }
+
+#recaptcha > div {
+    margin: 0 auto .5em;
+}
+
+body.swal2-shown > [aria-hidden="true"] {
+    transition: 0.1s filter;
+    filter: blur(10px);
+  }

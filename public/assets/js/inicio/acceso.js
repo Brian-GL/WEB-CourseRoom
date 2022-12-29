@@ -1,13 +1,14 @@
 document.addEventListener('DOMContentLoaded', function() {document.getElementById("preloader").hidden = true; }, false);
 
-document.getElementById("iniciarSesion").addEventListener('click', function () {
+document.getElementById("form-acceso").addEventListener("submit", (e) => {
+
+    e.preventDefault();
 
     let preloader = document.getElementById("preloader");
-
     preloader.hidden = false;
 
-    let correoElectronico = document.getElementById("CorreoElectronico").value;
-    let contrasena = document.getElementById("Password").value;
+    let correoElectronico = document.getElementById("correo-electronico").value;
+    let contrasena = document.getElementById("contrasena").value;
 
     const csrfToken = document.head.querySelector("[name~=csrf-token][content]").content;
     let baseURL = window.location.origin;
@@ -27,7 +28,7 @@ document.getElementById("iniciarSesion").addEventListener('click', function () {
 
         preloader.hidden = true;
 
-         if (result.code === 200) {
+        if (result.code === 200) {
             let data = result.data;
 
         } else {
