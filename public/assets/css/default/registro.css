@@ -1,0 +1,23 @@
+#register {
+  background: linear-gradient(45deg, rgba(14,30,64,1) 0%, rgba(104,194,232,1) 100%);
+}
+
+#logo {
+  width: 200px;
+  height: 175px;
+}
+
+.fuente {
+  font-family: 'Albert Sans', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.fuenteNormal {
+  font-family: 'Albert Sans', sans-serif;
+}
+
+#imagen-seleccionada{
+  max-width: 300px;
+  max-height: 300px;
+}

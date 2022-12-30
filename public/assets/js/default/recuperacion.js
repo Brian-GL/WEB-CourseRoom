@@ -1,20 +1,18 @@
-document.addEventListener('DOMContentLoaded', function() {document.getElementById("preloader").hidden = true; }, false);
+'use strict';
 
-document.getElementById("recuperarCredenciales").addEventListener('click', function () {
+document.getElementById("form-recuperacion").addEventListener('submit', function () {
 
-    let preloader = document.getElementById("preloader");
     preloader.hidden = false;
 
-    let correoElectronico = document.getElementById("CorreoElectronico").value;
+    let correoElectronico = AvailableStringValue(document.getElementById("correo-electronico").value);
 
-    const csrfToken = document.head.querySelector("[name~=csrf-token][content]").content;
     let baseURL = window.location.origin;
 
-    fetch(baseURL.concat('/recuperacion'), {
+    fetch(baseURL.concat('/default/recuperacion'), {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': csrfToken
+            'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
         },
         body: JSON.stringify({
             "CorreoElectronico": correoElectronico
@@ -44,7 +42,7 @@ document.getElementById("recuperarCredenciales").addEventListener('click', funct
 
         SweetAlert.fire({
             title: '¡Error!',
-            html: ex,
+            html: ex.data,
             imageUrl: baseURL.concat("/assets/templates/SadOwl.png"),
             imageWidth: 100,
             imageHeight: 123,
@@ -55,3 +53,5 @@ document.getElementById("recuperarCredenciales").addEventListener('click', funct
     });
 
 });
+
+function AvailableStringValue(value){return value === '' || value === null || value === undefined ? null : value.trim();}

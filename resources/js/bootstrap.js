@@ -10,6 +10,8 @@ window.Memes = Memes;
 import * as DataTables from 'datatables.net-bs5'
 window.dt = DataTables;
 
+import 'buffer';
+
 import _ from 'lodash';
 window._ = _;
 

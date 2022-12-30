@@ -1,7 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById("preloader").hidden = true;
-}, false);
-
+'use strict';
 
 document.getElementById("form-registro").addEventListener("submit", (e) => {
 
@@ -11,7 +8,6 @@ document.getElementById("form-registro").addEventListener("submit", (e) => {
 
     if(imagen_input.files.length > 0){
 
-        let preloader = document.getElementById("preloader");
         preloader.hidden = false;
 
         let files = imagen_input.files;
@@ -50,24 +46,19 @@ document.getElementById("form-registro").addEventListener("submit", (e) => {
 
 function Registrar(imagen){
 
-    let preloader = document.getElementById("preloader");
     preloader.hidden = false;
 
-    const csrfToken = document.head.querySelector("[name~=csrf-token][content]").content;
-    let baseURL = window.location.origin;
-
-    let nombre = document.getElementById("nombre").value;
-    let paterno = document.getElementById("paterno").value;
-    let materno = document.getElementById("materno").value;
-    let genero = document.getElementById("genero").value;
+    let nombre = AvailableStringValue(document.getElementById("nombre").value);
+    let paterno = AvailableStringValue(document.getElementById("paterno").value);
+    let materno = AvailableStringValue(document.getElementById("materno").value);
+    let genero = AvailableStringValue(document.getElementById("genero").value);
     let fecha_nacimiento = document.getElementById("fecha-nacimiento").value;
     let localidad = document.getElementById("localidad").text;
-    let correo_electronico = document.getElementById("correo-electronico").value;
+    let correo_electronico = AvailableStringValue(document.getElementById("correo-electronico").value);
     let tipo_usuario = document.getElementById("tipo-usuario").text;
     let contrasena = document.getElementById("contrasena").value;
     let repetir_contrasena = document.getElementById("repetir-contrasena").value;
-    let descripcion = document.getElementById("descripcion").value;
-
+    let descripcion = AvailableStringValue(document.getElementById("descripcion").value);
 
     if(contrasena !== repetir_contrasena){
         preloader.hidden = true;
@@ -83,23 +74,23 @@ function Registrar(imagen){
         return;
     }
 
-    fetch(baseURL.concat('/registrar'), {
+    fetch(baseURL.concat('/default/registrar'), {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': csrfToken
+            'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
         },
         body: JSON.stringify({
-            "Nombre": AvailableStringValue(nombre),
-            "Paterno": AvailableStringValue(paterno),
-            "Materno": AvailableStringValue(materno),
-            "Genero": AvailableStringValue(genero),
+            "Nombre": nombre,
+            "Paterno": paterno,
+            "Materno": materno,
+            "Genero": genero,
             "FechaNacimiento": fecha_nacimiento,
             "IdLocalidad": parseInt(localidad),
-            "CorreoElectronico": AvailableStringValue(correo_electronico),
+            "CorreoElectronico": correo_electronico,
             "IdTipoUsuario": parseInt(tipo_usuario),
-            "Contrasena": Buffer.from(contrasena).toString('base64'),
-            "descripcion": AvailableStringValue(descripcion),
+            "Contrasena": b64EncodeUnicode(contrasena),
+            "descripcion": descripcion,
             "Imagen": imagen
         })
     }).then((response) => response.json())
@@ -139,7 +130,6 @@ function Registrar(imagen){
 
 document.getElementById("imagen").addEventListener("change", (e) => {
 
-    let preloader = document.getElementById('preloader');
     preloader.hidden = false;
 
     try{
@@ -191,7 +181,7 @@ document.getElementById("imagen-seleccionada").addEventListener('load', function
 
             let fondo = "radial-gradient(ellipse at right, rgba(".concat(palette[0], ",1), rgba(", palette[1],",0.1)");
 
-            document.getElementById("card1").style.background = fondo;
+            document.getElementById("register").style.background = fondo;
 
             let colorLetra = palette[0][0] >= 127 ? "#000000" : "#FFFFFF";
 
@@ -208,7 +198,7 @@ document.getElementById("imagen-seleccionada").addEventListener('load', function
         else{
             let fondo = "radial-gradient(ellipse at right, rgba(104,194,232,1), rgba(14,30,64,0.1))";
 
-            document.getElementById("card1").style.background = fondo;
+            document.getElementById("register").style.background = fondo;
 
             let elementos = document.getElementsByTagName("label");
             for(let elemento of elementos){
@@ -225,7 +215,7 @@ document.getElementById("imagen-seleccionada").addEventListener('load', function
     } catch (e) {
         let fondo = "radial-gradient(ellipse at right, rgba(104,194,232,1), rgba(14,30,64,0.1))";
 
-        document.getElementById("card1").style.background = fondo;
+        document.getElementById("register").style.background = fondo;
 
         let elementos = document.getElementsByTagName("label");
         for(let elemento of elementos){
@@ -251,3 +241,9 @@ function getBuffer(fileData) {
       });
   }
 }
+
+function AvailableStringValue(value){return value === '' || value === null || value === undefined ? null : value.trim();}
+
+function b64EncodeUnicode(str) {return btoa(encodeURIComponent(str));}
+
+function UnicodeDecodeB64(str) {return decodeURIComponent(atob(str));}

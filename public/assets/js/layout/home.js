@@ -36,7 +36,6 @@ function Acentuacion(value){
     return [241, 209, 192, 239, 180, 186, 211, 201, 193, 205, 218, 225, 233, 237, 243, 250].includes(value);
 }
 
-
 document.getElementById("imagen-usuario").addEventListener("load", function(){
 
     try {

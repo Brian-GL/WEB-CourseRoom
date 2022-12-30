@@ -51,3 +51,23 @@ html, body {
     max-height: 250px;
 }
 
+.fuente {
+    font-family: 'Albert Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.fuenteNormal {
+    font-family: 'Albert Sans', sans-serif;
+}
+
+a {
+    text-decoration: none;
+}
+
+body.swal2-shown > [aria-hidden="true"] {
+    transition: 0.1s filter;
+    filter: blur(10px);
+}
+
+

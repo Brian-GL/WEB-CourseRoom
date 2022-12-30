@@ -1,31 +1,28 @@
-document.addEventListener('DOMContentLoaded', function() {document.getElementById("preloader").hidden = true; }, false);
+'use strict';
 
 document.getElementById("form-acceso").addEventListener("submit", (e) => {
 
     e.preventDefault();
 
-    let preloader = document.getElementById("preloader");
     preloader.hidden = false;
 
-    let correoElectronico = document.getElementById("correo-electronico").value;
+    let correoElectronico = AvailableStringValue(document.getElementById("correo-electronico").value);
     let contrasena = document.getElementById("contrasena").value;
 
-    const csrfToken = document.head.querySelector("[name~=csrf-token][content]").content;
     let baseURL = window.location.origin;
 
-    fetch(baseURL.concat('/login'), {
+    fetch(baseURL.concat('/default/login'), {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': csrfToken
+            'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
         },
         body: JSON.stringify({
             "CorreoElectronico": correoElectronico,
-            "Contrasena": contrasena
+            "Contrasena": b64EncodeUnicode(contrasena)
         })
     }).then((response) => response.json())
     .then((result) => {
-
         preloader.hidden = true;
 
         if (result.code === 200) {
@@ -44,10 +41,9 @@ document.getElementById("form-acceso").addEventListener("submit", (e) => {
     }).catch((ex) => {
 
         preloader.hidden = true;
-
         SweetAlert.fire({
             title: '¡Error!',
-            html: ex,
+            text: ex,
             imageUrl: baseURL.concat("/assets/templates/SadOwl.png"),
             imageWidth: 100,
             imageHeight: 123,
@@ -58,3 +54,9 @@ document.getElementById("form-acceso").addEventListener("submit", (e) => {
     });
 
 });
+
+function AvailableStringValue(value){return value === '' || value === null || value === undefined ? null : value.trim();}
+
+function b64EncodeUnicode(str) {return btoa(encodeURIComponent(str));}
+
+function UnicodeDecodeB64(str) {return decodeURIComponent(atob(str));}

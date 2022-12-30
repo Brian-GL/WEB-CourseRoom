@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DefaultController;
 use App\Http\Controllers\InicioController;
 use App\Http\Controllers\ChatsController;
 use App\Http\Controllers\AvisosController;
@@ -20,17 +21,25 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+#region Default
+
+Route::get('/',  [DefaultController::class, 'acceso'])->name('inicio.acceso');
+Route::get('/recuperacion',  [DefaultController::class, 'recuperacion'])->name('inicio.recuperacion');
+Route::get('/registro',  [DefaultController::class, 'registro'])->name('inicio.registro');
+
+Route::post('/default/login',  [DefaultController::class, 'login']);
+Route::post('/default/recuperacion',  [DefaultController::class, 'recuperacion_credenciales']);
+Route::post('/default/registrar',  [DefaultController::class, 'registrar_usuario']);
+
+
+#endregion
+
 #region Inicio
 
-Route::get('/',  [InicioController::class, 'acceso'])->name('inicio.acceso');
-Route::get('/recuperacion',  [InicioController::class, 'recuperacion'])->name('inicio.recuperacion');
-Route::get('/registro',  [InicioController::class, 'registro'])->name('inicio.registro');
 Route::get('/inicio',  [InicioController::class, 'inicio'])->name('inicio.inicio')->middleware('session.token');
 Route::get('/acerca',  [InicioController::class, 'acerca'])->name('inicio.acerca')->middleware('session.token');
 
-Route::post('/login',  [InicioController::class, 'login']);
-Route::post('/recuperacion',  [InicioController::class, 'recuperacion_credenciales']);
-Route::post('/registrar',  [InicioController::class, 'registrar_usuario']);
 
 #endregion
 
