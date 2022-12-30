@@ -16,9 +16,11 @@ class AvisosController extends Controller
     {
         try {
 
-            $validator = Validator::make($request->all(), [
+            $validator = Validator::make($request->all(), $rules = [
                 'IdAviso' => ['required'],
                 'IdUsuario' => ['required']
+            ], $messages = [
+                'required' => 'El campo :attribute es requerido'
             ]);
 
             if ($validator->fails()) {
@@ -64,11 +66,13 @@ class AvisosController extends Controller
     {
         try {
 
-            $validator = Validator::make($request->all(), [
+            $validator = Validator::make($request->all(), $rules = [
                 'IdUsuario' => ['required'],
                 'Aviso' => ['required'],
                 'Descripcion' => ['required'],
                 'IdTipoAviso' => ['required']
+            ], $messages = [
+                'required' => 'El campo :attribute es requerido'
             ]);
 
             if ($validator->fails()) {
@@ -117,9 +121,11 @@ class AvisosController extends Controller
     {
         try {
 
-            $validator = Validator::make($request->all(), [
+            $validator = Validator::make($request->all(),$rules = [
                 'IdUsuario' => ['required'],
                 'IdAviso' => ['required']
+            ], $messages = [
+                'required' => 'El campo :attribute es requerido'
             ]);
 
             if ($validator->fails()) {
@@ -165,8 +171,10 @@ class AvisosController extends Controller
     {
         try {
 
-            $validator = Validator::make($request->all(), [
+            $validator = Validator::make($request->all(), $rules = [
                 'IdAviso' => ['required']
+            ], $messages = [
+                'required' => 'El campo :attribute es requerido'
             ]);
 
             if ($validator->fails()) {
@@ -209,11 +217,13 @@ class AvisosController extends Controller
     {
         try {
 
-            $validator = Validator::make($request->all(), [
+            $validator = Validator::make($request->all(), $rules = [
                 'IdProfesor' => ['required'],
                 'IdUsuario' => ['required'],
                 'IdTarea' => ['required'],
                 'NombreArchivo' => ['required']
+            ], $messages = [
+                'required' => 'El campo :attribute es requerido'
             ]);
 
             if ($validator->fails()) {
@@ -262,8 +272,10 @@ class AvisosController extends Controller
     {
         try {
 
-            $validator = Validator::make($request->all(), [
+            $validator = Validator::make($request->all(), $rules = [
                 'IdUsuario' => ['required']
+            ], $messages = [
+                'required' => 'El campo :attribute es requerido'
             ]);
 
             if ($validator->fails()) {
@@ -308,8 +320,10 @@ class AvisosController extends Controller
     {
         try {
 
-            $validator = Validator::make($request->all(), [
+            $validator = Validator::make($request->all(), $rules = [
                 'IdUsuario' => ['required']
+            ], $messages = [
+                'required' => 'El campo :attribute es requerido'
             ]);
 
             if ($validator->fails()) {

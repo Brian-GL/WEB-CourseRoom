@@ -1,11 +1,10 @@
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
 }
 
-html, body {
-    min-height: 100vh !important;
+#fondo {
+    overflow-x: hidden;
 }
 
 .row{
@@ -43,14 +42,6 @@ html, body {
     }
 }
 
-#offcanvas-logo{
-    max-height: 30px;
-}
-
-#imagen-usuario{
-    max-height: 250px;
-}
-
 .fuente {
     font-family: 'Albert Sans', sans-serif;
     font-size: 1rem;
@@ -59,15 +50,35 @@ html, body {
 
 .fuenteNormal {
     font-family: 'Albert Sans', sans-serif;
+    font-weight: 300;
+    font-size: 1rem;
 }
 
 a {
-    text-decoration: none;
+    text-decoration: none !important;
 }
 
 body.swal2-shown > [aria-hidden="true"] {
     transition: 0.1s filter;
     filter: blur(10px);
+}
+
+.centrado{
+    display: grid;
+    place-content: center;
+}
+
+input{
+    letter-spacing: 0px !important;
+    text-align: start !important;
+}
+
+#offcanvas-logo{
+    max-height: 30px;
+}
+
+#imagen-usuario{
+    max-height: 250px;
 }
 
 

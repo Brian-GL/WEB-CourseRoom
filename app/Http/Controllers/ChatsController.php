@@ -11,14 +11,16 @@ class ChatsController extends Controller
     #endregion
 
     #region AJAX
-    
+
     public function chat_registrar(Request $request)
     {
         try {
 
-            $validator = Validator::make($request->all(), [
+            $validator = Validator::make($request->all(), $rules = [
                 'IdUsuarioEmisor' => ['required'],
                 'IdUsuarioReceptor' => ['required']
+            ], $messages = [
+                'required' => 'El campo :attribute es requerido'
             ]);
 
             if ($validator->fails()) {
@@ -64,9 +66,11 @@ class ChatsController extends Controller
     {
         try {
 
-            $validator = Validator::make($request->all(), [
+            $validator = Validator::make($request->all(), $rules = [
                 'IdChat' => ['required'],
                 'IdUsuario' => ['required']
+            ], $messages = [
+                'required' => 'El campo :attribute es requerido'
             ]);
 
             if ($validator->fails()) {
@@ -112,10 +116,12 @@ class ChatsController extends Controller
     {
         try {
 
-            $validator = Validator::make($request->all(), [
+            $validator = Validator::make($request->all(), $rules = [
                 'IdChat' => ['required'],
                 'IdUsuarioEmisor' => ['required'],
                 'Mensaje' => ['required']
+            ], $messages = [
+                'required' => 'El campo :attribute es requerido'
             ]);
 
             if ($validator->fails()) {
@@ -165,10 +171,12 @@ class ChatsController extends Controller
     {
         try {
 
-            $validator = Validator::make($request->all(), [
+            $validator = Validator::make($request->all(), $rules = [
                 'IdChat' => ['required'],
                 'IdUsuarioEmisor' => ['required'],
                 'IdMensaje' => ['required']
+            ], $messages = [
+                'required' => 'El campo :attribute es requerido'
             ]);
 
             if ($validator->fails()) {
@@ -216,9 +224,11 @@ class ChatsController extends Controller
     {
         try {
 
-            $validator = Validator::make($request->all(), [
+            $validator = Validator::make($request->all(), $rules = [
                 'IdChat' => ['required'],
                 'Ultimo' => ['required']
+            ], $messages = [
+                'required' => 'El campo :attribute es requerido'
             ]);
 
             if ($validator->fails()) {
@@ -264,8 +274,10 @@ class ChatsController extends Controller
     {
         try {
 
-            $validator = Validator::make($request->all(), [
+            $validator = Validator::make($request->all(), $rules = [
                 'IdUsuarioEmisor' => ['required']
+            ], $messages = [
+                'required' => 'El campo :attribute es requerido'
             ]);
 
             if ($validator->fails()) {
@@ -315,8 +327,10 @@ class ChatsController extends Controller
     {
         try {
 
-            $validator = Validator::make($request->all(), [
+            $validator = Validator::make($request->all(), $rules = [
                 'IdUsuario' => ['required']
+            ], $messages = [
+                'required' => 'El campo :attribute es requerido'
             ]);
 
             if ($validator->fails()) {

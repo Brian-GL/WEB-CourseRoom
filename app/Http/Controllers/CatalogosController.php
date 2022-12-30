@@ -17,7 +17,7 @@ class CatalogosController extends Controller
         try {
 
             $validator = Validator::make($request->all(), [
-                
+
             ]);
 
             if ($validator->fails()) {
@@ -61,7 +61,7 @@ class CatalogosController extends Controller
         try {
 
             $validator = Validator::make($request->all(), [
-                
+
             ]);
 
             if ($validator->fails()) {
@@ -105,7 +105,7 @@ class CatalogosController extends Controller
         try {
 
             $validator = Validator::make($request->all(), [
-                
+
             ]);
 
             if ($validator->fails()) {
@@ -149,7 +149,7 @@ class CatalogosController extends Controller
         try {
 
             $validator = Validator::make($request->all(), [
-                
+
             ]);
 
             if ($validator->fails()) {
@@ -195,7 +195,7 @@ class CatalogosController extends Controller
         try {
 
             $validator = Validator::make($request->all(), [
-                
+
             ]);
 
             if ($validator->fails()) {
@@ -239,7 +239,7 @@ class CatalogosController extends Controller
         try {
 
             $validator = Validator::make($request->all(), [
-                
+
             ]);
 
             if ($validator->fails()) {
@@ -283,7 +283,7 @@ class CatalogosController extends Controller
         try {
 
             $validator = Validator::make($request->all(), [
-                
+
             ]);
 
             if ($validator->fails()) {
@@ -327,7 +327,7 @@ class CatalogosController extends Controller
         try {
 
             $validator = Validator::make($request->all(), [
-                
+
             ]);
 
             if ($validator->fails()) {

@@ -9,7 +9,9 @@ class InicioController extends Controller
 
     #region Views
 
-    public function inicio(){ return view('inicio.inicio'); }
+    public function inicio(){
+        $nombre = "'Username'";
+        return view('inicio.inicio',compact('nombre')); }
     public function acerca(){ return view('inicio.acerca'); }
 
     #endregion

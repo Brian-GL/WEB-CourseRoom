@@ -15,10 +15,12 @@ class GruposController extends Controller
     public function grupo_actualizar(Request $request){
         try {
 
-            $validator = Validator::make($request->all(), [
+            $validator = Validator::make($request->all(), $rules = [
                 'IdGrupo' => ['required'],
                 'IdCurso' => ['required'],
                 'Nombre' => ['required']
+            ], $messages = [
+                'required' => 'El campo :attribute es requerido'
             ]);
 
             if ($validator->fails()) {

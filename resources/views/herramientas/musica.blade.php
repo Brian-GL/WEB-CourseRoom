@@ -8,12 +8,11 @@
 
 @section('content')
 
-<div class="container-fluid h-100 my-5">
-    <div class="row h-100">
+<div class="col-md-12">
+    <div class="container-fluid mx-3">
+        <div class="row g-5">
 
-        <div class="col-md-4">
-
-            <div class="row h-100 m-auto justify-content-center align-items-center">
+            <div class="col-md-4 m-auto justify-content-center align-items-center">
 
                 <div class="row">
                     <div class="col-12 p-1">
@@ -90,14 +89,13 @@
                     </div>
 
                 </div>
+
             </div>
 
-
-        </div>
-
-        <div class="col-md-8">
-            <div class="row h-100 m-auto">
-                <iframe id="video-frame" frameborder="0" height="100%" width="100%"></iframe>
+            <div class="col-md-8">
+                <div class="row h-100 m-auto">
+                    <iframe id="video-frame" frameborder="0"></iframe>
+                </div>
             </div>
         </div>
     </div>

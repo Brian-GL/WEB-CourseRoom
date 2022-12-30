@@ -6,10 +6,10 @@
 @endphp
 
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="min-vh-100">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1" >
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -29,32 +29,9 @@
     @vite(['resources/js/app.js'])
 
 </head>
-<body id="contenido">
+<body class="min-vh-100" id="fondo">
 
     <div id="preloader"></div>
-
-    <nav class="navbar shadow mt-2 mx-3 rounded navbar-expand-md" id="barra-navegacion">
-        <div class="container-fluid">
-            <button class="btn primer-color-letra primer-color-fondo" type="button" data-bs-toggle="offcanvas" data-bs-target="#inicio-offcanvas" aria-controls="inicio-offcanvas-label">
-                <i class="fa fa-bars"></i>
-            </button>
-            <a type="button" id="boton-notificaciones" class="btn tercer-color-letra tercer-color-fondo" type="button" title="Notificaciones" {{--href="{{route('avisos.inicio')}}"--}}>
-                <i class="fa-solid fa-bell"></i>
-            </a>
-            <div class="dropdown dropstart">
-                <button class="btn btn-dark dropdown-toggle text-white" type="button" id="boton-perfil" data-bs-toggle="dropdown" aria-expanded="false">
-                    <!-- Nombre usuario -->
-                    Susana Alegria
-                </button>
-                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="boton-perfil">
-                    <li><a class="dropdown-item" href="{{route('usuarios.perfil')}}"><i class="fa-solid fa-user"></i> Perfil</a></li>
-                    <li><a class="dropdown-item" {{--href="{{route('usuarios.sesiones')}}"--}}><i class="fa-solid fa-desktop"></i> Sesiones</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" {{--href="{{route('inicio.cerrar')}}"--}}><i class="fa-solid fa-person-walking-arrow-right"></i> Cerrar sesión</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
 
     <div id="inicio-offcanvas" class="offcanvas offcanvas-start shadow-lg rounded-end" data-bs-scroll="true" tabindex="-1" aria-labelledby="inicio-offcanvas-label">
 
@@ -152,10 +129,36 @@
         </div>
     </div>
 
-    @yield('content')
+    <div class="container-fluid min-vh-100">
+        <nav class="navbar shadow mt-2 mb-3 mx-3 rounded navbar-expand-md" id="barra-navegacion">
+            <div class="container-fluid">
+                <button class="btn primer-color-letra primer-color-fondo" type="button" data-bs-toggle="offcanvas" data-bs-target="#inicio-offcanvas" aria-controls="inicio-offcanvas-label">
+                    <i class="fa fa-bars"></i>
+                </button>
+                <a type="button" id="boton-notificaciones" class="btn tercer-color-letra tercer-color-fondo" type="button" title="Notificaciones" {{--href="{{route('avisos.inicio')}}"--}}>
+                    <i class="fa-solid fa-bell"></i>
+                </a>
+                <div class="dropdown dropstart">
+                    <button class="btn btn-dark dropdown-toggle text-white" type="button" id="boton-perfil" data-bs-toggle="dropdown" aria-expanded="false">
+                        <!-- Nombre usuario -->
+                        Susana Alegria
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="boton-perfil">
+                        <li><a class="dropdown-item" href="{{route('usuarios.perfil')}}"><i class="fa-solid fa-user"></i> Perfil</a></li>
+                        <li><a class="dropdown-item" {{--href="{{route('usuarios.sesiones')}}"--}}><i class="fa-solid fa-desktop"></i> Sesiones</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" {{--href="{{route('inicio.cerrar')}}"--}}><i class="fa-solid fa-person-walking-arrow-right"></i> Cerrar sesión</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="row">
+            @yield('content')
+        </div>
+    </div>
 
-    <script type="text/javascript" src="{{ asset ('assets/js/layout/color-thief.min.js')}}"></script>
-    <script type="module" src="{{ asset ('assets/js/layout/home.js')}}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/layout/color-thief.min.js')}}"></script>
+    <script type="module" src="{{ asset('assets/js/layout/home.js')}}"></script>
     @stack('scripts')
 
 </body>

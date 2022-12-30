@@ -45,9 +45,13 @@ class HerramientasController extends Controller
 
         try {
 
-            $validator = Validator::make($request->all(), [
+            $validator = Validator::make($request->all(), $rules = [
                 'Busqueda' => ['required', 'regex:/^(?![\&]).*/'],
-            ]);
+                ], $messages = [
+                    'required' => 'El campo :attribute es requerido',
+                    'regex' => 'El campo :attribute no cuenta con un formato adecuado'
+                ]
+            );
 
             if ($validator->fails()) {
                 return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
@@ -108,10 +112,14 @@ class HerramientasController extends Controller
 
         try {
 
-            $validator = Validator::make($request->all(), [
-                'Operacion' => ['required'],
-                'Expresion' => ['required']
-            ]);
+
+            $validator = Validator::make($request->all(), $rules = [
+                'Operacion' => 'required',
+                'Expresion' => 'required'
+                ], $messages = [
+                    'required' => 'El campo :attribute es requerido',
+                ]
+            );
 
             if ($validator->fails()) {
                 return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
@@ -150,10 +158,14 @@ class HerramientasController extends Controller
     public function multimedia(Request $request){
         try {
 
-            $validator = Validator::make($request->all(), [
+            $validator = Validator::make($request->all(), $rules = [
                 'Busqueda' => ['required', 'regex:/^(?![\&]).*/'],
                 'Artista' => ['required', 'regex:/^(?![\&]).*/']
-            ]);
+                ], $messages = [
+                    'required' => 'El campo :attribute es requerido',
+                    'regex' => 'El campo :attribute no cuenta con un formato adecuado'
+                ]
+            );
 
             if ($validator->fails()) {
                 return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);

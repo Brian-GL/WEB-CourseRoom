@@ -6,16 +6,21 @@ var music_list;
 
 
 document.addEventListener('DOMContentLoaded', async function() {
-    document.getElementById('preloader').hidden = true;
-
-    let fondo = "linear-gradient(to top, rgba(".concat(sessionStorage.getItem("PrimerColor"), ",1), rgba(",sessionStorage.getItem("TercerColor"),",1))");
-    document.getElementById("contenido").style.background = fondo;
 
     document.getElementById('slider').disabled =  true;
     document.getElementById('anterior').disabled =  true;
     document.getElementById('play-pause').disabled =  true;
     document.getElementById('siguiente').disabled =  true;
 
+    curr_track = document.createElement('audio');
+    track_index = 0;
+    isPlaying = false;
+    music_list = [];
+    Colorear();
+
+}, false);
+
+function Colorear(){
     let colorLetra = sessionStorage.getItem("SegundoColor")[0] >= 127 ? "#000000" : "#FFFFFF";
 
     document.getElementById("informacion-cancion").style.color = colorLetra;
@@ -29,13 +34,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     for(var elemento of elementos){
         elemento.style.color = colorLetra;
     }
-
-    curr_track = document.createElement('audio');
-    track_index = 0;
-    isPlaying = false;
-    music_list = [];
-
-}, false);
+}
 
 async function ObtenerMetadatos(nombreArchivo) {
 

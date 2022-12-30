@@ -1,9 +1,4 @@
-.fuente {
-    font-family: 'Albert Sans', sans-serif;
-    font-size: 1rem;
-    font-weight: 600;
-}
-
-.fuenteNormal {
-    font-family: 'Albert Sans', sans-serif;
+#logo {
+    width: 200px !important;
+    height: 175px !important;
 }

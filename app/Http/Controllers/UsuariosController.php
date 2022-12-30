@@ -24,11 +24,13 @@ class UsuariosController extends Controller
     {
         try {
 
-            $validator = Validator::make($request->all(), [
+            $validator = Validator::make($request->all(), $rules = [
                 'IdUsuario' => ['required'],
                 'Nombre' => ['required'],
                 'Paterno' => ['required'],
                 'IdLocalidad' => ['required']
+            ], $messages = [
+                'required' => 'El campo :attribute es requerido'
             ]);
 
             if ($validator->fails()) {

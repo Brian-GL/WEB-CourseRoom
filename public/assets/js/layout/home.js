@@ -1,44 +1,55 @@
-document.addEventListener('DOMContentLoaded', function() {
+"use strict";
 
-    document.getElementById("preloader").hidden = true;
+const spacesRegex = /^\s+/;
+const digitsRegex = /[^\d].+/;
+
+let preloader;
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    preloader = document.getElementById("preloader");
+    preloader.hidden = true;
 
     let elemento_imagen = document.getElementById("imagen-usuario");
     elemento_imagen.src = "https://colorlib.com/etc/bootstrap-sidebar/sidebar-01/images/logo.jpg";
 
-    $('.alphabetic').on("keyup blur keypress", function(e){
-
-        let value = $(this).val();
-
-        $(this).val(value.replace(/^\s+/, ''));
-
-        if((e.which < 65 && e.which != 32) && (e.which < 65 && e.which != 16) ||
-        (e.which > 90 && e.which < 97) || (e.which > 122 && !Acentuacion(e.which))){
-            e.preventDefault();
-        }
-
-    });
-
-    $('.numeric').on("keyup blur keypress", function(e){
-
-        let value = $(this).val();
-
-        $(this).val(value.replace(/^\s+/, ''));
-
-        if(e.which < 48 && e.which > 57){
-            e.preventDefault();
-        }
-
-    });
-
 }, false);
 
-function Acentuacion(value){
-    return [241, 209, 192, 239, 180, 186, 211, 201, 193, 205, 218, 225, 233, 237, 243, 250].includes(value);
-}
+function Acentuacion(value){return [241, 209, 192, 239, 180, 186, 211, 201, 193, 205, 218, 225, 233, 237, 243, 250].includes(value);}
+
+$('.alphabetic').on("keyup blur keypress", (e) =>  {
+
+    if(spacesRegex.test(e.currentTarget.value)){
+        e.currentTarget.value = e.currentTarget.value.trim();
+    }
+
+    if((e.which < 65 && e.which != 32) && (e.which < 65 && e.which != 16) ||
+    (e.which > 90 && e.which < 97) || (e.which > 122 && !Acentuacion(e.which))){
+        e.preventDefault();
+    }
+});
+
+$('.replacing').on("keyup blur keypress", (e) => {
+    if(spacesRegex.test(e.currentTarget.value)){
+        e.currentTarget.value = e.currentTarget.value.trim();
+    }
+});
+
+$('.numeric').on("keyup blur keypress", (e) => {
+    if(digitsRegex.test(e.currentTarget.value)){
+        e.currentTarget.value = e.currentTarget.value.trim();
+    }
+
+    if(e.which < 48 && e.which > 57){
+        e.preventDefault();
+    }
+});
+
 
 document.getElementById("imagen-usuario").addEventListener("load", function(){
 
     try {
+
         const colorThief = new ColorThief();
         let palette = colorThief.getPalette(this, 10);
 
@@ -51,18 +62,15 @@ document.getElementById("imagen-usuario").addEventListener("load", function(){
         sessionStorage.setItem('TercerColor', tercerColor);
 
         let fondo = "linear-gradient(to bottom, rgba(".concat(primerColor, ",1), rgba(",segundoColor,",1), rgba(",tercerColor,",1))");
-
         document.getElementById("inicio-offcanvas").style.background = fondo;
 
         //Primer color
         let colorLetra = primerColor[0] >= 127 ? "#000000" : "#FFFFFF";
-
         for(var elemento of document.getElementsByClassName("primer-color-letra")){
             elemento.style.color = colorLetra;
         }
 
         let colorFondo = "rgba(".concat(tercerColor, ",1)");
-
         for(var elemento of document.getElementsByClassName("primer-color-fondo")){
             elemento.style.background = colorFondo;
         }
@@ -91,7 +99,7 @@ document.getElementById("imagen-usuario").addEventListener("load", function(){
 
         //Inicio:
         fondo = "linear-gradient(to top, rgba(".concat(primerColor, ",1), rgba(",sessionStorage.getItem("TercerColor"),",1))");
-        document.getElementById("contenido").style.background = fondo;
+        document.getElementById("fondo").style.background = fondo;
 
         //Primer color
         colorLetra = primerColor[0] >= 127 ? "#000000" : "#FFFFFF";
