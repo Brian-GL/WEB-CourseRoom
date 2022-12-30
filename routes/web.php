@@ -2,8 +2,9 @@
 
 use App\Http\Controllers\DefaultController;
 use App\Http\Controllers\InicioController;
-use App\Http\Controllers\ChatsController;
 use App\Http\Controllers\AvisosController;
+use App\Http\Controllers\CatalogosController;
+use App\Http\Controllers\ChatsController;
 use App\Http\Controllers\GruposController;
 use App\Http\Controllers\HerramientasController;
 use App\Http\Controllers\PreguntasRespuestasController;
@@ -43,16 +44,40 @@ Route::get('/acerca',  [InicioController::class, 'acerca'])->name('inicio.acerca
 
 #endregion
 
-#region Chats
-
-Route::post('/chats/registrar',  [ChatsController::class, 'chat_registrar'])->middleware('session.token');
-
-#endregion
-
 #region Avisos
 
 Route::put('/avisos/actualizar',  [AvisosController::class, 'aviso_actualizar'])->middleware('session.token');
 Route::post('/avisos/registrar',  [AvisosController::class, 'aviso_registrar'])->middleware('session.token');
+Route::delete('/avisos/remover',  [AvisosController::class, 'aviso_remover'])->middleware('session.token');
+Route::post('/avisos/detalle',  [AvisosController::class, 'avisodetalle_obtener'])->middleware('session.token');
+Route::post('/avisos/plagioprofesor',  [AvisosController::class, 'avisoplagioprofesor_registrar'])->middleware('session.token');
+Route::post('/avisos/obtener',  [AvisosController::class, 'avisos_obtener'])->middleware('session.token');
+Route::post('/avisos/validar',  [AvisosController::class, 'avisos_validar'])->middleware('session.token');
+
+#endregion
+
+#region Catalogos
+
+Route::post('/catalogos/cursoestatus',  [CatalogosController::class, 'catalogocursoestatus_obtener'])->middleware('session.token');
+Route::post('/catalogos/estados',  [CatalogosController::class, 'catalogoestados_obtener'])->middleware('session.token');
+Route::post('/catalogos/estatustareapendiente',  [CatalogosController::class, 'catalogotareapendienteestatus_obtener'])->middleware('session.token');
+Route::post('/catalogos/localidades',  [CatalogosController::class, 'catalogolocalidades_obtener'])->middleware('session.token');
+Route::post('/catalogos/preguntarespuesta',  [CatalogosController::class, 'catalogopreguntarespuestaestatus_obtener'])->middleware('session.token');
+Route::post('/catalogos/preguntascuestionario',  [CatalogosController::class, 'catalogopreguntascuestionario_obtener'])->middleware('session.token');
+Route::post('/catalogos/tematicas',  [CatalogosController::class, 'catalogotematicas_obtener'])->middleware('session.token');
+Route::post('/catalogos/tiposusuario',  [CatalogosController::class, 'catalogotiposusuario_obtener'])->middleware('session.token');
+
+#endregion
+
+#region Chats
+
+Route::post('/chats/registrar',  [ChatsController::class, 'chat_registrar'])->middleware('session.token');
+Route::delete('/chats/remover',  [ChatsController::class, 'chat_remover'])->middleware('session.token');
+Route::post('/chats/mensajeregistrar',  [ChatsController::class, 'chatmensaje_registrar'])->middleware('session.token');
+Route::delete('/chats/mensajeremover',  [ChatsController::class, 'chatmensaje_remover'])->middleware('session.token');
+Route::post('/chats/mensajesobtener',  [ChatsController::class, 'chatmensajes_obtener'])->middleware('session.token');
+Route::post('/chats/buscar',  [ChatsController::class, 'chats_buscar'])->middleware('session.token');
+Route::post('/chats/obtener',  [ChatsController::class, 'chats_obtener'])->middleware('session.token');
 
 #endregion
 
