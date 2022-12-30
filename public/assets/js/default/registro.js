@@ -74,6 +74,8 @@ function Registrar(imagen){
         return;
     }
 
+    let baseURL = window.location.origin;
+
     fetch(baseURL.concat('/default/registrar'), {
         method: 'POST',
         headers: {
@@ -169,66 +171,6 @@ document.getElementById("imagen").addEventListener("change", (e) => {
 
     }
 });
-
-
-document.getElementById("imagen-seleccionada").addEventListener('load', function() {
-    try {
-
-        if(this.src !== 'https://mdbootstrap.com/img/Photos/Others/placeholder-avatar.jpg'){
-
-            const colorThief = new ColorThief();
-            let palette = colorThief.getPalette(this, 2,400);
-
-            let fondo = "radial-gradient(ellipse at right, rgba(".concat(palette[0], ",1), rgba(", palette[1],",0.1)");
-
-            document.getElementById("register").style.background = fondo;
-
-            let colorLetra = palette[0][0] >= 127 ? "#000000" : "#FFFFFF";
-
-            let elementos = document.getElementsByTagName("label");
-            for(let elemento of elementos){
-                elemento.style.color = colorLetra;
-            }
-
-            elementos = document.getElementsByClassName("letrado");
-            for(let elemento of elementos){
-                elemento.style.color = colorLetra;
-            }
-        }
-        else{
-            let fondo = "radial-gradient(ellipse at right, rgba(104,194,232,1), rgba(14,30,64,0.1))";
-
-            document.getElementById("register").style.background = fondo;
-
-            let elementos = document.getElementsByTagName("label");
-            for(let elemento of elementos){
-                elemento.style.color = "rgba(0,0,0,1)";
-            }
-
-            elementos = document.getElementsByClassName("letrado");
-            for(let elemento of elementos){
-                elemento.style.color = "rgba(0,0,0,1)";
-            }
-        }
-
-
-    } catch (e) {
-        let fondo = "radial-gradient(ellipse at right, rgba(104,194,232,1), rgba(14,30,64,0.1))";
-
-        document.getElementById("register").style.background = fondo;
-
-        let elementos = document.getElementsByTagName("label");
-        for(let elemento of elementos){
-            elemento.style.color = "rgba(0,0,0,1)";
-        }
-
-        elementos = document.getElementsByClassName("letrado");
-        for(let elemento of elementos){
-            elemento.style.color = "rgba(0,0,0,1)";
-        }
-    }
-});
-
 
 function getBuffer(fileData) {
     return function(resolve) {

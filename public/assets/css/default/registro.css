@@ -1,5 +1,5 @@
 #register {
-  background: linear-gradient(45deg, rgba(14,30,64,1) 0%, rgba(104,194,232,1) 100%);
+    background: radial-gradient(ellipse at right, rgba(104,194,232,1), rgba(14,30,64,0.1));
 }
 
 #logo {
@@ -21,3 +21,18 @@
   max-width: 300px;
   max-height: 300px;
 }
+
+@media (max-width: 400px) {
+    #imagen-seleccionada{
+        max-width: 200px;
+        max-height: 200px;
+      }
+}
+
+@media (max-width: 300px) {
+    #imagen-seleccionada{
+        max-width: 100px;
+        max-height: 100px;
+      }
+}
+

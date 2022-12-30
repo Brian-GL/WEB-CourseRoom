@@ -5,6 +5,7 @@
 
 #fondo {
     background: linear-gradient(45deg, rgba(14,30,64,1) 0%, rgba(104,194,232,1) 100%);
+    overflow-x: hidden;
 }
 
 .row{

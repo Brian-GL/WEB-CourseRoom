@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="min-vh-100 min-vw-100">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="min-vh-100">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -22,12 +22,12 @@
     @vite(['resources/js/app.js'])
 
 </head>
-<body class="min-vh-100 min-vw-100" id="fondo">
+<body class="min-vh-100" id="fondo">
 
     <div id="preloader"></div>
 
-    <div class="container-fluid min-vh-100 min-vw-100">
-        <div class="row min-vh-100 w-auto d-flex align-items-center">
+    <div class="container-fluid min-vh-100">
+        <div class="row min-vh-100 d-flex align-items-center">
             @yield('content')
         </div>
     </div>
