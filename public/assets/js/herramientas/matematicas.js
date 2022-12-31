@@ -30,13 +30,15 @@ document.getElementById("solucionar").addEventListener('click', function () {
         } else {
             document.getElementById("resultado").innerText = "";
 
-            SweetAlert.fire({
+            Swal.fire({
                 title: '¡Alerta!',
                 text: result.data,
                 imageUrl:  baseURL.concat("/assets/templates/IndiferentOwl.png"),
                 imageWidth: 100,
                 imageHeight: 123,
-                imageAlt: 'Alert Image'
+                imageAlt: 'Alert Image',
+                background: '#000000',
+                color: '#FFFFFF'
             });
 
         }
@@ -44,7 +46,7 @@ document.getElementById("solucionar").addEventListener('click', function () {
 
         preloader.hidden = true;
 
-        SweetAlert.fire({
+        Swal.fire({
             title: '¡Error!',
             html: ex,
             imageUrl: baseURL.concat("/assets/templates/SadOwl.png"),

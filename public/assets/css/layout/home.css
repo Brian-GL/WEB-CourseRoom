@@ -63,6 +63,10 @@ body.swal2-shown > [aria-hidden="true"] {
     filter: blur(10px);
 }
 
+.swal2-input,.swal2-file,.swal2-textarea{
+    width: 80% !important;
+}
+
 .centrado{
     display: grid;
     place-content: center;

@@ -29,7 +29,7 @@ Route::get('/',  [DefaultController::class, 'acceso'])->name('inicio.acceso');
 Route::get('/recuperacion',  [DefaultController::class, 'recuperacion'])->name('inicio.recuperacion');
 Route::get('/registro',  [DefaultController::class, 'registro'])->name('inicio.registro');
 
-Route::post('/default/login',  [DefaultController::class, 'login']);
+Route::post('/default/acceder',  [DefaultController::class, 'acceder']);
 Route::post('/default/recuperacion',  [DefaultController::class, 'recuperacion_credenciales']);
 Route::post('/default/registrar',  [DefaultController::class, 'registrar_usuario']);
 
@@ -99,7 +99,7 @@ Route::post('/herramientas/multimedia',  [HerramientasController::class, 'multim
 
 #region PreguntasRespuestas
 
-Route::get('/preguntasrespuestas/inicio',  [PreguntasRespuestasController::class, 'inicio'])->name('preguntasrespuestas.inicio')->middleware('session.token');
+Route::get('/preguntas',  [PreguntasRespuestasController::class, 'inicio'])->name('preguntasrespuestas.inicio')->middleware('session.token');
 
 #endregion
 

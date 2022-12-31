@@ -27,7 +27,7 @@ document.getElementById("form-registro").addEventListener("submit", (e) => {
 
             preloader.hidden = true;
 
-            SweetAlert.fire({
+            Swal.fire({
                 title: '¡Error!',
                 html: ex,
                 imageUrl: baseURL.concat("/assets/templates/SadOwl.png"),
@@ -62,7 +62,7 @@ function Registrar(imagen){
 
     if(contrasena !== repetir_contrasena){
         preloader.hidden = true;
-        SweetAlert.fire({
+        Swal.fire({
             title: '¡Alerta!',
             text: "Las contraseñas no coinciden",
             imageUrl: baseURL.concat("/assets/templates/IndiferentOwl.png"),
@@ -104,20 +104,22 @@ function Registrar(imagen){
             let data = result.data;
 
         } else {
-            SweetAlert.fire({
+            Swal.fire({
                 title: '¡Alerta!',
                 text: result.data,
                 imageUrl: baseURL.concat("/assets/templates/IndiferentOwl.png"),
                 imageWidth: 100,
                 imageHeight: 123,
-                imageAlt: 'Alert Image'
+                imageAlt: 'Alert Image',
+                background: '#000000',
+                color: '#FFFFFF'
             });
         }
     }).catch((ex) => {
 
         preloader.hidden = true;
 
-        SweetAlert.fire({
+        Swal.fire({
             title: '¡Error!',
             html: ex,
             imageUrl: baseURL.concat("/assets/templates/SadOwl.png"),
@@ -158,7 +160,7 @@ document.getElementById("imagen").addEventListener("change", (e) => {
 
         preloader.hidden = true;
 
-        SweetAlert.fire({
+        Swal.fire({
             title: '¡Error!',
             html: ex,
             imageUrl: baseURL.concat("/assets/templates/SadOwl.png"),

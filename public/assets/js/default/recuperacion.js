@@ -27,20 +27,22 @@ document.getElementById("form-recuperacion").addEventListener('submit', function
 
 
         } else {
-            SweetAlert.fire({
+            Swal.fire({
                 title: '¡Alerta!',
                 text: result.data,
                 imageUrl: baseURL.concat("/assets/templates/IndiferentOwl.png"),
                 imageWidth: 100,
                 imageHeight: 123,
-                imageAlt: 'Alert Image'
+                imageAlt: 'Alert Image',
+                background: '#000000',
+                color: '#FFFFFF'
             });
         }
     }).catch((ex) => {
 
         preloader.hidden = true;
 
-        SweetAlert.fire({
+        Swal.fire({
             title: '¡Error!',
             html: ex.data,
             imageUrl: baseURL.concat("/assets/templates/SadOwl.png"),

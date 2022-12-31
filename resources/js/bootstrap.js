@@ -1,5 +1,5 @@
 import Swal from 'sweetalert2'
-window.SweetAlert = Swal;
+window.Swal = Swal;
 
 import $ from 'jquery'
 window.$ = $;

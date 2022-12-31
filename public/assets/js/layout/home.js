@@ -66,32 +66,36 @@ document.getElementById("imagen-usuario").addEventListener("load", function(){
 
         //Primer color
         let colorLetra = primerColor[0] >= 127 ? "#000000" : "#FFFFFF";
-        for(var elemento of document.getElementsByClassName("primer-color-letra")){
+        let elementos = document.getElementsByClassName("primer-color-letra");
+        for(var elemento of elementos){
             elemento.style.color = colorLetra;
         }
 
         let colorFondo = "rgba(".concat(tercerColor, ",1)");
-        for(var elemento of document.getElementsByClassName("primer-color-fondo")){
+        elementos = document.getElementsByClassName("primer-color-fondo");
+        for(var elemento of elementos){
             elemento.style.background = colorFondo;
         }
 
         //Segundo color
         colorLetra = segundoColor[0] >= 127 ? "#000000" : "#FFFFFF";
-
-        for(var elemento of document.getElementsByClassName("segundo-color-letra")){
+        elementos = document.getElementsByClassName("segundo-color-letra");
+        for(var elemento of elementos){
             elemento.style.color = colorLetra;
         }
 
         //Tercer color
         colorLetra = tercerColor[0] >= 127 ? "#000000" : "#FFFFFF";
 
-        for(var elemento of document.getElementsByClassName("tercer-color-letra")){
+        elementos = document.getElementsByClassName("tercer-color-letra");
+        for(var elemento of elementos){
             elemento.style.color = colorLetra;
         }
 
         colorFondo = "rgba(".concat(primerColor, ",1)");
 
-        for(var elemento of document.getElementsByClassName("tercer-color-fondo")){
+        elementos = document.getElementsByClassName("tercer-color-fondo");
+        for(var elemento of elementos){
             elemento.style.background = colorFondo;
         }
 

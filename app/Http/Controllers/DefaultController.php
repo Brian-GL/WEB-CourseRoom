@@ -26,7 +26,7 @@ class DefaultController extends Controller
 
      #region Ajax
 
-     public function login(Request $request){
+     public function acceder(Request $request){
 
          // $session = $request->session()->get('AUTH_TOKEN', '');
          // if(empty($session))

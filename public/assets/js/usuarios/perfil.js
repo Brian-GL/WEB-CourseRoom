@@ -1,35 +1,24 @@
-document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById("preloader").hidden = true;
-    Colorear();
-}, false);
 
-function Colorear(){
-    let primerColor = sessionStorage.getItem("PrimerColor");
-    let tercerColor = sessionStorage.getItem("TercerColor");
+let primerColor = sessionStorage.getItem("PrimerColor");
+let tercerColor = sessionStorage.getItem("TercerColor");
 
-    let fondo = "linear-gradient(to top, rgba(".concat(primerColor, ",1), rgba(",tercerColor,",1))");
-    document.getElementById("contenido").style.background = fondo;
-
-    let colorLetra = primerColor[0] >= 127 ? "#000000" : "#FFFFFF";
-    let elementos = document.getElementsByClassName("primer-color-letra");
-
-    for(let elemento of elementos){
-        elemento.style.color = colorLetra;
-    }
-
-    colorLetra = tercerColor[0] >= 127 ? "0,0,0" : "255,255,255";
-    elementos = document.getElementsByClassName("tercer-color-letra");
-
-    for(let elemento of elementos){
-        elemento.style.color = colorLetra;
-    }
-
-    elementos = document.getElementsByClassName("tercer-color-boton");
-
-    for(let elemento of elementos){
-        elemento.style.background = "rgba(".concat(tercerColor, ",1)");
-    }
+let colorLetra = primerColor[0] >= 127 ? "#000000" : "#FFFFFF";
+let elementos = document.getElementsByClassName("primer-color-letra");
+for(let elemento of elementos){
+    elemento.style.color = colorLetra;
 }
+
+colorLetra = tercerColor[0] >= 127 ?  "#000000" : "#FFFFFF";
+elementos = document.getElementsByClassName("tercer-color-letra");
+for(let elemento of elementos){
+    elemento.style.color = colorLetra;
+}
+
+elementos = document.getElementsByClassName("tercer-color-boton");
+for(let elemento of elementos){
+    elemento.style.background = "rgb(".concat(tercerColor, ")");
+}
+
 
 document.getElementById("imagen").addEventListener("change", (e) => {
 
@@ -60,7 +49,7 @@ document.getElementById("imagen").addEventListener("change", (e) => {
 
         preloader.hidden = true;
 
-        SweetAlert.fire({
+        Swal.fire({
             title: '¡Error!',
             html: ex,
             imageUrl: baseURL.concat("/assets/templates/SadOwl.png"),

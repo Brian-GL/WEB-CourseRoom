@@ -4,21 +4,16 @@ var isPlaying;
 var updateTimer;
 var music_list;
 
+document.getElementById('slider').disabled =  true;
+document.getElementById('anterior').disabled =  true;
+document.getElementById('play-pause').disabled =  true;
+document.getElementById('siguiente').disabled =  true;
 
-document.addEventListener('DOMContentLoaded', async function() {
-
-    document.getElementById('slider').disabled =  true;
-    document.getElementById('anterior').disabled =  true;
-    document.getElementById('play-pause').disabled =  true;
-    document.getElementById('siguiente').disabled =  true;
-
-    curr_track = document.createElement('audio');
-    track_index = 0;
-    isPlaying = false;
-    music_list = [];
-    Colorear();
-
-}, false);
+curr_track = document.createElement('audio');
+track_index = 0;
+isPlaying = false;
+music_list = [];
+Colorear();
 
 function Colorear(){
     let colorLetra = sessionStorage.getItem("SegundoColor")[0] >= 127 ? "#000000" : "#FFFFFF";
@@ -69,7 +64,7 @@ async function ObtenerMetadatos(nombreArchivo) {
                 break;
             case 500:
                 {
-                    SweetAlert.fire({
+                    Swal.fire({
                         title: '¡Error!',
                         html: result.data,
                         imageUrl: baseURL.concat("/assets/templates/SadOwl.png"),
@@ -99,7 +94,7 @@ async function ObtenerMetadatos(nombreArchivo) {
         }
 
     }).catch((ex) => {
-        SweetAlert.fire({
+        Swal.fire({
             title: '¡Error!',
             html: ex,
             imageUrl: baseURL.concat("/assets/templates/SadOwl.png"),
@@ -141,7 +136,7 @@ async function ObtenerVideo(titulo, artista){
                 break;
             case 500:
                 {
-                    SweetAlert.fire({
+                    Swal.fire({
                         title: '¡Error!',
                         html: result.data,
                         imageUrl: baseURL.concat("/assets/templates/SadOwl.png"),
@@ -163,7 +158,7 @@ async function ObtenerVideo(titulo, artista){
         }
 
     }).catch((ex) => {
-        SweetAlert.fire({
+        Swal.fire({
             title: '¡Error!',
             html: ex,
             imageUrl: baseURL.concat("/assets/templates/SadOwl.png"),

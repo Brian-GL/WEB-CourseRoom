@@ -8,7 +8,7 @@ class PreguntasRespuestasController extends Controller
 {
     #region Views
 
-    public function inicio(){return view('preguntasrespuestas.inicio');}
+    public function inicio(){return view('preguntasrespuestas.preguntas');}
 
     #endregion
 
