@@ -92,7 +92,7 @@ function Registrar(imagen){
             "CorreoElectronico": correo_electronico,
             "IdTipoUsuario": parseInt(tipo_usuario),
             "Contrasena": b64EncodeUnicode(contrasena),
-            "descripcion": descripcion,
+            "Descripcion": descripcion,
             "Imagen": imagen
         })
     }).then((response) => response.json())

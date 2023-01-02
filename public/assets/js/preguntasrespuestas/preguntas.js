@@ -1,3 +1,5 @@
+'use strict';
+
 let dataTableMisPreguntas, dataTableBuscarPreguntas;
 
 let PrimerColor = sessionStorage.getItem("PrimerColor");
@@ -116,6 +118,7 @@ document.getElementById("agregar-pregunta").style.cssText = "background: rgb(".c
 
 $(".nav-link").on("click", () => {
 
+
     let PrimerColorLetra =  PrimerColor[0] <= 127 ? "0,0,0" : "255,255,255";
     let SegundoColorLetra =  SegundoColor[0] <= 127 ? "0,0,0" : "255,255,255";
 
@@ -159,7 +162,62 @@ document.getElementById("agregar-pregunta").addEventListener("click", function()
             if(result.isConfirmed){
                 let pregunta = result.value.pregunta;
                 let descripcion = result.value.descripcion;
+
+                RegistrarPregunta(pregunta, descripcion);
+
             }
       })
 
 });
+
+function RegistrarPregunta(Pregunta, Descripcion){
+    preloader.hidden = false;
+    let baseURL = window.location.origin;
+
+    fetch(baseURL.concat('/preguntasrespuestas/registrar'), {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
+        },
+        body: JSON.stringify({
+            "IdUsuario": null,
+            "Pregunta": AvailableStringValue(Pregunta),
+            "Descripcion": AvailableStringValue(Descripcion)
+        })
+    }).then((response) => response.json())
+    .then((result) => {
+        preloader.hidden = true;
+
+        if (result.code === 200) {
+            let data = result.data;
+
+        } else {
+            Swal.fire({
+                title: '¡Alerta!',
+                text: result.data,
+                imageUrl: baseURL.concat("/assets/templates/IndiferentOwl.png"),
+                imageWidth: 100,
+                imageHeight: 123,
+                imageAlt: 'Alert Image',
+                background: '#000000',
+                color: '#FFFFFF'
+            });
+        }
+    }).catch((ex) => {
+
+        preloader.hidden = true;
+        Swal.fire({
+            title: '¡Error!',
+            text: ex,
+            imageUrl: baseURL.concat("/assets/templates/SadOwl.png"),
+            imageWidth: 100,
+            imageHeight: 123,
+            background: '#000000',
+            color: '#FFFFFF',
+            imageAlt: 'Error Image'
+        });
+    });
+}
+
+function AvailableStringValue(value){return value === '' || value === null || value === undefined ? null : value.trim();}
