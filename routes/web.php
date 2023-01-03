@@ -8,6 +8,7 @@ use App\Http\Controllers\ChatsController;
 use App\Http\Controllers\GruposController;
 use App\Http\Controllers\HerramientasController;
 use App\Http\Controllers\PreguntasRespuestasController;
+use App\Http\Controllers\TareasController;
 use App\Http\Controllers\UsuariosController;
 use Illuminate\Support\Facades\Route;
 
@@ -84,6 +85,31 @@ Route::post('/chats/obtener',  [ChatsController::class, 'chats_obtener'])->middl
 #region Grupos
 
 Route::put('/grupos/actualizar',  [GruposController::class, 'grupo_actualizar'])->middleware('session.token');
+Route::post('/grupos/mensajes',  [GruposController::class, 'gruposmensajes_obtener'])->middleware('session.token');
+Route::post('/grupos/obtener',  [GruposController::class, 'grupos_obtener'])->middleware('session.token');
+Route::post('/grupos/miembros',  [GruposController::class, 'grupomiembros_obtener'])->middleware('session.token');
+Route::post('/grupos/tareaspendientes',  [GruposController::class, 'grupotareaspendientes_obtener'])->middleware('session.token');
+Route::post('/grupos/tareapendientedetalle',  [GruposController::class, 'grupotareapendientedetalle_obtener'])->middleware('session.token');
+Route::put('/grupos/tareapendienteestatus',  [GruposController::class, 'grupotareapendienteestatus_actualizar'])->middleware('session.token');
+Route::delete('/grupos/miembroremover',  [GruposController::class, 'grupomiembro_remover'])->middleware('session.token');
+Route::post('/grupos/miembroregistrar',  [GruposController::class, 'grupomiembro_registrar'])->middleware('session.token');
+Route::put('/grupos/tareapendienteactualizar',  [GruposController::class, 'grupotareapendiente_actualizar'])->middleware('session.token');
+Route::post('/grupos/tareapendienteregistrar',  [GruposController::class, 'grupotareapendiente_registrar'])->middleware('session.token');
+
+#endregion
+
+#region Tareas
+
+Route::post('/tareas/archivosadjuntos',  [TareasController::class, 'tareaarchivosadjuntos_obtener'])->middleware('session.token');
+Route::post('/tareas/estudiantedetalle',  [TareasController::class, 'tareaestudiantedetalle_obtener'])->middleware('session.token');
+Route::post('/tareas/mes',  [TareasController::class, 'tareasmes_obtener'])->middleware('session.token');
+Route::post('/tareas/imagenesentregadas',  [TareasController::class, 'tareaimagenesentregadas_obtener'])->middleware('session.token');
+Route::post('/tareas/retroalimentaciondetalle',  [TareasController::class, 'tarearetroalimentaciondetalle_obtener'])->middleware('session.token');
+Route::put('/tareas/actualizar',  [TareasController::class, 'tarea_actualizar'])->middleware('session.token');
+Route::post('/tareas/archivoentregado',  [TareasController::class, 'tareaarchivoentregado_registrar'])->middleware('session.token');
+Route::delete('/tareas/remover',  [TareasController::class, 'tarea_remover'])->middleware('session.token');
+Route::post('/tareas/registrar',  [TareasController::class, 'tarea_registrar'])->middleware('session.token');
+Route::post('/tareas/retroalimentacion',  [TareasController::class, 'tarearetroalimentacion_registrar'])->middleware('session.token');
 
 #endregion
 
