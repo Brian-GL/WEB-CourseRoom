@@ -1,5 +1,4 @@
 'use strict';
-
 let dataTableMisPreguntas, dataTableBuscarPreguntas;
 
 let PrimerColor = sessionStorage.getItem("PrimerColor");
@@ -116,8 +115,7 @@ for(let elemento of elementos){
 document.getElementById("agregar-pregunta").style.cssText = "background: rgb(".concat(TercerColor, "); color: rgb(",colorLetra,"); important;");
 
 
-$(".nav-link").on("click", () => {
-
+$(".nav-link").on("click", function () {
 
     let PrimerColorLetra =  PrimerColor[0] <= 127 ? "0,0,0" : "255,255,255";
     let SegundoColorLetra =  SegundoColor[0] <= 127 ? "0,0,0" : "255,255,255";

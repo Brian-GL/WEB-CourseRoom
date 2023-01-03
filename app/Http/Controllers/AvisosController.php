@@ -333,10 +333,10 @@ class AvisosController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idUsuario = $request->input('IdUsuario');
-                $fechaVisualizacion = $request->input('FechaVisualizacion');
-
                 if($url != ''){
+
+                    $idUsuario = $request->input('IdUsuario');
+                    $fechaVisualizacion = $request->input('FechaVisualizacion');
 
                     $response = Http::withHeaders([
                         'Authorization' => env('COURSEROOM_API_KEY'),

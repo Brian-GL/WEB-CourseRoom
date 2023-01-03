@@ -17,10 +17,10 @@
                 </div>
 
                 <form id="form-acceso" method="HEAD">
-                    @csrf
+
                     <div class="form-group py-1">
                         <label class="form-control-label text-black fuenteNormal" for="correo-electronico">Correo Electrónico</label>
-                        <input class="form-control email fuenteNormal replacing" type="email" id="correo-electronico" name="correo-electronico" placeholder="Correo electrónico" maxlength="150" required autocomplete="username">
+                        <input class="form-control fuenteNormal emailing" type="email" id="correo-electronico" name="correo-electronico" placeholder="Correo electrónico" maxlength="150" required autocomplete="username">
                     </div>
 
                     <div class="form-group py-1">

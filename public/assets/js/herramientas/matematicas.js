@@ -1,60 +1,60 @@
-document.getElementById("solucionar").addEventListener('click', function () {
+let BaseURL = window.location.origin;
+let Resultado = document.getElementById("resultado");
 
-    preloader.hidden = false;
+document.getElementById("solucionar").addEventListener('click',  async () => {
 
-    let baseURL = window.location.origin;
+    try{
 
-    let expresion = document.getElementById("expresion").value;
-    let operacion = document.getElementById("tipo-operaciones").value;
+        ShowPreloader();
 
-    fetch(baseURL.concat('/herramientas/operador'), {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
-        },
-        body: JSON.stringify({
-            "Expresion": expresion,
-            "Operacion": operacion
-        })
-    }).then((response) => response.json())
-    .then((result) => {
+        let response = await axios({
+            url: '/herramientas/operador',
+            baseURL: BaseURL,
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
+            },
+            data: {
+                "Expresion": document.getElementById("expresion").value,
+                "Operacion": document.getElementById("tipo-operaciones").value
+            }
+        });
 
-        preloader.hidden = true;
+        HidePreloader();
 
-         if (result.code === 200) {
+        let result = response.data;
 
+        if (result.code === 200) {
             let pretty = JSON.stringify(result.data, undefined, 4);
-            document.getElementById("resultado").innerText = pretty;
+            Resultado.innerText = pretty;
 
         } else {
-            document.getElementById("resultado").innerText = "";
-
+            Resultado.innerText = "";
             Swal.fire({
                 title: '¡Alerta!',
                 text: result.data,
-                imageUrl:  baseURL.concat("/assets/templates/IndiferentOwl.png"),
+                imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
                 imageWidth: 100,
                 imageHeight: 123,
                 imageAlt: 'Alert Image',
                 background: '#000000',
                 color: '#FFFFFF'
             });
-
         }
-    }).catch((ex) => {
+    }
+    catch(ex){
 
-        preloader.hidden = true;
+        HidePreloader();
 
         Swal.fire({
             title: '¡Error!',
-            html: ex,
-            imageUrl: baseURL.concat("/assets/templates/SadOwl.png"),
+            text: ex,
+            imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
             imageWidth: 100,
             imageHeight: 123,
             background: '#000000',
             color: '#FFFFFF',
             imageAlt: 'Error Image'
         });
-    });
+    }
 });

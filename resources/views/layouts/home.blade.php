@@ -39,7 +39,7 @@
             <img id="offcanvas-logo" class="img-fluid" src="https://raw.githubusercontent.com/Brian-GL/CourseRoom/main/src/recursos/imagenes/Course_Room_Brand_Readme.png" />
             <span class="offcanvas-title primer-color-letra">CourseRoom</span>
             <button type="button" class="btn primer-color-letra primer-color-fondo" data-bs-dismiss="offcanvas" aria-label="Close" id="cerrar-offcanvas">
-                <i class="fa fa-bars"></i>
+                <i class="fa fa-bars fa-xl"></i>
             </button>
         </div>
 
@@ -133,10 +133,10 @@
         <nav class="navbar shadow mt-2 mb-3 mx-3 rounded navbar-expand-md" id="barra-navegacion">
             <div class="container-fluid">
                 <button class="btn primer-color-letra primer-color-fondo" type="button" data-bs-toggle="offcanvas" data-bs-target="#inicio-offcanvas" aria-controls="inicio-offcanvas-label">
-                    <i class="fa fa-bars"></i>
+                    <i class="fa fa-bars fa-xl"></i>
                 </button>
                 <a type="button" id="boton-notificaciones" class="btn tercer-color-letra tercer-color-fondo" type="button" title="Notificaciones" {{--href="{{route('avisos.inicio')}}"--}}>
-                    <i class="fa-solid fa-bell"></i>
+                    <i class="fa-solid fa-envelope-open fa-xl" id="icono-notificaciones"></i>
                 </a>
                 <div class="dropdown dropstart">
                     <button class="btn btn-dark dropdown-toggle text-white" type="button" id="boton-perfil" data-bs-toggle="dropdown" aria-expanded="false">

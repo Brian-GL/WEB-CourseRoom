@@ -28,11 +28,9 @@ class DefaultController extends Controller
 
      public function acceder(Request $request){
 
-         // $session = $request->session()->get('AUTH_TOKEN', '');
-         // if(empty($session))
-         //     $request->session()->push('AUTH_TOKEN', env("APP_KEY"));
-
-        return response()->json(['code' => 200,  'data' => ['correo' => $request->input('CorreoElectronico')]], 200);
+        // $session = $request->session()->get('AUTH_TOKEN', '');
+        // if(empty($session))
+        //     $request->session()->push('AUTH_TOKEN', env("APP_KEY"));
 
      }
 

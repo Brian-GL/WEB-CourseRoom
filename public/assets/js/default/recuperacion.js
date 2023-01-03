@@ -1,36 +1,49 @@
 'use strict';
 
-document.getElementById("form-recuperacion").addEventListener('submit', function () {
+let BaseURL = window.location.origin;
 
-    preloader.hidden = false;
+document.getElementById("form-recuperacion").addEventListener('submit', async (e) => {
 
-    let correoElectronico = AvailableStringValue(document.getElementById("correo-electronico").value);
+    e.preventDefault();
 
-    let baseURL = window.location.origin;
+    try{
 
-    fetch(baseURL.concat('/default/recuperacion'), {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
-        },
-        body: JSON.stringify({
-            "CorreoElectronico": correoElectronico
-        })
-    }).then((response) => response.json())
-    .then((result) => {
+        ShowPreloader();
 
-        preloader.hidden = true;
+        let response = await axios({
+            url: '/default/recuperacion',
+            baseURL: BaseURL,
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
+            },
+            data: {
+                "CorreoElectronico": AvailableString(document.getElementById("correo-electronico").value),
+            }
+        });
 
-         if (result.code === 200) {
-            let data = result.data;
+        HidePreloader();
 
+        let result = response.data;
+
+        if (result.code === 200) {
+
+            Swal.fire({
+                title: 'Recuperación de credenciales',
+                text: result.data,
+                imageUrl: BaseURL.concat("/assets/templates/HappyOwl.png"),
+                imageWidth: 100,
+                imageHeight: 123,
+                imageAlt: 'Alert Image',
+                background: '#000000',
+                color: '#FFFFFF'
+            });
 
         } else {
             Swal.fire({
                 title: '¡Alerta!',
                 text: result.data,
-                imageUrl: baseURL.concat("/assets/templates/IndiferentOwl.png"),
+                imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
                 imageWidth: 100,
                 imageHeight: 123,
                 imageAlt: 'Alert Image',
@@ -38,22 +51,20 @@ document.getElementById("form-recuperacion").addEventListener('submit', function
                 color: '#FFFFFF'
             });
         }
-    }).catch((ex) => {
+    }
+    catch(ex){
 
-        preloader.hidden = true;
+        HidePreloader();
 
         Swal.fire({
             title: '¡Error!',
-            html: ex.data,
-            imageUrl: baseURL.concat("/assets/templates/SadOwl.png"),
+            text: ex,
+            imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
             imageWidth: 100,
             imageHeight: 123,
             background: '#000000',
             color: '#FFFFFF',
             imageAlt: 'Error Image'
         });
-    });
-
+    }
 });
-
-function AvailableStringValue(value){return value === '' || value === null || value === undefined ? null : value.trim();}

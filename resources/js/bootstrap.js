@@ -10,6 +10,12 @@ window.Memes = Memes;
 import * as DataTables from 'datatables.net-bs5'
 window.dt = DataTables;
 
+import toastr from 'toastr';
+window.toastr = toastr;
+
+import * as Base64 from 'js-base64'
+window.Base64 = Base64;
+
 import _ from 'lodash';
 window._ = _;
 

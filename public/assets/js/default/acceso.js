@@ -1,38 +1,40 @@
 'use strict';
 
-document.getElementById("form-acceso").addEventListener("submit", (e) => {
+let BaseURL = window.location.origin;
+
+document.getElementById("form-acceso").addEventListener("submit", async (e) => {
 
     e.preventDefault();
 
-    preloader.hidden = false;
+    try{
 
-    let correoElectronico = AvailableStringValue(document.getElementById("correo-electronico").value);
-    let contrasena = document.getElementById("contrasena").value;
+        ShowPreloader();
 
-    let baseURL = window.location.origin;
+        let response = await axios({
+            url: '/default/acceder',
+            baseURL: BaseURL,
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
+            },
+            data: {
+                "CorreoElectronico": AvailableString(document.getElementById("correo-electronico").value),
+                "Contrasena": Base64.encode(document.getElementById("contrasena").value)
+            }
+        });
 
-    fetch(baseURL.concat('/default/acceder'), {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
-        },
-        body: JSON.stringify({
-            "CorreoElectronico": correoElectronico,
-            "Contrasena": b64EncodeUnicode(contrasena)
-        })
-    }).then((response) => response.json())
-    .then((result) => {
-        preloader.hidden = true;
+        HidePreloader();
+
+        let result = response.data;
 
         if (result.code === 200) {
-            let data = result.data;
+
 
         } else {
             Swal.fire({
                 title: '¡Alerta!',
                 text: result.data,
-                imageUrl: baseURL.concat("/assets/templates/IndiferentOwl.png"),
+                imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
                 imageWidth: 100,
                 imageHeight: 123,
                 imageAlt: 'Alert Image',
@@ -40,25 +42,21 @@ document.getElementById("form-acceso").addEventListener("submit", (e) => {
                 color: '#FFFFFF'
             });
         }
-    }).catch((ex) => {
+    }
+    catch(ex){
 
-        preloader.hidden = true;
+        HidePreloader();
+
         Swal.fire({
             title: '¡Error!',
             text: ex,
-            imageUrl: baseURL.concat("/assets/templates/SadOwl.png"),
+            imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
             imageWidth: 100,
             imageHeight: 123,
             background: '#000000',
             color: '#FFFFFF',
             imageAlt: 'Error Image'
         });
-    });
+    }
 
 });
-
-function AvailableStringValue(value){return value === '' || value === null || value === undefined ? null : value.trim();}
-
-function b64EncodeUnicode(str) {return btoa(encodeURIComponent(str));}
-
-function UnicodeDecodeB64(str) {return decodeURIComponent(atob(str));}
