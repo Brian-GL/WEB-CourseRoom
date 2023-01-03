@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
 
 class AvisosController extends Controller
 {
@@ -322,7 +323,7 @@ class AvisosController extends Controller
         try {
 
             $validator = Validator::make($request->all(), $rules = [
-                'IdUsuario' => ['required']
+                'IdUsuario' => ['required'],
             ], $messages = [
                 'required' => 'El campo :attribute es requerido'
             ]);
@@ -336,13 +337,13 @@ class AvisosController extends Controller
                 if($url != ''){
 
                     $idUsuario = $request->input('IdUsuario');
-                    $fechaVisualizacion = $request->input('FechaVisualizacion');
+                    $fechaVisualizacion = Carbon::now();
 
                     $response = Http::withHeaders([
                         'Authorization' => env('COURSEROOM_API_KEY'),
                     ])->post($url.'/api/avisos/validar', [
-                        'IdUsuario' => $idUsuario,
-                        'FechaVisualizacion' => $fechaVisualizacion
+                        'idUsuario' => $idUsuario,
+                        'fechaVisualizacion' => $fechaVisualizacion
                     ]);
 
                     if ($response->ok()){

@@ -33,7 +33,7 @@
                     @csrf
                     <div class="form-group">
                         <label class="form-control-label text-black fuenteNormal" for="correo-electronico">Correo Electrónico De Recuperación</label>
-                        <input class="form-control email fuenteNormal replacing" type="email" id="correo-electronico" name="correo-electronico" placeholder="Correo electrónico de recuperación" maxlength="150" required>
+                        <input class="form-control fuenteNormal emailing" type="email" id="correo-electronico" name="correo-electronico" placeholder="Correo electrónico de recuperación" maxlength="150" required>
                     </div>
 
                     <div class="form-group text-center">

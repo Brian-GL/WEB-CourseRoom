@@ -3,7 +3,7 @@
 @section('title', 'Reproductor de música')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset ('assets/css/herramientas/musica.css')}}">
+<link rel="stylesheet" href="{{ asset ('assets/css/herramientas/musica.min.css')}}">
 @endpush
 
 @section('content')
@@ -25,10 +25,10 @@
                 <div class="row py-1">
                     <div class="col-12">
                         <div class="form-group text-center">
-                            <span id="informacion-cancion" class="pt-1 text-capitalize fuente text-white">Título</span>
+                            <span id="informacion-cancion" class="pt-1 text-capitalize fuente tercer-color-fuente">Título</span>
                         </div>
                         <div class="form-group text-center py-1">
-                            <span id="nombre-artista" class="pt-1 text-capitalize fuente text-white">Artista</span>
+                            <span id="nombre-artista" class="pt-1 text-capitalize fuente tercer-color-fuente">Artista</span>
                         </div>
                     </div>
                 </div>
@@ -37,18 +37,18 @@
 
                     <div class="col-3">
                         <div class="form-group">
-                            <span class="tiempo text-white text-center" id="progreso">00:00</span>
+                            <span class="tercer-color-fuente text-center" id="progreso">00:00</span>
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="form-group">
-                            <input class="tiempo form-range text-white" type="range" value="0" id="slider" />
+                            <input class="form-range tercer-color-fuente" type="range" value="0" id="slider" />
                         </div>
                     </div>
 
                     <div class="col-3">
                         <div class="form-group">
-                            <span class="tiempo text-center text-white" id="duracion">00:00</span>
+                            <span class="text-center tercer-color-fuente" id="duracion">00:00</span>
                         </div>
                     </div>
 
@@ -57,26 +57,26 @@
                 <div class="row py-1">
                     <div class="col-2 text-center">
                         <div class="form-group">
-                            <i class="icon-fa fa fa-folder fa-2x icono-reproductor text-white" title="Abrir archivos" id="open-files"></i>
+                            <i class="icon-fa fa fa-folder fa-2x icono-reproductor tercer-color-fuente" title="Abrir archivos" id="open-files"></i>
                             <input type="file" id="fileUpload" name="fileUpload" accept="audio/mp3, audio/flac" multiple hidden />
                         </div>
                     </div>
 
                     <div class="col-2 text-center">
                         <div class="form-group">
-                            <i class="icon-fa fa fa-step-backward fa-2x icono-reproductor text-white" title="Pista anterior" id="anterior"></i>
+                            <i class="icon-fa fa fa-step-backward fa-2x icono-reproductor tercer-color-fuente" title="Pista anterior" id="anterior"></i>
                         </div>
                     </div>
 
                     <div class="col-4 text-center">
                         <div class="form-group">
-                            <i class="icon-fa fa fa-2x fa-play-circle icono-reproductor text-white" title="Reproducir/Pausar" id="play-pause"></i>
+                            <i class="icon-fa fa fa-2x fa-play-circle icono-reproductor tercer-color-fuente" title="Reproducir/Pausar" id="play-pause"></i>
                         </div>
                     </div>
 
                     <div class="col-2 text-center">
                         <div class="form-group">
-                            <i class="icon-fa fa fa-step-forward fa-2x icono-reproductor text-white" title="Pista siguiente" id="siguiente"></i>
+                            <i class="icon-fa fa fa-step-forward fa-2x icono-reproductor tercer-color-fuente" title="Pista siguiente" id="siguiente"></i>
                         </div>
                     </div>
 
@@ -103,7 +103,6 @@
 
 @stop
 
-
 @push('scripts')
-<script type="module" src=" {{asset('assets/js/herramientas/musica.js')}}"></script>
+<script type="module" src=" {{asset('assets/js/herramientas/musica.min.js')}}"></script>
 @endpush

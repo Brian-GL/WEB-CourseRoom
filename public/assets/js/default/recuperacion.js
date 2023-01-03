@@ -26,30 +26,46 @@ document.getElementById("form-recuperacion").addEventListener('submit', async (e
 
         let result = response.data;
 
-        if (result.code === 200) {
-
-            Swal.fire({
-                title: 'Recuperación de credenciales',
-                text: result.data,
-                imageUrl: BaseURL.concat("/assets/templates/HappyOwl.png"),
-                imageWidth: 100,
-                imageHeight: 123,
-                imageAlt: 'Alert Image',
-                background: '#000000',
-                color: '#FFFFFF'
-            });
-
-        } else {
-            Swal.fire({
-                title: '¡Alerta!',
-                text: result.data,
-                imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
-                imageWidth: 100,
-                imageHeight: 123,
-                imageAlt: 'Alert Image',
-                background: '#000000',
-                color: '#FFFFFF'
-            });
+        switch (result.code) {
+            case 200:{
+                Swal.fire({
+                    title: 'Recuperación de credenciales',
+                    text: result.data,
+                    imageUrl: BaseURL.concat("/assets/templates/HappyOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    imageAlt: 'Alert Image',
+                    background: '#000000',
+                    color: '#FFFFFF'
+                });
+            }
+            break;
+            case 500:{
+                Swal.fire({
+                    title: '¡Error!',
+                    text: result.data,
+                    imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    background: '#000000',
+                    color: '#FFFFFF',
+                    imageAlt: 'Error Image'
+                });
+            }
+            break;
+            default:{
+                Swal.fire({
+                    title: '¡Alerta!',
+                    text: result.data,
+                    imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    imageAlt: 'Alert Image',
+                    background: '#000000',
+                    color: '#FFFFFF'
+                });
+            }
+            break;
         }
     }
     catch(ex){

@@ -1,6 +1,5 @@
 @php
     use Carbon\Carbon;
-
     $year = Carbon::now()->format('Y');
 
 @endphp
@@ -38,7 +37,7 @@
         <div class="offcanvas-header">
             <img id="offcanvas-logo" class="img-fluid" src="https://raw.githubusercontent.com/Brian-GL/CourseRoom/main/src/recursos/imagenes/Course_Room_Brand_Readme.png" />
             <span class="offcanvas-title primer-color-letra">CourseRoom</span>
-            <button type="button" class="btn primer-color-letra primer-color-fondo" data-bs-dismiss="offcanvas" aria-label="Close" id="cerrar-offcanvas">
+            <button type="button" class="btn segundo-color-letra segundo-color-fondo" data-bs-dismiss="offcanvas" aria-label="Close" id="cerrar-offcanvas">
                 <i class="fa fa-bars fa-xl"></i>
             </button>
         </div>
@@ -46,9 +45,9 @@
         <div class="offcanvas-body">
 
             <div class="row mb-3">
-                <div class="col-10 m-auto" align="center">
+                <div class="col centrado">
                     <!--Imagen del usuario-->
-                    <img id="imagen-usuario" class="img-fluid rounded-circle mb-4" alt="Imagen del usuario" crossorigin="anonymous"/>
+                    <img id="imagen-usuario" class="img-fluid rounded-circle mb-4 shadow-lg" alt="Imagen del usuario" crossorigin="anonymous"/>
                     <!--Nombre del usuario-->
                     <h5 id="nombre-usuario" class="text-center text-truncated h5 segundo-color-letra">Susana Alegria</h5>
                     <h6 id="tipo-usuario" class="text-center segundo-color-letra">Estudiante</h6>
@@ -58,13 +57,13 @@
                 <div class="row justify-content-center">
 
                     <div class="col-5">
-                        <a type="button" class="btn btn-lg tercer-color-letra" {{--href="{{route('cursos.inicio')}}"--}} title="Ir a mis cursos">
+                        <a type="button" class="btn btn-lg segundo-color-letra" {{--href="{{route('cursos.inicio')}}"--}} title="Ir a mis cursos">
                             <i class="fa-solid fa-chalkboard-user"></i> Cursos
                         </a>
                     </div>
 
                     <div class="col-5">
-                        <a type="button" class="btn btn-lg tercer-color-letra" {{--href="{{route('grupos.inicio')}}"--}} title="Ir a mis grupos">
+                        <a type="button" class="btn btn-lg segundo-color-letra" {{--href="{{route('grupos.inicio')}}"--}} title="Ir a mis grupos">
                             <i class="fa-solid fa-users-rectangle"></i> Grupos
                         </a>
                     </div>
@@ -74,13 +73,13 @@
                 <div class="row justify-content-center">
 
                     <div class="col-5">
-                        <a type="button" class="btn btn-lg tercer-color-letra" {{--href="{{route('tareas.inicio')}}"--}} title="Ir a mis tareas">
+                        <a type="button" class="btn btn-lg segundo-color-letra" {{--href="{{route('tareas.inicio')}}"--}} title="Ir a mis tareas">
                             <i class="fa-solid fa-house-laptop"></i> Tareas
                         </a>
                     </div>
 
                     <div class="col-5">
-                        <a type="button" class="btn btn-lg tercer-color-letra" {{--href="{{route('chats.inicio')}}"--}} title="Ir a mis chats">
+                        <a type="button" class="btn btn-lg segundo-color-letra" {{--href="{{route('chats.inicio')}}"--}} title="Ir a mis chats">
                             <i class="fa-solid fa-comments"></i> Chats
                         </a>
                     </div>
@@ -130,7 +129,7 @@
     </div>
 
     <div class="container-fluid min-vh-100">
-        <nav class="navbar shadow mt-2 mb-3 mx-3 rounded navbar-expand-md" id="barra-navegacion">
+        <nav class="navbar shadow mt-2 mb-3 mx-3 rounded navbar-expand-md segundo-color-fondo">
             <div class="container-fluid">
                 <button class="btn primer-color-letra primer-color-fondo" type="button" data-bs-toggle="offcanvas" data-bs-target="#inicio-offcanvas" aria-controls="inicio-offcanvas-label">
                     <i class="fa fa-bars fa-xl"></i>
@@ -139,15 +138,15 @@
                     <i class="fa-solid fa-envelope-open fa-xl" id="icono-notificaciones"></i>
                 </a>
                 <div class="dropdown dropstart">
-                    <button class="btn btn-dark dropdown-toggle text-white" type="button" id="boton-perfil" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button class="btn dropdown-toggle primer-color-letra primer-color-fondo" type="button" id="boton-perfil" data-bs-toggle="dropdown" aria-expanded="false">
                         <!-- Nombre usuario -->
                         Susana Alegria
                     </button>
-                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="boton-perfil">
-                        <li><a class="dropdown-item" href="{{route('usuarios.perfil')}}"><i class="fa-solid fa-user"></i> Perfil</a></li>
-                        <li><a class="dropdown-item" {{--href="{{route('usuarios.sesiones')}}"--}}><i class="fa-solid fa-desktop"></i> Sesiones</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" {{--href="{{route('inicio.cerrar')}}"--}}><i class="fa-solid fa-person-walking-arrow-right"></i> Cerrar sesión</a></li>
+                    <ul class="dropdown-menu primer-color-letra primer-color-fondo" aria-labelledby="boton-perfil">
+                        <li><a class="dropdown-item primer-color-letra" href="{{route('usuarios.perfil')}}"><i class="fa-solid fa-user"></i>&nbsp;&nbsp;Perfil</a></li>
+                        <li><a class="dropdown-item primer-color-letra" {{--href="{{route('usuarios.sesiones')}}"--}}><i class="fa-solid fa-desktop"></i>&nbsp;&nbsp;Sesiones</a></li>
+                        <li><hr class="dropdown-divider primer-color-letra"></li>
+                        <li><a class="dropdown-item primer-color-letra" {{--href="{{route('inicio.cerrar')}}"--}}><i class="fa-solid fa-person-walking-arrow-right"></i>&nbsp;&nbsp;Cerrar sesión</a></li>
                     </ul>
                 </div>
             </div>

@@ -2,6 +2,121 @@
 
 let BaseURL = window.location.origin;
 
+//#region Methods
+
+async function Registrar(imagen){
+
+    try{
+
+         ShowPreloader();
+
+         let contrasena = document.getElementById("contrasena").value;
+         let repetir_contrasena = document.getElementById("repetir-contrasena").value;
+
+         if(contrasena !== repetir_contrasena){
+             HidePreloader();
+             Swal.fire({
+                 title: '¡Alerta!',
+                 text: "Las contraseñas no coinciden",
+                 imageUrl: baseURL.concat("/assets/templates/IndiferentOwl.png"),
+                 imageWidth: 100,
+                 imageHeight: 123,
+                 imageAlt: 'Alert Image'
+             });
+
+             return;
+         }
+
+         let response = await axios({
+             url: '/default/registrar',
+             baseURL: BaseURL,
+             method: 'POST',
+             headers: {
+                 'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
+             },
+             data: {
+                 "Nombre": AvailableString(document.getElementById("nombre").value),
+                 "Paterno": AvailableString(document.getElementById("paterno").value),
+                 "Materno": AvailableString(document.getElementById("materno").value),
+                 "Genero": AvailableString(document.getElementById("genero").value),
+                 "FechaNacimiento": AvailableString(document.getElementById("fecha-nacimiento").value),
+                 "IdLocalidad": parseInt(document.getElementById("localidad").text),
+                 "CorreoElectronico": AvailableString(document.getElementById("correo-electronico").value),
+                 "IdTipoUsuario": parseInt(document.getElementById("tipo-usuario").text),
+                 "Contrasena": Base64.encode(contrasena),
+                 "Descripcion": AvailableString(document.getElementById("descripcion").value),
+                 "Imagen": imagen
+             }
+         });
+
+         HidePreloader();
+
+         let result = response.data;
+
+        switch (result.code) {
+            case 200:{
+                Swal.fire({
+                    title: 'Registro de nueva cuenta',
+                    text: result.data,
+                    imageUrl: BaseURL.concat("/assets/templates/HappyOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    imageAlt: 'Alert Image',
+                    background: '#000000',
+                    color: '#FFFFFF'
+                });
+            }
+            break;
+            case 500:{
+                Swal.fire({
+                    title: '¡Error!',
+                    text: result.data,
+                    imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    background: '#000000',
+                    color: '#FFFFFF',
+                    imageAlt: 'Error Image'
+                });
+            }
+            break;
+            default:{
+                Swal.fire({
+                    title: '¡Alerta!',
+                    text: result.data,
+                    imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    imageAlt: 'Alert Image',
+                    background: '#000000',
+                    color: '#FFFFFF'
+                });
+            }
+            break;
+        }
+
+     }
+     catch(ex){
+
+         HidePreloader();
+
+         Swal.fire({
+             title: '¡Error!',
+             text: ex,
+             imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+             imageWidth: 100,
+             imageHeight: 123,
+             background: '#000000',
+             color: '#FFFFFF',
+             imageAlt: 'Error Image'
+         });
+     }
+ }
+
+//#endregion
+
+//#region Events
+
 document.getElementById("form-registro").addEventListener("submit", async (e) => {
 
     e.preventDefault();
@@ -46,98 +161,6 @@ document.getElementById("form-registro").addEventListener("submit", async (e) =>
 
 });
 
-async function Registrar(imagen){
-
-   try{
-
-        ShowPreloader();
-
-        let contrasena = document.getElementById("contrasena").value;
-        let repetir_contrasena = document.getElementById("repetir-contrasena").value;
-
-        if(contrasena !== repetir_contrasena){
-            HidePreloader();
-            Swal.fire({
-                title: '¡Alerta!',
-                text: "Las contraseñas no coinciden",
-                imageUrl: baseURL.concat("/assets/templates/IndiferentOwl.png"),
-                imageWidth: 100,
-                imageHeight: 123,
-                imageAlt: 'Alert Image'
-            });
-
-            return;
-        }
-
-        let response = await axios({
-            url: '/default/registrar',
-            baseURL: BaseURL,
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
-            },
-            data: {
-                "Nombre": AvailableString(document.getElementById("nombre").value),
-                "Paterno": AvailableString(document.getElementById("paterno").value),
-                "Materno": AvailableString(document.getElementById("materno").value),
-                "Genero": AvailableString(document.getElementById("genero").value),
-                "FechaNacimiento": AvailableString(document.getElementById("fecha-nacimiento").value),
-                "IdLocalidad": parseInt(document.getElementById("localidad").text),
-                "CorreoElectronico": AvailableString(document.getElementById("correo-electronico").value),
-                "IdTipoUsuario": parseInt(document.getElementById("tipo-usuario").text),
-                "Contrasena": Base64.encode(contrasena),
-                "Descripcion": AvailableString(document.getElementById("descripcion").value),
-                "Imagen": imagen
-            }
-        });
-
-        HidePreloader();
-
-        let result = response.data;
-
-        if (result.code === 200) {
-
-            Swal.fire({
-                title: 'Registro de nueva cuenta',
-                text: result.data,
-                imageUrl: BaseURL.concat("/assets/templates/HappyOwl.png"),
-                imageWidth: 100,
-                imageHeight: 123,
-                imageAlt: 'Alert Image',
-                background: '#000000',
-                color: '#FFFFFF'
-            });
-
-        } else {
-            Swal.fire({
-                title: '¡Alerta!',
-                text: result.data,
-                imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
-                imageWidth: 100,
-                imageHeight: 123,
-                imageAlt: 'Alert Image',
-                background: '#000000',
-                color: '#FFFFFF'
-            });
-        }
-    }
-    catch(ex){
-
-        HidePreloader();
-
-        Swal.fire({
-            title: '¡Error!',
-            text: ex,
-            imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
-            imageWidth: 100,
-            imageHeight: 123,
-            background: '#000000',
-            color: '#FFFFFF',
-            imageAlt: 'Error Image'
-        });
-    }
-}
-
 document.getElementById("imagen").addEventListener("change", (e) => {
 
     ShowPreloader();
@@ -181,6 +204,10 @@ document.getElementById("imagen").addEventListener("change", (e) => {
     }
 });
 
+//#endregion
+
+//#region Functions
+
 function GetBuffer(fileData) {
     return function(resolve) {
         let reader = new FileReader();
@@ -192,3 +219,5 @@ function GetBuffer(fileData) {
         });
     }
 }
+
+//#endregion

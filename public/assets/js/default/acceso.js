@@ -27,20 +27,37 @@ document.getElementById("form-acceso").addEventListener("submit", async (e) => {
 
         let result = response.data;
 
-        if (result.code === 200) {
-
-
-        } else {
-            Swal.fire({
-                title: '¡Alerta!',
-                text: result.data,
-                imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
-                imageWidth: 100,
-                imageHeight: 123,
-                imageAlt: 'Alert Image',
-                background: '#000000',
-                color: '#FFFFFF'
-            });
+        switch (result.code) {
+            case 200:{
+                window.location.href = BaseURL.concat('/inicio');
+            }
+            break;
+            case 500:{
+                Swal.fire({
+                    title: '¡Error!',
+                    text: result.data,
+                    imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    background: '#000000',
+                    color: '#FFFFFF',
+                    imageAlt: 'Error Image'
+                });
+            }
+            break;
+            default:{
+                Swal.fire({
+                    title: '¡Alerta!',
+                    text: result.data,
+                    imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    imageAlt: 'Alert Image',
+                    background: '#000000',
+                    color: '#FFFFFF'
+                });
+            }
+            break;
         }
     }
     catch(ex){
@@ -58,5 +75,4 @@ document.getElementById("form-acceso").addEventListener("submit", async (e) => {
             imageAlt: 'Error Image'
         });
     }
-
 });
