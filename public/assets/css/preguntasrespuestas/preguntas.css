@@ -1,17 +1,11 @@
-.fuente {
-    font-family: 'Albert Sans', sans-serif;
-    font-size: 1rem;
-    font-weight: 600;
-}
-
-.fuenteNormal {
-    font-family: 'Albert Sans', sans-serif;
-}
-
 #contenedor{
     --padding: 1.25rem;
     padding-left: var(--padding);
     padding-right: var(--padding);
+}
+
+table{
+    width: 100% !important;
 }
 
 #table-mis-preguntas_filter {
@@ -22,41 +16,50 @@
 
 #table-mis-preguntas_filter input{
     width: 560px !important;
+    height: 2rem !important;
 }
 
 @media (max-width: 660px){
     #table-mis-preguntas_filter input{
         width: 500px !important;
+        height: 2rem !important;
     }
     #table-buscar-preguntas_filter input{
         width: 500px !important;
+        height: 2rem !important;
     }
 }
 
 @media (max-width: 560px){
     #table-mis-preguntas_filter input{
         width: 400px !important;
+        height: 2rem !important;
     }
     #table-buscar-preguntas_filter input{
         width: 400px !important;
+        height: 2rem !important;
     }
 }
 
 @media (max-width: 460px){
     #table-mis-preguntas_filter input{
         width: 300px !important;
+        height: 2rem !important;
     }
     #table-buscar-preguntas_filter input{
         width: 300px !important;
+        height: 2rem !important;
     }
 }
 
 @media (max-width: 360px){
     #table-mis-preguntas_filter input{
         width: 200px !important;
+        height: 2rem !important;
     }
     #table-buscar-preguntas_filter input{
         width: 200px !important;
+        height: 2rem !important;
     }
 }
 
@@ -73,6 +76,7 @@
 
 #table-buscar-preguntas_filter input{
     width: 560px !important;
+    height: 2rem !important;
 }
 
 #table-buscar-preguntas_paginate{
@@ -80,18 +84,6 @@
     place-content: center !important;
 }
 
-body.swal2-shown > [aria-hidden="true"] {
-    transition: 0.1s filter;
-    filter: blur(10px);
+.span-detalle{
+    cursor: pointer;
 }
-
-.black-placeholder::-webkit-input-placeholder{
-    color: black !important;
-    opacity: 1 !important;
-}
-
-.white-placeholder::-webkit-input-placeholder{
-    color: white !important;
-    opacity: 1 !important;
-}
-

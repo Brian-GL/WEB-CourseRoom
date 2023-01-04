@@ -85,4 +85,12 @@ input{
     max-height: 250px;
 }
 
+.black-placeholder::-webkit-input-placeholder{
+    color: black !important;
+    opacity: 1 !important;
+}
 
+.white-placeholder::-webkit-input-placeholder{
+    color: white !important;
+    opacity: 1 !important;
+}

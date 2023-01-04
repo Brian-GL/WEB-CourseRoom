@@ -40,9 +40,9 @@ async function Registrar(imagen){
                  "Materno": AvailableString(document.getElementById("materno").value),
                  "Genero": AvailableString(document.getElementById("genero").value),
                  "FechaNacimiento": AvailableString(document.getElementById("fecha-nacimiento").value),
-                 "IdLocalidad": parseInt(document.getElementById("localidad").text),
+                 "IdLocalidad": parseInt(document.getElementById("localidad").text ?? '0'),
                  "CorreoElectronico": AvailableString(document.getElementById("correo-electronico").value),
-                 "IdTipoUsuario": parseInt(document.getElementById("tipo-usuario").text),
+                 "IdTipoUsuario": parseInt(document.getElementById("tipo-usuario").text ?? '0'),
                  "Contrasena": Base64.encode(contrasena),
                  "Descripcion": AvailableString(document.getElementById("descripcion").value),
                  "Imagen": imagen

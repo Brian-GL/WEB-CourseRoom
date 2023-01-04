@@ -11,7 +11,7 @@
 @section('title', 'Registro')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset ('assets/css/default/registro.css')}}">
+<link rel="stylesheet" href="{{ asset ('assets/css/default/registro.min.css')}}">
 @endpush
 
 @section('content')

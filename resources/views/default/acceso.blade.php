@@ -3,7 +3,7 @@
 @section('title', 'Acceso')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset ('assets/css/default/acceso.css')}}">
+<link rel="stylesheet" href="{{ asset ('assets/css/default/acceso.min.css')}}">
 @endpush
 
 @section('content')

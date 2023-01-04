@@ -1,24 +1,169 @@
 'use strict';
 
-let primerColor = sessionStorage.getItem("PrimerColor");
-let tercerColor = sessionStorage.getItem("TercerColor");
+let BaseURL = window.location.origin;
 
-let colorLetra = primerColor[0] >= 127 ? "#000000" : "#FFFFFF";
-let elementos = document.getElementsByClassName("primer-color-letra");
-for(let elemento of elementos){
-    elemento.style.color = colorLetra;
+//#region Methods
+
+async function Actualizar(imagen){
+
+    try{
+
+        ShowPreloader();
+
+        let contrasena = document.getElementById("contrasena").value;
+        let repetir_contrasena = document.getElementById("repetir-contrasena").value;
+
+        if(contrasena !== repetir_contrasena){
+            preloader.hidden = true;
+            Swal.fire({
+                title: '¡Alerta!',
+                text: "Las contraseñas no coinciden",
+                imageUrl: baseURL.concat("/assets/templates/IndiferentOwl.png"),
+                imageWidth: 100,
+                imageHeight: 123,
+                imageAlt: 'Alert Image'
+            });
+
+            return;
+        }
+
+        let response = await axios({
+            url: '/usuarios/actualizar',
+            baseURL: BaseURL,
+            method: 'PUT',
+            headers: {
+                'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
+            },
+            data: {
+                "IdUsuario": 0,
+                "Nombre": AvailableString(document.getElementById("nombre").value),
+                "Paterno": AvailableString(document.getElementById("paterno").value),
+                "Materno": AvailableString(document.getElementById("materno").value),
+                "Genero": AvailableString(document.getElementById("genero").value),
+                "FechaNacimiento": AvailableString(document.getElementById("fecha-nacimiento").value),
+                "IdLocalidad": parseInt(document.getElementById("localidad").text ?? '0'),
+                "Descripcion": AvailableString(document.getElementById("descripcion").value)
+            }
+        });
+
+        let result = response.data;
+
+        switch (result.code) {
+            case 200:{
+
+                response = await axios({
+                    url: '/usuarios/actualizar_cuenta',
+                    baseURL: BaseURL,
+                    method: 'PUT',
+                    headers: {
+                        'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
+                    },
+                    data: {
+                        "IdUsuario": 0,
+                        "CorreoElectronico": AvailableString(document.getElementById("correo-electronico").value),
+                        "Contrasena": Base64.encode(contrasena),
+                        "Imagen": imagen,
+                        "ChatsConmigo": document.getElementById("chats-conmigo").checked,
+                        "AvisosActivo": document.getElementById("avisos-activo").checked
+                    }
+                });
+
+                result = response.data;
+
+                switch (result.code) {
+                    case 200:{
+                        Swal.fire({
+                            title: 'Actualización de datos de la cuenta',
+                            text: result.data,
+                            imageUrl: BaseURL.concat("/assets/templates/HappyOwl.png"),
+                            imageWidth: 100,
+                            imageHeight: 123,
+                            imageAlt: 'Alert Image',
+                            background: '#000000',
+                            color: '#FFFFFF'
+                        });
+                    }
+                    break;
+                    case 500:{
+                        Swal.fire({
+                            title: '¡Error!',
+                            text: result.data,
+                            imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+                            imageWidth: 100,
+                            imageHeight: 123,
+                            background: '#000000',
+                            color: '#FFFFFF',
+                            imageAlt: 'Error Image'
+                        });
+                    }
+                    break;
+                    default:{
+                        Swal.fire({
+                            title: '¡Alerta!',
+                            text: result.data,
+                            imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
+                            imageWidth: 100,
+                            imageHeight: 123,
+                            imageAlt: 'Alert Image',
+                            background: '#000000',
+                            color: '#FFFFFF'
+                        });
+                    }
+                    break;
+                }
+            }
+            break;
+            case 500:{
+                HidePreloader();
+                Swal.fire({
+                    title: '¡Error!',
+                    text: result.data,
+                    imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    background: '#000000',
+                    color: '#FFFFFF',
+                    imageAlt: 'Error Image'
+                });
+            }
+            break;
+            default:{
+                HidePreloader();
+                Swal.fire({
+                    title: '¡Alerta!',
+                    text: result.data,
+                    imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    imageAlt: 'Alert Image',
+                    background: '#000000',
+                    color: '#FFFFFF'
+                });
+            }
+            break;
+        }
+    }
+    catch(ex){
+
+        HidePreloader();
+
+        Swal.fire({
+            title: '¡Error!',
+            text: ex,
+            imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+            imageWidth: 100,
+            imageHeight: 123,
+            background: '#000000',
+            color: '#FFFFFF',
+            imageAlt: 'Error Image'
+        });
+    }
+
 }
 
-colorLetra = tercerColor[0] >= 127 ?  "#000000" : "#FFFFFF";
-elementos = document.getElementsByClassName("tercer-color-letra");
-for(let elemento of elementos){
-    elemento.style.color = colorLetra;
-}
+//#endregion
 
-elementos = document.getElementsByClassName("tercer-color-boton");
-for(let elemento of elementos){
-    elemento.style.background = "rgb(".concat(tercerColor, ")");
-}
+//#region Events
 
 document.getElementById("form-actualizacion").addEventListener("submit", (e) => {
 
@@ -64,145 +209,6 @@ document.getElementById("form-actualizacion").addEventListener("submit", (e) => 
 
 });
 
-function Actualizar(imagen){
-
-    preloader.hidden = false;
-
-    let nombre = AvailableStringValue(document.getElementById("nombre").value);
-    let paterno = AvailableStringValue(document.getElementById("paterno").value);
-    let materno = AvailableStringValue(document.getElementById("materno").value);
-    let genero = AvailableStringValue(document.getElementById("genero").value);
-    let fecha_nacimiento = document.getElementById("fecha-nacimiento").value;
-    let localidad = document.getElementById("localidad").text;
-    let correo_electronico = AvailableStringValue(document.getElementById("correo-electronico").value);
-    let contrasena = document.getElementById("contrasena").value;
-    let repetir_contrasena = document.getElementById("repetir-contrasena").value;
-    let descripcion = AvailableStringValue(document.getElementById("descripcion").value);
-    let chats_conmigo = document.getElementById("chats-conmigo").checked;
-    let avisos_activo = document.getElementById("avisos-activo").checked;
-
-    if(contrasena !== repetir_contrasena){
-        preloader.hidden = true;
-        Swal.fire({
-            title: '¡Alerta!',
-            text: "Las contraseñas no coinciden",
-            imageUrl: baseURL.concat("/assets/templates/IndiferentOwl.png"),
-            imageWidth: 100,
-            imageHeight: 123,
-            imageAlt: 'Alert Image'
-        });
-
-        return;
-    }
-
-    let baseURL = window.location.origin;
-
-    fetch(baseURL.concat('/usuarios/actualizar'), {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
-        },
-        body: JSON.stringify({
-            "IdUsuario": 0,
-            "Nombre": nombre,
-            "Paterno": paterno,
-            "Materno": materno,
-            "Genero": genero,
-            "FechaNacimiento": fecha_nacimiento,
-            "IdLocalidad": parseInt(localidad),
-            "Descripcion": descripcion
-        })
-    }).then((response) => response.json())
-    .then((result) => {
-
-        preloader.hidden = true;
-
-         if (result.code === 200) {
-            let data = result.data;
-
-            fetch(baseURL.concat('/usuarios/actualizar_cuenta'), {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
-                },
-                body: JSON.stringify({
-                    "IdUsuario": 0,
-                    "CorreoElectronico": correo_electronico,
-                    "Contrasena": b64EncodeUnicode(contrasena),
-                    "Imagen": imagen,
-                    "ChatsConmigo": chats_conmigo,
-                    "AvisosActivo": avisos_activo
-                })
-            }).then((response) => response.json())
-            .then((result) => {
-
-                preloader.hidden = true;
-
-                 if (result.code === 200) {
-                    let data = result.data;
-
-
-
-                } else {
-                    Swal.fire({
-                        title: '¡Alerta!',
-                        text: result.data,
-                        imageUrl: baseURL.concat("/assets/templates/IndiferentOwl.png"),
-                        imageWidth: 100,
-                        imageHeight: 123,
-                        imageAlt: 'Alert Image',
-                        background: '#000000',
-                        color: '#FFFFFF'
-                    });
-                }
-            }).catch((ex) => {
-
-                preloader.hidden = true;
-
-                Swal.fire({
-                    title: '¡Error!',
-                    html: ex,
-                    imageUrl: baseURL.concat("/assets/templates/SadOwl.png"),
-                    imageWidth: 100,
-                    imageHeight: 123,
-                    background: '#000000',
-                    color: '#FFFFFF',
-                    imageAlt: 'Error Image'
-                });
-            });
-
-
-        } else {
-            Swal.fire({
-                title: '¡Alerta!',
-                text: result.data,
-                imageUrl: baseURL.concat("/assets/templates/IndiferentOwl.png"),
-                imageWidth: 100,
-                imageHeight: 123,
-                imageAlt: 'Alert Image',
-                background: '#000000',
-                color: '#FFFFFF'
-            });
-        }
-    }).catch((ex) => {
-
-        preloader.hidden = true;
-
-        Swal.fire({
-            title: '¡Error!',
-            html: ex,
-            imageUrl: baseURL.concat("/assets/templates/SadOwl.png"),
-            imageWidth: 100,
-            imageHeight: 123,
-            background: '#000000',
-            color: '#FFFFFF',
-            imageAlt: 'Error Image'
-        });
-    });
-}
-
 document.getElementById("imagen").addEventListener("change", (e) => {
 
     preloader.hidden = false;
@@ -245,7 +251,11 @@ document.getElementById("imagen").addEventListener("change", (e) => {
     }
 });
 
-function getBuffer(fileData) {
+//#endregion
+
+//#region Functions
+
+function GetBuffer(fileData) {
     return function(resolve) {
       let reader = new FileReader();
       reader.readAsArrayBuffer(fileData);
@@ -257,8 +267,6 @@ function getBuffer(fileData) {
   }
 }
 
-function AvailableStringValue(value){return value === '' || value === null || value === undefined ? null : value.trim();}
+//#endregion
 
-function b64EncodeUnicode(str) {return btoa(encodeURIComponent(str));}
 
-function UnicodeDecodeB64(str) {return decodeURIComponent(atob(str));}

@@ -3,7 +3,7 @@
 @section('title', 'Recuperación de credenciales')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset ('assets/css/default/recuperacion.css')}}">
+<link rel="stylesheet" href="{{ asset ('assets/css/default/recuperacion.min.css')}}">
 @endpush
 
 

@@ -1,10 +1,13 @@
 'use strict';
-let dataTableMisPreguntas, dataTableBuscarPreguntas;
 
-let PrimerColor = sessionStorage.getItem("PrimerColor");
-let TercerColor = sessionStorage.getItem("TercerColor");
-let SegundoColor = sessionStorage.getItem("SegundoColor");
-let colorLetra = PrimerColor[0] >= 127 ? "0,0,0" : "255,255,255";
+let dataTableMisPreguntas, dataTableBuscarPreguntas;
+let SegundoColor = localStorage.getItem("SegundoColor");
+let SegundoColorLetra = localStorage.getItem("SegundoColorLetra");
+let TercerColor = localStorage.getItem("TercerColor");
+let TercerColorLetra = localStorage.getItem("TercerColorLetra");
+let PrimerColor = localStorage.getItem("PrimerColor");
+let PrimerColorLetra = localStorage.getItem("PrimerColorLetra");
+let BaseURL = window.location.origin;
 
 dataTableMisPreguntas = $("#table-mis-preguntas").DataTable({
     pagingType: 'full_numbers',
@@ -12,9 +15,10 @@ dataTableMisPreguntas = $("#table-mis-preguntas").DataTable({
     search: {
         return: true,
     },
+    scrollX: false,
     language: {
         search: "_INPUT_",
-        searchPlaceholder: "Buscar mis preguntas...",
+        searchPlaceholder: "Buscar alguna de mis preguntas...",
         paginate: {
             "first":      "Primero",
             "last":       "Último",
@@ -27,29 +31,27 @@ dataTableMisPreguntas = $("#table-mis-preguntas").DataTable({
         loadingRecords: "Cargando..."
     },
     columns: [
+        { title: "Id Pregunta" },
         { title: "Pregunta" },
-        { title: "Preguntador" },
-        { title: "Descripción" },
         { title: "Fecha de registro" },
-        { title: "Estatus" }
+        { title: "Estatus" },
+        { title: "Detalle" }
     ],
     columnDefs:[
-        {className: "text-center fuenteNormal encabezado", targets: "_all"},
+        {className: "text-center fuenteNormal segundo-color-fuente", targets: "_all"},
+        {className: "btn-detalle", targets: "4"}
     ],
     rowCallback: function(row, data, index){
-        $(row).css('color', "rgb(".concat(colorLetra,")"));
+        $(row).css('color', SegundoColorLetra);
     }
 });
+
+dataTableMisPreguntas.column(0).visible(false);
 
 dataTableBuscarPreguntas = $("#table-buscar-preguntas").DataTable({
     pagingType: 'full_numbers',
-    dom: 'frtp',
-    search: {
-        return: true,
-    },
+    dom: 'rtp',
     language: {
-        search: "_INPUT_",
-        searchPlaceholder: "Buscar alguna pregunta...",
         paginate: {
             "first":      "Primero",
             "last":       "Último",
@@ -62,71 +64,172 @@ dataTableBuscarPreguntas = $("#table-buscar-preguntas").DataTable({
         loadingRecords: "Cargando..."
     },
     columns: [
+        { title: "IdPregunta" },
         { title: "Pregunta" },
         { title: "Preguntador" },
-        { title: "Descripción" },
         { title: "Fecha de registro" },
-        { title: "Estatus" }
+        { title: "Estatus" },
+        { title: "Detalle" }
     ],
     columnDefs:[
-        {className: "text-center fuenteNormal encabezado", targets: "_all"},
+        {className: "text-center fuenteNormal segundo-color-fuente", targets: "_all"},
     ],
     rowCallback: function(row, data, index){
-        $(row).css('color', "rgb(".concat(colorLetra,")"));
+        $(row).css('color', SegundoColorLetra);
     }
 });
 
+dataTableBuscarPreguntas.column(0).visible(false);
+
 let elementos = document.querySelectorAll('input[type="search"]');
-
-//SegundoColor
-let esNegro = SegundoColor[0] <= 127;
-colorLetra = esNegro ? "0,0,0" : "255,255,255";
-
 for(let elemento of elementos){
-    elemento.style.cssText = "background: rgb(".concat(SegundoColor, "); color: rgb(",colorLetra,");");
-    elemento.classList.remove("form-control-sm");
-    elemento.classList.add("fuenteNormal", "form-control", esNegro ? "black-placeholder" : "white-placeholder");
+    elemento.style.setProperty('color',PrimerColorLetra,'important');
+    elemento.style.setProperty('background-color',PrimerColorLetra,'important');
+    elemento.classList.add(PrimerColorLetra === 'rgb(0,0,0)' ? "black-placeholder" : "white-placeholder");
 }
 
-elementos = document.getElementsByClassName("encabezado");
+elementos = document.querySelectorAll('.paginate_button a');
 for(let elemento of elementos){
-    elemento.style.cssText = "color: rgb(".concat(colorLetra,");");
+    elemento.style.setProperty('color',SegundoColorLetra,'important');
+    elemento.style.setProperty('background-color',SegundoColor,'important');
 }
 
-let PrimerColorLetra =  PrimerColor[0] <= 127 ? "0,0,0" : "255,255,255";
-let SegundoColorLetra =  SegundoColor[0] <= 127 ? "0,0,0" : "255,255,255";
+document.addEventListener('DOMContentLoaded',  ObtenerMisPreguntas, false);
 
-elementos = document.getElementsByClassName("nav-link");
-for(let elemento of elementos){
-    if(elemento.classList.contains("active")){
-        elemento.style.cssText = "background: rgb(".concat(SegundoColor, "); color: rgb(",SegundoColorLetra,") !important;");
-    }else{
-        elemento.style.cssText = "background: rgb(".concat(PrimerColor, "); color: rgb(",PrimerColorLetra,") !important;");
+//#region Methods
+
+async function ObtenerMisPreguntas(){
+    try{
+
+        ShowPreloader();
+
+        let response = await axios({
+            url: '/preguntasrespuestas/obtener',
+            baseURL: BaseURL,
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
+            },
+            data: {
+                "IdUsuario": null,
+            }
+        });
+
+        HidePreloader();
+
+        let result = response.data;
+
+        switch (result.code) {
+            case 200:{
+                let filas = result.data;
+                dataTableMisPreguntas.destroy();
+                //dataTableMisPreguntas.clear().draw();
+                dataTableMisPreguntas = $("#table-mis-preguntas").DataTable({
+                    pagingType: 'full_numbers',
+                    dom: 'frtp',
+                    search: {
+                        return: true,
+                    },
+                    scrollX: false,
+                    language: {
+                        search: "_INPUT_",
+                        searchPlaceholder: "Buscar alguna de mis preguntas...",
+                        paginate: {
+                            "first":      "Primero",
+                            "last":       "Último",
+                            "next":       "Siguiente",
+                            "previous":   "Anterior"
+                        },
+                        zeroRecords: "Sin resultados encontrados",
+                        emptyTable: "Sin datos en la tabla",
+                        infoEmpty: "Sin entradas",
+                        loadingRecords: "Cargando..."
+                    },
+                    columns: [
+                        { title: "IdPregunta" },
+                        { title: "Pregunta" },
+                        { title: "Fecha de registro" },
+                        { title: "Estatus" },
+                        { title: "Detalle" }
+                    ],
+                    columnDefs:[
+                        {className: "text-center fuenteNormal segundo-color-fuente", targets: "_all"},
+                        {className: "btn-detalle", targets: "4"}
+                    ],
+                    rowCallback: function(row, data, index){
+                        $(row).css('color', SegundoColorLetra);
+                    },
+                    data: filas,
+                    createdRow: function(row, data, index){
+                        $('.btn-detalle', row).html('<span class="span-detalle text-center" onclick="DetallePregunta('.concat(data.IdPregunta,')">Ver detalle</span>'));
+                    }
+                });
+
+                dataTableBuscarPreguntas.column(0).visible(false);
+
+            }
+            break;
+            case 500:{
+                Swal.fire({
+                    title: '¡Error!',
+                    text: result.data,
+                    imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    background: '#000000',
+                    color: '#FFFFFF',
+                    imageAlt: 'Error Image'
+                });
+            }
+            break;
+            default:{
+                Swal.fire({
+                    title: '¡Alerta!',
+                    text: result.data,
+                    imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    imageAlt: 'Alert Image',
+                    background: '#000000',
+                    color: '#FFFFFF'
+                });
+            }
+            break;
+        }
+    }
+    catch(ex){
+
+        HidePreloader();
+
+        Swal.fire({
+            title: '¡Error!',
+            text: ex,
+            imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+            imageWidth: 100,
+            imageHeight: 123,
+            background: '#000000',
+            color: '#FFFFFF',
+            imageAlt: 'Error Image'
+        });
     }
 }
 
-elementos = document.getElementsByClassName("page-link");
-colorLetra = TercerColor[0] <= 127 ? "0,0,0" : "255,255,255";
 
-for(let elemento of elementos){
-    elemento.style.cssText = "background: rgb(".concat(TercerColor, "); color: rgb(",colorLetra,"); important;");
-}
+//#endregion
 
-document.getElementById("agregar-pregunta").style.cssText = "background: rgb(".concat(TercerColor, "); color: rgb(",colorLetra,"); important;");
+//#region Events
 
-
-$(".nav-link").on("click", function () {
-
-    let PrimerColorLetra =  PrimerColor[0] <= 127 ? "0,0,0" : "255,255,255";
-    let SegundoColorLetra =  SegundoColor[0] <= 127 ? "0,0,0" : "255,255,255";
+$(".nav-link").on("click",  (e) => {
 
     let elementos = document.getElementsByClassName("nav-link");
 
     for(let elemento of elementos){
-        if(elemento.classList.contains("active")){
-            elemento.style.cssText = "background: rgb(".concat(SegundoColor, "); color: rgb(",SegundoColorLetra,") !important;");
+        if(elemento.id !== e.target.id){
+            elemento.style.setProperty('color',TercerColorLetra,'important');
+            elemento.style.setProperty('background-color',TercerColor,'important');
         }else{
-            elemento.style.cssText = "background: rgb(".concat(PrimerColor, "); color: rgb(",PrimerColorLetra,") !important;");
+            elemento.style.setProperty('color',PrimerColorLetra,'important');
+            elemento.style.setProperty('background-color',PrimerColor,'important');
         }
     }
 });
@@ -156,66 +259,88 @@ document.getElementById("agregar-pregunta").addEventListener("click", function()
           }
           return { pregunta: pregunta, descripcion: descripcion }
         }
-      }).then((result) => {
+      }).then(async (result) => {
             if(result.isConfirmed){
-                let pregunta = result.value.pregunta;
-                let descripcion = result.value.descripcion;
 
-                RegistrarPregunta(pregunta, descripcion);
+                try{
+
+                    ShowPreloader();
+
+                    let response = await axios({
+                        url: '/preguntasrespuestas/registrar',
+                        baseURL: BaseURL,
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
+                        },
+                        data: {
+                            "IdUsuario": null,
+                            "Pregunta": AvailableString(result.value.pregunta),
+                            "Descripcion": AvailableString(result.value.descripcion)
+                        }
+                    });
+
+                    HidePreloader();
+
+                    let resultado = response.data;
+
+                    switch (resultado.code) {
+                        case 200:{
+                           let data = resultado.data;
+                        }
+                        break;
+                        case 500:{
+                            Swal.fire({
+                                title: '¡Error!',
+                                text: resultado.data,
+                                imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+                                imageWidth: 100,
+                                imageHeight: 123,
+                                background: '#000000',
+                                color: '#FFFFFF',
+                                imageAlt: 'Error Image'
+                            });
+                        }
+                        break;
+                        default:{
+                            Swal.fire({
+                                title: '¡Alerta!',
+                                text: resultado.data,
+                                imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
+                                imageWidth: 100,
+                                imageHeight: 123,
+                                imageAlt: 'Alert Image',
+                                background: '#000000',
+                                color: '#FFFFFF'
+                            });
+                        }
+                        break;
+                    }
+                }
+                catch(ex){
+
+                    HidePreloader();
+
+                    Swal.fire({
+                        title: '¡Error!',
+                        text: ex,
+                        imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+                        imageWidth: 100,
+                        imageHeight: 123,
+                        background: '#000000',
+                        color: '#FFFFFF',
+                        imageAlt: 'Error Image'
+                    });
+                }
 
             }
       })
 
 });
 
-function RegistrarPregunta(Pregunta, Descripcion){
-    preloader.hidden = false;
-    let baseURL = window.location.origin;
+document.getElementById("form-buscar-preguntas").addEventListener('submit', async (e) => {
+    e.preventDefault();
+});
 
-    fetch(baseURL.concat('/preguntasrespuestas/registrar'), {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
-        },
-        body: JSON.stringify({
-            "IdUsuario": null,
-            "Pregunta": AvailableStringValue(Pregunta),
-            "Descripcion": AvailableStringValue(Descripcion)
-        })
-    }).then((response) => response.json())
-    .then((result) => {
-        preloader.hidden = true;
 
-        if (result.code === 200) {
-            let data = result.data;
-
-        } else {
-            Swal.fire({
-                title: '¡Alerta!',
-                text: result.data,
-                imageUrl: baseURL.concat("/assets/templates/IndiferentOwl.png"),
-                imageWidth: 100,
-                imageHeight: 123,
-                imageAlt: 'Alert Image',
-                background: '#000000',
-                color: '#FFFFFF'
-            });
-        }
-    }).catch((ex) => {
-
-        preloader.hidden = true;
-        Swal.fire({
-            title: '¡Error!',
-            text: ex,
-            imageUrl: baseURL.concat("/assets/templates/SadOwl.png"),
-            imageWidth: 100,
-            imageHeight: 123,
-            background: '#000000',
-            color: '#FFFFFF',
-            imageAlt: 'Error Image'
-        });
-    });
-}
-
-function AvailableStringValue(value){return value === '' || value === null || value === undefined ? null : value.trim();}
+//#endregion
