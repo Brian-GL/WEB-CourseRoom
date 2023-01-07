@@ -134,6 +134,23 @@ Route::get('/perfil',  [UsuariosController::class, 'perfil'])->name('usuarios.pe
 Route::get('/sesiones',  [UsuariosController::class, 'sesiones'])->name('usuarios.sesiones')->middleware('session.token');
 
 Route::put('/usuarios/actualizar',  [UsuariosController::class, 'usuario_actualizar'])->middleware('session.token');
+Route::delete('/usuarios/remover',  [UsuariosController::class, 'usuario_remover'])->middleware('session.token');
+Route::post('/usuarios/acceso',  [UsuariosController::class, 'usuarioacceso_obtener'])->middleware('session.token');
+Route::post('/usuarios/cuentaobtener',  [UsuariosController::class, 'usuariocuenta_obtener'])->middleware('session.token');
+Route::post('/usuarios/desempeno',  [UsuariosController::class, 'usuariodesempeno_obtener'])->middleware('session.token');
+Route::post('/usuarios/desempenoregistrar',  [UsuariosController::class, 'usuariodesempeno_registrar'])->middleware('session.token');
+Route::post('/usuarios/detalle',  [UsuariosController::class, 'usuariodetalle_obtener'])->middleware('session.token');
+Route::post('/usuarios/nuevapuntualidad',  [UsuariosController::class, 'usuarionuevapuntualidadcurso_obtener'])->middleware('session.token');
+Route::post('/usuarios/nuevopromedio',  [UsuariosController::class, 'usuarionuevopromediocurso_obtener'])->middleware('session.token');
+Route::post('/usuarios/nuevopromediogeneral',  [UsuariosController::class, 'usuarionuevopromediogeneral_obtener'])->middleware('session.token');
+Route::post('/usuarios/buscar',  [UsuariosController::class, 'usuarios_buscar'])->middleware('session.token');
+Route::put('/usuarios/sesion',  [UsuariosController::class, 'usuariosesion_actualizar'])->middleware('session.token');
+Route::post('/usuarios/sesionregistrar',  [UsuariosController::class, 'usuariosesion_registrar'])->middleware('session.token');
+Route::post('/usuarios/sesionvalidar',  [UsuariosController::class, 'usuariosesion_validar'])->middleware('session.token');
+Route::post('/usuarios/sesiones',  [UsuariosController::class, 'usuariosesiones_obtener'])->middleware('session.token');
+Route::post('/usuarios/tematica',  [UsuariosController::class, 'usuariotematica_registrar'])->middleware('session.token');
+Route::delete('/usuarios/tematicaremover',  [UsuariosController::class, 'usuariotematica_remover'])->middleware('session.token');
+Route::post('/usuarios/tematicasobtener',  [UsuariosController::class, 'usuariotematicas_obtener'])->middleware('session.token');
 
 #endregion
 
