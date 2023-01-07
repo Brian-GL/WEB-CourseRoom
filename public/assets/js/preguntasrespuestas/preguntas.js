@@ -39,7 +39,7 @@ dataTableMisPreguntas = $("#table-mis-preguntas").DataTable({
     ],
     columnDefs:[
         {className: "text-center fuenteNormal segundo-color-fuente", targets: "_all"},
-        {className: "btn-detalle", targets: "4"}
+        {className: "btn-detalle span-detalle", targets: "4"}
     ],
     rowCallback: function(row, data, index){
         $(row).css('color', SegundoColorLetra);
@@ -73,6 +73,7 @@ dataTableBuscarPreguntas = $("#table-buscar-preguntas").DataTable({
     ],
     columnDefs:[
         {className: "text-center fuenteNormal segundo-color-fuente", targets: "_all"},
+        {className: "btn-detalle span-detalle", targets: "5"}
     ],
     rowCallback: function(row, data, index){
         $(row).css('color', SegundoColorLetra);
@@ -85,7 +86,7 @@ let elementos = document.querySelectorAll('input[type="search"]');
 for(let elemento of elementos){
     elemento.style.setProperty('color',PrimerColorLetra,'important');
     elemento.style.setProperty('background-color',PrimerColorLetra,'important');
-    elemento.classList.add(PrimerColorLetra === 'rgb(0,0,0)' ? "black-placeholder" : "white-placeholder");
+    elemento.classList.add(PrimerColorLetra === 'rgb(0,0,0)' ? "white-placeholder" : "black-placeholder");
 }
 
 elementos = document.querySelectorAll('.paginate_button a');
@@ -122,8 +123,9 @@ async function ObtenerMisPreguntas(){
         switch (result.code) {
             case 200:{
                 let filas = result.data;
+
                 dataTableMisPreguntas.destroy();
-                //dataTableMisPreguntas.clear().draw();
+
                 dataTableMisPreguntas = $("#table-mis-preguntas").DataTable({
                     pagingType: 'full_numbers',
                     dom: 'frtp',
@@ -170,6 +172,7 @@ async function ObtenerMisPreguntas(){
             }
             break;
             case 500:{
+                dataTableMisPreguntas.clear().draw();
                 Swal.fire({
                     title: '¡Error!',
                     text: result.data,
@@ -183,6 +186,7 @@ async function ObtenerMisPreguntas(){
             }
             break;
             default:{
+                dataTableMisPreguntas.clear().draw();
                 Swal.fire({
                     title: '¡Alerta!',
                     text: result.data,
@@ -200,7 +204,7 @@ async function ObtenerMisPreguntas(){
     catch(ex){
 
         HidePreloader();
-
+        dataTableMisPreguntas.clear().draw();
         Swal.fire({
             title: '¡Error!',
             text: ex,
@@ -213,7 +217,6 @@ async function ObtenerMisPreguntas(){
         });
     }
 }
-
 
 //#endregion
 
@@ -340,6 +343,117 @@ document.getElementById("agregar-pregunta").addEventListener("click", function()
 
 document.getElementById("form-buscar-preguntas").addEventListener('submit', async (e) => {
     e.preventDefault();
+
+    try{
+
+        ShowPreloader();
+
+        let response = await axios({
+            url: '/preguntasrespuestas/buscar',
+            baseURL: BaseURL,
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
+            },
+            data: {
+                "Busqueda": AvailableString(document.getElementById("input-buscar-preguntas").value),
+            }
+        });
+
+        HidePreloader();
+
+        let result = response.data;
+
+        switch (result.code) {
+            case 200:{
+                let filas = result.data;
+                dataTableBuscarPreguntas.destroy();
+
+                dataTableBuscarPreguntas = $("#table-buscar-preguntas").DataTable({
+                    pagingType: 'full_numbers',
+                    dom: 'rtp',
+                    language: {
+                        paginate: {
+                            "first":      "Primero",
+                            "last":       "Último",
+                            "next":       "Siguiente",
+                            "previous":   "Anterior"
+                        },
+                        zeroRecords: "Sin resultados encontrados",
+                        emptyTable: "Sin datos en la tabla",
+                        infoEmpty: "Sin entradas",
+                        loadingRecords: "Cargando..."
+                    },
+                    columns: [
+                        { title: "IdPregunta" },
+                        { title: "Pregunta" },
+                        { title: "Preguntador" },
+                        { title: "Fecha de registro" },
+                        { title: "Estatus" },
+                        { title: "Detalle" }
+                    ],
+                    columnDefs:[
+                        {className: "text-center fuenteNormal segundo-color-fuente", targets: "_all"},
+                    ],
+                    rowCallback: function(row, data, index){
+                        $(row).css('color', SegundoColorLetra);
+                    },
+                    data: filas,
+                    createdRow: function(row, data, index){
+                        $('.btn-detalle', row).html('<span class="span-detalle text-center" onclick="DetallePregunta('.concat(data.IdPregunta,')">Ver detalle</span>'));
+                    }
+                });
+
+                dataTableBuscarPreguntas.column(0).visible(false);
+
+            }
+            break;
+            case 500:{
+                dataTableBuscarPreguntas.clear().draw();
+                Swal.fire({
+                    title: '¡Error!',
+                    text: result.data,
+                    imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    background: '#000000',
+                    color: '#FFFFFF',
+                    imageAlt: 'Error Image'
+                });
+            }
+            break;
+            default:{
+                dataTableBuscarPreguntas.clear().draw();
+                Swal.fire({
+                    title: '¡Alerta!',
+                    text: result.data,
+                    imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    imageAlt: 'Alert Image',
+                    background: '#000000',
+                    color: '#FFFFFF'
+                });
+            }
+            break;
+        }
+    }
+    catch(ex){
+
+        HidePreloader();
+        dataTableBuscarPreguntas.clear().draw();
+        Swal.fire({
+            title: '¡Error!',
+            text: ex,
+            imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+            imageWidth: 100,
+            imageHeight: 123,
+            background: '#000000',
+            color: '#FFFFFF',
+            imageAlt: 'Error Image'
+        });
+    }
+
 });
 
 

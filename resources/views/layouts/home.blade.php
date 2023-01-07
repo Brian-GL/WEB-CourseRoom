@@ -144,7 +144,7 @@
                     </button>
                     <ul class="dropdown-menu primer-color-letra primer-color-fondo" aria-labelledby="boton-perfil">
                         <li><a class="dropdown-item primer-color-letra" href="{{route('usuarios.perfil')}}"><i class="fa-solid fa-user"></i>&nbsp;&nbsp;Perfil</a></li>
-                        <li><a class="dropdown-item primer-color-letra" {{--href="{{route('usuarios.sesiones')}}"--}}><i class="fa-solid fa-desktop"></i>&nbsp;&nbsp;Sesiones</a></li>
+                        <li><a class="dropdown-item primer-color-letra" href="{{route('usuarios.sesiones')}}"><i class="fa-solid fa-desktop"></i>&nbsp;&nbsp;Sesiones</a></li>
                         <li><hr class="dropdown-divider primer-color-letra"></li>
                         <li><a class="dropdown-item primer-color-letra" {{--href="{{route('inicio.cerrar')}}"--}}><i class="fa-solid fa-person-walking-arrow-right"></i>&nbsp;&nbsp;Cerrar sesión</a></li>
                     </ul>

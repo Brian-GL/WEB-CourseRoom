@@ -131,6 +131,7 @@ Route::get('/preguntas',  [PreguntasRespuestasController::class, 'inicio'])->nam
 
 #region Usuarios
 Route::get('/perfil',  [UsuariosController::class, 'perfil'])->name('usuarios.perfil')->middleware('session.token');
+Route::get('/sesiones',  [UsuariosController::class, 'sesiones'])->name('usuarios.sesiones')->middleware('session.token');
 
 Route::put('/usuarios/actualizar',  [UsuariosController::class, 'usuario_actualizar'])->middleware('session.token');
 

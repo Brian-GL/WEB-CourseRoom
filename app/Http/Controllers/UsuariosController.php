@@ -16,6 +16,11 @@ class UsuariosController extends Controller
         return view('usuarios.perfil', compact('localidades','tipos_usuario'));
     }
 
+    public function sesiones(){
+
+        return view('usuarios.sesiones');
+    }
+
     #endregion
 
 

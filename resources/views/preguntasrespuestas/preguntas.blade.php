@@ -3,7 +3,7 @@
 @section('title', 'Preguntas & Respuestas')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset ('assets/css/preguntasrespuestas/preguntas.css')}}">
+<link rel="stylesheet" href="{{ asset ('assets/css/preguntasrespuestas/preguntas.min.css')}}">
 @endpush
 
 @section('content')
