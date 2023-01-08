@@ -82,7 +82,7 @@ async function ObtenerMisChats(){
                 'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
             },
             data: {
-                "IdUsuario": null,
+                "IdUsuario": 0
             }
         });
 
