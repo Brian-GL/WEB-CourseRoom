@@ -72,6 +72,8 @@ Route::post('/catalogos/tiposusuario',  [CatalogosController::class, 'catalogoti
 
 #region Chats
 
+Route::get('/chats',  [ChatsController::class, 'chats'])->name('chats.inicio')->middleware('session.token');
+
 Route::post('/chats/registrar',  [ChatsController::class, 'chat_registrar'])->middleware('session.token');
 Route::delete('/chats/remover',  [ChatsController::class, 'chat_remover'])->middleware('session.token');
 Route::post('/chats/mensajeregistrar',  [ChatsController::class, 'chatmensaje_registrar'])->middleware('session.token');

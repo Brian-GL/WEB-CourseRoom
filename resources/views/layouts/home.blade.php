@@ -79,7 +79,7 @@
                     </div>
 
                     <div class="col-5">
-                        <a type="button" class="btn btn-lg segundo-color-letra" {{--href="{{route('chats.inicio')}}"--}} title="Ir a mis chats">
+                        <a type="button" class="btn btn-lg segundo-color-letra" href="{{route('chats.inicio')}}" title="Ir a mis chats">
                             <i class="fa-solid fa-comments"></i> Chats
                         </a>
                     </div>

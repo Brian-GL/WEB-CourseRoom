@@ -1,6 +1,6 @@
 'use strict';
 
-let dataTableMisPreguntas, dataTableBuscarPreguntas;
+let dataTableMisChats;
 let SegundoColor = localStorage.getItem("SegundoColor");
 let SegundoColorLetra = localStorage.getItem("SegundoColorLetra");
 let TercerColor = localStorage.getItem("TercerColor");
@@ -9,7 +9,7 @@ let PrimerColor = localStorage.getItem("PrimerColor");
 let PrimerColorLetra = localStorage.getItem("PrimerColorLetra");
 let BaseURL = window.location.origin;
 
-dataTableMisPreguntas = $("#table-mis-preguntas").DataTable({
+dataTableMisChats = $("#table-mis-chats").DataTable({
     pagingType: 'full_numbers',
     dom: 'frtp',
     search: {
@@ -18,7 +18,7 @@ dataTableMisPreguntas = $("#table-mis-preguntas").DataTable({
     scrollX: false,
     language: {
         search: "_INPUT_",
-        searchPlaceholder: "Buscar alguna de mis preguntas...",
+        searchPlaceholder: "Buscar alguno de mis chats...",
         paginate: {
             "first":      "Primero",
             "last":       "Último",
@@ -31,56 +31,26 @@ dataTableMisPreguntas = $("#table-mis-preguntas").DataTable({
         loadingRecords: "Cargando..."
     },
     columns: [
-        { title: "Id Pregunta" },
-        { title: "Pregunta" },
+        { title: "Id Chat" },
+        { title: "Id Usuario Receptor" },
+        { title: "Receptor" },
+        { title: "Imagen del receptor" },
         { title: "Fecha de registro" },
-        { title: "Estatus" },
-        { title: "Detalle" }
+        { title: "Último mensaje" },
+        { title: "Fecha de envío" },
+        { title: "Mostrar" },
     ],
     columnDefs:[
         {className: "text-center fuenteNormal segundo-color-fuente", targets: "_all"},
-        {className: "btn-detalle span-detalle", targets: "4"}
+        {className: "btn-detalle span-detalle", targets: "7"},
+        {className: "receptor", targets: "2"},
+        {visible: false, targets: [0,1,3]}
     ],
     rowCallback: function(row, data, index){
         $(row).css('color', SegundoColorLetra);
     }
 });
 
-dataTableMisPreguntas.column(0).visible(false);
-
-dataTableBuscarPreguntas = $("#table-buscar-preguntas").DataTable({
-    pagingType: 'full_numbers',
-    dom: 'rtp',
-    language: {
-        paginate: {
-            "first":      "Primero",
-            "last":       "Último",
-            "next":       "Siguiente",
-            "previous":   "Anterior"
-        },
-        zeroRecords: "Sin resultados encontrados",
-        emptyTable: "Sin datos en la tabla",
-        infoEmpty: "Sin entradas",
-        loadingRecords: "Cargando..."
-    },
-    columns: [
-        { title: "IdPregunta" },
-        { title: "Pregunta" },
-        { title: "Preguntador" },
-        { title: "Fecha de registro" },
-        { title: "Estatus" },
-        { title: "Detalle" }
-    ],
-    columnDefs:[
-        {className: "text-center fuenteNormal segundo-color-fuente", targets: "_all"},
-        {className: "btn-detalle span-detalle", targets: "5"}
-    ],
-    rowCallback: function(row, data, index){
-        $(row).css('color', SegundoColorLetra);
-    }
-});
-
-dataTableBuscarPreguntas.column(0).visible(false);
 
 let elementos = document.querySelectorAll('input[type="search"]');
 for(let elemento of elementos){
@@ -95,17 +65,17 @@ for(let elemento of elementos){
     elemento.style.setProperty('background-color',SegundoColor,'important');
 }
 
-document.addEventListener('DOMContentLoaded',  ObtenerMisPreguntas, false);
+document.addEventListener('DOMContentLoaded',  ObtenerMisChats, false);
 
 //#region Methods
 
-async function ObtenerMisPreguntas(){
+async function ObtenerMisChats(){
     try{
 
         ShowPreloader();
 
         let response = await axios({
-            url: '/preguntasrespuestas/obtener',
+            url: '/chats/obtener',
             baseURL: BaseURL,
             method: 'POST',
             headers: {
@@ -124,9 +94,9 @@ async function ObtenerMisPreguntas(){
             case 200:{
                 let filas = result.data;
 
-                dataTableMisPreguntas.destroy();
+                dataTableMisChats.destroy();
 
-                dataTableMisPreguntas = $("#table-mis-preguntas").DataTable({
+                dataTableMisChats = $("#table-mis-chats").DataTable({
                     pagingType: 'full_numbers',
                     dom: 'frtp',
                     search: {
@@ -135,7 +105,7 @@ async function ObtenerMisPreguntas(){
                     scrollX: false,
                     language: {
                         search: "_INPUT_",
-                        searchPlaceholder: "Buscar alguna de mis preguntas...",
+                        searchPlaceholder: "Buscar alguno de mis chats...",
                         paginate: {
                             "first":      "Primero",
                             "last":       "Último",
@@ -148,31 +118,36 @@ async function ObtenerMisPreguntas(){
                         loadingRecords: "Cargando..."
                     },
                     columns: [
-                        { title: "IdPregunta" },
-                        { title: "Pregunta" },
+                        { title: "Id Chat" },
+                        { title: "Id Usuario Receptor" },
+                        { title: "Receptor" },
+                        { title: "Imagen del receptor" },
                         { title: "Fecha de registro" },
-                        { title: "Estatus" },
-                        { title: "Detalle" }
+                        { title: "Último mensaje" },
+                        { title: "Fecha de envío" },
+                        { title: "Mostrar" },
                     ],
                     columnDefs:[
                         {className: "text-center fuenteNormal segundo-color-fuente", targets: "_all"},
-                        {className: "btn-detalle", targets: "4"}
+                        {className: "btn-detalle span-detalle", targets: "7"},
+                        {visible: false, targets: "[0,1,3]"}
                     ],
                     rowCallback: function(row, data, index){
                         $(row).css('color', SegundoColorLetra);
                     },
                     data: filas,
                     createdRow: function(row, data, index){
-                        $('.btn-detalle', row).html('<span class="span-detalle text-center" onclick="DetallePregunta('.concat(data.IdPregunta,')">Ver detalle</span>'));
+                        $('.receptor', row).html('<img class="img-fluid" src="'.concat(data.ImagenReceptor,'"><span class="fuenteNormal">',data.Receptor,'</span>'));
+                        $('.btn-detalle', row).html('<span class="span-detalle text-center" onclick="DetalleChat('.concat(data.IdChat,')">Ver chat</span>'));
                     }
                 });
 
-                dataTableMisPreguntas.column(0).visible(false);
+                dataTableMisChats.column(0).visible(false);
 
             }
             break;
             case 500:{
-                dataTableMisPreguntas.clear().draw();
+                dataTableMisChats.clear().draw();
                 Swal.fire({
                     title: '¡Error!',
                     text: result.data,
@@ -186,7 +161,7 @@ async function ObtenerMisPreguntas(){
             }
             break;
             default:{
-                dataTableMisPreguntas.clear().draw();
+                dataTableMisChats.clear().draw();
                 Swal.fire({
                     title: '¡Alerta!',
                     text: result.data,
@@ -204,7 +179,7 @@ async function ObtenerMisPreguntas(){
     catch(ex){
 
         HidePreloader();
-        dataTableMisPreguntas.clear().draw();
+        dataTableMisChats.clear().draw();
         Swal.fire({
             title: '¡Error!',
             text: ex,
@@ -222,26 +197,12 @@ async function ObtenerMisPreguntas(){
 
 //#region Events
 
-$(".nav-link").on("click",  (e) => {
 
-    let elementos = document.getElementsByClassName("nav-link");
-
-    for(let elemento of elementos){
-        if(elemento.id !== e.target.id){
-            elemento.style.setProperty('color',TercerColorLetra,'important');
-            elemento.style.setProperty('background-color',TercerColor,'important');
-        }else{
-            elemento.style.setProperty('color',PrimerColorLetra,'important');
-            elemento.style.setProperty('background-color',PrimerColor,'important');
-        }
-    }
-});
-
-document.getElementById("agregar-pregunta").addEventListener("click", function(){
+document.getElementById("agregar-chat").addEventListener("click", function(){
 
     Swal.fire({
         icon: 'question',
-        title: 'Crear nueva pregunta',
+        title: 'Crear nuevo chat',
         padding: '0.5em',
         background: '#000000',
         color: '#FFFFFF',
@@ -340,121 +301,5 @@ document.getElementById("agregar-pregunta").addEventListener("click", function()
       })
 
 });
-
-document.getElementById("form-buscar-preguntas").addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    try{
-
-        ShowPreloader();
-
-        let response = await axios({
-            url: '/preguntasrespuestas/buscar',
-            baseURL: BaseURL,
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
-            },
-            data: {
-                "Busqueda": AvailableString(document.getElementById("input-buscar-preguntas").value),
-            }
-        });
-
-        HidePreloader();
-
-        let result = response.data;
-
-        switch (result.code) {
-            case 200:{
-                let filas = result.data;
-                dataTableBuscarPreguntas.destroy();
-
-                dataTableBuscarPreguntas = $("#table-buscar-preguntas").DataTable({
-                    pagingType: 'full_numbers',
-                    dom: 'rtp',
-                    language: {
-                        paginate: {
-                            "first":      "Primero",
-                            "last":       "Último",
-                            "next":       "Siguiente",
-                            "previous":   "Anterior"
-                        },
-                        zeroRecords: "Sin resultados encontrados",
-                        emptyTable: "Sin datos en la tabla",
-                        infoEmpty: "Sin entradas",
-                        loadingRecords: "Cargando..."
-                    },
-                    columns: [
-                        { title: "IdPregunta" },
-                        { title: "Pregunta" },
-                        { title: "Preguntador" },
-                        { title: "Fecha de registro" },
-                        { title: "Estatus" },
-                        { title: "Detalle" }
-                    ],
-                    columnDefs:[
-                        {className: "text-center fuenteNormal segundo-color-fuente", targets: "_all"},
-                    ],
-                    rowCallback: function(row, data, index){
-                        $(row).css('color', SegundoColorLetra);
-                    },
-                    data: filas,
-                    createdRow: function(row, data, index){
-                        $('.btn-detalle', row).html('<span class="span-detalle text-center" onclick="DetallePregunta('.concat(data.IdPregunta,')">Ver detalle</span>'));
-                    }
-                });
-
-                dataTableBuscarPreguntas.column(0).visible(false);
-
-            }
-            break;
-            case 500:{
-                dataTableBuscarPreguntas.clear().draw();
-                Swal.fire({
-                    title: '¡Error!',
-                    text: result.data,
-                    imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
-                    imageWidth: 100,
-                    imageHeight: 123,
-                    background: '#000000',
-                    color: '#FFFFFF',
-                    imageAlt: 'Error Image'
-                });
-            }
-            break;
-            default:{
-                dataTableBuscarPreguntas.clear().draw();
-                Swal.fire({
-                    title: '¡Alerta!',
-                    text: result.data,
-                    imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
-                    imageWidth: 100,
-                    imageHeight: 123,
-                    imageAlt: 'Alert Image',
-                    background: '#000000',
-                    color: '#FFFFFF'
-                });
-            }
-            break;
-        }
-    }
-    catch(ex){
-
-        HidePreloader();
-        dataTableBuscarPreguntas.clear().draw();
-        Swal.fire({
-            title: '¡Error!',
-            text: ex,
-            imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
-            imageWidth: 100,
-            imageHeight: 123,
-            background: '#000000',
-            color: '#FFFFFF',
-            imageAlt: 'Error Image'
-        });
-    }
-
-});
-
 
 //#endregion

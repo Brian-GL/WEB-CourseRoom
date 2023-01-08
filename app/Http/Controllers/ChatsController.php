@@ -9,6 +9,10 @@ class ChatsController extends Controller
 {
     #region views
 
+    public function chats(){
+        return view('chats.chats');
+    }
+
     #endregion
 
     #region AJAX
