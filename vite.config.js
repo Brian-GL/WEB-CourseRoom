@@ -19,5 +19,5 @@ export default defineConfig({
             '~toastr': path.resolve(__dirname,'node_modules/toastr'),
             '@': '/resources/js'
         }
-    },
+    }
 });
