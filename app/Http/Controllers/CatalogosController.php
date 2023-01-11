@@ -16,8 +16,10 @@ class CatalogosController extends Controller
     {
         try {
 
-            $validator = Validator::make($request->all(), [
+            $validator = Validator::make($request->all(), $rules = [
 
+            ], $messages = [
+                'required' => 'El campo :attribute es requerido'
             ]);
 
             if ($validator->fails()) {
@@ -60,8 +62,10 @@ class CatalogosController extends Controller
     {
         try {
 
-            $validator = Validator::make($request->all(), [
+            $validator = Validator::make($request->all(), $rules = [
 
+            ], $messages = [
+                'required' => 'El campo :attribute es requerido'
             ]);
 
             if ($validator->fails()) {
@@ -104,8 +108,10 @@ class CatalogosController extends Controller
     {
         try {
 
-            $validator = Validator::make($request->all(), [
+            $validator = Validator::make($request->all(), $rules = [
 
+            ], $messages = [
+                'required' => 'El campo :attribute es requerido'
             ]);
 
             if ($validator->fails()) {
@@ -148,8 +154,10 @@ class CatalogosController extends Controller
     {
         try {
 
-            $validator = Validator::make($request->all(), [
+            $validator = Validator::make($request->all(), $rules = [
 
+            ], $messages = [
+                'required' => 'El campo :attribute es requerido'
             ]);
 
             if ($validator->fails()) {
@@ -194,8 +202,10 @@ class CatalogosController extends Controller
     {
         try {
 
-            $validator = Validator::make($request->all(), [
+            $validator = Validator::make($request->all(), $rules = [
 
+            ], $messages = [
+                'required' => 'El campo :attribute es requerido'
             ]);
 
             if ($validator->fails()) {
@@ -238,8 +248,10 @@ class CatalogosController extends Controller
     {
         try {
 
-            $validator = Validator::make($request->all(), [
+            $validator = Validator::make($request->all(), $rules = [
 
+            ], $messages = [
+                'required' => 'El campo :attribute es requerido'
             ]);
 
             if ($validator->fails()) {
@@ -282,8 +294,10 @@ class CatalogosController extends Controller
     {
         try {
 
-            $validator = Validator::make($request->all(), [
+            $validator = Validator::make($request->all(), $rules = [
 
+            ], $messages = [
+                'required' => 'El campo :attribute es requerido'
             ]);
 
             if ($validator->fails()) {
@@ -326,8 +340,10 @@ class CatalogosController extends Controller
     {
         try {
 
-            $validator = Validator::make($request->all(), [
+            $validator = Validator::make($request->all(), $rules = [
 
+            ], $messages = [
+                'required' => 'El campo :attribute es requerido'
             ]);
 
             if ($validator->fails()) {
