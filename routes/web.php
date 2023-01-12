@@ -108,6 +108,7 @@ Route::post('/tareas/mes',  [TareasController::class, 'tareasmes_obtener'])->mid
 Route::post('/tareas/imagenesentregadas',  [TareasController::class, 'tareaimagenesentregadas_obtener'])->middleware('session.token');
 Route::post('/tareas/retroalimentaciondetalle',  [TareasController::class, 'tarearetroalimentaciondetalle_obtener'])->middleware('session.token');
 Route::put('/tareas/actualizar',  [TareasController::class, 'tarea_actualizar'])->middleware('session.token');
+Route::put('/tareas/calificar',  [TareasController::class, 'tareacalificar_actualizar'])->middleware('session.token');
 Route::post('/tareas/archivoentregado',  [TareasController::class, 'tareaarchivoentregado_registrar'])->middleware('session.token');
 Route::delete('/tareas/remover',  [TareasController::class, 'tarea_remover'])->middleware('session.token');
 Route::post('/tareas/registrar',  [TareasController::class, 'tarea_registrar'])->middleware('session.token');
@@ -136,12 +137,16 @@ Route::get('/perfil',  [UsuariosController::class, 'perfil'])->name('usuarios.pe
 Route::get('/sesiones',  [UsuariosController::class, 'sesiones'])->name('usuarios.sesiones')->middleware('session.token');
 
 Route::put('/usuarios/actualizar',  [UsuariosController::class, 'usuario_actualizar'])->middleware('session.token');
+Route::post('/usuarios/registrar',  [UsuariosController::class, 'usuario_registrar'])->middleware('session.token');
 Route::delete('/usuarios/remover',  [UsuariosController::class, 'usuario_remover'])->middleware('session.token');
+Route::post('/usuarios/acceso',  [UsuariosController::class, 'usuarioacceso_obtener'])->middleware('session.token');
+Route::put('/usuarios/cuenta',  [UsuariosController::class, 'usuariocuenta_actualizar'])->middleware('session.token');
 Route::post('/usuarios/cuentaobtener',  [UsuariosController::class, 'usuariocuenta_obtener'])->middleware('session.token');
 Route::post('/usuarios/desempeno',  [UsuariosController::class, 'usuariodesempeno_obtener'])->middleware('session.token');
 Route::post('/usuarios/desempenoregistrar',  [UsuariosController::class, 'usuariodesempeno_registrar'])->middleware('session.token');
 Route::post('/usuarios/detalle',  [UsuariosController::class, 'usuariodetalle_obtener'])->middleware('session.token');
 Route::post('/usuarios/nuevapuntualidad',  [UsuariosController::class, 'usuarionuevapuntualidadcurso_obtener'])->middleware('session.token');
+Route::post('/usuarios/nuevapuntualidadgeneral',  [UsuariosController::class, 'usuarionuevapuntualidadgeneral_obtener'])->middleware('session.token');
 Route::post('/usuarios/nuevopromedio',  [UsuariosController::class, 'usuarionuevopromediocurso_obtener'])->middleware('session.token');
 Route::post('/usuarios/nuevopromediogeneral',  [UsuariosController::class, 'usuarionuevopromediogeneral_obtener'])->middleware('session.token');
 Route::post('/usuarios/buscar',  [UsuariosController::class, 'usuarios_buscar'])->middleware('session.token');
@@ -152,6 +157,7 @@ Route::post('/usuarios/sesiones',  [UsuariosController::class, 'usuariosesiones_
 Route::post('/usuarios/tematica',  [UsuariosController::class, 'usuariotematica_registrar'])->middleware('session.token');
 Route::delete('/usuarios/tematicaremover',  [UsuariosController::class, 'usuariotematica_remover'])->middleware('session.token');
 Route::post('/usuarios/tematicasobtener',  [UsuariosController::class, 'usuariotematicas_obtener'])->middleware('session.token');
+Route::post('/usuarios/credencial',  [UsuariosController::class, 'usuariocredencial_obtener'])->middleware('session.token');
 
 #endregion
 

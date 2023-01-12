@@ -89,6 +89,83 @@ class UsuariosController extends Controller
         }
     }
 
+    public function usuario_registrar(Request $request)
+    {
+        try {
+
+            $validator = Validator::make($request->all(), $rules = [
+                'Nombre' => ['required'],
+                'Paterno' => ['required'],
+                'IdLocalidad' => ['required'],
+                'IdTipoUsuario' => ['required'],
+                'CorreoElectronico' => ['required'],
+                'Contrasena' => ['required'],
+                'ChatsConmigo' => ['required'],
+                'MostrarAvisos' => ['required']
+            ], $messages = [
+                'required' => 'El campo :attribute es requerido'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
+            } else {
+
+                $url = env('COURSEROOM_API');
+
+                $nombre = $request->input('Nombre');
+                $paterno = $request->input('Paterno');
+                $materno = $request->input('Materno');
+                $fechaNacimiento = $request->input('FechaNacimiento');
+                $genero = $request->input('Genero');
+                $descripcion = $request->input('Descripcion');
+                $idLocalidad = $request->input('IdLocalidad');
+                $idTipoUsuario = $request->input('IdTipoUsuario');
+                $correoElectronico = $request->input('CorreoElectronico');
+                $contrasena = $request->input('Contrasena');
+                $chatsConmigo = $request->input('ChatsConmigo');
+                $mostrarAvisos = $request->input('MostrarAvisos');
+                $imagen = $request->input('Imagen');
+
+                if($url != ''){
+
+                    $response = Http::withHeaders([
+                        'Authorization' => env('COURSEROOM_API_KEY'),
+                    ])->post($url.'/api/usuarios/registrar', [
+                        'Nombre' => $nombre,
+                        'Paterno' => $paterno,
+                        'Materno' => $materno,
+                        'FechaNacimiento' => $fechaNacimiento,
+                        'Genero' => $genero,
+                        'Descripcion' => $descripcion,
+                        'IdLocalidad' => $idLocalidad,
+                        'IdTipoUsuario' => $idTipoUsuario,
+                        'CorreoElectronico' => $correoElectronico,
+                        'Contrasena' => $contrasena,
+                        'ChatsConmigo' => $chatsConmigo,
+                        'MostrarAvisos' => $mostrarAvisos,
+                        'Imagen' => $imagen
+                    ]);
+
+                    if ($response->ok()){
+
+                        $result = json_decode($response->body());
+
+                        return response()->json(['code' => 200 , 'data' => $result], 200);
+
+                    } else{
+                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                    }
+
+                } else{
+                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
+                }
+            }
+
+        } catch (\Throwable $th) {
+            return response()->json(['code' => 500 , 'data' => $th->getMessage()], 200);
+        }
+    }
+
     public function usuario_remover(Request $request)
     {
         try {
@@ -116,6 +193,115 @@ class UsuariosController extends Controller
                     ])->delete($url.'/api/usuarios/remover', [
                         'IdUsuario' => $idUsuario,
                         'IdTipoUsuario' => $idTipoUsuario
+                    ]);
+
+                    if ($response->ok()){
+
+                        $result = json_decode($response->body());
+
+                        return response()->json(['code' => 200 , 'data' => $result], 200);
+
+                    } else{
+                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                    }
+
+                } else{
+                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
+                }
+            }
+
+        } catch (\Throwable $th) {
+            return response()->json(['code' => 500 , 'data' => $th->getMessage()], 200);
+        }
+    }
+
+    public function usuarioacceso_obtener(Request $request)
+    {
+        try {
+
+            $validator = Validator::make($request->all(), $rules = [
+                'CorreoElectronico' => ['required'],
+                'Contrasena' => ['required']
+            ], $messages = [
+                'required' => 'El campo :attribute es requerido'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
+            } else {
+
+                $url = env('COURSEROOM_API');
+
+                $correoElectronico = $request->input('CorreoElectronico');
+                $contrasena = $request->input('Contrasena');
+
+                if($url != ''){
+
+                    $response = Http::withHeaders([
+                        'Authorization' => env('COURSEROOM_API_KEY'),
+                    ])->post($url.'/api/usuarios/acceso', [
+                        'CorreoElectronico' => $correoElectronico,
+                        'Contrasena' => $contrasena
+                    ]);
+
+                    if ($response->ok()){
+
+                        $result = json_decode($response->body());
+
+                        return response()->json(['code' => 200 , 'data' => $result], 200);
+
+                    } else{
+                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                    }
+
+                } else{
+                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
+                }
+            }
+
+        } catch (\Throwable $th) {
+            return response()->json(['code' => 500 , 'data' => $th->getMessage()], 200);
+        }
+    }
+    
+    public function usuariocuenta_actualizar(Request $request)
+    {
+        try {
+
+            $validator = Validator::make($request->all(), $rules = [
+                'IdUsuario' => ['required'],
+                'CorreoElectronico' => ['required'],
+                'Contrasena' => ['required'],
+                'ChatsConmigo' => ['required'],
+                'MostrarAvisos' => ['required']
+            ], $messages = [
+                'required' => 'El campo :attribute es requerido'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
+            } else {
+
+                $url = env('COURSEROOM_API');
+
+                $idUsuario = $request->input('IdUsuario');
+                $correoElectronico = $request->input('CorreoElectronico');
+                $contrasena = $request->input('Contrasena');
+                $chatsConmigo = $request->input('ChatsConmigo');
+                $mostrarAvisos = $request->input('MostrarAvisos');
+                $imagen = $request->input('Imagen');
+
+                if($url != ''){
+
+                    $response = Http::withHeaders([
+                        'Authorization' => env('COURSEROOM_API_KEY'),
+                    ])->put($url.'/api/usuarios/cuenta', [
+                        'IdUsuario' => $idUsuario,
+                        'CorreoElectronico' => $correoElectronico,
+                        'Contrasena' => $contrasena,
+                        'ChatsConmigo' => $chatsConmigo,
+                        'MostrarAvisos' => $mostrarAvisos,
+                        'Imagen' => $imagen
                     ]);
 
                     if ($response->ok()){
@@ -935,6 +1121,52 @@ class UsuariosController extends Controller
                         'Authorization' => env('COURSEROOM_API_KEY'),
                     ])->post($url.'/api/usuarios/tematicasobtener', [
                         'IdUsuario' => $idUsuario
+                    ]);
+
+                    if ($response->ok()){
+
+                        $result = json_decode($response->body());
+
+                        return response()->json(['code' => 200 , 'data' => $result], 200);
+
+                    } else{
+                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                    }
+
+                } else{
+                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
+                }
+            }
+
+        } catch (\Throwable $th) {
+            return response()->json(['code' => 500 , 'data' => $th->getMessage()], 200);
+        }
+    }
+
+    public function usuariocredencial_obtener(Request $request)
+    {
+        try {
+
+            $validator = Validator::make($request->all(), $rules = [
+                'CorreoElectronico' => ['required']
+            ], $messages = [
+                'required' => 'El campo :attribute es requerido'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
+            } else {
+
+                $url = env('COURSEROOM_API');
+
+                $correoElectronico = $request->input('CorreoElectronico');
+
+                if($url != ''){
+
+                    $response = Http::withHeaders([
+                        'Authorization' => env('COURSEROOM_API_KEY'),
+                    ])->post($url.'/api/usuarios/credencial', [
+                        'CorreoElectronico' => $correoElectronico
                     ]);
 
                     if ($response->ok()){
