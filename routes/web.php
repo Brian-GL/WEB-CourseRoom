@@ -137,7 +137,6 @@ Route::get('/sesiones',  [UsuariosController::class, 'sesiones'])->name('usuario
 
 Route::put('/usuarios/actualizar',  [UsuariosController::class, 'usuario_actualizar'])->middleware('session.token');
 Route::delete('/usuarios/remover',  [UsuariosController::class, 'usuario_remover'])->middleware('session.token');
-Route::post('/usuarios/acceso',  [UsuariosController::class, 'usuarioacceso_obtener'])->middleware('session.token');
 Route::post('/usuarios/cuentaobtener',  [UsuariosController::class, 'usuariocuenta_obtener'])->middleware('session.token');
 Route::post('/usuarios/desempeno',  [UsuariosController::class, 'usuariodesempeno_obtener'])->middleware('session.token');
 Route::post('/usuarios/desempenoregistrar',  [UsuariosController::class, 'usuariodesempeno_registrar'])->middleware('session.token');

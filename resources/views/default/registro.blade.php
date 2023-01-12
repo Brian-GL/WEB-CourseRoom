@@ -96,7 +96,7 @@
                             <input class="form-control alphabetic fuenteNormal" list="tipos-usuario" id="tipo-usuario" placeholder="Eres estudiante o profesor?" required>
                             <datalist id="tipos-usuario">
                                 @foreach ($tipos_usuario as $tipo_usuario)
-                                    <option label="" value="{{$tipo_usuario->tipoUsuario}}">{{tipo_usuario->idTipoUsuario}}</option>
+                                    <option label="" value="{{$tipo_usuario->tipoUsuario}}">{{$tipo_usuario->idTipoUsuario}}</option>
                                 @endforeach
                             </datalist>
                         </div>
@@ -122,7 +122,7 @@
                             <div class="d-flex justify-content-center">
                                 <div class="btn btn-primary btn-rounded">
                                     <label class="form-label text-white m-1" for="imagen">Seleccionar imagen</label>
-                                    <input type="file" class="form-control d-none" id="imagen" accept="image/png, imagejpg, image/jpeg"/>
+                                    <input type="file" class="form-control d-none" id="imagen" accept="image/jpeg"/>
                                 </div>
                             </div>
                         </div>

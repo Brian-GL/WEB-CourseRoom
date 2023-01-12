@@ -138,55 +138,6 @@ class UsuariosController extends Controller
         }
     }
 
-    public function usuarioacceso_obtener(Request $request)
-    {
-        try {
-
-            $validator = Validator::make($request->all(), $rules = [
-                'CorreoElectronico' => ['required'],
-                'Contrasena' => ['required']
-            ], $messages = [
-                'required' => 'El campo :attribute es requerido'
-            ]);
-
-            if ($validator->fails()) {
-                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
-            } else {
-
-                $url = env('COURSEROOM_API');
-
-                $correoElectronico = $request->input('CorreoElectronico');
-                $contrasena = $request->input('Contrasena');
-
-                if($url != ''){
-
-                    $response = Http::withHeaders([
-                        'Authorization' => env('COURSEROOM_API_KEY'),
-                    ])->post($url.'/api/usuarios/acceso', [
-                        'CorreoElectronico' => $correoElectronico,
-                        'Contrasena' => $contrasena
-                    ]);
-
-                    if ($response->ok()){
-
-                        $result = json_decode($response->body());
-
-                        return response()->json(['code' => 200 , 'data' => $result], 200);
-
-                    } else{
-                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
-                    }
-
-                } else{
-                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
-                }
-            }
-
-        } catch (\Throwable $th) {
-            return response()->json(['code' => 500 , 'data' => $th->getMessage()], 200);
-        }
-    }
-
     public function usuariocuenta_obtener(Request $request)
     {
         try {
@@ -612,7 +563,7 @@ class UsuariosController extends Controller
         try {
 
             $validator = Validator::make($request->all(), $rules = [
-                
+
             ], $messages = [
                 'required' => 'El campo :attribute es requerido'
             ]);

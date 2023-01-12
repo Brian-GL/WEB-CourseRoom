@@ -342,8 +342,8 @@ class AvisosController extends Controller
                     $response = Http::withHeaders([
                         'Authorization' => env('COURSEROOM_API_KEY'),
                     ])->post($url.'/api/avisos/validar', [
-                        'idUsuario' => $idUsuario,
-                        'fechaVisualizacion' => $fechaVisualizacion
+                        'IdUsuario' => $idUsuario,
+                        'FechaVisualizacion' => $fechaVisualizacion
                     ]);
 
                     if ($response->ok()){

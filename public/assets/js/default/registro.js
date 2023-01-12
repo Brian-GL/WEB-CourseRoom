@@ -4,7 +4,7 @@ let BaseURL = window.location.origin;
 
 //#region Methods
 
-async function Registrar(imagen){
+async function Registrar(imagenBytes, file){
 
     try{
 
@@ -18,7 +18,7 @@ async function Registrar(imagen){
              Swal.fire({
                  title: '¡Alerta!',
                  text: "Las contraseñas no coinciden",
-                 imageUrl: baseURL.concat("/assets/templates/IndiferentOwl.png"),
+                 imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
                  imageWidth: 100,
                  imageHeight: 123,
                  imageAlt: 'Alert Image'
@@ -26,6 +26,11 @@ async function Registrar(imagen){
 
              return;
          }
+
+         let tipoUsuario = document.getElementById("tipo-usuario");
+         let dataListUsuario = document.getElementById(tipoUsuario.getAttribute("list"));
+         var opSelected = dataListUsuario.querySelector(`[value="${tipoUsuario.value}"]`);
+         console.log(opSelected);
 
          let response = await axios({
              url: '/default/registrar',
@@ -40,18 +45,20 @@ async function Registrar(imagen){
                  "Materno": AvailableString(document.getElementById("materno").value),
                  "Genero": AvailableString(document.getElementById("genero").value),
                  "FechaNacimiento": AvailableString(document.getElementById("fecha-nacimiento").value),
-                 "IdLocalidad": parseInt(document.getElementById("localidad").text ?? '0'),
+                 "IdLocalidad": parseInt(document.getElementById("localidad").innerText ?? '0'),
                  "CorreoElectronico": AvailableString(document.getElementById("correo-electronico").value),
-                 "IdTipoUsuario": parseInt(document.getElementById("tipo-usuario").text ?? '0'),
+                 "IdTipoUsuario": parseInt(dataListUsuario.innerText ?? '0'),
                  "Contrasena": Base64.encode(contrasena),
                  "Descripcion": AvailableString(document.getElementById("descripcion").value),
-                 "Imagen": imagen
+                 "Imagen": file,
+                 //"Imagen": imagenBytes,
+                 //"Archivo": file
              }
          });
 
-         HidePreloader();
+        HidePreloader();
 
-         let result = response.data;
+        let result = response.data;
 
         switch (result.code) {
             case 200:{
@@ -139,7 +146,7 @@ document.getElementById("form-registro").addEventListener("submit", async (e) =>
         promise.then((bytes) => {
 
             HidePreloader();
-            Registrar(bytes);
+            Registrar(bytes, files[0]);
         }).catch((ex) => {
 
             HidePreloader();
@@ -147,7 +154,7 @@ document.getElementById("form-registro").addEventListener("submit", async (e) =>
             Swal.fire({
                 title: '¡Error!',
                 html: ex,
-                imageUrl: baseURL.concat("/assets/templates/SadOwl.png"),
+                imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
                 imageWidth: 100,
                 imageHeight: 123,
                 background: '#000000',
@@ -156,7 +163,7 @@ document.getElementById("form-registro").addEventListener("submit", async (e) =>
             });
         });
     } else{
-        Registrar(null);
+        Registrar(null, null);
     }
 
 });
@@ -193,7 +200,7 @@ document.getElementById("imagen").addEventListener("change", (e) => {
         Swal.fire({
             title: '¡Error!',
             html: ex,
-            imageUrl: baseURL.concat("/assets/templates/SadOwl.png"),
+            imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
             imageWidth: 100,
             imageHeight: 123,
             background: '#000000',
