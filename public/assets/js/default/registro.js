@@ -8,58 +8,71 @@ async function Registrar(imagenBytes, file){
 
     try{
 
-         ShowPreloader();
+        ShowPreloader();
 
-         let contrasena = document.getElementById("contrasena").value;
-         let repetir_contrasena = document.getElementById("repetir-contrasena").value;
+        let contrasena = document.getElementById("contrasena").value;
+        let repetir_contrasena = document.getElementById("repetir-contrasena").value;
 
-         if(contrasena !== repetir_contrasena){
-             HidePreloader();
-             Swal.fire({
-                 title: '¡Alerta!',
-                 text: "Las contraseñas no coinciden",
-                 imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
-                 imageWidth: 100,
-                 imageHeight: 123,
-                 imageAlt: 'Alert Image'
-             });
+        if(contrasena !== repetir_contrasena){
+            HidePreloader();
+            Swal.fire({
+                title: '¡Alerta!',
+                text: "Las contraseñas no coinciden",
+                imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
+                imageWidth: 100,
+                imageHeight: 123,
+                imageAlt: 'Alert Image',
+                background: '#000000',
+                color: '#FFFFFF'
+            });
 
-             return;
-         }
+            return;
+        }
 
-         let tipoUsuario = document.getElementById("tipo-usuario");
-         let dataListUsuario = document.getElementById(tipoUsuario.getAttribute("list"));
-         var opSelected = dataListUsuario.querySelector(`[value="${tipoUsuario.value}"]`);
-         console.log(opSelected);
+        let tipoUsuario = document.getElementById("tipo-usuario");
+        let dataListUsuario = document.getElementById(tipoUsuario.getAttribute("list"));
+        let optionUsuario = dataListUsuario.querySelector(`[value="${tipoUsuario.value}"]`);
 
-         let response = await axios({
-             url: '/default/registrar',
-             baseURL: BaseURL,
-             method: 'POST',
-             headers: {
-                 'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
-             },
-             data: {
-                 "Nombre": AvailableString(document.getElementById("nombre").value),
-                 "Paterno": AvailableString(document.getElementById("paterno").value),
-                 "Materno": AvailableString(document.getElementById("materno").value),
-                 "Genero": AvailableString(document.getElementById("genero").value),
-                 "FechaNacimiento": AvailableString(document.getElementById("fecha-nacimiento").value),
-                 "IdLocalidad": parseInt(document.getElementById("localidad").innerText ?? '0'),
-                 "CorreoElectronico": AvailableString(document.getElementById("correo-electronico").value),
-                 "IdTipoUsuario": parseInt(dataListUsuario.innerText ?? '0'),
-                 "Contrasena": Base64.encode(contrasena),
-                 "Descripcion": AvailableString(document.getElementById("descripcion").value),
-                 "Imagen": file,
-                 //"Imagen": imagenBytes,
-                 //"Archivo": file
-             }
-         });
+        let localidad = document.getElementById("localidad");
+        let dataListlocalidad = document.getElementById(localidad.getAttribute("list"));
+        let optionlocalidad = dataListlocalidad.querySelector(`[value="${localidad.value}"]`);
+
+        const deviceDetector = new DeviceDetector();
+        const userAgent = navigator.userAgent;
+        const device = deviceDetector.parse(userAgent);
+
+        let formData = new FormData();
+
+        formData.append("Nombre", document.getElementById("nombre").value);
+        formData.append("Paterno", document.getElementById("paterno").value);
+        formData.append("Materno", document.getElementById("materno").value);
+        formData.append("Genero", document.getElementById("genero").value);
+        formData.append("FechaNacimiento", moment(document.getElementById("fecha-nacimiento").value).format("YYYY-MM-DDTHH:mm:ssZ"));
+        formData.append("IdLocalidad", parseInt(optionlocalidad.text ?? '0'));
+        formData.append("CorreoElectronico", document.getElementById("correo-electronico").value);
+        formData.append("IdTipoUsuario", parseInt(optionUsuario.text ?? '0'));
+        formData.append("Contrasena", Base64.encode(contrasena));
+        formData.append("Descripcion", document.getElementById("descripcion").value);
+        formData.append("Imagen", file);
+        formData.append("ImagenBytes", imagenBytes);
+        formData.append('Dispositivo', device.os.name);
+        formData.append('Fabricante', device.device.brand);
+        formData.append('Navegador', device.client.name);
+
+        let response = await axios({
+            url: '/default/registrar',
+            baseURL: BaseURL,
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
+            },
+            data: formData
+        });
 
         HidePreloader();
 
         let result = response.data;
-
+        
         switch (result.code) {
             case 200:{
                 Swal.fire({
@@ -71,6 +84,10 @@ async function Registrar(imagenBytes, file){
                     imageAlt: 'Alert Image',
                     background: '#000000',
                     color: '#FFFFFF'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "/inicio";
+                    }
                 });
             }
             break;
@@ -123,7 +140,6 @@ async function Registrar(imagenBytes, file){
 //#endregion
 
 //#region Events
-
 document.getElementById("form-registro").addEventListener("submit", async (e) => {
 
     e.preventDefault();
@@ -188,12 +204,12 @@ document.getElementById("imagen").addEventListener("change", (e) => {
             reader.readAsDataURL(selectedFile);
 
         }else{
-            document.getElementById("imagen-seleccionada").src = "https://mdbootstrap.com/img/Photos/Others/placeholder-avatar.jpg";
+            document.getElementById("imagen-seleccionada").src = "https://storage.needpix.com/thumbs/blank-profile-picture-973460_1280.png";
         }
         HidePreloader();
     } catch(ex){
 
-        document.getElementById("imagen-seleccionada").src = "https://mdbootstrap.com/img/Photos/Others/placeholder-avatar.jpg";
+        document.getElementById("imagen-seleccionada").src = "https://storage.needpix.com/thumbs/blank-profile-picture-973460_1280.png";
 
         HidePreloader();
 

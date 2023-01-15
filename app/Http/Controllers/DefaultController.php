@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Http;
 use App\Models\UsuariosImagenes;
-use Carbon\Carbon;
 
 class DefaultController extends Controller
 {
@@ -17,14 +16,11 @@ class DefaultController extends Controller
      public function recuperacion() { return view('default.recuperacion');}
 
      public function registro(Request $request) {
-        //Localidades:
 
+        //Localidades:
         $localidades = array();
 
         $url = env('COURSEROOM_API');
-
-        $idEstado = $request->input('IdEstado');
-        $idLocalidad = $request->input('IdLocalidad');
 
         if($url != ''){
 
@@ -36,6 +32,7 @@ class DefaultController extends Controller
             ]);
 
             if ($response->ok()){
+                
                 $localidades = json_decode($response->body());
             }
         }
@@ -162,107 +159,153 @@ class DefaultController extends Controller
 
      public function registrar_usuario(Request  $request)
      {
-        return response()->json(['code' => 200 , 'data' => $request->all()], 200);
 
-        // try {
+        try {
 
-        //     $validator = Validator::make($request->all(), $rules = [
-        //         'Nombre' => ['required'],
-        //         'Paterno' => ['required'],
-        //         'IdLocalidad' => ['required'],
-        //         'IdTipoUsuario' => ['required'],
-        //         'CorreoElectronico' => ['required'],
-        //         'Contrasena' => ['required']
-        //     ], $messages = [
-        //         'required' => 'El campo :attribute es requerido'
-        //     ]);
+            $validator = Validator::make($request->all(), $rules = [
+                'Nombre' => ['required'],
+                'Paterno' => ['required'],
+                'IdLocalidad' => ['required', 'min:1', 'integer'],
+                'IdTipoUsuario' => ['required', 'min:1', 'integer'],
+                'CorreoElectronico' => ['required'],
+                'Contrasena' => ['required'],
+                'FechaNacimiento' => ['required', 'date'],
+                'Dispositivo' => ['required'],
+                'Navegador' => ['required'],
+            ], $messages = [
+                'required' => 'El campo :attribute es requerido',
+                'min' => 'El campo :attribute presenta un valor mínimo no permitido',
+                'integer' => 'El campo :attribute debe ser un número entero',
+                'date' => 'El campo :attribute debe ser una fecha'
+            ]);
 
-        //     if ($validator->fails()) {
-        //         return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
-        //     } else {
+            if ($validator->fails()) {
+                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
+            } else {
 
-        //         $url = env('COURSEROOM_API');
+                $url = env('COURSEROOM_API');
 
-        //         $Nombre = $request->input('Nombre');
-        //         $Paterno = $request->input('Paterno');
-        //         $Materno = $request->input('Materno');
-        //         $FechaNacimiento = $request->input('FechaNacimiento');
-        //         $Genero = $request->input('Genero');
-        //         $Descripcion = $request->input('Descripcion');
-        //         $IdLocalidad = $request->input('IdLocalidad');
-        //         $IdTipoUsuario = $request->input('IdTipoUsuario');
-        //         $CorreoElectronico = $request->input('CorreoElectronico');
-        //         $Contrasena = $request->input('Contrasena');
+                $Nombre = $request->string('Nombre')->trim();
+                $Paterno = $request->string('Paterno')->trim();
+                $Materno = $request->string('Materno')->trim();
+                $FechaNacimiento = $request->date('FechaNacimiento');
+                $Genero = $request->string('Genero')->trim();
+                $Descripcion = $request->string('Descripcion')->trim();
+                $IdLocalidad = $request->integer('IdLocalidad');
+                $IdTipoUsuario = $request->integer('IdTipoUsuario');
+                $CorreoElectronico = $request->string('CorreoElectronico')->trim();
+                $Contrasena = $request->string('Contrasena');
+                $ImagenBytes = $request->collection('ImagenBytes');
+
+                $imagen = null;
+
+                if($request->hasFile('Imagen')) {
+
+                    $file = $request->file('Imagen');
+                    $imagen = time().'_'.$file->getClientOriginalName();
+        
+                    // File extension
+                    $extension = $file->getClientOriginalExtension();
+        
+                    // File upload location
+                    $location = 'archivos/usuarios/';
+        
+                    // Upload file
+                    $file->move($location,$imagen);
+                }
                
-        //         if($url != ''){
+                if($url != ''){
 
-        //             $response = Http::withHeaders([
-        //                 'Authorization' => env('COURSEROOM_API_KEY'),
-        //             ])->post($url.'/api/usuarios/registrar', [
-        //                 'Nombre' => $Nombre,
-        //                 'Paterno' => $Paterno,
-        //                 'Materno' => $Materno,
-        //                 'FechaNacimiento' => $FechaNacimiento,
-        //                 'Genero' => $Genero,
-        //                 'Descripcion' => $Descripcion,
-        //                 'IdLocalidad' => $IdLocalidad,
-        //                 'IdTipoUsuario' => $IdTipoUsuario,
-        //                 'CorreoElectronico' => $CorreoElectronico,
-        //                 'Contrasena' => $Contrasena,
-        //                 'ChatsConmigo' => true,
-        //                 'MostrarAvisos' => true,
-        //                 'Imagen' => null,
-        //             ]);
+                    $response = Http::withHeaders([
+                        'Authorization' => env('COURSEROOM_API_KEY'),
+                    ])->post($url.'/api/usuarios/registrar', [
+                        'Nombre' => $Nombre,
+                        'Paterno' => $Paterno,
+                        'Materno' => $Materno,
+                        'FechaNacimiento' => $FechaNacimiento,
+                        'Genero' => $Genero,
+                        'Descripcion' => $Descripcion,
+                        'IdLocalidad' => $IdLocalidad,
+                        'IdTipoUsuario' => $IdTipoUsuario,
+                        'CorreoElectronico' => $CorreoElectronico,
+                        'Contrasena' => $Contrasena,
+                        'ChatsConmigo' => true,
+                        'MostrarAvisos' => true,
+                        'Imagen' => $imagen
+                    ]);
 
-        //             if ($response->ok()){
+                    if ($response->ok()){
 
-        //                 $result = json_decode($response->body());
+                        $result = json_decode($response->body());
 
-        //                 //Guardar imagen en mongo si no esta vácia:
+                        if($result->codigo > 0){
 
-        //                 if($Imagen != null ){
+                            $IdUsuario = $result->codigo;
 
-        //                     $mongoUsuariosImagenes = new UsuariosImagenes;
+                            if($imagen != null){
+                                //Guardar imagen en mongo si no esta vácia:
 
-        //                     $mongoUsuariosImagenes->idUsuario = $result->codigo;
-        //                     $mongoUsuariosImagenes->imagen = $Imagen;
-        //                     $mongoUsuariosImagenes->fecha = Carbon::now();
+                                $mongoUsuariosImagenes = new UsuariosImagenes;
 
-        //                     $mongoUsuariosImagenes->save();
-        //                 }
+                                $mongoUsuariosImagenes->idUsuario = $IdUsuario;
+                                $mongoUsuariosImagenes->imagen = $ImagenBytes;
 
-        //                 if($request->hasFile('Imagen')){
-        //                     $image = $request->file('Imagen');
-        //                     $fileName = $result->codigo.'.'. $image->getClientOriginalExtension();
+                                $mongoUsuariosImagenes->save();
+                            }
 
-        //                     $img = Image::make($image->getRealPath());
-        //                     $img->resize(450, 450, function ($constraint) {
-        //                         $constraint->aspectRatio();                 
-        //                     });
+                            //Registrar sesion:
 
-        //                     $img->stream(); 
-        //                     Storage::disk('local')->put('images/users/'.$fileName, $img, 'public');
-        //                 }
+                            $Dispositivo = $request->string('Dispositivo')->trim();
+                            $Fabricante = $request->string('Fabricante')->trim();
+                            $Navegador = $request->string('Navegador')->trim();
 
-        //                 //Session middleware:
-        //                 $session = $request->session()->get('AUTH_TOKEN', '');
-        //                 if(empty($session))
-        //                     $request->session()->push('AUTH_TOKEN', env("APP_KEY"));
+                            $response = Http::withHeaders([
+                                'Authorization' => env('COURSEROOM_API_KEY'),
+                            ])->post($url.'/api/usuarios/sesionregistrar', [
+                                'IdUsuario' => $IdUsuario,
+                                'Dispositivo' => $Dispositivo,
+                                'Fabricante' => $Fabricante,
+                                'DireccionIP' => $request->ip(),
+                                'DireccionMAC' => substr(exec('getmac'), 0, 17),
+                                'UserAgent' => $request->server('HTTP_USER_AGENT'),
+                                'Navegador' => $Navegador
+                            ]);
 
-        //                 return response()->json(['code' => 200 , 'data' => $result], 200);
+                            $IdSesion = null;
+                            if ($response->ok()){
 
-        //             } else{
-        //                 return response()->json(['code' => 500 , 'data' => $response->body()], 200);
-        //             }
+                                $result = json_decode($response->body());
+                                
+                                if($result->codigo > 0){
+                                    $IdSesion = $result->codigo;
+                                }
+                            }
 
-        //         } else{
-        //             return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
-        //         }
-        //     }
+                            //Session middleware:
+                            $session = $request->session()->get('AUTH_TOKEN', '');
+                            if(empty($session)){
+                                $request->session()->push('AUTH_TOKEN', env("APP_KEY"));
+                                $request->session()->push('IdUsuario', $IdUsuario);
+                                $request->session()->push('IdSesion', $IdSesion);
+                            }
 
-        // } catch (\Throwable $th) {
-        //     return response()->json(['code' => 500 , 'data' => $th->getMessage()], 200);
-        // }
+                            return response()->json(['code' => 200 , 'data' => '¡El usuario ha sido registrado correctamente!'], 200);
+
+                        } else{
+                            return response()->json(['code' => 400 , 'data' => $result->data], 200);                            
+                        }
+                    } else{
+                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                    }
+
+                } else{
+                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
+                }
+            }
+
+        } catch (\Throwable $th) {
+            return response()->json(['code' => 500 , 'data' => $th->getMessage()], 200);
+        }
      }
 
      #endregion

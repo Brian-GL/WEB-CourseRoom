@@ -50,7 +50,7 @@ window.HidePreloader = function(){
 }
 
 window.AvailableString = function(value){
-    return value === '' || value === null || value === undefined ? null : value.trim();
+    return value === '' || value === null || value === undefined ? undefined : value.trim();
 }
 
 //#endregion

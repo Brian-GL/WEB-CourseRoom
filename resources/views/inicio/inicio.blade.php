@@ -12,7 +12,11 @@
 <div class="col-md-12">
     <div class="container">
         <div class="row">
-            <h2 class="display-5 text-center primer-color-letra" id="titulo-inicio">¡Bienvenido! {{$nombre}}</h2>
+            @if(!is_null($DatosUsuario))
+                <h2 class="display-5 text-center primer-color-letra" id="titulo-inicio">¡Bienvenido! {{$DatosUsuario->nombre}}</h2>
+            @else
+                <h2 class="display-5 text-center primer-color-letra" id="titulo-inicio">¡Bienvenido! </h2>
+            @endif
             <div class="text-center">
                 <img id="imagen-meme" class="img-fluid shadow-lg" alt="Meme image">
             </div>

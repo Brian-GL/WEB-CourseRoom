@@ -47,10 +47,20 @@
             <div class="row mb-3">
                 <div class="col centrado">
                     <!--Imagen del usuario-->
+                    @if(!is_null($DatosCuenta))
+                        <img id="imagen-usuario" class="img-fluid rounded-circle mb-4 shadow-lg" alt="Imagen del usuario" src="{{ url('/archivos/usuarios/'.$DatosCuenta->imagen)}}" crossorigin="anonymous"/>
+                    @else
                     <img id="imagen-usuario" class="img-fluid rounded-circle mb-4 shadow-lg" alt="Imagen del usuario" crossorigin="anonymous"/>
+                    @endif
                     <!--Nombre del usuario-->
-                    <h5 id="nombre-usuario" class="text-center text-truncated h5 segundo-color-letra">Susana Alegria</h5>
-                    <h6 id="tipo-usuario" class="text-center segundo-color-letra">Estudiante</h6>
+                    @if(!is_null($DatosUsuario))
+                        <h5 id="nombre-usuario" class="text-center text-truncated h5 segundo-color-letra">{{$DatosUsuario->nombre.' '.$DatosUsuario->paterno.' '.$DatosUsuario->materno}}</h5>
+                        <h6 id="tipo-usuario" class="text-center segundo-color-letra">{{$DatosUsuario->tipoUsuario}}</h6>
+                    @else
+                        <h5 id="nombre-usuario" class="text-center text-truncated h5 segundo-color-letra">Usuario desconocido</h5>
+                        <h6 id="tipo-usuario" class="text-center segundo-color-letra">Tipo de usuario desconocido</h6>
+                    @endif
+                    
                 </div>
             </div>
             <div class="components my-2">
@@ -140,7 +150,11 @@
                 <div class="dropdown dropstart">
                     <button class="btn dropdown-toggle primer-color-letra primer-color-fondo" type="button" id="boton-perfil" data-bs-toggle="dropdown" aria-expanded="false">
                         <!-- Nombre usuario -->
-                        Susana Alegria
+                        @if(!is_null($DatosUsuario))
+                            {{$DatosUsuario->nombre.' '.$DatosUsuario->paterno}}
+                        @else
+                            Más
+                        @endif
                     </button>
                     <ul class="dropdown-menu primer-color-letra primer-color-fondo" aria-labelledby="boton-perfil">
                         <li><a class="dropdown-item primer-color-letra" href="{{route('usuarios.perfil')}}"><i class="fa-solid fa-user"></i>&nbsp;&nbsp;Perfil</a></li>

@@ -58,15 +58,14 @@
                         </div>
 
                         <div class="col">
-                            <label for="fecha-nacimiento" class="form-label fuente">Fecha de nacimiento</label>
-                            <input type="date" class="form-control fuenteNormal" id="fecha-nacimiento" min="{{$min_date}}" max="{{$max_date}}">
+                            <label for="fecha-nacimiento" class="form-label fuente">Fecha de nacimiento*</label>
+                            <input type="date" class="form-control fuenteNormal" data-date-format="DD MMMM YYYY" id="fecha-nacimiento" min="{{$min_date}}" max="{{$max_date}}" required>
                         </div>
 
                         <div class="col">
-                            <label for="localidad" class="form-label fuente">Localidad</label>
-                            <input class="form-control alphabetic fuenteNormal" list="localidades" id="localidad" placeholder="Seleccione una localidad">
+                            <label for="localidad" class="form-label fuente">Localidad*</label>
+                            <input class="form-control alphabetic fuenteNormal" list="localidades" id="localidad" placeholder="Seleccione una localidad" required>
                             <datalist id="localidades">
-                                <option label="" value="Prefiero no decirlo">0</option>
                                 @foreach ($localidades as $localidad)
                                     <option label="{{$localidad->estado}}" value="{{$localidad->localidad}}">{{$localidad->idLocalidad}}</option>
                                 @endforeach
@@ -117,7 +116,7 @@
 
                         <div class="col">
                             <div class="d-flex justify-content-center mb-4" id="seleccionar-imagen">
-                                <img id="imagen-seleccionada" src="https://mdbootstrap.com/img/Photos/Others/placeholder-avatar.jpg" class="rounded img-fluid" alt="Imagen de perfil"/>
+                                <img id="imagen-seleccionada" src="https://storage.needpix.com/thumbs/blank-profile-picture-973460_1280.png" class="rounded img-fluid" alt="Imagen de perfil"/>
                             </div>
                             <div class="d-flex justify-content-center">
                                 <div class="btn btn-primary btn-rounded">
