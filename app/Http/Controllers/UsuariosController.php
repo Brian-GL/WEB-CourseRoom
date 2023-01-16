@@ -53,7 +53,6 @@ class UsuariosController extends Controller
     }
 
     public function sesiones(Request $request){
-
         $DatosUsuario = $request->session()->get('DatosUsuario', null)[0];
         $DatosCuenta = $request->session()->get('DatosCuenta', null)[0];
         return view('usuarios.sesiones', compact('DatosUsuario', 'DatosCuenta'));
@@ -760,102 +759,35 @@ class UsuariosController extends Controller
     {
         try {
 
-            $validator = Validator::make($request->all(), $rules = [
-                'IdUsuario' => ['required'],
-                'IdSesion' => ['required']
-            ], $messages = [
-                'required' => 'El campo :attribute es requerido'
-            ]);
+            $url = env('COURSEROOM_API');
 
-            if ($validator->fails()) {
-                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
-            } else {
+            $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
+            $IdSesion = (int)$request->session()->get('IdSesion', 0);
 
-                $url = env('COURSEROOM_API');
+            if($url != ''){
 
-                $idUsuario = $request->input('IdUsuario');
-                $idSesion = $request->input('IdSesion');
+                $response = Http::withHeaders([
+                    'Authorization' => env('COURSEROOM_API_KEY'),
+                ])->put($url.'/api/usuarios/sesion', [
+                    'IdUsuario' => $IdUsuario,
+                    'IdSesion' => $IdSesion
+                ]);
 
-                if($url != ''){
+                if ($response->ok()){
 
-                    $response = Http::withHeaders([
-                        'Authorization' => env('COURSEROOM_API_KEY'),
-                    ])->put($url.'/api/usuarios/sesion', [
-                        'IdUsuario' => $idUsuario,
-                        'IdSesion' => $idSesion
-                    ]);
+                    $result = json_decode($response->body());
 
-                    if ($response->ok()){
+                    //Limpiar session:
+                    $request->session()->invalidate();
 
-                        $result = json_decode($response->body());
-
-                        return response()->json(['code' => 200 , 'data' => $result], 200);
-
-                    } else{
-                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
-                    }
+                    return response()->json(['code' => 200 , 'data' => $result], 200);
 
                 } else{
-                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
+                    return response()->json(['code' => 500 , 'data' => $response->body()], 200);
                 }
-            }
 
-        } catch (\Throwable $th) {
-            return response()->json(['code' => 500 , 'data' => $th->getMessage()], 200);
-        }
-    }
-
-    public function usuariosesion_registrar(Request $request)
-    {
-        try {
-
-            $validator = Validator::make($request->all(), $rules = [
-                'IdUsuario' => ['required']
-            ], $messages = [
-                'required' => 'El campo :attribute es requerido'
-            ]);
-
-            if ($validator->fails()) {
-                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
-            } else {
-
-                $url = env('COURSEROOM_API');
-
-                $idUsuario = $request->input('IdUsuario');
-                $dispositivo = $request->input('Dispositivo');
-                $fabricante = $request->input('Fabricante');
-                $direccionIP = $request->input('DireccionIP');
-                $direccionMAC = $request->input('DireccionMAC');
-                $userAgent = $request->input('UserAgent');
-                $navegador = $request->input('Navegador');
-
-                if($url != ''){
-
-                    $response = Http::withHeaders([
-                        'Authorization' => env('COURSEROOM_API_KEY'),
-                    ])->post($url.'/api/usuarios/sesionregistrar', [
-                        'IdUsuario' => $idUsuario,
-                        'Dispositivo' => $dispositivo,
-                        'Fabricante' => $fabricante,
-                        'DireccionIP' => $direccionIP,
-                        'DireccionMAC' => $direccionMAC,
-                        'UserAgent' => $userAgent,
-                        'Navegador' => $navegador
-                    ]);
-
-                    if ($response->ok()){
-
-                        $result = json_decode($response->body());
-
-                        return response()->json(['code' => 200 , 'data' => $result], 200);
-
-                    } else{
-                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
-                    }
-
-                } else{
-                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
-                }
+            } else{
+                return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
             }
 
         } catch (\Throwable $th) {
@@ -1049,43 +981,32 @@ class UsuariosController extends Controller
     {
         try {
 
-            
-            $validator = Validator::make($request->all(), $rules = [
-                'IdUsuario' => ['required']
-            ], $messages = [
-                'required' => 'El campo :attribute es requerido'
-            ]);
+            $url = env('COURSEROOM_API');
 
-            if ($validator->fails()) {
-                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
-            } else {
+            $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
 
-                $url = env('COURSEROOM_API');
+            if($url != ''){
 
-                $idUsuario = $request->input('IdUsuario');
+                $response = Http::withHeaders([
+                    'Authorization' => env('COURSEROOM_API_KEY'),
+                ])->post($url.'/api/usuarios/tematicasobtener', [
+                    'IdUsuario' => $IdUsuario
+                ]);
 
-                if($url != ''){
+                if ($response->ok()){
 
-                    $response = Http::withHeaders([
-                        'Authorization' => env('COURSEROOM_API_KEY'),
-                    ])->post($url.'/api/usuarios/tematicasobtener', [
-                        'IdUsuario' => $idUsuario
-                    ]);
+                    $result = json_decode($response->body());
 
-                    if ($response->ok()){
-
-                        $result = json_decode($response->body());
-
-                        return response()->json(['code' => 200 , 'data' => $result], 200);
-
-                    } else{
-                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
-                    }
+                    return response()->json(['code' => 200 , 'data' => $result], 200);
 
                 } else{
-                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
+                    return response()->json(['code' => 500 , 'data' => $response->body()], 200);
                 }
+
+            } else{
+                return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
             }
+            
 
         } catch (\Throwable $th) {
             return response()->json(['code' => 500 , 'data' => $th->getMessage()], 200);

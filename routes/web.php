@@ -151,7 +151,6 @@ Route::post('/usuarios/nuevopromedio',  [UsuariosController::class, 'usuarionuev
 Route::post('/usuarios/nuevopromediogeneral',  [UsuariosController::class, 'usuarionuevopromediogeneral_obtener'])->middleware('session.token');
 Route::post('/usuarios/buscar',  [UsuariosController::class, 'usuarios_buscar'])->middleware('session.token');
 Route::put('/usuarios/sesion',  [UsuariosController::class, 'usuariosesion_actualizar'])->middleware('session.token');
-Route::post('/usuarios/sesionregistrar',  [UsuariosController::class, 'usuariosesion_registrar'])->middleware('session.token');
 Route::post('/usuarios/sesionvalidar',  [UsuariosController::class, 'usuariosesion_validar'])->middleware('session.token');
 Route::post('/usuarios/sesiones',  [UsuariosController::class, 'usuariosesiones_obtener'])->middleware('session.token');
 Route::post('/usuarios/tematica',  [UsuariosController::class, 'usuariotematica_registrar'])->middleware('session.token');

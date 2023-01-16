@@ -395,11 +395,9 @@ document.getElementById("form-buscar-preguntas").addEventListener('submit', asyn
                     columnDefs:[
                         {className: "text-center fuenteNormal segundo-color-fuente", targets: "_all"},
                     ],
-                    rowCallback: function(row, data, index){
-                        $(row).css('color', SegundoColorLetra);
-                    },
                     data: filas,
                     createdRow: function(row, data, index){
+                        $(row).css('color', SegundoColorLetra);
                         $('.btn-detalle', row).html('<span class="span-detalle text-center" onclick="DetallePregunta('.concat(data.IdPregunta,')">Ver detalle</span>'));
                     }
                 });

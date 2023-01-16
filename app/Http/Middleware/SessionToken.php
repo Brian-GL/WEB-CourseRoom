@@ -16,13 +16,13 @@ class SessionToken
      */
     public function handle(Request $request, Closure $next)
     {
-        $session = $request->session()->get('AUTH_TOKEN', '');
+        $token = session('AUTH_TOKEN');
 
-        if(empty($session)){
+        if(is_null($token)){
             return redirect()->route('inicio.acceso');
         }
 
-        if($session[0] != env('APP_KEY')){
+        if($token != env('APP_KEY')){
             return redirect()->route('inicio.acceso');
         }
 

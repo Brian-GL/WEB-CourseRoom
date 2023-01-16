@@ -20,8 +20,7 @@ class AvisosController extends Controller
         try {
 
             $validator = Validator::make($request->all(), $rules = [
-                'IdAviso' => ['required'],
-                'IdUsuario' => ['required']
+                'IdAviso' => ['required']
             ], $messages = [
                 'required' => 'El campo :attribute es requerido'
             ]);
@@ -32,8 +31,8 @@ class AvisosController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idAviso = $request->input('IdAviso');
-                $idUsuario = $request->input('IdUsuario');
+                $idAviso = $request->integer('IdAviso');
+                $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
 
                 if($url != ''){
 
@@ -41,7 +40,7 @@ class AvisosController extends Controller
                         'Authorization' => env('COURSEROOM_API_KEY'),
                     ])->put($url.'/api/avisos/actualizar', [
                         'IdAviso' => $idAviso,
-                        'IdUsuario' => $idUsuario
+                        'IdUsuario' => $IdUsuario
                     ]);
 
                     if ($response->ok()){
@@ -70,7 +69,6 @@ class AvisosController extends Controller
         try {
 
             $validator = Validator::make($request->all(), $rules = [
-                'IdUsuario' => ['required'],
                 'Aviso' => ['required'],
                 'Descripcion' => ['required'],
                 'IdTipoAviso' => ['required']
@@ -84,17 +82,17 @@ class AvisosController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idUsuario = $request->input('IdUsuario');
-                $aviso = $request->input('Aviso');
-                $descripcion = $request->input('Descripcion');
-                $idTipoAviso = $request->input('IdTipoAviso');
+                $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
+                $aviso = $request->string('Aviso')->trim();
+                $descripcion = $request->string('Descripcion')->trim();
+                $idTipoAviso = $request->integer('IdTipoAviso');
 
                 if($url != ''){
 
                     $response = Http::withHeaders([
                         'Authorization' => env('COURSEROOM_API_KEY'),
                     ])->post($url.'/api/avisos/registrar', [
-                        'IdUsuario' => $idUsuario,
+                        'IdUsuario' => $IdUsuario,
                         'Aviso' => $aviso,
                         'Descripcion' => $descripcion,
                         'IdTipoAviso' => $idTipoAviso

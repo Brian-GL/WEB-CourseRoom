@@ -53,7 +53,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     IconoNotificaciones = document.getElementById("icono-notificaciones");
     NotificationsThread();
-
     ColorearWeb();
 
 }, false);
@@ -82,10 +81,100 @@ $('.numeric').on("keyup keypress blur", (e) => {
     }
 });
 
+document.getElementById("cerrar-sesion").addEventListener("click", async () => {
+
+    try{
+
+        Swal.fire({
+            title: 'Cerrar Sesión',
+            text: '¿Está segur@ de cerrar la sesión?',
+            imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+            imageWidth: 100,
+            imageHeight: 123,
+            background: '#000000',
+            color: '#FFFFFF',
+            imageAlt: 'Alert Image',
+            showCloseButton: true,
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: 'Sí, ya estudié demasiado 😩',
+            denyButtonText: 'No, me falta aprender ciertas cosas 😎',
+            cancelButtonText: 'Me equivoque de botón 😥'
+        }).then(async (result) => {
+            if(result.isConfirmed){
+                
+                ShowPreloader();
+
+                let response = await axios({
+                    url: '/usuarios/sesion',
+                    baseURL: BaseURL,
+                    method: 'PUT',
+                    headers: {
+                        'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
+                    },
+                    data: null
+                });
+        
+                HidePreloader();
+        
+                let result = response.data;
+        
+                switch (result.code) {
+                    case 200:{
+                       window.location.href = "/";
+                    }
+                    break;
+                    case 500:{
+                        Swal.fire({
+                            title: '¡Error!',
+                            text: result.data,
+                            imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+                            imageWidth: 100,
+                            imageHeight: 123,
+                            background: '#000000',
+                            color: '#FFFFFF',
+                            imageAlt: 'Error Image'
+                        });
+                    }
+                    break;
+                    default:{
+                        Swal.fire({
+                            title: '¡Alerta!',
+                            text: result.data,
+                            imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
+                            imageWidth: 100,
+                            imageHeight: 123,
+                            imageAlt: 'Alert Image',
+                            background: '#000000',
+                            color: '#FFFFFF'
+                        });
+                    }
+                    break;
+                }
+            }
+        });
+    }
+    catch(ex){
+
+        HidePreloader();
+
+        Swal.fire({
+            title: '¡Error!',
+            text: ex,
+            imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+            imageWidth: 100,
+            imageHeight: 123,
+            background: '#000000',
+            color: '#FFFFFF',
+            imageAlt: 'Error Image'
+        });
+    }
+
+});
+
 //#endregion
 
 //#region Functions
-
 
 function ColorearWeb(){
     try {

@@ -11,18 +11,15 @@ class InicioController extends Controller
 
     #region Views
 
-    public function inicio(Request $request){
+    public function inicio(){
         
-        $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
+        $IdUsuario = session('IdUsuario');
 
         //Obtener datos del usuario:
         $url = env('COURSEROOM_API');
 
-        $DatosUsuario = null;
-        $DatosCuenta = null;
-
-        $DatosUsuarioArray = $request->session()->get('DatosUsuario', null);
-        if(empty($DatosUsuarioArray)){
+        $DatosUsuario = session('DatosUsuario');
+        if(empty($DatosUsuario)){
            
             if($url != ''){
 
@@ -35,17 +32,14 @@ class InicioController extends Controller
     
                 if ($response->ok()){
                     $DatosUsuario = json_decode($response->body());  
-                    $request->session()->push('DatosUsuario', $DatosUsuario);
+                    session(['DatosUsuario' => $DatosUsuario]);
                 } 
             } 
-
-        } else{
-            $DatosUsuario = $DatosUsuarioArray[0];
-        }
+        } 
 
         //Obtener datos de la cuenta:
-        $DatosCuentaArray = $request->session()->get('DatosCuenta', null);
-        if(empty($DatosCuentaArray)){
+        $DatosCuenta = session('DatosCuenta');
+        if(empty($DatosCuenta)){
            
             if($url != ''){
 
@@ -58,21 +52,18 @@ class InicioController extends Controller
     
                 if ($response->ok()){
                     $DatosCuenta = json_decode($response->body());
-                    $request->session()->push('DatosCuenta', $DatosCuenta);
+                    session(['DatosCuenta' => $DatosCuenta]);
                 } 
             } 
-
-        } else{
-            $DatosCuenta = $DatosCuentaArray[0];
-        }
+        } 
 
         return view('inicio.inicio',compact('DatosUsuario', 'DatosCuenta')); 
     }
     
-    public function acerca(Request $request){ 
+    public function acerca(){ 
         
-        $DatosUsuario = $request->session()->get('DatosUsuario', null)[0];
-        $DatosCuenta = $request->session()->get('DatosCuenta', null)[0];
+        $DatosUsuario = session('DatosUsuario');
+        $DatosCuenta = session('DatosCuenta');
 
         return view('inicio.acerca', compact('DatosUsuario', 'DatosCuenta')); 
     }

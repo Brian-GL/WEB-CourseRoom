@@ -12,7 +12,7 @@ document.getElementById("form-acceso").addEventListener("submit", async (e) => {
 
         let formData = new FormData();
 
-        formData.append("CorreoElectronico", AvailableString(document.getElementById("correo-electronico").value));
+        formData.append("CorreoElectronico", document.getElementById("correo-electronico").value);
         formData.append("Contrasena", Base64.encode(document.getElementById("contrasena").value));
         formData.append('Dispositivo', platform.os.family);
         formData.append('Fabricante', platform.manufacturer);

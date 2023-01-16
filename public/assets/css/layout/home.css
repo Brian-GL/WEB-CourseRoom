@@ -94,3 +94,16 @@ input{
     color: white !important;
     opacity: 1 !important;
 }
+
+
+/* dataTables CSS modification & positioning */
+
+table.dataTable thead .sorting:after,
+table.dataTable thead .sorting_asc:after,
+table.dataTable thead .sorting_desc:after,
+table.dataTable thead .sorting_asc_disabled:after,
+table.dataTable thead .sorting_desc_disabled:after {
+    right: 0 !important;
+    margin-left: 0.5rem !important;
+    content: "↕️" !important;
+}

@@ -37,7 +37,6 @@ async function Registrar(imagenBytes, file){
         let dataListlocalidad = document.getElementById(localidad.getAttribute("list"));
         let optionlocalidad = dataListlocalidad.querySelector(`[value="${localidad.value}"]`);
 
-        
         let formData = new FormData();
 
         formData.append("Nombre", document.getElementById("nombre").value);

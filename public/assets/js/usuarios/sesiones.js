@@ -12,10 +12,9 @@ let BaseURL = window.location.origin;
 dataTableSesiones = $("#table-sesiones").DataTable({
     pagingType: 'full_numbers',
     dom: 'frtp',
-    search: {
-        return: true,
-    },
+    ordering: true,
     scrollX: false,
+    bFilter: true,
     language: {
         search: "_INPUT_",
         searchPlaceholder: "Buscar alguna de mis sesiones...",
@@ -43,7 +42,7 @@ dataTableSesiones = $("#table-sesiones").DataTable({
         { title: "Actualizado" },
     ],
     columnDefs:[
-        {className: "text-center fuenteNormal segundo-color-fuente", targets: "_all"}
+        {className: "text-center fuenteNormal segundo-color-letra", targets: "_all"}
     ],
     rowCallback: function(row, data, index){
         $(row).css('color', SegundoColorLetra);
@@ -97,10 +96,9 @@ async function ObtenerSesiones(){
                 dataTableSesiones = $("#table-sesiones").DataTable({
                     pagingType: 'full_numbers',
                     dom: 'frtp',
-                    search: {
-                        return: true,
-                    },
+                    ordering: true,
                     scrollX: false,
+                    bFilter: true,
                     language: {
                         search: "_INPUT_",
                         searchPlaceholder: "Buscar alguna de mis sesiones...",
@@ -116,7 +114,7 @@ async function ObtenerSesiones(){
                         loadingRecords: "Cargando..."
                     },
                     columns: [
-                        { data: "idUsuario", title: "Id Sesión" },
+                        { data: "idSesion", title: "Id Sesión" },
                         { data: "dispositivo", title: "Dispositivo" },
                         { data: "fabricante", title: "Fabricante" },
                         { data: "direccionIP", title: "IP" },
@@ -128,10 +126,19 @@ async function ObtenerSesiones(){
                         { data: "fechaActualizacion", title: "Actualizado" },
                     ],
                     columnDefs:[
-                        {className: "text-center fuenteNormal segundo-color-fuente", "defaultContent": "-", targets: "_all"},
+                        {className: "text-center fuenteNormal segundo-color-letra", "defaultContent": "-", targets: "_all"},
+                        { className: "fechaRegistro", targets: [8]},
+                        { className: "fechaActualizacion", targets: [9]}
                     ],
-                    rowCallback: function(row, data, index){
+                    createdRow: (row, data) => {
+
                         $(row).css('color', SegundoColorLetra);
+
+                        $('.fechaRegistro', row).text(moment(data.fechaRegistro).format('LLLL'));
+                        let fechaActualizacion = moment(data.fechaActualizacion);
+                        if(fechaActualizacion.isValid()){
+                            $('.fechaActualizacion', row).text(fechaActualizacion.format('LLLL'));
+                        }
                     },
                     data: filas
                 });

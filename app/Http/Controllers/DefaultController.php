@@ -15,7 +15,7 @@ class DefaultController extends Controller
 
      public function recuperacion() { return view('default.recuperacion');}
 
-     public function registro(Request $request) {
+     public function registro() {
 
         //Localidades:
         $localidades = array();
@@ -127,12 +127,12 @@ class DefaultController extends Controller
                             }
 
                             //Session middleware:
-                            $session = $request->session()->get('AUTH_TOKEN', '');
-                            if(empty($session)){
-                                $request->session()->push('AUTH_TOKEN', env("APP_KEY"));
-                                $request->session()->push('IdUsuario', $IdUsuario);
-                                $request->session()->push('IdSesion', $IdSesion);
-                                $request->session()->push('IdTipoUsuario', $IdTipoUsuario);
+                            $session = session('AUTH_TOKEN');
+                            if(is_null($session)){
+                                session(['AUTH_TOKEN' => env("APP_KEY")]);
+                                session(['IdUsuario' => $IdUsuario]);
+                                session(['IdSesion' => $IdSesion]);
+                                session(['IdTipoUsuario' => $IdTipoUsuario]);
                             }
 
                             return response()->json(['code' => 200 , 'data' => $result], 200);
@@ -333,6 +333,7 @@ class DefaultController extends Controller
                                 $request->session()->push('AUTH_TOKEN', env("APP_KEY"));
                                 $request->session()->push('IdUsuario', $IdUsuario);
                                 $request->session()->push('IdSesion', $IdSesion);
+                                $request->session()->push('IdTipoUsuario', $IdTipoUsuario);
                             }
 
                             return response()->json(['code' => 200 , 'data' => '¡El usuario ha sido registrado correctamente!'], 200);
