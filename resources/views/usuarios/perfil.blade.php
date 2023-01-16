@@ -89,7 +89,6 @@
                                 <label for="localidad" class="form-label fuente segundo-color-letra">Localidad</label>
                                 <input class="form-control alphabetic tercer-color-letra tercer-color-fondo fuenteNormal" list="localidades" id="localidad" placeholder="Seleccione una localidad">
                                 <datalist id="localidades">
-                                    <option label="" value="Prefiero no decirlo">0</option>
                                     @foreach ($localidades as $localidad)
                                         <option label="{{$localidad->estado}}" value="{{$localidad->localidad}}">{{$localidad->idLocalidad}}</option>
                                     @endforeach

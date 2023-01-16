@@ -25,8 +25,8 @@ window.Popper = Popper
 import moment from 'moment/moment';
 window.moment = moment;
 
-import DeviceDetector from "device-detector-js";
-window.DeviceDetector = DeviceDetector;
+import platform from 'platform';
+window.platform = platform;
 
 import 'bootstrap';
 

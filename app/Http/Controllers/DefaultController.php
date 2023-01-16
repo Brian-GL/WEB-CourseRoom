@@ -63,7 +63,9 @@ class DefaultController extends Controller
 
             $validator = Validator::make($request->all(), $rules = [
                 'CorreoElectronico' => ['required'],
-                'Contrasena' => ['required']
+                'Contrasena' => ['required'],
+                'Dispositivo' => ['required'],
+                'Navegador' => ['required']
             ], $messages = [
                 'required' => 'El campo :attribute es requerido'
             ]);
@@ -74,8 +76,8 @@ class DefaultController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $correoElectronico = $request->input('CorreoElectronico');
-                $contrasena = $request->input('Contrasena');
+                $correoElectronico = $request->string('CorreoElectronico');
+                $contrasena = $request->string('Contrasena');
 
                 if($url != ''){
 
@@ -90,12 +92,54 @@ class DefaultController extends Controller
 
                         $result = json_decode($response->body());
 
-                        //Session middleware:
-                        $session = $request->session()->get('AUTH_TOKEN', '');
-                        if(empty($session))
-                            $request->session()->push('AUTH_TOKEN', env("APP_KEY"));
+                        if($result->idUsuario > 0){
 
-                        return response()->json(['code' => 200 , 'data' => $result], 200);
+                            $IdUsuario = $result->idUsuario;
+                            $IdTipoUsuario = $result->idTipoUsuario;
+
+                            //Registrar sesion:
+
+                            $Dispositivo = $request->string('Dispositivo')->trim();
+                            $Fabricante = $request->string('Fabricante')->trim();
+                            $Navegador = $request->string('Navegador')->trim();
+
+                            $response = Http::withHeaders([
+                                'Authorization' => env('COURSEROOM_API_KEY'),
+                            ])->post($url.'/api/usuarios/sesionregistrar', [
+                                'IdUsuario' => $IdUsuario,
+                                'Dispositivo' => $Dispositivo,
+                                'Fabricante' => $Fabricante,
+                                'DireccionIP' => $request->ip(),
+                                'DireccionMAC' => substr(exec('getmac'), 0, 17),
+                                'UserAgent' => $request->server('HTTP_USER_AGENT'),
+                                'Navegador' => $Navegador
+                            ]);
+
+                            $IdSesion = null;
+
+                            if ($response->ok()){
+
+                                $result = json_decode($response->body());
+                                
+                                if($result->codigo > 0){
+                                    $IdSesion = $result->codigo;
+                                }
+                            }
+
+                            //Session middleware:
+                            $session = $request->session()->get('AUTH_TOKEN', '');
+                            if(empty($session)){
+                                $request->session()->push('AUTH_TOKEN', env("APP_KEY"));
+                                $request->session()->push('IdUsuario', $IdUsuario);
+                                $request->session()->push('IdSesion', $IdSesion);
+                                $request->session()->push('IdTipoUsuario', $IdTipoUsuario);
+                            }
+
+                            return response()->json(['code' => 200 , 'data' => $result], 200);
+
+                        } else{
+                            return response()->json(['code' => 400 , 'data' => $result->data], 200);
+                        }
 
                     } else{
                         return response()->json(['code' => 500 , 'data' => $response->body()], 200);
@@ -128,13 +172,13 @@ class DefaultController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $correoElectronico = $request->input('CorreoElectronico');
+                $correoElectronico = $request->string('CorreoElectronico');
 
                 if($url != ''){
 
                     $response = Http::withHeaders([
                         'Authorization' => env('COURSEROOM_API_KEY'),
-                    ])->post($url.'/api/usuarios/credenciales', [
+                    ])->post($url.'/api/usuarios/credencial', [
                         'CorreoElectronico' => $correoElectronico
                     ]);
 
@@ -195,9 +239,10 @@ class DefaultController extends Controller
                 $IdTipoUsuario = $request->integer('IdTipoUsuario');
                 $CorreoElectronico = $request->string('CorreoElectronico')->trim();
                 $Contrasena = $request->string('Contrasena');
-                $ImagenBytes = $request->collection('ImagenBytes');
+                $ImagenBytes = $request->input('ImagenBytes');
 
                 $imagen = null;
+                $extension = null;
 
                 if($request->hasFile('Imagen')) {
 
@@ -249,6 +294,7 @@ class DefaultController extends Controller
 
                                 $mongoUsuariosImagenes->idUsuario = $IdUsuario;
                                 $mongoUsuariosImagenes->imagen = $ImagenBytes;
+                                $mongoUsuariosImagenes->extension = $extension;
 
                                 $mongoUsuariosImagenes->save();
                             }

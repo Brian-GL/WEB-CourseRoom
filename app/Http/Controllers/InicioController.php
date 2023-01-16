@@ -15,42 +15,69 @@ class InicioController extends Controller
         
         $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
 
-        $DatosCuenta = null;
-        $DatosUsuario = null;
-
         //Obtener datos del usuario:
         $url = env('COURSEROOM_API');
 
-        if($url != ''){
+        $DatosUsuario = null;
+        $DatosCuenta = null;
 
-            //Datos usuario:
-            $response = Http::withHeaders([
-                'Authorization' => env('COURSEROOM_API_KEY'),
-            ])->post($url.'/api/usuarios/detalle', [
-                'IdUsuario' => $IdUsuario
-            ]);
+        $DatosUsuarioArray = $request->session()->get('DatosUsuario', null);
+        if(empty($DatosUsuarioArray)){
+           
+            if($url != ''){
 
-            if ($response->ok()){
-                $DatosUsuario = json_decode($response->body());    
+                //Datos usuario:
+                $response = Http::withHeaders([
+                    'Authorization' => env('COURSEROOM_API_KEY'),
+                ])->post($url.'/api/usuarios/detalle', [
+                    'IdUsuario' => $IdUsuario
+                ]);
+    
+                if ($response->ok()){
+                    $DatosUsuario = json_decode($response->body());  
+                    $request->session()->push('DatosUsuario', $DatosUsuario);
+                } 
             } 
 
-            //Cuenta:
-            $response = Http::withHeaders([
-                'Authorization' => env('COURSEROOM_API_KEY'),
-            ])->post($url.'/api/usuarios/cuentaobtener', [
-                'IdUsuario' => $IdUsuario
-            ]);
+        } else{
+            $DatosUsuario = $DatosUsuarioArray[0];
+        }
 
-            if ($response->ok()){
-                $DatosCuenta = json_decode($response->body());
+        //Obtener datos de la cuenta:
+        $DatosCuentaArray = $request->session()->get('DatosCuenta', null);
+        if(empty($DatosCuentaArray)){
+           
+            if($url != ''){
+
+                //Cuenta:
+                $response = Http::withHeaders([
+                    'Authorization' => env('COURSEROOM_API_KEY'),
+                ])->post($url.'/api/usuarios/cuentaobtener', [
+                    'IdUsuario' => $IdUsuario
+                ]);
+    
+                if ($response->ok()){
+                    $DatosCuenta = json_decode($response->body());
+                    $request->session()->push('DatosCuenta', $DatosCuenta);
+                } 
             } 
-        } 
+
+        } else{
+            $DatosCuenta = $DatosCuentaArray[0];
+        }
 
         return view('inicio.inicio',compact('DatosUsuario', 'DatosCuenta')); 
     }
     
-        public function acerca(){ return view('inicio.acerca'); }
+    public function acerca(Request $request){ 
+        
+        $DatosUsuario = $request->session()->get('DatosUsuario', null)[0];
+        $DatosCuenta = $request->session()->get('DatosCuenta', null)[0];
 
+        return view('inicio.acerca', compact('DatosUsuario', 'DatosCuenta')); 
+    }
+
+    
     #endregion
 
     #region Ajax

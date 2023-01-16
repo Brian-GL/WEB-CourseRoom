@@ -60,7 +60,7 @@
                         <h5 id="nombre-usuario" class="text-center text-truncated h5 segundo-color-letra">Usuario desconocido</h5>
                         <h6 id="tipo-usuario" class="text-center segundo-color-letra">Tipo de usuario desconocido</h6>
                     @endif
-                    
+
                 </div>
             </div>
             <div class="components my-2">

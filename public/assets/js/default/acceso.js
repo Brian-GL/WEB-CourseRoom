@@ -10,6 +10,14 @@ document.getElementById("form-acceso").addEventListener("submit", async (e) => {
 
         ShowPreloader();
 
+        let formData = new FormData();
+
+        formData.append("CorreoElectronico", AvailableString(document.getElementById("correo-electronico").value));
+        formData.append("Contrasena", Base64.encode(document.getElementById("contrasena").value));
+        formData.append('Dispositivo', platform.os.family);
+        formData.append('Fabricante', platform.manufacturer);
+        formData.append('Navegador', platform.name);
+
         let response = await axios({
             url: '/default/acceder',
             baseURL: BaseURL,
@@ -17,10 +25,7 @@ document.getElementById("form-acceso").addEventListener("submit", async (e) => {
             headers: {
                 'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
             },
-            data: {
-                "CorreoElectronico": AvailableString(document.getElementById("correo-electronico").value),
-                "Contrasena": Base64.encode(document.getElementById("contrasena").value)
-            }
+            data:formData
         });
 
         HidePreloader();

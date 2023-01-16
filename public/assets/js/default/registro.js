@@ -37,10 +37,7 @@ async function Registrar(imagenBytes, file){
         let dataListlocalidad = document.getElementById(localidad.getAttribute("list"));
         let optionlocalidad = dataListlocalidad.querySelector(`[value="${localidad.value}"]`);
 
-        const deviceDetector = new DeviceDetector();
-        const userAgent = navigator.userAgent;
-        const device = deviceDetector.parse(userAgent);
-
+        
         let formData = new FormData();
 
         formData.append("Nombre", document.getElementById("nombre").value);
@@ -55,9 +52,9 @@ async function Registrar(imagenBytes, file){
         formData.append("Descripcion", document.getElementById("descripcion").value);
         formData.append("Imagen", file);
         formData.append("ImagenBytes", imagenBytes);
-        formData.append('Dispositivo', device.os.name);
-        formData.append('Fabricante', device.device.brand);
-        formData.append('Navegador', device.client.name);
+        formData.append('Dispositivo', platform.os.family);
+        formData.append('Fabricante', platform.manufacturer);
+        formData.append('Navegador', platform.name);
 
         let response = await axios({
             url: '/default/registrar',

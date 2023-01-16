@@ -12,9 +12,14 @@ class HerramientasController extends Controller
 
     #region Views
 
-    public function musica(Request $request) { return view('herramientas.musica');}
+    public function musica(Request $request) { 
+        
+        $DatosUsuario = $request->session()->get('DatosUsuario', null)[0];
+        $DatosCuenta = $request->session()->get('DatosCuenta', null)[0];
+        
+        return view('herramientas.musica', compact('DatosUsuario', 'DatosCuenta'));}
 
-    public function matematicas(){
+    public function matematicas(Request $request){
 
         $operaciones = array(
             0 => new OperacionMatematica("simplify","Simplificación"),
@@ -34,7 +39,10 @@ class HerramientasController extends Controller
             14 => new OperacionMatematica("log", "Logaritmo")
         );
 
-        return view('herramientas.matematicas', compact('operaciones'));
+        $DatosUsuario = $request->session()->get('DatosUsuario', null)[0];
+        $DatosCuenta = $request->session()->get('DatosCuenta', null)[0];
+
+        return view('herramientas.matematicas', compact('operaciones', 'DatosUsuario', 'DatosCuenta'));
     }
 
     #endregion

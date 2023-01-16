@@ -81,10 +81,7 @@ async function ObtenerSesiones(){
             headers: {
                 'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
             },
-            data: {
-                "IdUsuario": null,
-                "Activa": null
-            }
+            data: null
         });
 
         HidePreloader();
@@ -119,19 +116,19 @@ async function ObtenerSesiones(){
                         loadingRecords: "Cargando..."
                     },
                     columns: [
-                        { title: "Id Sesión" },
-                        { title: "Dispositivo" },
-                        { title: "Fabricante" },
-                        { title: "IP" },
-                        { title: "MAC" },
-                        { title: "UserAgent" },
-                        { title: "Navegador" },
-                        { title: "Estatus" },
-                        { title: "Fecha de registro" },
-                        { title: "Actualizado" },
+                        { data: "idUsuario", title: "Id Sesión" },
+                        { data: "dispositivo", title: "Dispositivo" },
+                        { data: "fabricante", title: "Fabricante" },
+                        { data: "direccionIP", title: "IP" },
+                        { data: "direccionMAC", title: "MAC" },
+                        { data: "userAgent", title: "UserAgent" },
+                        { data: "navegador", title: "Navegador" },
+                        { data: "estatus", title: "Estatus" },
+                        { data: "fechaRegistro", title: "Fecha de registro" },
+                        { data: "fechaActualizacion", title: "Actualizado" },
                     ],
                     columnDefs:[
-                        {className: "text-center fuenteNormal segundo-color-fuente", targets: "_all"}
+                        {className: "text-center fuenteNormal segundo-color-fuente", "defaultContent": "-", targets: "_all"},
                     ],
                     rowCallback: function(row, data, index){
                         $(row).css('color', SegundoColorLetra);
@@ -140,7 +137,6 @@ async function ObtenerSesiones(){
                 });
 
                 dataTableSesiones.column(0).visible(false);
-
             }
             break;
             case 500:{

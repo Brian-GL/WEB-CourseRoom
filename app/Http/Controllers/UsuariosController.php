@@ -4,21 +4,59 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Http;
 
 class UsuariosController extends Controller
 {
     #region View
 
-    public function perfil(){
+    public function perfil(Request $request){
 
+        $DatosUsuario = $request->session()->get('DatosUsuario', null)[0];
+        $DatosCuenta = $request->session()->get('DatosCuenta', null)[0];
+
+        //Localidades:
         $localidades = array();
+
+        $url = env('COURSEROOM_API');
+
+        if($url != ''){
+
+            $response = Http::withHeaders([
+                'Authorization' => env('COURSEROOM_API_KEY'),
+            ])->post($url.'/api/catalogos/localidades', [
+                'IdEstado' => null,
+                'Idlocalidad' => null
+            ]);
+
+            if ($response->ok()){
+                
+                $localidades = json_decode($response->body());
+            }
+        }
+
+        //Tipo de usuario:
         $tipos_usuario = array();
-        return view('usuarios.perfil', compact('localidades','tipos_usuario'));
+
+        $response = Http::withHeaders([
+            'Authorization' => env('COURSEROOM_API_KEY'),
+        ])->post($url.'/api/catalogos/tiposusuario', [
+            'IdTipoUsuario' => null
+        ]);
+
+        if ($response->ok()){
+            $tipos_usuario = json_decode($response->body());
+        }
+
+
+        return view('usuarios.perfil', compact('localidades','tipos_usuario', 'DatosUsuario', 'DatosCuenta'));
     }
 
-    public function sesiones(){
+    public function sesiones(Request $request){
 
-        return view('usuarios.sesiones');
+        $DatosUsuario = $request->session()->get('DatosUsuario', null)[0];
+        $DatosCuenta = $request->session()->get('DatosCuenta', null)[0];
+        return view('usuarios.sesiones', compact('DatosUsuario', 'DatosCuenta'));
     }
 
     #endregion
@@ -878,44 +916,30 @@ class UsuariosController extends Controller
     {
         try {
 
-            $validator = Validator::make($request->all(), $rules = [
-                'IdUsuario' => ['required'],
-                'Activa' => ['required']
-            ], $messages = [
-                'required' => 'El campo :attribute es requerido'
-            ]);
+            $url = env('COURSEROOM_API');
 
-            if ($validator->fails()) {
-                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
-            } else {
+            $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
 
-                $url = env('COURSEROOM_API');
+            if($url != ''){
 
-                $idUsuario = $request->input('IdUsuario');
-                $activa = $request->input('Activa');
+                $response = Http::withHeaders([
+                    'Authorization' => env('COURSEROOM_API_KEY'),
+                ])->post($url.'/api/usuarios/sesiones', [
+                    'IdUsuario' => $IdUsuario,
+                    'Activa' => null
+                ]);
 
-                if($url != ''){
+                if ($response->ok()){
 
-                    $response = Http::withHeaders([
-                        'Authorization' => env('COURSEROOM_API_KEY'),
-                    ])->post($url.'/api/usuarios/sesiones', [
-                        'IdUsuario' => $idUsuario,
-                        'Activa' => $activa
-                    ]);
-
-                    if ($response->ok()){
-
-                        $result = json_decode($response->body());
-
-                        return response()->json(['code' => 200 , 'data' => $result], 200);
-
-                    } else{
-                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
-                    }
+                    $result = json_decode($response->body());
+                    return response()->json(['code' => 200 , 'data' => $result], 200);
 
                 } else{
-                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
+                    return response()->json(['code' => 500 , 'data' => $response->body()], 200);
                 }
+
+            } else{
+                return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
             }
 
         } catch (\Throwable $th) {
@@ -1025,6 +1049,7 @@ class UsuariosController extends Controller
     {
         try {
 
+            
             $validator = Validator::make($request->all(), $rules = [
                 'IdUsuario' => ['required']
             ], $messages = [
@@ -1067,51 +1092,6 @@ class UsuariosController extends Controller
         }
     }
 
-    public function usuariocredencial_obtener(Request $request)
-    {
-        try {
-
-            $validator = Validator::make($request->all(), $rules = [
-                'CorreoElectronico' => ['required']
-            ], $messages = [
-                'required' => 'El campo :attribute es requerido'
-            ]);
-
-            if ($validator->fails()) {
-                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
-            } else {
-
-                $url = env('COURSEROOM_API');
-
-                $correoElectronico = $request->input('CorreoElectronico');
-
-                if($url != ''){
-
-                    $response = Http::withHeaders([
-                        'Authorization' => env('COURSEROOM_API_KEY'),
-                    ])->post($url.'/api/usuarios/credencial', [
-                        'CorreoElectronico' => $correoElectronico
-                    ]);
-
-                    if ($response->ok()){
-
-                        $result = json_decode($response->body());
-
-                        return response()->json(['code' => 200 , 'data' => $result], 200);
-
-                    } else{
-                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
-                    }
-
-                } else{
-                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
-                }
-            }
-
-        } catch (\Throwable $th) {
-            return response()->json(['code' => 500 , 'data' => $th->getMessage()], 200);
-        }
-    }
 
     #endregion
 

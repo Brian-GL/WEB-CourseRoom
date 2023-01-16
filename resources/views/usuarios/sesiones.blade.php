@@ -19,7 +19,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="table-responsive mt-3">
-                                    <table class="table table-striped display order-column hover nowrap" id="table-sesiones"> </table>
+                                    <table class="table display order-column hover nowrap" id="table-sesiones"> </table>
                                 </div>
                             </div>
                         </div>

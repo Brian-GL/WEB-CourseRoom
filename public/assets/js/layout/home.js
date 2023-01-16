@@ -21,14 +21,12 @@ async function ValidarNotificaciones(){
             headers: {
                 'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
             },
-            data: {
-                "IdUsuario": 0,
-            }
+            data: null
         });
 
         let result = response.data;
 
-        if(result.code === 200){
+        if(result.codigo === 200){
             IconoNotificaciones.classList.replace("fa-envelope-open","fa-envelope-open-text");
 
             for(let aviso of result.data){
