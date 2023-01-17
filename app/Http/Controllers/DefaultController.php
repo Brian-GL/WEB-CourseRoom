@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 use App\Models\UsuariosImagenes;
 
 class DefaultController extends Controller
@@ -32,7 +33,6 @@ class DefaultController extends Controller
             ]);
 
             if ($response->ok()){
-                
                 $localidades = json_decode($response->body());
             }
         }
@@ -76,7 +76,7 @@ class DefaultController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $correoElectronico = $request->string('CorreoElectronico');
+                $correoElectronico = $request->string('CorreoElectronico')->trim();
                 $contrasena = $request->string('Contrasena');
 
                 if($url != ''){
@@ -118,7 +118,6 @@ class DefaultController extends Controller
                             $IdSesion = null;
 
                             if ($response->ok()){
-
                                 $result = json_decode($response->body());
                                 
                                 if($result->codigo > 0){
@@ -142,7 +141,7 @@ class DefaultController extends Controller
                         }
 
                     } else{
-                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                        return response()->json(['code' => 400 , 'data' => $response->body()], 200);
                     }
 
                 } else{
@@ -153,7 +152,6 @@ class DefaultController extends Controller
         } catch (\Throwable $th) {
             return response()->json(['code' => 500 , 'data' => $th->getMessage()], 200);
         }
-
      }
 
      public function recuperacion_credenciales(Request $request)
@@ -172,7 +170,7 @@ class DefaultController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $correoElectronico = $request->string('CorreoElectronico');
+                $correoElectronico = $request->string('CorreoElectronico')->trim();
 
                 if($url != ''){
 
@@ -183,12 +181,11 @@ class DefaultController extends Controller
                     ]);
 
                     if ($response->ok()){
-
                         $result = json_decode($response->body());
                         return response()->json(['code' => 200 , 'data' => $result], 200);
 
                     } else{
-                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                        return response()->json(['code' => 400 , 'data' => $response->body()], 200);
                     }
 
                 } else{
@@ -240,23 +237,10 @@ class DefaultController extends Controller
                 $CorreoElectronico = $request->string('CorreoElectronico')->trim();
                 $Contrasena = $request->string('Contrasena');
                 $ImagenBytes = $request->input('ImagenBytes');
-
-                $imagen = null;
-                $extension = null;
+                $filename = null;
 
                 if($request->hasFile('Imagen')) {
-
-                    $file = $request->file('Imagen');
-                    $imagen = time().'_'.$file->getClientOriginalName();
-        
-                    // File extension
-                    $extension = $file->getClientOriginalExtension();
-        
-                    // File upload location
-                    $location = 'archivos/usuarios/';
-        
-                    // Upload file
-                    $file->move($location,$imagen);
+                    $filename = time().'_'.$request->file('Imagen')->getClientOriginalName();
                 }
                
                 if($url != ''){
@@ -276,7 +260,7 @@ class DefaultController extends Controller
                         'Contrasena' => $Contrasena,
                         'ChatsConmigo' => true,
                         'MostrarAvisos' => true,
-                        'Imagen' => $imagen
+                        'Imagen' => $filename
                     ]);
 
                     if ($response->ok()){
@@ -287,9 +271,14 @@ class DefaultController extends Controller
 
                             $IdUsuario = $result->codigo;
 
-                            if($imagen != null){
-                                //Guardar imagen en mongo si no esta vácia:
+                            if($filename != null){
 
+                                $file = $request->file('Imagen');
+
+                                // File extension
+                                $extension = $file->getClientOriginalExtension();
+
+                                //Guardar imagen en mongo si no esta vácia:
                                 $mongoUsuariosImagenes = new UsuariosImagenes;
 
                                 $mongoUsuariosImagenes->idUsuario = $IdUsuario;
@@ -297,6 +286,9 @@ class DefaultController extends Controller
                                 $mongoUsuariosImagenes->extension = $extension;
 
                                 $mongoUsuariosImagenes->save();
+
+                                //Guardar imagen en storage:
+                                Storage::putFileAs('usuarios', $file, $filename);
                             }
 
                             //Registrar sesion:
@@ -328,12 +320,12 @@ class DefaultController extends Controller
                             }
 
                             //Session middleware:
-                            $session = $request->session()->get('AUTH_TOKEN', '');
-                            if(empty($session)){
-                                $request->session()->push('AUTH_TOKEN', env("APP_KEY"));
-                                $request->session()->push('IdUsuario', $IdUsuario);
-                                $request->session()->push('IdSesion', $IdSesion);
-                                $request->session()->push('IdTipoUsuario', $IdTipoUsuario);
+                            $session = session('AUTH_TOKEN');
+                            if(is_null($session)){
+                                session(['AUTH_TOKEN' => env("APP_KEY")]);
+                                session(['IdUsuario' => $IdUsuario]);
+                                session(['IdSesion' => $IdSesion]);
+                                session(['IdTipoUsuario' => $IdTipoUsuario]);
                             }
 
                             return response()->json(['code' => 200 , 'data' => '¡El usuario ha sido registrado correctamente!'], 200);
@@ -342,7 +334,7 @@ class DefaultController extends Controller
                             return response()->json(['code' => 400 , 'data' => $result->data], 200);                            
                         }
                     } else{
-                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                        return response()->json(['code' => 400 , 'data' => $response->body()], 200);
                     }
 
                 } else{

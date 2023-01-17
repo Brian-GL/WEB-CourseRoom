@@ -70,8 +70,12 @@ return [
     */
 
     'links' => [
-        public_path('storage') => storage_path('app/public'),
-        public_path('archivos') => storage_path('app/archivos'),
+        public_path('usuarios') => storage_path('app/usuarios'),
+        public_path('chats') => storage_path('app/chats'),
+        public_path('grupos') => storage_path('app/grupos'),
+        public_path('tareas') => storage_path('app/tareas'),
+        public_path('cursos') => storage_path('app/cursos'),
+        public_path('preguntas') => storage_path('app/preguntas'),
     ],
 
 ];

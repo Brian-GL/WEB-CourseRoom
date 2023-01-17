@@ -23,6 +23,7 @@ import * as Popper from '@popperjs/core'
 window.Popper = Popper
 
 import moment from 'moment/moment';
+moment.locale('es-mx');
 window.moment = moment;
 
 import platform from 'platform';

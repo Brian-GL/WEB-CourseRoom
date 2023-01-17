@@ -27,6 +27,5 @@ class SessionToken
         }
 
         return $next($request);
-
     }
 }

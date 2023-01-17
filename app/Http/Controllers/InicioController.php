@@ -19,7 +19,7 @@ class InicioController extends Controller
         $url = env('COURSEROOM_API');
 
         $DatosUsuario = session('DatosUsuario');
-        if(empty($DatosUsuario)){
+        if(is_null($DatosUsuario)){
            
             if($url != ''){
 
@@ -39,7 +39,7 @@ class InicioController extends Controller
 
         //Obtener datos de la cuenta:
         $DatosCuenta = session('DatosCuenta');
-        if(empty($DatosCuenta)){
+        if(is_null($DatosCuenta)){
            
             if($url != ''){
 
@@ -67,7 +67,6 @@ class InicioController extends Controller
 
         return view('inicio.acerca', compact('DatosUsuario', 'DatosCuenta')); 
     }
-
     
     #endregion
 

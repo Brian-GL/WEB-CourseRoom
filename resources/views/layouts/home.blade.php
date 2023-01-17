@@ -47,8 +47,8 @@
             <div class="row mb-3">
                 <div class="col centrado">
                     <!--Imagen del usuario-->
-                    @if(!is_null($DatosCuenta))
-                        <img id="imagen-usuario" class="img-fluid rounded-circle mb-4 shadow-lg" alt="Imagen del usuario" src="{{ url('/archivos/usuarios/'.$DatosCuenta->imagen)}}" crossorigin="anonymous"/>
+                    @if(!is_null($DatosCuenta) && !is_null($DatosCuenta->imagen))
+                        <img id="imagen-usuario" class="img-fluid rounded-circle mb-4 shadow-lg" alt="Imagen del usuario" src="{{ asset('usuarios/'.$DatosCuenta->imagen)}}" crossorigin="anonymous"/>
                     @else
                     <img id="imagen-usuario" class="img-fluid rounded-circle mb-4 shadow-lg" alt="Imagen del usuario" crossorigin="anonymous"/>
                     @endif
@@ -144,7 +144,7 @@
                 <button class="btn primer-color-letra primer-color-fondo" type="button" data-bs-toggle="offcanvas" data-bs-target="#inicio-offcanvas" aria-controls="inicio-offcanvas-label">
                     <i class="fa fa-bars fa-xl"></i>
                 </button>
-                <a type="button" id="boton-notificaciones" class="btn tercer-color-letra tercer-color-fondo" type="button" title="Notificaciones" {{--href="{{route('avisos.inicio')}}"--}}>
+                <a type="button" id="boton-notificaciones" class="btn tercer-color-letra tercer-color-fondo" type="button" title="Notificaciones" href="{{route('avisos.inicio')}}">
                     <i class="fa-solid fa-envelope-open fa-xl" id="icono-notificaciones"></i>
                 </a>
                 <div class="dropdown dropstart">

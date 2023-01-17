@@ -10,10 +10,10 @@ class UsuariosController extends Controller
 {
     #region View
 
-    public function perfil(Request $request){
+    public function perfil(){
 
-        $DatosUsuario = $request->session()->get('DatosUsuario', null)[0];
-        $DatosCuenta = $request->session()->get('DatosCuenta', null)[0];
+        $DatosUsuario = session('DatosUsuario');
+        $DatosCuenta = session('DatosCuenta');
 
         //Localidades:
         $localidades = array();
@@ -48,13 +48,12 @@ class UsuariosController extends Controller
             $tipos_usuario = json_decode($response->body());
         }
 
-
         return view('usuarios.perfil', compact('localidades','tipos_usuario', 'DatosUsuario', 'DatosCuenta'));
     }
 
-    public function sesiones(Request $request){
-        $DatosUsuario = $request->session()->get('DatosUsuario', null)[0];
-        $DatosCuenta = $request->session()->get('DatosCuenta', null)[0];
+    public function sesiones(){
+        $DatosUsuario = session('DatosUsuario');
+        $DatosCuenta = session('DatosCuenta');
         return view('usuarios.sesiones', compact('DatosUsuario', 'DatosCuenta'));
     }
 
@@ -761,8 +760,8 @@ class UsuariosController extends Controller
 
             $url = env('COURSEROOM_API');
 
-            $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
-            $IdSesion = (int)$request->session()->get('IdSesion', 0);
+            $IdUsuario = session('IdUsuario');
+            $IdSesion = session('IdSesion');
 
             if($url != ''){
 

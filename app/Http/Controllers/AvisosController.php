@@ -11,6 +11,12 @@ class AvisosController extends Controller
 {
     #region Views
 
+    public function avisos(){
+        $DatosUsuario = session('DatosUsuario');
+        $DatosCuenta = session('DatosCuenta');
+        return view('avisos.avisos', compact('DatosUsuario', 'DatosCuenta'));
+    }
+
     #endregion
 
     #region AJAX
@@ -32,7 +38,7 @@ class AvisosController extends Controller
                 $url = env('COURSEROOM_API');
 
                 $idAviso = $request->integer('IdAviso');
-                $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
+                $IdUsuario = session('IdUsuario');
 
                 if($url != ''){
 
@@ -50,7 +56,7 @@ class AvisosController extends Controller
                         return response()->json(['code' => 200 , 'data' => $result], 200);
 
                     } else{
-                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                        return response()->json(['code' => 400 , 'data' => $response->body()], 200);
                     }
 
                 } else{
@@ -273,43 +279,31 @@ class AvisosController extends Controller
     {
         try {
 
-            $validator = Validator::make($request->all(), $rules = [
-                'IdUsuario' => ['required']
-            ], $messages = [
-                'required' => 'El campo :attribute es requerido'
-            ]);
+            $url = env('COURSEROOM_API');
 
-            if ($validator->fails()) {
-                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
-            } else {
+            $IdUsuario = session('IdUsuario');
 
-                $url = env('COURSEROOM_API');
+            if($url != ''){
 
-                $idUsuario = $request->input('IdUsuario');
-                $leido = $request->input('Leido');
+                $response = Http::withHeaders([
+                    'Authorization' => env('COURSEROOM_API_KEY'),
+                ])->post($url.'/api/avisos/obtener', [
+                    'IdUsuario' => $IdUsuario,
+                    'Leido' => null
+                ]);
 
-                if($url != ''){
+                if ($response->ok()){
 
-                    $response = Http::withHeaders([
-                        'Authorization' => env('COURSEROOM_API_KEY'),
-                    ])->post($url.'/api/avisos/obtener', [
-                        'IdUsuario' => $idUsuario,
-                        'Leido' => $leido
-                    ]);
+                    $result = json_decode($response->body());
 
-                    if ($response->ok()){
-
-                        $result = json_decode($response->body());
-
-                        return response()->json(['code' => 200 , 'data' => $result], 200);
-
-                    } else{
-                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
-                    }
+                    return response()->json(['code' => 200 , 'data' => $result], 200);
 
                 } else{
-                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
+                    return response()->json(['code' => 500 , 'data' => $response->body()], 200);
                 }
+
+            } else{
+                return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
             }
 
         } catch (\Throwable $th) {

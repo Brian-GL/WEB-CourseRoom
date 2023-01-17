@@ -47,6 +47,9 @@ Route::get('/acerca',  [InicioController::class, 'acerca'])->name('inicio.acerca
 
 #region Avisos
 
+Route::get('/avisos',  [AvisosController::class, 'avisos'])->name('avisos.inicio')->middleware('session.token');
+
+
 Route::put('/avisos/actualizar',  [AvisosController::class, 'aviso_actualizar'])->middleware('session.token');
 Route::post('/avisos/registrar',  [AvisosController::class, 'aviso_registrar'])->middleware('session.token');
 Route::delete('/avisos/remover',  [AvisosController::class, 'aviso_remover'])->middleware('session.token');

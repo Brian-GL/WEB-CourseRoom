@@ -178,84 +178,90 @@ document.getElementById("cerrar-sesion").addEventListener("click", async () => {
 
 function ColorearWeb(){
     try {
-        const colorThief = new ColorThief();
-        let palette = colorThief.getPalette(document.getElementById("imagen-usuario"), 15);
 
-        let PrimerColor, SegundoColor, TercerColor, PrimerColorLetra, SegundoColorLetra, TercerColorLetra;
+        let imagenElement = document.getElementById("imagen-usuario");
 
-        let indice = 0, indiceSegundo = RandomInt(1,8), indiceTercero = RandomInt(8,15);
+        if(imagenElement.src !== undefined && imagenElement.scr !== ''){
 
-        if(palette !== undefined && palette !== null && palette.length > 0){
-            for(let color of palette){
-                switch(indice){
-                    case 0:
-                        PrimerColor = "rgb(".concat(color,")");
-                        PrimerColorLetra = color[1] >= 127 ? "rgb(0,0,0)" : "rgb(255,255,255)";
-                        localStorage.setItem("PrimerColor", PrimerColor);
-                        localStorage.setItem("PrimerColorLetra", PrimerColorLetra);
-                    break;
-                    case indiceSegundo:
-                        SegundoColor = "rgb(".concat(color,")");
-                        SegundoColorLetra = color[1] >= 127 ? "rgb(0,0,0)" : "rgb(255,255,255)";
-                        localStorage.setItem("SegundoColor", SegundoColor);
-                        localStorage.setItem("SegundoColorLetra", SegundoColorLetra);
+            const colorThief = new ColorThief();
+            let palette = colorThief.getPalette(imagenElement, 15);
+
+            let PrimerColor, SegundoColor, TercerColor, PrimerColorLetra, SegundoColorLetra, TercerColorLetra;
+
+            let indice = 0, indiceSegundo = RandomInt(1,8), indiceTercero = RandomInt(8,15);
+
+            if(palette !== undefined && palette !== null && palette.length > 0){
+                for(let color of palette){
+                    switch(indice){
+                        case 0:
+                            PrimerColor = "rgb(".concat(color,")");
+                            PrimerColorLetra = color[1] >= 127 ? "rgb(0,0,0)" : "rgb(255,255,255)";
+                            localStorage.setItem("PrimerColor", PrimerColor);
+                            localStorage.setItem("PrimerColorLetra", PrimerColorLetra);
                         break;
-                    case indiceTercero:
-                        TercerColor = "rgb(".concat(color,")");
-                        TercerColorLetra = color[1] >= 127 ? "rgb(0,0,0)" : "rgb(255,255,255)";
-                        localStorage.setItem("TercerColor", TercerColor);
-                        localStorage.setItem("TercerColorLetra", TercerColorLetra);
-                    break;
+                        case indiceSegundo:
+                            SegundoColor = "rgb(".concat(color,")");
+                            SegundoColorLetra = color[1] >= 127 ? "rgb(0,0,0)" : "rgb(255,255,255)";
+                            localStorage.setItem("SegundoColor", SegundoColor);
+                            localStorage.setItem("SegundoColorLetra", SegundoColorLetra);
+                            break;
+                        case indiceTercero:
+                            TercerColor = "rgb(".concat(color,")");
+                            TercerColorLetra = color[1] >= 127 ? "rgb(0,0,0)" : "rgb(255,255,255)";
+                            localStorage.setItem("TercerColor", TercerColor);
+                            localStorage.setItem("TercerColorLetra", TercerColorLetra);
+                        break;
+                    }
+                    indice++;
                 }
-                indice++;
-            }
 
-            let fondo = "linear-gradient(to bottom, ".concat(PrimerColor,", ",SegundoColor,", ",TercerColor,")");;
-            document.getElementById("fondo").style.background = fondo;
-            document.getElementById("inicio-offcanvas").style.background = fondo;
+                let fondo = "linear-gradient(to bottom, ".concat(PrimerColor,", ",SegundoColor,", ",TercerColor,")");;
+                document.getElementById("fondo").style.background = fondo;
+                document.getElementById("inicio-offcanvas").style.background = fondo;
 
-            //Primer color
-            let elementos = document.getElementsByClassName("primer-color-letra");
-            for(let elemento of elementos){
-                elemento.style.setProperty('color',PrimerColorLetra,'important');
-            }
-
-            elementos = document.getElementsByClassName("primer-color-fondo");
-            for(let elemento of elementos){
-                elemento.style.setProperty('background-color',PrimerColor,'important');
-                if(ElementsRegex.test(elemento.tagName)){
-                    elemento.classList.add(PrimerColorLetra === 'rgb(0,0,0)' ? "black-placeholder" : "white-placeholder");
+                //Primer color
+                let elementos = document.getElementsByClassName("primer-color-letra");
+                for(let elemento of elementos){
+                    elemento.style.setProperty('color',PrimerColorLetra,'important');
                 }
-            }
 
-            //Segundo color
-            elementos = document.getElementsByClassName("segundo-color-letra");
-            for(let elemento of elementos){
-                elemento.style.setProperty('color',SegundoColorLetra,'important');
-            }
-
-            elementos = document.getElementsByClassName("segundo-color-fondo");
-            for(let elemento of elementos){
-                elemento.style.setProperty('background-color',SegundoColor,'important');
-                if(ElementsRegex.test(elemento.tagName)){
-                    elemento.classList.add(SegundoColorLetra === 'rgb(0,0,0)' ? "black-placeholder" : "white-placeholder");
+                elementos = document.getElementsByClassName("primer-color-fondo");
+                for(let elemento of elementos){
+                    elemento.style.setProperty('background-color',PrimerColor,'important');
+                    if(ElementsRegex.test(elemento.tagName)){
+                        elemento.classList.add(PrimerColorLetra === 'rgb(0,0,0)' ? "black-placeholder" : "white-placeholder");
+                    }
                 }
-            }
 
-            //Tercer color
-            elementos = document.getElementsByClassName("tercer-color-letra");
-            for(var elemento of elementos){
-                elemento.style.setProperty('color',TercerColorLetra,'important');
-            }
-
-            elementos = document.getElementsByClassName("tercer-color-fondo");
-            for(var elemento of elementos){
-                elemento.style.setProperty('background-color',TercerColor,'important');
-                if(ElementsRegex.test(elemento.tagName)){
-                    elemento.classList.add(TercerColorLetra === 'rgb(0,0,0)' ? "black-placeholder" : "white-placeholder");
+                //Segundo color
+                elementos = document.getElementsByClassName("segundo-color-letra");
+                for(let elemento of elementos){
+                    elemento.style.setProperty('color',SegundoColorLetra,'important');
                 }
+
+                elementos = document.getElementsByClassName("segundo-color-fondo");
+                for(let elemento of elementos){
+                    elemento.style.setProperty('background-color',SegundoColor,'important');
+                    if(ElementsRegex.test(elemento.tagName)){
+                        elemento.classList.add(SegundoColorLetra === 'rgb(0,0,0)' ? "black-placeholder" : "white-placeholder");
+                    }
+                }
+
+                //Tercer color
+                elementos = document.getElementsByClassName("tercer-color-letra");
+                for(var elemento of elementos){
+                    elemento.style.setProperty('color',TercerColorLetra,'important');
+                }
+
+                elementos = document.getElementsByClassName("tercer-color-fondo");
+                for(var elemento of elementos){
+                    elemento.style.setProperty('background-color',TercerColor,'important');
+                    if(ElementsRegex.test(elemento.tagName)){
+                        elemento.classList.add(TercerColorLetra === 'rgb(0,0,0)' ? "black-placeholder" : "white-placeholder");
+                    }
+                }
+                
             }
-            
         }
     } catch (e) {
         console.error(e);

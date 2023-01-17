@@ -8,10 +8,10 @@ class PreguntasRespuestasController extends Controller
 {
     #region Views
 
-    public function inicio(Request $request){
+    public function inicio(){
         
-        $DatosUsuario = $request->session()->get('DatosUsuario', null)[0];
-        $DatosCuenta = $request->session()->get('DatosCuenta', null)[0];
+        $DatosUsuario = session('DatosUsuario');
+        $DatosCuenta = session('DatosCuenta');
 
         return view('preguntasrespuestas.preguntas', compact('DatosUsuario', 'DatosCuenta'));}
 
