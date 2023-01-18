@@ -20,11 +20,14 @@ import _ from 'lodash';
 window._ = _;
 
 import * as Popper from '@popperjs/core'
-window.Popper = Popper
+window.Popper = Popper;
 
-import moment from 'moment/moment';
-moment.locale('es-mx');
-window.moment = moment;
+import dayjs from 'dayjs'
+import 'dayjs/locale/es-mx' // import locale
+import plugin from 'dayjs/plugin/localizedFormat'
+dayjs.extend(plugin);
+dayjs.locale('es-mx');
+window.dayjs = dayjs;
 
 import platform from 'platform';
 window.platform = platform;

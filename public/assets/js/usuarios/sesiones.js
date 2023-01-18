@@ -134,8 +134,8 @@ async function ObtenerSesiones(){
 
                         $(row).css('color', SegundoColorLetra);
 
-                        $('.fechaRegistro', row).text(moment(data.fechaRegistro).format('LLLL'));
-                        let fechaActualizacion = moment(data.fechaActualizacion);
+                        $('.fechaRegistro', row).text(dayjs(data.fechaRegistro).format('LLLL'));
+                        let fechaActualizacion = dayjs(data.fechaActualizacion);
                         if(fechaActualizacion.isValid()){
                             $('.fechaActualizacion', row).text(fechaActualizacion.format('LLLL'));
                         }

@@ -43,7 +43,7 @@ async function Registrar(imagenBytes, file){
         formData.append("Paterno", document.getElementById("paterno").value);
         formData.append("Materno", document.getElementById("materno").value);
         formData.append("Genero", document.getElementById("genero").value);
-        formData.append("FechaNacimiento", moment(document.getElementById("fecha-nacimiento").value).format("YYYY-MM-DDTHH:mm:ssZ"));
+        formData.append("FechaNacimiento", dayjs(document.getElementById("fecha-nacimiento").value));
         formData.append("IdLocalidad", parseInt(optionlocalidad.text ?? '0'));
         formData.append("CorreoElectronico", document.getElementById("correo-electronico").value);
         formData.append("IdTipoUsuario", parseInt(optionUsuario.text ?? '0'));

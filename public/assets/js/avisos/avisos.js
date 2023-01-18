@@ -169,10 +169,9 @@ async function MostrarDetalle(IdAviso){
             case 200:{
                
                 let aviso = result.data;
-                console.log(aviso.fechaRegistro);
-                let fechaRegistro = moment(aviso.fechaRegistro).format('LLLL');
-                let fechaActualizacionMoment = moment(aviso.fechaActualizacion);
-                let fechaActualizacion = fechaActualizacionMoment.isValid() ? fechaActualizacionMoment.format('LLLL') : 'N/D';
+                let fechaRegistro = dayjs(aviso.fechaRegistro.substring(0,aviso.fechaRegistro.length-1)).format('dddd DD MMM YYYY h:mm A');
+                let fechaActualizacionMoment = dayjs(aviso.fechaActualizacion.substring(0,aviso.fechaActualizacion.length-1));
+                let fechaActualizacion = fechaActualizacionMoment.isValid() ? fechaActualizacionMoment.format('dddd DD MMM YYYY h:mm A') : 'N/D';
 
                 Swal.fire({
                     title: '<strong>'.concat(aviso.aviso,'</strong>'),
@@ -297,8 +296,9 @@ async function ObtenerAvisos(){
                         { className: "detalle", targets: [5]},
                     ],
                     createdRow: (row, data) => {
+                        let fechaRegistro = data.fechaRegistro.substring(0, data.fechaRegistro.length -1 );
                         $(row).css('color', SegundoColorLetra);
-                        $('.fechaRegistro', row).text(moment(data.fechaRegistro).format('LLLL'));
+                        $('.fechaRegistro', row).text(dayjs(fechaRegistro).format('dddd DD MMM YYYY h:mm A'));
                         $('.detalle', row).html('<span class="fuenteNormal span-detalle fw-bolder text-decoration-underline" onclick="document.Detalle('.concat(data.idAviso,', \'',data.estatus,'\')">Ver detalle</span>'));
                     },
                     data: filas
