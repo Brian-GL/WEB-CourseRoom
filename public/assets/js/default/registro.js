@@ -4,7 +4,7 @@ let BaseURL = window.location.origin;
 
 //#region Methods
 
-async function Registrar(imagenBytes, file){
+async function Registrar(base64Image, file){
 
     try{
 
@@ -50,7 +50,7 @@ async function Registrar(imagenBytes, file){
         formData.append("Contrasena", Base64.encode(contrasena));
         formData.append("Descripcion", document.getElementById("descripcion").value);
         formData.append("Imagen", file);
-        formData.append("ImagenBytes", imagenBytes);
+        formData.append("Base64", base64Image);
         formData.append('Dispositivo', platform.os.family);
         formData.append('Fabricante', platform.manufacturer);
         formData.append('Navegador', platform.name);
@@ -141,41 +141,13 @@ document.getElementById("form-registro").addEventListener("submit", async (e) =>
     e.preventDefault();
 
     let imagen_input = document.getElementById("imagen");
-
+    let imagen_input = document.getElementById("imagen-seleccionada");
+    let base64 = await GetBase64FromUrl(imagen_input.src);
+    
     if(imagen_input.files.length > 0){
-
-        ShowPreloader();
-
-        let files = imagen_input.files;
-
-        // Pass the file to the blob, not the input[0].
-        let fileData = new Blob([files[0]]);
-
-        // Pass getBuffer to promise.
-        let promise = new Promise(GetBuffer(fileData));
-
-        // Wait for promise to be resolved, or log error.
-        promise.then((bytes) => {
-
-            HidePreloader();
-            Registrar(bytes, files[0]);
-        }).catch((ex) => {
-
-            HidePreloader();
-
-            Swal.fire({
-                title: '¡Error!',
-                html: ex,
-                imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
-                imageWidth: 100,
-                imageHeight: 123,
-                background: '#000000',
-                color: '#FFFFFF',
-                imageAlt: 'Error Image'
-            });
-        });
+         Registrar(base64, imagen_input.files[0]);
     } else{
-        Registrar(null, null);
+        Registrar(base64, null);
     }
 
 });
