@@ -1,6 +1,6 @@
 'use strict';
 
-let dataTableMisChats;
+let dataTableMisPreguntas, dataTableBuscarPreguntas;
 let SegundoColor = localStorage.getItem("SegundoColor");
 let SegundoColorLetra = localStorage.getItem("SegundoColorLetra");
 let TercerColor = localStorage.getItem("TercerColor");
@@ -9,7 +9,7 @@ let PrimerColor = localStorage.getItem("PrimerColor");
 let PrimerColorLetra = localStorage.getItem("PrimerColorLetra");
 let BaseURL = window.location.origin;
 
-dataTableMisChats = $("#table-mis-chats").DataTable({
+dataTableMisPreguntas = $("#table-mis-preguntas").DataTable({
     pagingType: 'full_numbers',
     dom: 'frtp',
     search: {
@@ -18,7 +18,7 @@ dataTableMisChats = $("#table-mis-chats").DataTable({
     scrollX: false,
     language: {
         search: "_INPUT_",
-        searchPlaceholder: "Buscar alguno de mis chats...",
+        searchPlaceholder: "Buscar alguna de mis preguntas...",
         paginate: {
             "first":      "Primero",
             "last":       "Último",
@@ -31,26 +31,56 @@ dataTableMisChats = $("#table-mis-chats").DataTable({
         loadingRecords: "Cargando..."
     },
     columns: [
-        { title: "Id Chat" },
-        { title: "Id Usuario Receptor" },
-        { title: "Receptor" },
-        { title: "Imagen del receptor" },
+        { title: "Id Pregunta" },
+        { title: "Pregunta" },
         { title: "Fecha de registro" },
-        { title: "Último mensaje" },
-        { title: "Fecha de envío" },
-        { title: "Mostrar" },
+        { title: "Estatus" },
+        { title: "Detalle" }
     ],
     columnDefs:[
         {className: "text-center fuenteNormal segundo-color-fuente", targets: "_all"},
-        {className: "btn-detalle span-detalle", targets: "7"},
-        {className: "receptor", targets: "2"},
-        {visible: false, targets: [0,1,3]}
+        {className: "btn-detalle span-detalle", targets: "4"}
     ],
     rowCallback: function(row, data, index){
         $(row).css('color', SegundoColorLetra);
     }
 });
 
+dataTableMisPreguntas.column(0).visible(false);
+
+dataTableBuscarPreguntas = $("#table-buscar-usuarios").DataTable({
+    pagingType: 'full_numbers',
+    dom: 'rtp',
+    language: {
+        paginate: {
+            "first":      "Primero",
+            "last":       "Último",
+            "next":       "Siguiente",
+            "previous":   "Anterior"
+        },
+        zeroRecords: "Sin resultados encontrados",
+        emptyTable: "Sin datos en la tabla",
+        infoEmpty: "Sin entradas",
+        loadingRecords: "Cargando..."
+    },
+    columns: [
+        { title: "IdPregunta" },
+        { title: "Pregunta" },
+        { title: "Preguntador" },
+        { title: "Fecha de registro" },
+        { title: "Estatus" },
+        { title: "Detalle" }
+    ],
+    columnDefs:[
+        {className: "text-center fuenteNormal segundo-color-fuente", targets: "_all"},
+        {className: "btn-detalle span-detalle", targets: "5"}
+    ],
+    rowCallback: function(row, data, index){
+        $(row).css('color', SegundoColorLetra);
+    }
+});
+
+dataTableBuscarPreguntas.column(0).visible(false);
 
 let elementos = document.querySelectorAll('input[type="search"]');
 for(let elemento of elementos){
@@ -65,24 +95,24 @@ for(let elemento of elementos){
     elemento.style.setProperty('background-color',SegundoColor,'important');
 }
 
-document.addEventListener('DOMContentLoaded',  ObtenerMisChats, false);
+document.addEventListener('DOMContentLoaded',  ObtenerMisPreguntas, false);
 
 //#region Methods
 
-async function ObtenerMisChats(){
+async function ObtenerMisPreguntas(){
     try{
 
         ShowPreloader();
 
         let response = await axios({
-            url: '/chats/obtener',
+            url: '/preguntasrespuestas/obtener',
             baseURL: BaseURL,
             method: 'POST',
             headers: {
                 'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
             },
             data: {
-                "IdUsuario": 0
+                "IdUsuario": null,
             }
         });
 
@@ -94,9 +124,9 @@ async function ObtenerMisChats(){
             case 200:{
                 let filas = result.data;
 
-                dataTableMisChats.destroy();
+                dataTableMisPreguntas.destroy();
 
-                dataTableMisChats = $("#table-mis-chats").DataTable({
+                dataTableMisPreguntas = $("#table-mis-preguntas").DataTable({
                     pagingType: 'full_numbers',
                     dom: 'frtp',
                     search: {
@@ -105,7 +135,7 @@ async function ObtenerMisChats(){
                     scrollX: false,
                     language: {
                         search: "_INPUT_",
-                        searchPlaceholder: "Buscar alguno de mis chats...",
+                        searchPlaceholder: "Buscar alguna de mis preguntas...",
                         paginate: {
                             "first":      "Primero",
                             "last":       "Último",
@@ -118,36 +148,31 @@ async function ObtenerMisChats(){
                         loadingRecords: "Cargando..."
                     },
                     columns: [
-                        { title: "Id Chat" },
-                        { title: "Id Usuario Receptor" },
-                        { title: "Receptor" },
-                        { title: "Imagen del receptor" },
+                        { title: "IdPregunta" },
+                        { title: "Pregunta" },
                         { title: "Fecha de registro" },
-                        { title: "Último mensaje" },
-                        { title: "Fecha de envío" },
-                        { title: "Mostrar" },
+                        { title: "Estatus" },
+                        { title: "Detalle" }
                     ],
                     columnDefs:[
                         {className: "text-center fuenteNormal segundo-color-fuente", targets: "_all"},
-                        {className: "btn-detalle span-detalle", targets: "7"},
-                        {visible: false, targets: "[0,1,3]"}
+                        {className: "btn-detalle", targets: "4"}
                     ],
                     rowCallback: function(row, data, index){
                         $(row).css('color', SegundoColorLetra);
                     },
                     data: filas,
                     createdRow: function(row, data, index){
-                        $('.receptor', row).html('<img class="img-fluid" src="'.concat(data.ImagenReceptor,'"><span class="fuenteNormal">',data.Receptor,'</span>'));
-                        $('.btn-detalle', row).html('<span class="span-detalle text-center" onclick="DetalleChat('.concat(data.IdChat,')">Ver chat</span>'));
+                        $('.btn-detalle', row).html('<span class="span-detalle text-center" onclick="DetallePregunta('.concat(data.IdPregunta,')">Ver detalle</span>'));
                     }
                 });
 
-                dataTableMisChats.column(0).visible(false);
+                dataTableMisPreguntas.column(0).visible(false);
 
             }
             break;
             case 500:{
-                dataTableMisChats.clear().draw();
+                dataTableMisPreguntas.clear().draw();
                 Swal.fire({
                     title: '¡Error!',
                     text: result.data,
@@ -161,7 +186,7 @@ async function ObtenerMisChats(){
             }
             break;
             default:{
-                dataTableMisChats.clear().draw();
+                dataTableMisPreguntas.clear().draw();
                 Swal.fire({
                     title: '¡Alerta!',
                     text: result.data,
@@ -179,7 +204,7 @@ async function ObtenerMisChats(){
     catch(ex){
 
         HidePreloader();
-        dataTableMisChats.clear().draw();
+        dataTableMisPreguntas.clear().draw();
         Swal.fire({
             title: '¡Error!',
             text: ex,
@@ -197,12 +222,26 @@ async function ObtenerMisChats(){
 
 //#region Events
 
+$(".nav-link").on("click",  (e) => {
 
-document.getElementById("agregar-chat").addEventListener("click", function(){
+    let elementos = document.getElementsByClassName("nav-link");
+
+    for(let elemento of elementos){
+        if(elemento.id !== e.target.id){
+            elemento.style.setProperty('color',TercerColorLetra,'important');
+            elemento.style.setProperty('background-color',TercerColor,'important');
+        }else{
+            elemento.style.setProperty('color',PrimerColorLetra,'important');
+            elemento.style.setProperty('background-color',PrimerColor,'important');
+        }
+    }
+});
+
+document.getElementById("agregar-pregunta").addEventListener("click", function(){
 
     Swal.fire({
         icon: 'question',
-        title: 'Crear nuevo chat',
+        title: 'Crear nueva pregunta',
         padding: '0.5em',
         background: '#000000',
         color: '#FFFFFF',
@@ -301,5 +340,119 @@ document.getElementById("agregar-chat").addEventListener("click", function(){
       })
 
 });
+
+document.getElementById("form-buscar-usuarios").addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    try{
+
+        ShowPreloader();
+
+        let response = await axios({
+            url: '/usuarios/buscar',
+            baseURL: BaseURL,
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
+            },
+            data: {
+                "Busqueda": AvailableString(document.getElementById("input-buscar-usuarios").value),
+            }
+        });
+
+        HidePreloader();
+
+        let result = response.data;
+
+        switch (result.code) {
+            case 200:{
+                let filas = result.data;
+                dataTableBuscarPreguntas.destroy();
+
+                dataTableBuscarPreguntas = $("#table-buscar-usuarios").DataTable({
+                    pagingType: 'full_numbers',
+                    dom: 'rtp',
+                    language: {
+                        paginate: {
+                            "first":      "Primero",
+                            "last":       "Último",
+                            "next":       "Siguiente",
+                            "previous":   "Anterior"
+                        },
+                        zeroRecords: "Sin resultados encontrados",
+                        emptyTable: "Sin datos en la tabla",
+                        infoEmpty: "Sin entradas",
+                        loadingRecords: "Cargando..."
+                    },
+                    columns: [
+                        { title: "IdPregunta" },
+                        { title: "Pregunta" },
+                        { title: "Preguntador" },
+                        { title: "Fecha de registro" },
+                        { title: "Estatus" },
+                        { title: "Detalle" }
+                    ],
+                    columnDefs:[
+                        {className: "text-center fuenteNormal segundo-color-fuente", targets: "_all"},
+                    ],
+                    data: filas,
+                    createdRow: function(row, data, index){
+                        $(row).css('color', SegundoColorLetra);
+                        $('.btn-detalle', row).html('<span class="span-detalle text-center" onclick="DetallePregunta('.concat(data.IdPregunta,')">Ver detalle</span>'));
+                    }
+                });
+
+                dataTableBuscarPreguntas.column(0).visible(false);
+
+            }
+            break;
+            case 500:{
+                dataTableBuscarPreguntas.clear().draw();
+                Swal.fire({
+                    title: '¡Error!',
+                    text: result.data,
+                    imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    background: '#000000',
+                    color: '#FFFFFF',
+                    imageAlt: 'Error Image'
+                });
+            }
+            break;
+            default:{
+                dataTableBuscarPreguntas.clear().draw();
+                Swal.fire({
+                    title: '¡Alerta!',
+                    text: result.data,
+                    imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    imageAlt: 'Alert Image',
+                    background: '#000000',
+                    color: '#FFFFFF'
+                });
+            }
+            break;
+        }
+    }
+    catch(ex){
+
+        HidePreloader();
+        dataTableBuscarPreguntas.clear().draw();
+        Swal.fire({
+            title: '¡Error!',
+            text: ex,
+            imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+            imageWidth: 100,
+            imageHeight: 123,
+            background: '#000000',
+            color: '#FFFFFF',
+            imageAlt: 'Error Image'
+        });
+    }
+
+});
+
 
 //#endregion

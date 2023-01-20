@@ -105,5 +105,5 @@ table.dataTable thead .sorting_asc_disabled:after,
 table.dataTable thead .sorting_desc_disabled:after {
     right: 0 !important;
     margin-left: 0.5rem !important;
-    content: "↕️" !important;
+    content: "↕" !important;
 }

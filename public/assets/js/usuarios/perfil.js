@@ -4,7 +4,7 @@ let BaseURL = window.location.origin;
 
 //#region Methods
 
-async function Actualizar(imagen){
+async function Actualizar(imagenBytes, file){
 
     try{
 
@@ -14,107 +14,79 @@ async function Actualizar(imagen){
         let repetir_contrasena = document.getElementById("repetir-contrasena").value;
 
         if(contrasena !== repetir_contrasena){
-            preloader.hidden = true;
+            HidePreloader();
             Swal.fire({
                 title: '¡Alerta!',
                 text: "Las contraseñas no coinciden",
-                imageUrl: baseURL.concat("/assets/templates/IndiferentOwl.png"),
+                imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
                 imageWidth: 100,
                 imageHeight: 123,
-                imageAlt: 'Alert Image'
+                imageAlt: 'Alert Image',
+                background: '#000000',
+                color: '#FFFFFF'
             });
 
             return;
         }
 
+        let localidad = document.getElementById("localidad");
+        let dataListlocalidad = document.getElementById(localidad.getAttribute("list"));
+        let optionlocalidad = dataListlocalidad.querySelector(`[value="${localidad.value}"]`);
+
+        let formData = new FormData();
+
+        formData.append("Nombre", document.getElementById("nombre").value);
+        formData.append("Paterno", document.getElementById("paterno").value);
+        formData.append("Materno", document.getElementById("materno").value);
+        formData.append("Genero", document.getElementById("genero").value);
+        formData.append("FechaNacimiento", dayjs(document.getElementById("fecha-nacimiento").value));
+        formData.append("IdLocalidad", parseInt(optionlocalidad.text ?? '0'));
+        formData.append("CorreoElectronico", document.getElementById("correo-electronico").value);
+        formData.append("Contrasena", Base64.encode(contrasena));
+        formData.append("Descripcion", document.getElementById("descripcion").innerText);
+        formData.append("ChatsConmigo", document.getElementById("chats-conmigo").checked);
+        formData.append("MostrarAvisos", document.getElementById("avisos-activo").checked);
+        formData.append("Imagen", file);
+        formData.append("ImagenAnterior", document.getElementById("imagen-anterior").value);
+        formData.append("ImagenBytes", imagenBytes);
+
+        for (const value of formData.values()) {
+            console.log(value);
+          }
+
         let response = await axios({
             url: '/usuarios/actualizar',
             baseURL: BaseURL,
-            method: 'PUT',
+            method: 'POST',
             headers: {
                 'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
             },
-            data: {
-                "IdUsuario": 0,
-                "Nombre": AvailableString(document.getElementById("nombre").value),
-                "Paterno": AvailableString(document.getElementById("paterno").value),
-                "Materno": AvailableString(document.getElementById("materno").value),
-                "Genero": AvailableString(document.getElementById("genero").value),
-                "FechaNacimiento": AvailableString(document.getElementById("fecha-nacimiento").value),
-                "IdLocalidad": parseInt(document.getElementById("localidad").text ?? '0'),
-                "Descripcion": AvailableString(document.getElementById("descripcion").value)
-            }
+            data: formData
         });
 
-        let result = response.data;
+        HidePreloader();
 
+        let result = response.data;
+        
         switch (result.code) {
             case 200:{
-
-                response = await axios({
-                    url: '/usuarios/actualizar_cuenta',
-                    baseURL: BaseURL,
-                    method: 'PUT',
-                    headers: {
-                        'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
-                    },
-                    data: {
-                        "IdUsuario": 0,
-                        "CorreoElectronico": AvailableString(document.getElementById("correo-electronico").value),
-                        "Contrasena": Base64.encode(contrasena),
-                        "Imagen": imagen,
-                        "ChatsConmigo": document.getElementById("chats-conmigo").checked,
-                        "AvisosActivo": document.getElementById("avisos-activo").checked
+                Swal.fire({
+                    title: 'Actualización de cuenta',
+                    text: result.data,
+                    imageUrl: BaseURL.concat("/assets/templates/HappyOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    imageAlt: 'Ok Image',
+                    background: '#000000',
+                    color: '#FFFFFF'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "/inicio";
                     }
                 });
-
-                result = response.data;
-
-                switch (result.code) {
-                    case 200:{
-                        Swal.fire({
-                            title: 'Actualización de datos de la cuenta',
-                            text: result.data,
-                            imageUrl: BaseURL.concat("/assets/templates/HappyOwl.png"),
-                            imageWidth: 100,
-                            imageHeight: 123,
-                            imageAlt: 'Alert Image',
-                            background: '#000000',
-                            color: '#FFFFFF'
-                        });
-                    }
-                    break;
-                    case 500:{
-                        Swal.fire({
-                            title: '¡Error!',
-                            text: result.data,
-                            imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
-                            imageWidth: 100,
-                            imageHeight: 123,
-                            background: '#000000',
-                            color: '#FFFFFF',
-                            imageAlt: 'Error Image'
-                        });
-                    }
-                    break;
-                    default:{
-                        Swal.fire({
-                            title: '¡Alerta!',
-                            text: result.data,
-                            imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
-                            imageWidth: 100,
-                            imageHeight: 123,
-                            imageAlt: 'Alert Image',
-                            background: '#000000',
-                            color: '#FFFFFF'
-                        });
-                    }
-                    break;
-                }
             }
             break;
             case 500:{
-                HidePreloader();
                 Swal.fire({
                     title: '¡Error!',
                     text: result.data,
@@ -128,7 +100,6 @@ async function Actualizar(imagen){
             }
             break;
             default:{
-                HidePreloader();
                 Swal.fire({
                     title: '¡Alerta!',
                     text: result.data,
@@ -142,76 +113,44 @@ async function Actualizar(imagen){
             }
             break;
         }
-    }
-    catch(ex){
 
-        HidePreloader();
+     }
+     catch(ex){
 
-        Swal.fire({
-            title: '¡Error!',
-            text: ex,
-            imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
-            imageWidth: 100,
-            imageHeight: 123,
-            background: '#000000',
-            color: '#FFFFFF',
-            imageAlt: 'Error Image'
-        });
-    }
+         HidePreloader();
 
-}
+         Swal.fire({
+             title: '¡Error!',
+             text: ex,
+             imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+             imageWidth: 100,
+             imageHeight: 123,
+             background: '#000000',
+             color: '#FFFFFF',
+             imageAlt: 'Error Image'
+         });
+     }
+ }
+
 
 //#endregion
 
 //#region Events
-
-document.getElementById("form-actualizacion").addEventListener("submit", (e) => {
+document.getElementById("form-actualizar").addEventListener("submit", async (e) => {
 
     e.preventDefault();
 
-    let imagen_input = document.getElementById("imagen");
+    let imagen_input = document.getElementById("imagen-seleccionada");
 
-    if(imagen_input.files.length > 0){
+    let base64 = await GetBase64FromUrl(imagen_input.src);
 
-        preloader.hidden = false;
-
-        let files = imagen_input.files;
-
-        // Pass the file to the blob, not the input[0].
-        let fileData = new Blob([files[0]]);
-
-        // Pass getBuffer to promise.
-        let promise = new Promise(getBuffer(fileData));
-
-        // Wait for promise to be resolved, or log error.
-        promise.then((bytes) => {
-
-            preloader.hidden = true;
-            Actualizar(bytes);
-        }).catch((ex) => {
-
-            preloader.hidden = true;
-
-            Swal.fire({
-                title: '¡Error!',
-                html: ex,
-                imageUrl: baseURL.concat("/assets/templates/SadOwl.png"),
-                imageWidth: 100,
-                imageHeight: 123,
-                background: '#000000',
-                color: '#FFFFFF',
-                imageAlt: 'Error Image'
-            });
-        });
-    } else{
-        Actualizar(null);
-    }
+    //         Actualizar(bytes, files[0]);
 
 });
 
 document.getElementById("imagen").addEventListener("change", (e) => {
 
-    preloader.hidden = false;
+    ShowPreloader();
 
     try{
         if(e.target.files.length > 0){
@@ -229,18 +168,19 @@ document.getElementById("imagen").addEventListener("change", (e) => {
             reader.readAsDataURL(selectedFile);
 
         }else{
-            document.getElementById("imagen-seleccionada").src = "https://mdbootstrap.com/img/Photos/Others/placeholder-avatar.jpg";
+            document.getElementById("imagen-seleccionada").src = "https://storage.needpix.com/thumbs/blank-profile-picture-973460_1280.png";
         }
-        preloader.hidden = true;
+        HidePreloader();
     } catch(ex){
-        document.getElementById("imagen-seleccionada").src = "https://mdbootstrap.com/img/Photos/Others/placeholder-avatar.jpg";
 
-        preloader.hidden = true;
+        document.getElementById("imagen-seleccionada").src = "https://storage.needpix.com/thumbs/blank-profile-picture-973460_1280.png";
+
+        HidePreloader();
 
         Swal.fire({
             title: '¡Error!',
             html: ex,
-            imageUrl: baseURL.concat("/assets/templates/SadOwl.png"),
+            imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
             imageWidth: 100,
             imageHeight: 123,
             background: '#000000',
@@ -257,16 +197,15 @@ document.getElementById("imagen").addEventListener("change", (e) => {
 
 function GetBuffer(fileData) {
     return function(resolve) {
-      let reader = new FileReader();
-      reader.readAsArrayBuffer(fileData);
-      reader.addEventListener("load", function() {
-        let arrayBuffer = reader.result
-        let bytes = new Uint8Array(arrayBuffer);
-        resolve(bytes);
-      });
-  }
+        let reader = new FileReader();
+        reader.readAsArrayBuffer(fileData);
+        reader.addEventListener("load", function() {
+            reader.Re
+            let arrayBuffer = reader.result
+            let bytes = new Uint8Array(arrayBuffer);
+            resolve(bytes);
+        });
+    }
 }
 
 //#endregion
-
-

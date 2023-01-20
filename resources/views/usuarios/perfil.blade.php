@@ -2,6 +2,25 @@
     use Carbon\Carbon;
     $max_date = Carbon::now()->addYears(-14)->format('Y-m-d');
     $min_date = Carbon::now()->addYears(-128)->format('Y-m-d');
+    $fechaCarbon = new Carbon($DatosUsuario->fechaNacimiento);
+    $fecha = $fechaCarbon->format('Y-m-d');
+
+    $nombreLocalidad = '';
+
+    if(!is_null($DatosUsuario)){
+        foreach ($localidades as $localidad) {
+            if($localidad->idLocalidad == $DatosUsuario->idLocalidad){
+                $nombreLocalidad = $localidad->localidad;
+                break;
+            }
+        }
+    }
+
+    $imagenAnterior = '';
+    if(!is_null($DatosCuenta)){
+        $imagenAnterior = $DatosCuenta->imagen;
+    }
+
 @endphp
 
 @extends('layouts.home')
@@ -14,6 +33,8 @@
 
 @section('content')
 
+<input type="hidden" value="{{$imagenAnterior}}" id="imagen-anterior">
+
 <div class="col-md-12">
     <div class="container">
         <div class="row mt-4">
@@ -21,7 +42,11 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <div class="d-flex justify-content-center mb-4" id="seleccionar-imagen">
-                        <img id="imagen-seleccionada" class="img-fluid shadow-lg" src="https://mdbootstrap.com/img/Photos/Others/placeholder-avatar.jpg" class="rounded img-fluid" alt="Imagen de perfil"/>
+                        @if(!is_null($DatosCuenta) && !is_null($DatosCuenta->imagen))
+                        <img id="imagen-seleccionada" class="img-fluid shadow-lg" src="{{ asset('usuarios/'.$DatosCuenta->imagen)}}" class="rounded img-fluid" alt="Imagen de perfil"/>
+                        @else
+                        <img id="imagen-seleccionada" class="img-fluid shadow-lg" src="https://storage.needpix.com/thumbs/blank-profile-picture-973460_1280.png" class="rounded img-fluid" alt="Imagen de perfil"/>
+                        @endif
                     </div>
                     <div class="d-flex justify-content-center">
                         <div class="btn btn-rounded tercer-color-letra tercer-color-fondo">
@@ -32,28 +57,40 @@
                 </div>
 
                 <div class="mt-3 form-group text-center tercer-color-letra">
-                    <span id="descripcion" class="fuenteNormal" contenteditable="true">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Facilis officia voluptatibus fugiat laudantium ullam illo tempora error ut sunt esse aut at, odio nihil sit ad aperiam placeat debitis facere.</span>
+                    @if(!is_null($DatosUsuario))
+                        <span title="Tu descripción" id="descripcion" class="fuenteNormal" contenteditable="true">{{$DatosUsuario->descripcion}}</span>
+                    @else
+                        <span title="Tu descripción" id="descripcion" class="fuenteNormal" contenteditable="true">Ingresa aquí tu descripción</span>
+                    @endif
                     <i class="fa-solid fa-pen-to-square"></i>
                 </div>
             </div>
 
             <div class="col-md-6 pt-3">
 
-                <form id="form-actualizacion" method="HEAD">
+                <form id="form-actualizar" method="HEAD">
 
                     <div class="row">
 
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="nombre" class="form-label fuente primer-color-letra">Nombre(s)*</label>
-                                <input type="text" class="form-control fuenteNormal alphabetic segundo-color-letra segundo-color-fondo" id="nombre" placeholder="Ingresa tu nombre aquí" required minlength="3">
+                                @if(!is_null($DatosUsuario))
+                                    <input type="text" class="form-control fuenteNormal alphabetic segundo-color-letra segundo-color-fondo" id="nombre" placeholder="Ingresa tu nombre aquí" required minlength="3" value="{{$DatosUsuario->nombre}}">
+                                @else
+                                    <input type="text" class="form-control fuenteNormal alphabetic segundo-color-letra segundo-color-fondo" id="nombre" placeholder="Ingresa tu nombre aquí" required minlength="3">
+                                @endif
                             </div>
                         </div>
 
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="paterno" class="form-label fuente primer-color-letra">Apellido Paterno*</label>
-                                <input type="text" class="form-control fuenteNormal alphabetic segundo-color-letra segundo-color-fondo" id="paterno" placeholder="Ingresa tu apellido paterno aquí" required minlength="3">
+                                @if(!is_null($DatosUsuario))
+                                    <input type="text" class="form-control fuenteNormal alphabetic segundo-color-letra segundo-color-fondo" id="paterno" placeholder="Ingresa tu apellido paterno aquí" required minlength="3" value="{{$DatosUsuario->paterno}}">
+                                @else
+                                    <input type="text" class="form-control fuenteNormal alphabetic segundo-color-letra segundo-color-fondo" id="paterno" placeholder="Ingresa tu apellido paterno aquí" required minlength="3">
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -63,14 +100,22 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="materno" class="form-label fuente primer-color-letra">Apellido Materno</label>
-                                <input type="text" class="form-control alphabetic fuenteNormal segundo-color-letra segundo-color-fondo" id="materno" placeholder="Ingresa tu apellido materno aquí">
+                                @if(!is_null($DatosUsuario))
+                                    <input type="text" class="form-control alphabetic fuenteNormal segundo-color-letra segundo-color-fondo" id="materno" placeholder="Ingresa tu apellido materno aquí" value="{{$DatosUsuario->materno}}">
+                                @else
+                                    <input type="text" class="form-control alphabetic fuenteNormal segundo-color-letra segundo-color-fondo" id="materno" placeholder="Ingresa tu apellido materno aquí">
+                                @endif
                             </div>
                         </div>
 
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="genero" class="form-label fuente primer-color-letra">Género</label>
+                                @if(!is_null($DatosUsuario))
+                                    <input type="text" class="form-control alphabetic tercer-color-letra tercer-color-fondo fuenteNormal" id="genero" placeholder="Ingresa tu género aquí" value="{{$DatosUsuario->genero}}">
+                                @else
                                 <input type="text" class="form-control alphabetic tercer-color-letra tercer-color-fondo fuenteNormal" id="genero" placeholder="Ingresa tu género aquí">
+                                @endif
                             </div>
                         </div>
 
@@ -80,14 +125,18 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="fecha-nacimiento" class="form-label fuente segundo-color-letra">Fecha de nacimiento</label>
-                                <input type="date" class="form-control tercer-color-letra tercer-color-fondo fuenteNormal" id="fecha-nacimiento" min="{{$min_date}}" max="{{$max_date}}">
+                                @if(!is_null($DatosUsuario))
+                                    <input type="date" class="form-control tercer-color-letra tercer-color-fondo fuenteNormal" id="fecha-nacimiento" min="{{$min_date}}" max="{{$max_date}}" value="{{$fecha}}" required>
+                                @else
+                                    <input type="date" class="form-control tercer-color-letra tercer-color-fondo fuenteNormal" id="fecha-nacimiento" min="{{$min_date}}" max="{{$max_date}}" required>
+                                @endif
                             </div>
                         </div>
 
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="localidad" class="form-label fuente segundo-color-letra">Localidad</label>
-                                <input class="form-control alphabetic tercer-color-letra tercer-color-fondo fuenteNormal" list="localidades" id="localidad" placeholder="Seleccione una localidad">
+                                <input class="form-control alphabetic tercer-color-letra tercer-color-fondo fuenteNormal" list="localidades" id="localidad" placeholder="Seleccione una localidad" value="{{$nombreLocalidad}}">
                                 <datalist id="localidades">
                                     @foreach ($localidades as $localidad)
                                         <option label="{{$localidad->estado}}" value="{{$localidad->localidad}}">{{$localidad->idLocalidad}}</option>
@@ -102,14 +151,22 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="correo-electronico" class="form-label fuente segundo-color-letra">Correo Electrónico*</label>
-                                <input type="email" class="form-control primer-color-letra primer-color-fondo fuenteNormal" id="correo-electronico" placeholder="Ingresa tu correo electrónico aquí" required minlength="5">
+                                @if(!is_null($DatosCuenta))
+                                    <input type="email" class="form-control primer-color-letra primer-color-fondo fuenteNormal" id="correo-electronico" placeholder="Ingresa tu correo electrónico aquí" required minlength="5" value="{{$DatosCuenta->correoElectronico}}">
+                                @else
+                                    <input type="email" class="form-control primer-color-letra primer-color-fondo fuenteNormal" id="correo-electronico" placeholder="Ingresa tu correo electrónico aquí" required minlength="5">
+                                @endif
                             </div>
                         </div>
 
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="contrasena" class="form-label fuente segundo-color-letra">Contraseña*</label>
-                                <input type="password" class="form-control primer-color-letra primer-color-fondo fuenteNormal" id="contrasena" minlength="8" maxlength="30" required placeholder="Ingresa aquí tu contraseña">
+                                @if(!is_null($DatosCuenta))
+                                    <input type="password" class="form-control primer-color-letra primer-color-fondo fuenteNormal" id="contrasena" minlength="8" maxlength="30" required placeholder="Ingresa aquí tu contraseña" value="{{base64_decode($DatosCuenta->contrasena)}}">
+                                @else
+                                    <input type="password" class="form-control primer-color-letra primer-color-fondo fuenteNormal" id="contrasena" minlength="8" maxlength="30" required placeholder="Ingresa aquí tu contraseña">
+                                @endif
                             </div>
                         </div>
 
@@ -120,18 +177,30 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="repetir-contrasena" class="form-label fuente tercer-color-letra">Repetir Contraseña*</label>
-                                <input type="password" class="form-control primer-color-letra primer-color-fondo fuenteNormal" id="repetir-contrasena" minlength="8" maxlength="30" required placeholder="Repite tu contraseña">
+                                @if(!is_null($DatosCuenta))
+                                    <input type="password" class="form-control primer-color-letra primer-color-fondo fuenteNormal" id="repetir-contrasena" minlength="8" maxlength="30" required placeholder="Repite tu contraseña" value="{{base64_decode($DatosCuenta->contrasena)}}">
+                                @else
+                                    <input type="password" class="form-control primer-color-letra primer-color-fondo fuenteNormal" id="repetir-contrasena" minlength="8" maxlength="30" required placeholder="Repite tu contraseña">
+                                @endif
                             </div>
                         </div>
 
                         <div class="col-sm-6">
                             <div class="form-check text-center mt-3">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input fuenteNormal segundo-color-letra segundo-color-fondo" type="checkbox" role="switch" id="chats-conmigo">
+                                    @if(!is_null($DatosCuenta) && $DatosCuenta->chatsConmigo)
+                                        <input class="form-check-input fuenteNormal segundo-color-letra segundo-color-fondo" type="checkbox" role="switch" id="chats-conmigo" checked>    
+                                    @else
+                                        <input class="form-check-input fuenteNormal segundo-color-letra segundo-color-fondo" type="checkbox" role="switch" id="chats-conmigo">
+                                    @endif
                                     <label class="form-check-label fuente tercer-color-letra" for="chats-conmigo">¿Permitir Chats Conmigo?</label>
-                                    </div>
+                                </div>
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input fuenteNormal segundo-color-letra segundo-color-fondo" type="checkbox" role="switch" id="avisos-activo" checked>
+                                    @if(!is_null($DatosCuenta) && $DatosCuenta->chatsConmigo)
+                                        <input class="form-check-input fuenteNormal segundo-color-letra segundo-color-fondo" type="checkbox" role="switch" id="avisos-activo" checked>
+                                    @else
+                                    <input class="form-check-input fuenteNormal segundo-color-letra segundo-color-fondo" type="checkbox" role="switch" id="avisos-activo">
+                                    @endif
                                     <label class="form-check-label fuente tercer-color-letra" for="avisos-activo">¿Mostrar Avisos?</label>
                                 </div>
                             </div>

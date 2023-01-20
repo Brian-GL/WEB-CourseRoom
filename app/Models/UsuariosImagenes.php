@@ -8,4 +8,6 @@ class UsuariosImagenes extends Model
 {
     protected $connection = 'mongodb';
     protected $collection = 'usuariosImagenes';
+
+    protected $fillable = ['imagen', 'extension'];
 }
