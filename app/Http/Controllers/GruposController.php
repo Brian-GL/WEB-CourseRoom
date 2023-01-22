@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Http;
 
 class GruposController extends Controller
 {
@@ -29,11 +31,11 @@ class GruposController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idGrupo = $request->input('IdGrupo');
-                $idCurso = $request->input('IdCurso');
-                $nombre = $request->input('Nombre');
-                $descripcion = $request->input('Descripcion');
-                $imagen = $request->input('Imagen');
+                $idGrupo = $request->integer('IdGrupo');
+                $idCurso = $request->integer('IdCurso');
+                $nombre = $request->string('Nombre')->trim();
+                $descripcion = $request->string('Descripcion')->trim();
+                $imagen = $request->string('Imagen')->trim();
 
                 if($url != ''){
 
@@ -83,8 +85,8 @@ class GruposController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idGrupo = $request->input('IdGrupo');
-                $ultimoMensaje = $request->input('UltimoMensaje');
+                $idGrupo = $request->integer('IdGrupo');
+                $ultimoMensaje = $request->integer('UltimoMensaje');
 
                 if($url != ''){
 
@@ -118,41 +120,30 @@ class GruposController extends Controller
     public function grupos_obtener(Request $request){
         try {
 
-            $validator = Validator::make($request->all(), $rules = [
-                'IdUsuario' => ['required']
-            ], $messages = [
-                'required' => 'El campo :attribute es requerido'
-            ]);
+            $url = env('COURSEROOM_API');
 
-            if ($validator->fails()) {
-                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
-            } else {
+            $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
 
-                $url = env('COURSEROOM_API');
+            if($url != ''){
 
-                $idUsuario = $request->input('IdUsuario');
+                $response = Http::withHeaders([
+                    'Authorization' => env('COURSEROOM_API_KEY'),
+                ])->post($url.'/api/grupos/obtener', [
+                    'IdUsuario' => $idUsuario
+                ]);
 
-                if($url != ''){
+                if ($response->ok()){
 
-                    $response = Http::withHeaders([
-                        'Authorization' => env('COURSEROOM_API_KEY'),
-                    ])->post($url.'/api/grupos/obtener', [
-                        'IdUsuario' => $idUsuario
-                    ]);
+                    $result = json_decode($response->body());
 
-                    if ($response->ok()){
-
-                        $result = json_decode($response->body());
-
-                        return response()->json(['code' => 200 , 'data' => $result], 200);
-
-                    } else{
-                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
-                    }
+                    return response()->json(['code' => 200 , 'data' => $result], 200);
 
                 } else{
-                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
+                    return response()->json(['code' => 500 , 'data' => $response->body()], 200);
                 }
+
+            } else{
+                return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
             }
 
         } catch (\Throwable $th) {
@@ -175,8 +166,8 @@ class GruposController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idGrupo = $request->input('IdGrupo');
-                $idUsuario = $request->input('IdUsuario');
+                $idGrupo = $request->integer('IdGrupo');
+                $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
 
                 if($url != ''){
 
@@ -222,7 +213,7 @@ class GruposController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idGrupo = $request->input('IdGrupo');
+                $idGrupo = $request->integer('IdGrupo');
 
                 if($url != ''){
 
@@ -267,7 +258,7 @@ class GruposController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idTareaPendiente = $request->input('IdTareaPendiente');
+                $idTareaPendiente = $request->integer('IdTareaPendiente');
 
                 if($url != ''){
 
@@ -315,10 +306,10 @@ class GruposController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idGrupo = $request->input('IdGrupo');
-                $idTareaPendiente = $request->input('IdTareaPendiente');
-                $idUsuarioReceptor = $request->input('IdUsuarioReceptor');
-                $idEstatusTareaPendiente = $request->input('IdEstatusTareaPendiente');
+                $idGrupo = $request->integer('IdGrupo');
+                $idTareaPendiente = $request->integer('IdTareaPendiente');
+                $idUsuarioReceptor = $request->integer('IdUsuarioReceptor');
+                $idEstatusTareaPendiente = $request->integer('IdEstatusTareaPendiente');
 
                 if($url != ''){
 
@@ -356,8 +347,7 @@ class GruposController extends Controller
 
             $validator = Validator::make($request->all(), $rules = [
                 'IdGrupo' => ['required'],
-                'IdProfesor' => ['required'],
-                'IdUsuario' => ['required']
+                'IdProfesor' => ['required']
             ], $messages = [
                 'required' => 'El campo :attribute es requerido'
             ]);
@@ -368,9 +358,9 @@ class GruposController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idGrupo = $request->input('IdGrupo');
-                $idProfesor = $request->input('IdProfesor');
-                $idUsuario = $request->input('IdUsuario');
+                $idGrupo = $request->integer('IdGrupo');
+                $idProfesor = $request->integer('IdProfesor');
+                $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
 
                 if($url != ''){
 
@@ -408,8 +398,7 @@ class GruposController extends Controller
             $validator = Validator::make($request->all(), $rules = [
                 'IdGrupo' => ['required'],
                 'IdProfesor' => ['required'],
-                'IdCurso' => ['required'],
-                'IdUsuario' => ['required']
+                'IdCurso' => ['required']
             ], $messages = [
                 'required' => 'El campo :attribute es requerido'
             ]);
@@ -420,10 +409,10 @@ class GruposController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idGrupo = $request->input('IdGrupo');
-                $idProfesor = $request->input('IdProfesor');
-                $idCurso = $request->input('IdCurso');
-                $idUsuario = $request->input('IdUsuario');
+                $idGrupo = $request->integer('IdGrupo');
+                $idProfesor = $request->integer('IdProfesor');
+                $idCurso = $request->integer('IdCurso');
+                $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
 
                 if($url != ''){
 
@@ -461,7 +450,6 @@ class GruposController extends Controller
 
             $validator = Validator::make($request->all(), $rules = [
                 'IdGrupo' => ['required'],
-                'IdUsuario' => ['required'],
                 'IdTareaPendiente' => ['required'],
                 'Nombre' => ['required']
             ], $messages = [
@@ -474,11 +462,11 @@ class GruposController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idGrupo = $request->input('IdGrupo');
-                $idUsuario = $request->input('IdUsuario');
-                $idTareaPendiente = $request->input('IdTareaPendiente');
-                $nombre = $request->input('Nombre');
-                $descripcion = $request->input('Descripcion');
+                $idGrupo = $request->integer('IdGrupo');
+                $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
+                $idTareaPendiente = $request->integer('IdTareaPendiente');
+                $nombre = $request->string('Nombre')->trim();
+                $descripcion = $request->string('Descripcion')->trim();
 
                 if($url != ''){
 
@@ -530,12 +518,12 @@ class GruposController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idGrupo = $request->input('IdGrupo');
-                $idUsuarioEmisor = $request->input('IdUsuarioEmisor');
-                $idUsuarioReceptor = $request->input('IdUsuarioReceptor');
-                $nombre = $request->input('Nombre');
-                $descripcion = $request->input('Descripcion');
-                $fechaFinalizacion = $request->input('FechaFinalizacion');
+                $idGrupo = $request->integer('IdGrupo');
+                $idUsuarioEmisor = $request->integer('IdUsuarioEmisor');
+                $idUsuarioReceptor = $request->integer('IdUsuarioReceptor');
+                $nombre = $request->string('Nombre')->trim();
+                $descripcion = $request->string('Descripcion')->trim();
+                $fechaFinalizacion = $request->date('FechaFinalizacion');
 
                 if($url != ''){
 

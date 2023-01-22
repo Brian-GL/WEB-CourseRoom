@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Http;
 
 class TareasController extends Controller
 {
@@ -27,7 +29,7 @@ class TareasController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idTarea = $request->input('IdTarea');
+                $idTarea = $request->integer('IdTarea');
 
                 if($url != ''){
 
@@ -61,8 +63,7 @@ class TareasController extends Controller
         try {
 
             $validator = Validator::make($request->all(), $rules = [
-                'IdTarea' => ['required'],
-                'IdUsuario' => ['required']
+                'IdTarea' => ['required']
             ], $messages = [
                 'required' => 'El campo :attribute es requerido'
             ]);
@@ -73,8 +74,8 @@ class TareasController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idTarea = $request->input('IdTarea');
-                $idUsuario = $request->input('IdUsuario');
+                $idTarea = $request->integer('IdTarea');
+                $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
 
                 if($url != ''){
 
@@ -109,7 +110,6 @@ class TareasController extends Controller
         try {
 
             $validator = Validator::make($request->all(), $rules = [
-                'IdUsuario' => ['required'],
                 'Mes' => ['required']
             ], $messages = [
                 'required' => 'El campo :attribute es requerido'
@@ -121,8 +121,8 @@ class TareasController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idUsuario = $request->input('IdUsuario');
-                $mes = $request->input('Mes');
+                $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
+                $mes = $request->integer('Mes');
 
                 if($url != ''){
 
@@ -157,8 +157,7 @@ class TareasController extends Controller
         try {
 
             $validator = Validator::make($request->all(), $rules = [
-                'IdTarea' => ['required'],
-                'IdUsuario' => ['required']
+                'IdTarea' => ['required']
             ], $messages = [
                 'required' => 'El campo :attribute es requerido'
             ]);
@@ -169,8 +168,8 @@ class TareasController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idTarea = $request->input('IdTarea');
-                $idUsuario = $request->input('IdUsuario');
+                $idTarea = $request->integer('IdTarea');
+                $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
 
                 if($url != ''){
 
@@ -216,7 +215,7 @@ class TareasController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idRetroalimentacion = $request->input('IdRetroalimentacion');
+                $idRetroalimentacion = $request->integer('IdRetroalimentacion');
 
                 if($url != ''){
 
@@ -264,10 +263,10 @@ class TareasController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idTarea = $request->input('IdTarea');
-                $idProfesor = $request->input('IdProfesor');
-                $nombre = $request->input('Nombre');
-                $descripcion = $request->input('Descripcion');
+                $idTarea = $request->integer('IdTarea');
+                $idProfesor = $request->integer('IdProfesor');
+                $nombre = $request->string('Nombre')->trim();
+                $descripcion = $request->string('Descripcion')->trim();
 
                 if($url != ''){
 
@@ -306,7 +305,6 @@ class TareasController extends Controller
             $validator = Validator::make($request->all(), $rules = [
                 'IdTarea' => ['required'],
                 'IdProfesor' => ['required'],
-                'IdUsuario' => ['required'],
                 'Calificacion' => ['required']
             ], $messages = [
                 'required' => 'El campo :attribute es requerido'
@@ -318,10 +316,10 @@ class TareasController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idTarea = $request->input('IdTarea');
-                $idProfesor = $request->input('IdProfesor');
-                $idUsuario = $request->input('IdUsuario');
-                $calificacion = $request->input('Calificacion');
+                $idTarea = $request->integer('IdTarea');
+                $idProfesor = $request->integer('IdProfesor');
+                $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
+                $calificacion = $request->float('Calificacion');
 
                 if($url != ''){
 
@@ -359,7 +357,6 @@ class TareasController extends Controller
 
             $validator = Validator::make($request->all(), $rules = [
                 'IdTarea' => ['required'],
-                'IdUsuario' => ['required'],
                 'NombreArchivo' => ['required'],
                 'Archivo' => ['required']
             ], $messages = [
@@ -372,10 +369,10 @@ class TareasController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idTarea = $request->input('IdTarea');
-                $idUsuario = $request->input('IdUsuario');
-                $nombreArchivo = $request->input('NombreArchivo');
-                $archivo = $request->input('Archivo');
+                $idTarea = $request->integer('IdTarea');
+                $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
+                $nombreArchivo = $request->string('NombreArchivo')->trim();
+                $archivo = $request->string('Archivo')->trim();
 
                 if($url != ''){
 
@@ -424,8 +421,8 @@ class TareasController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idTarea = $request->input('IdTarea');
-                $idProfesor = $request->input('IdProfesor');
+                $idTarea = $request->integer('IdTarea');
+                $idProfesor = $request->integer('IdProfesor');
 
                 if($url != ''){
 
@@ -475,11 +472,11 @@ class TareasController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idCurso = $request->input('IdCurso');
-                $idProfesor = $request->input('IdProfesor');
-                $nombre = $request->input('Nombre');
-                $descripcion = $request->input('Descripcion');
-                $fechaEntrega = $request->input('FechaEntrega');
+                $idCurso = $request->integer('IdCurso');
+                $idProfesor = $request->integer('IdProfesor');
+                $nombre = $request->string('Nombre')->trim();
+                $descripcion = $request->string('Descripcion')->trim();
+                $fechaEntrega = $request->date('FechaEntrega');
 
                 if($url != ''){
 
@@ -519,7 +516,6 @@ class TareasController extends Controller
             $validator = Validator::make($request->all(), $rules = [
                 'IdTarea' => ['required'],
                 'IdProfesor' => ['required'],
-                'IdUsuario' => ['required'],
                 'Nombre' => ['required'],
                 'Retroalimentacion' => ['required']
             ], $messages = [
@@ -532,13 +528,13 @@ class TareasController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idTarea = $request->input('IdTarea');
-                $idProfesor = $request->input('IdProfesor');
-                $idUsuario = $request->input('IdUsuario');
-                $nombre = $request->input('Nombre');
-                $retroalimentacion = $request->input('Retroalimentacion');
-                $nombreArchivo = $request->input('NombreArchivo');
-                $archivo = $request->input('Archivo');
+                $idTarea = $request->integer('IdTarea');
+                $idProfesor = $request->integer('IdProfesor');
+                $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
+                $nombre = $request->string('Nombre')->trim();
+                $retroalimentacion = $request->string('Retroalimentacion')->trim();
+                $nombreArchivo = $request->string('NombreArchivo')->trim();
+                $archivo = $request->string('Archivo')->trim();
 
                 if($url != ''){
 

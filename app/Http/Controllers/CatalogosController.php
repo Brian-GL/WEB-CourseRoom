@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Http;
 
 class CatalogosController extends Controller
@@ -17,41 +18,30 @@ class CatalogosController extends Controller
     {
         try {
 
-            $validator = Validator::make($request->all(), $rules = [
+            $url = env('COURSEROOM_API');
 
-            ], $messages = [
-                'required' => 'El campo :attribute es requerido'
-            ]);
+            $idEstatus = $request->integer('IdEstatus');
 
-            if ($validator->fails()) {
-                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
-            } else {
+            if($url != ''){
 
-                $url = env('COURSEROOM_API');
+                $response = Http::withHeaders([
+                    'Authorization' => env('COURSEROOM_API_KEY'),
+                ])->post($url.'/api/catalogos/cursoestatus', [
+                    'IdEstatus' => $idEstatus
+                ]);
 
-                $idEstatus = $request->input('IdEstatus');
+                if ($response->ok()){
 
-                if($url != ''){
+                    $result = json_decode($response->body());
 
-                    $response = Http::withHeaders([
-                        'Authorization' => env('COURSEROOM_API_KEY'),
-                    ])->post($url.'/api/catalogos/cursoestatus', [
-                        'IdEstatus' => $idEstatus
-                    ]);
-
-                    if ($response->ok()){
-
-                        $result = json_decode($response->body());
-
-                        return response()->json(['code' => 200 , 'data' => $result], 200);
-
-                    } else{
-                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
-                    }
+                    return response()->json(['code' => 200 , 'data' => $result], 200);
 
                 } else{
-                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
+                    return response()->json(['code' => 500 , 'data' => $response->body()], 200);
                 }
+
+            } else{
+                return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
             }
 
         } catch (\Throwable $th) {
@@ -63,41 +53,30 @@ class CatalogosController extends Controller
     {
         try {
 
-            $validator = Validator::make($request->all(), $rules = [
+            $url = env('COURSEROOM_API');
 
-            ], $messages = [
-                'required' => 'El campo :attribute es requerido'
-            ]);
+            $idEstado = $request->integer('IdEstado');
 
-            if ($validator->fails()) {
-                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
-            } else {
+            if($url != ''){
 
-                $url = env('COURSEROOM_API');
+                $response = Http::withHeaders([
+                    'Authorization' => env('COURSEROOM_API_KEY'),
+                ])->post($url.'/api/catalogos/estados', [
+                    'IdEstado' => $idEstado
+                ]);
 
-                $idEstado = $request->input('IdEstado');
+                if ($response->ok()){
 
-                if($url != ''){
+                    $result = json_decode($response->body());
 
-                    $response = Http::withHeaders([
-                        'Authorization' => env('COURSEROOM_API_KEY'),
-                    ])->post($url.'/api/catalogos/estados', [
-                        'IdEstado' => $idEstado
-                    ]);
-
-                    if ($response->ok()){
-
-                        $result = json_decode($response->body());
-
-                        return response()->json(['code' => 200 , 'data' => $result], 200);
-
-                    } else{
-                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
-                    }
+                    return response()->json(['code' => 200 , 'data' => $result], 200);
 
                 } else{
-                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
+                    return response()->json(['code' => 500 , 'data' => $response->body()], 200);
                 }
+
+            } else{
+                return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
             }
 
         } catch (\Throwable $th) {
@@ -109,41 +88,30 @@ class CatalogosController extends Controller
     {
         try {
 
-            $validator = Validator::make($request->all(), $rules = [
+            $url = env('COURSEROOM_API');
 
-            ], $messages = [
-                'required' => 'El campo :attribute es requerido'
-            ]);
+            $idEstatusTareaPendiente = $request->integer('IdEstatusTareaPendiente');
 
-            if ($validator->fails()) {
-                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
-            } else {
+            if($url != ''){
 
-                $url = env('COURSEROOM_API');
+                $response = Http::withHeaders([
+                    'Authorization' => env('COURSEROOM_API_KEY'),
+                ])->post($url.'/api/catalogos/estatustareapendiente', [
+                    'IdEstatusTareaPendiente' => $idEstatusTareaPendiente
+                ]);
 
-                $idEstatusTareaPendiente = $request->input('IdEstatusTareaPendiente');
+                if ($response->ok()){
 
-                if($url != ''){
+                    $result = json_decode($response->body());
 
-                    $response = Http::withHeaders([
-                        'Authorization' => env('COURSEROOM_API_KEY'),
-                    ])->post($url.'/api/catalogos/estatustareapendiente', [
-                        'IdEstatusTareaPendiente' => $idEstatusTareaPendiente
-                    ]);
-
-                    if ($response->ok()){
-
-                        $result = json_decode($response->body());
-
-                        return response()->json(['code' => 200 , 'data' => $result], 200);
-
-                    } else{
-                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
-                    }
+                    return response()->json(['code' => 200 , 'data' => $result], 200);
 
                 } else{
-                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
+                    return response()->json(['code' => 500 , 'data' => $response->body()], 200);
                 }
+
+            } else{
+                return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
             }
 
         } catch (\Throwable $th) {
@@ -155,43 +123,32 @@ class CatalogosController extends Controller
     {
         try {
 
-            $validator = Validator::make($request->all(), $rules = [
+            $url = env('COURSEROOM_API');
 
-            ], $messages = [
-                'required' => 'El campo :attribute es requerido'
-            ]);
+            $idEstado = $request->integer('IdEstado');
+            $idLocalidad = $request->integer('IdLocalidad');
 
-            if ($validator->fails()) {
-                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
-            } else {
+            if($url != ''){
 
-                $url = env('COURSEROOM_API');
+                $response = Http::withHeaders([
+                    'Authorization' => env('COURSEROOM_API_KEY'),
+                ])->post($url.'/api/catalogos/localidades', [
+                    'IdEstado' => $idEstado,
+                    'Idlocalidad' => $idLocalidad
+                ]);
 
-                $idEstado = $request->input('IdEstado');
-                $idLocalidad = $request->input('IdLocalidad');
+                if ($response->ok()){
 
-                if($url != ''){
+                    $result = json_decode($response->body());
 
-                    $response = Http::withHeaders([
-                        'Authorization' => env('COURSEROOM_API_KEY'),
-                    ])->post($url.'/api/catalogos/localidades', [
-                        'IdEstado' => $idEstado,
-                        'Idlocalidad' => $idLocalidad
-                    ]);
-
-                    if ($response->ok()){
-
-                        $result = json_decode($response->body());
-
-                        return response()->json(['code' => 200 , 'data' => $result], 200);
-
-                    } else{
-                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
-                    }
+                    return response()->json(['code' => 200 , 'data' => $result], 200);
 
                 } else{
-                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
+                    return response()->json(['code' => 500 , 'data' => $response->body()], 200);
                 }
+
+            } else{
+                return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
             }
 
         } catch (\Throwable $th) {
@@ -203,41 +160,30 @@ class CatalogosController extends Controller
     {
         try {
 
-            $validator = Validator::make($request->all(), $rules = [
+            $url = env('COURSEROOM_API');
 
-            ], $messages = [
-                'required' => 'El campo :attribute es requerido'
-            ]);
+            $idEstatusPreguntaRespuesta = $request->integer('IdEstatusPreguntaRespuesta');
 
-            if ($validator->fails()) {
-                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
-            } else {
+            if($url != ''){
 
-                $url = env('COURSEROOM_API');
+                $response = Http::withHeaders([
+                    'Authorization' => env('COURSEROOM_API_KEY'),
+                ])->post($url.'/api/catalogos/preguntarespuesta', [
+                    'IdEstatusPreguntaRespuesta' => $idEstatusPreguntaRespuesta
+                ]);
 
-                $idEstatusPreguntaRespuesta = $request->input('IdEstatusPreguntaRespuesta');
+                if ($response->ok()){
 
-                if($url != ''){
+                    $result = json_decode($response->body());
 
-                    $response = Http::withHeaders([
-                        'Authorization' => env('COURSEROOM_API_KEY'),
-                    ])->post($url.'/api/catalogos/preguntarespuesta', [
-                        'IdEstatusPreguntaRespuesta' => $idEstatusPreguntaRespuesta
-                    ]);
-
-                    if ($response->ok()){
-
-                        $result = json_decode($response->body());
-
-                        return response()->json(['code' => 200 , 'data' => $result], 200);
-
-                    } else{
-                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
-                    }
+                    return response()->json(['code' => 200 , 'data' => $result], 200);
 
                 } else{
-                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
+                    return response()->json(['code' => 500 , 'data' => $response->body()], 200);
                 }
+
+            } else{
+                return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
             }
 
         } catch (\Throwable $th) {
@@ -249,41 +195,30 @@ class CatalogosController extends Controller
     {
         try {
 
-            $validator = Validator::make($request->all(), $rules = [
+            $url = env('COURSEROOM_API');
 
-            ], $messages = [
-                'required' => 'El campo :attribute es requerido'
-            ]);
+            $idCuestionario = $request->integer('IdCuestionario');
 
-            if ($validator->fails()) {
-                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
-            } else {
+            if($url != ''){
 
-                $url = env('COURSEROOM_API');
+                $response = Http::withHeaders([
+                    'Authorization' => env('COURSEROOM_API_KEY'),
+                ])->post($url.'/api/catalogos/preguntascuestionario', [
+                    'IdCuestionario' => $idCuestionario
+                ]);
 
-                $idCuestionario = $request->input('IdCuestionario');
+                if ($response->ok()){
 
-                if($url != ''){
+                    $result = json_decode($response->body());
 
-                    $response = Http::withHeaders([
-                        'Authorization' => env('COURSEROOM_API_KEY'),
-                    ])->post($url.'/api/catalogos/preguntascuestionario', [
-                        'IdCuestionario' => $idCuestionario
-                    ]);
-
-                    if ($response->ok()){
-
-                        $result = json_decode($response->body());
-
-                        return response()->json(['code' => 200 , 'data' => $result], 200);
-
-                    } else{
-                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
-                    }
+                    return response()->json(['code' => 200 , 'data' => $result], 200);
 
                 } else{
-                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
+                    return response()->json(['code' => 500 , 'data' => $response->body()], 200);
                 }
+
+            } else{
+                return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
             }
 
         } catch (\Throwable $th) {
@@ -295,41 +230,30 @@ class CatalogosController extends Controller
     {
         try {
 
-            $validator = Validator::make($request->all(), $rules = [
+            $url = env('COURSEROOM_API');
 
-            ], $messages = [
-                'required' => 'El campo :attribute es requerido'
-            ]);
+            $idTematica = $request->integer('IdTematica');
 
-            if ($validator->fails()) {
-                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
-            } else {
+            if($url != ''){
 
-                $url = env('COURSEROOM_API');
+                $response = Http::withHeaders([
+                    'Authorization' => env('COURSEROOM_API_KEY'),
+                ])->post($url.'/api/catalogos/tematicas', [
+                    'IdTematica' => $idTematica
+                ]);
 
-                $idTematica = $request->input('IdTematica');
+                if ($response->ok()){
 
-                if($url != ''){
+                    $result = json_decode($response->body());
 
-                    $response = Http::withHeaders([
-                        'Authorization' => env('COURSEROOM_API_KEY'),
-                    ])->post($url.'/api/catalogos/tematicas', [
-                        'IdTematica' => $idTematica
-                    ]);
-
-                    if ($response->ok()){
-
-                        $result = json_decode($response->body());
-
-                        return response()->json(['code' => 200 , 'data' => $result], 200);
-
-                    } else{
-                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
-                    }
+                    return response()->json(['code' => 200 , 'data' => $result], 200);
 
                 } else{
-                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
+                    return response()->json(['code' => 500 , 'data' => $response->body()], 200);
                 }
+
+            } else{
+                return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
             }
 
         } catch (\Throwable $th) {
@@ -341,41 +265,30 @@ class CatalogosController extends Controller
     {
         try {
 
-            $validator = Validator::make($request->all(), $rules = [
+            $url = env('COURSEROOM_API');
 
-            ], $messages = [
-                'required' => 'El campo :attribute es requerido'
-            ]);
+            $idTipoUsuario = $request->integer('IdTipoUsuario');
 
-            if ($validator->fails()) {
-                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
-            } else {
+            if($url != ''){
 
-                $url = env('COURSEROOM_API');
+                $response = Http::withHeaders([
+                    'Authorization' => env('COURSEROOM_API_KEY'),
+                ])->post($url.'/api/catalogos/tiposusuario', [
+                    'IdTipoUsuario' => $idTipoUsuario
+                ]);
 
-                $idTipoUsuario = $request->input('IdTipoUsuario');
+                if ($response->ok()){
 
-                if($url != ''){
+                    $result = json_decode($response->body());
 
-                    $response = Http::withHeaders([
-                        'Authorization' => env('COURSEROOM_API_KEY'),
-                    ])->post($url.'/api/catalogos/tiposusuario', [
-                        'IdTipoUsuario' => $idTipoUsuario
-                    ]);
-
-                    if ($response->ok()){
-
-                        $result = json_decode($response->body());
-
-                        return response()->json(['code' => 200 , 'data' => $result], 200);
-
-                    } else{
-                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
-                    }
+                    return response()->json(['code' => 200 , 'data' => $result], 200);
 
                 } else{
-                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
+                    return response()->json(['code' => 500 , 'data' => $response->body()], 200);
                 }
+
+            } else{
+                return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
             }
 
         } catch (\Throwable $th) {

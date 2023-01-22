@@ -37,8 +37,8 @@ class ChatsController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idUsuarioEmisor = $request->input('IdUsuarioEmisor');
-                $idUsuarioReceptor = $request->input('IdUsuarioReceptor');
+                $idUsuarioEmisor = $request->integer('IdUsuarioEmisor');
+                $idUsuarioReceptor = $request->integer('IdUsuarioReceptor');
 
                 if($url != ''){
 
@@ -75,8 +75,7 @@ class ChatsController extends Controller
         try {
 
             $validator = Validator::make($request->all(), $rules = [
-                'IdChat' => ['required'],
-                'IdUsuario' => ['required']
+                'IdChat' => ['required']
             ], $messages = [
                 'required' => 'El campo :attribute es requerido'
             ]);
@@ -87,8 +86,8 @@ class ChatsController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idChat = $request->input('IdChat');
-                $idUsuario = $request->input('IdUsuario');
+                $idChat = $request->integer('IdChat');
+                $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
 
                 if($url != ''){
 
@@ -138,10 +137,10 @@ class ChatsController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idChat = $request->input('IdChat');
-                $idUsuarioEmisor = $request->input('IdUsuarioEmisor');
-                $mensaje = $request->input('Mensaje');
-                $archivo = $request->input('Archivo');
+                $idChat = $request->integer('IdChat');
+                $idUsuarioEmisor = $request->integer('IdUsuarioEmisor');
+                $mensaje = $request->string('Mensaje')->trim();
+                $archivo = $request->string('Archivo')->trim();
 
                 if($url != ''){
 
@@ -193,9 +192,9 @@ class ChatsController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idChat = $request->input('IdChat');
-                $idUsuarioEmisor = $request->input('IdUsuarioEmisor');
-                $idMensaje = $request->input('IdMensaje');
+                $idChat = $request->integer('IdChat');
+                $idUsuarioEmisor = $request->integer('IdUsuarioEmisor');
+                $idMensaje = $request->integer('IdMensaje');
 
                 if($url != ''){
 
@@ -245,8 +244,8 @@ class ChatsController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idChat = $request->input('IdChat');
-                $ultimo = $request->input('Ultimo');
+                $idChat = $request->integer('IdChat');
+                $ultimo = $request->boolean('Ultimo');
 
                 if($url != ''){
 
@@ -294,10 +293,10 @@ class ChatsController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idUsuarioEmisor = $request->input('IdUsuarioEmisor');
-                $nombre = $request->input('Nombre');
-                $paterno = $request->input('Paterno');
-                $materno = $request->input('Materno');
+                $idUsuarioEmisor = $request->integer('IdUsuarioEmisor');
+                $nombre = $request->string('Nombre')->trim();
+                $paterno = $request->string('Paterno')->trim();
+                $materno = $request->string('Materno')->trim();
 
                 if($url != ''){
 
@@ -335,41 +334,30 @@ class ChatsController extends Controller
     {
         try {
 
-            $validator = Validator::make($request->all(), $rules = [
-                'IdUsuario' => ['required']
-            ], $messages = [
-                'required' => 'El campo :attribute es requerido'
-            ]);
+            $url = env('COURSEROOM_API');
 
-            if ($validator->fails()) {
-                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
-            } else {
+            $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
 
-                $url = env('COURSEROOM_API');
+            if($url != ''){
 
-                $idUsuario = $request->input('IdUsuarioEmisor');
+                $response = Http::withHeaders([
+                    'Authorization' => env('COURSEROOM_API_KEY'),
+                ])->post($url.'/api/chats/obtener', [
+                    'IdUsuario' => $idUsuario
+                ]);
 
-                if($url != ''){
+                if ($response->ok()){
 
-                    $response = Http::withHeaders([
-                        'Authorization' => env('COURSEROOM_API_KEY'),
-                    ])->post($url.'/api/chats/obtener', [
-                        'IdUsuario' => $idUsuario
-                    ]);
+                    $result = json_decode($response->body());
 
-                    if ($response->ok()){
-
-                        $result = json_decode($response->body());
-
-                        return response()->json(['code' => 200 , 'data' => $result], 200);
-
-                    } else{
-                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
-                    }
+                    return response()->json(['code' => 200 , 'data' => $result], 200);
 
                 } else{
-                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
+                    return response()->json(['code' => 500 , 'data' => $response->body()], 200);
                 }
+
+            } else{
+                return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
             }
 
         } catch (\Throwable $th) {

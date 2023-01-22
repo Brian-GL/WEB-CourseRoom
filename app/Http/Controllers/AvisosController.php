@@ -38,7 +38,7 @@ class AvisosController extends Controller
                 $url = env('COURSEROOM_API');
 
                 $idAviso = $request->integer('IdAviso');
-                $IdUsuario = session('IdUsuario');
+                $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
 
                 if($url != ''){
 
@@ -129,7 +129,6 @@ class AvisosController extends Controller
         try {
 
             $validator = Validator::make($request->all(),$rules = [
-                'IdUsuario' => ['required'],
                 'IdAviso' => ['required']
             ], $messages = [
                 'required' => 'El campo :attribute es requerido'
@@ -141,8 +140,8 @@ class AvisosController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idUsuario = $request->input('IdUsuario');
-                $idAviso = $request->input('IdAviso');
+                $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
+                $idAviso = $request->integer('IdAviso');
 
                 if($url != ''){
 
@@ -190,7 +189,7 @@ class AvisosController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idAviso = $request->input('IdAviso');
+                $idAviso = $request->integer('IdAviso');
 
                 if($url != ''){
 
@@ -226,7 +225,6 @@ class AvisosController extends Controller
 
             $validator = Validator::make($request->all(), $rules = [
                 'IdProfesor' => ['required'],
-                'IdUsuario' => ['required'],
                 'IdTarea' => ['required'],
                 'NombreArchivo' => ['required']
             ], $messages = [
@@ -239,10 +237,10 @@ class AvisosController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idProfesor = $request->input('IdProfesor');
-                $idUsuario = $request->input('IdUsuario');
-                $idTarea = $request->input('IdTarea');
-                $nombreArchivo = $request->input('NombreArchivo');
+                $idProfesor = $request->integer('IdProfesor');
+                $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
+                $idTarea = $request->integer('IdTarea');
+                $nombreArchivo = $request->string('NombreArchivo')->trim();
 
                 if($url != ''){
 
@@ -281,7 +279,7 @@ class AvisosController extends Controller
 
             $url = env('COURSEROOM_API');
 
-            $IdUsuario = session('IdUsuario');
+            $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
 
             if($url != ''){
 
@@ -314,7 +312,6 @@ class AvisosController extends Controller
     public function avisos_validar(Request $request)
     {
         try {
-
            
             $url = env('COURSEROOM_API');
 
