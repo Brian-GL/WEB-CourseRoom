@@ -13,9 +13,9 @@
     <div class="container">
         <div class="row">
             @if(!is_null($DatosUsuario))
-                <h2 class="display-5 text-center primer-color-letra" id="titulo-inicio">¡Bienvenido! {{$DatosUsuario->nombre}}</h2>
+                <h2 class="display-5 text-center primer-color-letra" id="titulo-inicio">¡Bienvenid@! {{$DatosUsuario->nombre}}</h2>
             @else
-                <h2 class="display-5 text-center primer-color-letra" id="titulo-inicio">¡Bienvenido! </h2>
+                <h2 class="display-5 text-center primer-color-letra" id="titulo-inicio">¡Bienvenid@! </h2>
             @endif
             <div class="text-center">
                 <img id="imagen-meme" class="img-fluid shadow-lg" alt="Meme image">

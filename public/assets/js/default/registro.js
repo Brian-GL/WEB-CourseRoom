@@ -50,7 +50,7 @@ async function Registrar(base64Image, file){
         formData.append("Contrasena", Base64.encode(contrasena));
         formData.append("Descripcion", document.getElementById("descripcion").value);
         formData.append("Imagen", file);
-        formData.append("Base64", base64Image);
+        formData.append("Base64Imagen", base64Image);
         formData.append('Dispositivo', platform.os.family);
         formData.append('Fabricante', platform.manufacturer);
         formData.append('Navegador', platform.name);
@@ -140,16 +140,15 @@ document.getElementById("form-registro").addEventListener("submit", async (e) =>
 
     e.preventDefault();
 
-    let imagen_input = document.getElementById("imagen");
-    let imagen_input = document.getElementById("imagen-seleccionada");
-    let base64 = await GetBase64FromUrl(imagen_input.src);
+    let imagen_file = document.getElementById("imagen");
     
-    if(imagen_input.files.length > 0){
-         Registrar(base64, imagen_input.files[0]);
+    if(imagen_file.files.length > 0){
+        let imagen_element = document.getElementById("imagen-seleccionada");
+        let base64 = await GetBase64FromUrl(imagen_element.src);
+        Registrar(base64, imagen_file.files[0]);
     } else{
-        Registrar(base64, null);
+        Registrar(null, null);
     }
-
 });
 
 document.getElementById("imagen").addEventListener("change", (e) => {
@@ -197,18 +196,3 @@ document.getElementById("imagen").addEventListener("change", (e) => {
 
 //#endregion
 
-//#region Functions
-
-function GetBuffer(fileData) {
-    return function(resolve) {
-        let reader = new FileReader();
-        reader.readAsArrayBuffer(fileData);
-        reader.addEventListener("load", function() {
-            let arrayBuffer = reader.result
-            let bytes = new Uint8Array(arrayBuffer);
-            resolve(bytes);
-        });
-    }
-}
-
-//#endregion
