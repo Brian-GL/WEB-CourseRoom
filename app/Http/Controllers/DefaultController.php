@@ -236,7 +236,7 @@ class DefaultController extends Controller
                 $IdTipoUsuario = $request->integer('IdTipoUsuario');
                 $CorreoElectronico = $request->string('CorreoElectronico')->trim();
                 $Contrasena = $request->string('Contrasena');
-                $ImagenBytes = $request->input('ImagenBytes');
+                $Base64Imagen= $request->input('Base64Imagen');
                 $filename = null;
 
                 if($request->hasFile('Imagen')) {
@@ -282,7 +282,7 @@ class DefaultController extends Controller
                                 $mongoUsuariosImagenes = new UsuariosImagenes;
 
                                 $mongoUsuariosImagenes->idUsuario = $IdUsuario;
-                                $mongoUsuariosImagenes->imagen = $ImagenBytes;
+                                $mongoUsuariosImagenes->imagen = $Base64Imagen;
                                 $mongoUsuariosImagenes->extension = $extension;
 
                                 $mongoUsuariosImagenes->save();

@@ -4,7 +4,7 @@ let BaseURL = window.location.origin;
 
 //#region Methods
 
-async function Actualizar(imagenBytes, file){
+async function Actualizar(base64Image, file){
 
     try{
 
@@ -46,13 +46,9 @@ async function Actualizar(imagenBytes, file){
         formData.append("Descripcion", document.getElementById("descripcion").innerText);
         formData.append("ChatsConmigo", document.getElementById("chats-conmigo").checked);
         formData.append("MostrarAvisos", document.getElementById("avisos-activo").checked);
-        formData.append("Imagen", file);
         formData.append("ImagenAnterior", document.getElementById("imagen-anterior").value);
-        formData.append("ImagenBytes", imagenBytes);
-
-        for (const value of formData.values()) {
-            console.log(value);
-          }
+        formData.append("Imagen", file);
+        formData.append("Base64Image", base64Image);
 
         let response = await axios({
             url: '/usuarios/actualizar',
@@ -140,11 +136,15 @@ document.getElementById("form-actualizar").addEventListener("submit", async (e) 
 
     e.preventDefault();
 
-    let imagen_input = document.getElementById("imagen-seleccionada");
-
-    let base64 = await GetBase64FromUrl(imagen_input.src);
-
-    //         Actualizar(bytes, files[0]);
+    let imagen_file = document.getElementById("imagen");
+    let imagen_element = document.getElementById("imagen-seleccionada");
+    let base64 = await GetBase64FromUrl(imagen_element.src);
+    
+    if(imagen_file.files.length > 0){
+        Actualizar(base64, imagen_file.files[0]);
+    } else{
+        Actualizar(base64, null);
+    }
 
 });
 
@@ -190,22 +190,5 @@ document.getElementById("imagen").addEventListener("change", (e) => {
 
     }
 });
-
-//#endregion
-
-//#region Functions
-
-function GetBuffer(fileData) {
-    return function(resolve) {
-        let reader = new FileReader();
-        reader.readAsArrayBuffer(fileData);
-        reader.addEventListener("load", function() {
-            reader.Re
-            let arrayBuffer = reader.result
-            let bytes = new Uint8Array(arrayBuffer);
-            resolve(bytes);
-        });
-    }
-}
 
 //#endregion

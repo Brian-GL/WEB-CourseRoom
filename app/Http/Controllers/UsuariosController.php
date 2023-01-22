@@ -101,7 +101,7 @@ class UsuariosController extends Controller
                 $contrasena = $request->string('Contrasena');
                 $chatsConmigo = $request->boolean('ChatsConmigo');
                 $mostrarAvisos = $request->boolean('MostrarAvisos');
-                $ImagenBytes = $request->input('ImagenBytes');
+                $Base64Image = $request->input('Base64Image');
                 $ImagenAnterior = $request->string('ImagenAnterior');
 
                 $filename = $ImagenAnterior;
@@ -148,11 +148,11 @@ class UsuariosController extends Controller
                                 $extension = $file->getClientOriginalExtension();
 
                                 //Actualizar imagen en mongo si no esta vácia:
-                                $mongoUsuariosImagenes = UsuariosImagenes::where('idUsuario',$IdUsuario)->first();
+                                $mongoUsuariosImagenes = UsuariosImagenes::where('idUsuario', $IdUsuario)->first();
 
                                 if(!is_null($mongoUsuariosImagenes)){
                                     $mongoUsuariosImagenes->update(
-                                        ['imagen' => $ImagenBytes,
+                                        ['imagen' => $Base64Image,
                                         'extension' => $extension]);
                                 }
 
@@ -162,7 +162,9 @@ class UsuariosController extends Controller
                             }
     
                             $request->session()->forget(['DatosUsuario', 'DatosCuenta']);
+                            
                             $result = json_decode($response->body());
+
                             return response()->json(['code' => 200 , 'data' => $result], 200);
                         } else{
                             return response()->json(['code' => 400 , 'data' => $response->body()], 200);
