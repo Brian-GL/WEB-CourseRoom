@@ -25,7 +25,6 @@ class ChatsController extends Controller
         try {
 
             $validator = Validator::make($request->all(), $rules = [
-                'IdUsuarioEmisor' => ['required'],
                 'IdUsuarioReceptor' => ['required']
             ], $messages = [
                 'required' => 'El campo :attribute es requerido'
@@ -37,7 +36,7 @@ class ChatsController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idUsuarioEmisor = $request->integer('IdUsuarioEmisor');
+                $idUsuarioEmisor = session('IdUsuario');
                 $idUsuarioReceptor = $request->integer('IdUsuarioReceptor');
 
                 if($url != ''){
@@ -49,14 +48,12 @@ class ChatsController extends Controller
                         'IdUsuarioReceptor' => $idUsuarioReceptor
                     ]);
 
+                    $result = json_decode($response->body());
+
                     if ($response->ok()){
-
-                        $result = json_decode($response->body());
-
                         return response()->json(['code' => 200 , 'data' => $result], 200);
-
                     } else{
-                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                        return response()->json(['code' => 400 , 'data' => $result], 200);
                     }
 
                 } else{
@@ -336,14 +333,14 @@ class ChatsController extends Controller
 
             $url = env('COURSEROOM_API');
 
-            $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
+            $IdUsuario = session('IdUsuario');
 
             if($url != ''){
 
                 $response = Http::withHeaders([
                     'Authorization' => env('COURSEROOM_API_KEY'),
                 ])->post($url.'/api/chats/obtener', [
-                    'IdUsuario' => $idUsuario
+                    'IdUsuario' => $IdUsuario
                 ]);
 
                 if ($response->ok()){
@@ -353,7 +350,7 @@ class ChatsController extends Controller
                     return response()->json(['code' => 200 , 'data' => $result], 200);
 
                 } else{
-                    return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                    return response()->json(['code' => 400 , 'data' => $response->body()], 200);
                 }
 
             } else{

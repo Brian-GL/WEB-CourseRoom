@@ -1,6 +1,6 @@
 'use strict';
 
-let dataTableMisPreguntas, dataTableBuscarPreguntas;
+let dataTableMisChats, dataTableBuscarUsuarios
 let SegundoColor = localStorage.getItem("SegundoColor");
 let SegundoColorLetra = localStorage.getItem("SegundoColorLetra");
 let TercerColor = localStorage.getItem("TercerColor");
@@ -9,7 +9,9 @@ let PrimerColor = localStorage.getItem("PrimerColor");
 let PrimerColorLetra = localStorage.getItem("PrimerColorLetra");
 let BaseURL = window.location.origin;
 
-dataTableMisPreguntas = $("#table-mis-preguntas").DataTable({
+let assetsRoute = document.getElementById("assets").value;
+
+dataTableMisChats = $("#table-mis-chats").DataTable({
     pagingType: 'full_numbers',
     dom: 'frtp',
     search: {
@@ -18,7 +20,7 @@ dataTableMisPreguntas = $("#table-mis-preguntas").DataTable({
     scrollX: false,
     language: {
         search: "_INPUT_",
-        searchPlaceholder: "Buscar alguna de mis preguntas...",
+        searchPlaceholder: "Buscar algún chats...",
         paginate: {
             "first":      "Primero",
             "last":       "Último",
@@ -31,24 +33,29 @@ dataTableMisPreguntas = $("#table-mis-preguntas").DataTable({
         loadingRecords: "Cargando..."
     },
     columns: [
-        { title: "Id Pregunta" },
-        { title: "Pregunta" },
-        { title: "Fecha de registro" },
-        { title: "Estatus" },
-        { title: "Detalle" }
+        { title: "Id Chat"},
+        { title: "Id Usuario Receptor"},
+        { title: "Receptor"},
+        { title: "Imagen Receptor"},
+        { title: "Fecha de registro"},
+        { title: "Último Mensaje"},
+        { title: "Fecha de envio"},
+        { title: "Detalle"}
     ],
     columnDefs:[
-        {className: "text-center fuenteNormal segundo-color-fuente", targets: "_all"},
-        {className: "btn-detalle span-detalle", targets: "4"}
+        {className: "text-center fuenteNormal segundo-color-letra", targets: "_all"},
+        {className: "span-detalle", targets: "7"}
     ],
     rowCallback: function(row, data, index){
         $(row).css('color', SegundoColorLetra);
     }
 });
 
-dataTableMisPreguntas.column(0).visible(false);
+dataTableMisChats.column(0).visible(false);
+dataTableMisChats.column(1).visible(false);
+dataTableMisChats.column(3).visible(false);
 
-dataTableBuscarPreguntas = $("#table-buscar-usuarios").DataTable({
+dataTableBuscarUsuarios = $("#table-buscar-usuarios").DataTable({
     pagingType: 'full_numbers',
     dom: 'rtp',
     language: {
@@ -64,23 +71,23 @@ dataTableBuscarPreguntas = $("#table-buscar-usuarios").DataTable({
         loadingRecords: "Cargando..."
     },
     columns: [
-        { title: "IdPregunta" },
-        { title: "Pregunta" },
-        { title: "Preguntador" },
-        { title: "Fecha de registro" },
-        { title: "Estatus" },
-        { title: "Detalle" }
+        { title: "Id Usuario"},
+        { title: "Nombre Completo"},
+        { title: "Imagen"},
+        { title: "Correo Electronico"},
+        { title: "Tipo de usuario"},
+        { title: "Acción"},
     ],
     columnDefs:[
-        {className: "text-center fuenteNormal segundo-color-fuente", targets: "_all"},
-        {className: "btn-detalle span-detalle", targets: "5"}
+        {className: "text-center fuenteNormal segundo-color-letra", targets: "_all"},
     ],
     rowCallback: function(row, data, index){
         $(row).css('color', SegundoColorLetra);
     }
 });
 
-dataTableBuscarPreguntas.column(0).visible(false);
+dataTableBuscarUsuarios.column(0).visible(false);
+dataTableBuscarUsuarios.column(2).visible(false);
 
 let elementos = document.querySelectorAll('input[type="search"]');
 for(let elemento of elementos){
@@ -95,25 +102,23 @@ for(let elemento of elementos){
     elemento.style.setProperty('background-color',SegundoColor,'important');
 }
 
-document.addEventListener('DOMContentLoaded',  ObtenerMisPreguntas, false);
+document.addEventListener('DOMContentLoaded',  ObtenerMisChats, false);
 
 //#region Methods
 
-async function ObtenerMisPreguntas(){
+async function ObtenerMisChats(){
     try{
 
         ShowPreloader();
 
         let response = await axios({
-            url: '/preguntasrespuestas/obtener',
+            url: '/chats/obtener',
             baseURL: BaseURL,
             method: 'POST',
             headers: {
                 'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
             },
-            data: {
-                "IdUsuario": null,
-            }
+            data: null
         });
 
         HidePreloader();
@@ -124,9 +129,9 @@ async function ObtenerMisPreguntas(){
             case 200:{
                 let filas = result.data;
 
-                dataTableMisPreguntas.destroy();
+                dataTableMisChats.destroy();
 
-                dataTableMisPreguntas = $("#table-mis-preguntas").DataTable({
+                dataTableMisChats = $("#table-mis-chats").DataTable({
                     pagingType: 'full_numbers',
                     dom: 'frtp',
                     search: {
@@ -135,7 +140,7 @@ async function ObtenerMisPreguntas(){
                     scrollX: false,
                     language: {
                         search: "_INPUT_",
-                        searchPlaceholder: "Buscar alguna de mis preguntas...",
+                        searchPlaceholder: "Buscar alguna de mis chats...",
                         paginate: {
                             "first":      "Primero",
                             "last":       "Último",
@@ -148,31 +153,44 @@ async function ObtenerMisPreguntas(){
                         loadingRecords: "Cargando..."
                     },
                     columns: [
-                        { title: "IdPregunta" },
-                        { title: "Pregunta" },
-                        { title: "Fecha de registro" },
-                        { title: "Estatus" },
-                        { title: "Detalle" }
+                        { data: "idChat", title: "Id Chat"},
+                        { data: "idUsuarioReceptor", title: "Id Usuario Receptor"},
+                        { data: "receptor", title: "Receptor"},
+                        { data: "imagenReceptor", title: "Imagen Receptor"},
+                        { data: "fechaRegistro", title: "Fecha de registro"},
+                        { data: "mensaje", title: "Último Mensaje"},
+                        { data: "fechaEnvio", title: "Fecha de envio"},
+                        { data: "", title: "Detalle"}
                     ],
                     columnDefs:[
-                        {className: "text-center fuenteNormal segundo-color-fuente", targets: "_all"},
-                        {className: "btn-detalle", targets: "4"}
+                        {className: "text-center fuenteNormal segundo-color-letra", defaultContent: "-", targets: "_all"},
+                        {className: "span-detalle", target: 7},
+                        {className: "info-usuario", target: 2},
+                        {className: "fechaRegistro", target: 4},
+                        {className: "fechaEnvio", target: 6},
                     ],
-                    rowCallback: function(row, data, index){
-                        $(row).css('color', SegundoColorLetra);
-                    },
                     data: filas,
-                    createdRow: function(row, data, index){
-                        $('.btn-detalle', row).html('<span class="span-detalle text-center" onclick="DetallePregunta('.concat(data.IdPregunta,')">Ver detalle</span>'));
+                    createdRow: (row, data) => {
+                        $('.segundo-color-letra',row).css('color', SegundoColorLetra);
+                        $('.span-detalle', row).html('<span class="fuenteNormal span-detalle text-center text-decoration-underline" onclick="DetalleChat('.concat(data.idChat,')">Ver detalle</span>'));
+                        $('.info-usuario', row).html('<div class="container"><div class="row"><div class="col-5"><img class="img-fluid" alt="Imagen del usuario" src="'.concat(assetsRoute,'/',data.imagenReceptor,'"/></div><div class="col-7 p-0"><p class="fuenteNormal">',data.receptor,'</p></div></div></div>'));
+                        let fechaRegistro = data.fechaRegistro.substring(0, data.fechaRegistro.length -1 );
+                        $('.fechaRegistro', row).text(dayjs(fechaRegistro).format('dddd DD MMM YYYY h:mm A'));
+                        let fechaEnvio = dayjs(data.fechaEnvio?.substring(0,data.fechaEnvio?.length-1));
+                        if(fechaEnvio.isValid()){
+                            $('.fechaEnvio', row).text(fechaEnvio.format('LLLL'));
+                        }
                     }
                 });
 
-                dataTableMisPreguntas.column(0).visible(false);
+                dataTableMisChats.column(0).visible(false);
+                dataTableMisChats.column(1).visible(false);
+                dataTableMisChats.column(3).visible(false);
 
             }
             break;
             case 500:{
-                dataTableMisPreguntas.clear().draw();
+                dataTableMisChats.clear().draw();
                 Swal.fire({
                     title: '¡Error!',
                     text: result.data,
@@ -186,7 +204,7 @@ async function ObtenerMisPreguntas(){
             }
             break;
             default:{
-                dataTableMisPreguntas.clear().draw();
+                dataTableMisChats.clear().draw();
                 Swal.fire({
                     title: '¡Alerta!',
                     text: result.data,
@@ -204,7 +222,7 @@ async function ObtenerMisPreguntas(){
     catch(ex){
 
         HidePreloader();
-        dataTableMisPreguntas.clear().draw();
+        dataTableMisChats.clear().draw();
         Swal.fire({
             title: '¡Error!',
             text: ex,
@@ -216,6 +234,191 @@ async function ObtenerMisPreguntas(){
             imageAlt: 'Error Image'
         });
     }
+}
+
+document.DetalleChat = async function(IdChat){
+    try{
+
+        ShowPreloader();
+
+        let formData = new FormData();
+
+        formData.append('IdChat', IdChat);
+
+        let response = await axios({
+            url: '/chats/detalle',
+            baseURL: BaseURL,
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
+            },
+            data: formData
+        });
+
+        HidePreloader();
+
+        let result = response.data;
+
+        switch (result.code) {
+            case 200:{
+               
+            }
+            break;
+            case 500:{
+                dataTableBuscarUsuarios.clear().draw();
+                Swal.fire({
+                    title: '¡Error!',
+                    text: result.data,
+                    imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    background: '#000000',
+                    color: '#FFFFFF',
+                    imageAlt: 'Error Image'
+                });
+            }
+            break;
+            default:{
+                dataTableBuscarUsuarios.clear().draw();
+                Swal.fire({
+                    title: '¡Alerta!',
+                    text: result.data,
+                    imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    imageAlt: 'Alert Image',
+                    background: '#000000',
+                    color: '#FFFFFF'
+                });
+            }
+            break;
+        }
+    }
+    catch(ex){
+
+        HidePreloader();
+        dataTableBuscarUsuarios.clear().draw();
+        Swal.fire({
+            title: '¡Error!',
+            text: ex,
+            imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+            imageWidth: 100,
+            imageHeight: 123,
+            background: '#000000',
+            color: '#FFFFFF',
+            imageAlt: 'Error Image'
+        });
+    }
+}
+
+
+document.Chatear = async function(IdUsuario){
+
+    try{
+
+        Swal.fire({
+            title: 'Chatear con usuario',
+            text: '¿Está segur@ de querer iniciar una conservación con tal usuario?',
+            imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
+            imageWidth: 100,
+            imageHeight: 123,
+            background: '#000000',
+            color: '#FFFFFF',
+            imageAlt: 'Alert Image',
+            showCloseButton: true,
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: 'Sí 😎',
+            denyButtonText: 'No 😅',
+            cancelButtonText: 'Me equivoque de botón 😥'
+        }).then(async (result) => {
+            if(result.isConfirmed){
+                
+                ShowPreloader();
+
+                let formData = new FormData();
+
+                formData.append('IdUsuarioReceptor', IdUsuario);
+
+                let response = await axios({
+                    url: '/chats/registrar',
+                    baseURL: BaseURL,
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
+                    },
+                    data: formData
+                });
+        
+                HidePreloader();
+        
+                let result = response.data;
+        
+                switch (result.code) {
+                    case 200:{
+                       
+                        Swal.fire({
+                            title: 'Registro de nuevo chat',
+                            text: result.data.mensaje,
+                            imageUrl: BaseURL.concat("/assets/templates/HappyOwl.png"),
+                            imageWidth: 100,
+                            imageHeight: 123,
+                            imageAlt: 'Alert Image',
+                            background: '#000000',
+                            color: '#FFFFFF'
+                        }).then((res) => {
+                            if (res.isConfirmed) {
+                                DetalleChat(result.codigo);
+                            }
+                        });
+                    }
+                    break;
+                    case 500:{
+                        Swal.fire({
+                            title: '¡Error!',
+                            text: result.data,
+                            imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+                            imageWidth: 100,
+                            imageHeight: 123,
+                            background: '#000000',
+                            color: '#FFFFFF',
+                            imageAlt: 'Error Image'
+                        });
+                    }
+                    break;
+                    default:{
+                        Swal.fire({
+                            title: '¡Alerta!',
+                            text: result.data.mensaje,
+                            imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
+                            imageWidth: 100,
+                            imageHeight: 123,
+                            imageAlt: 'Alert Image',
+                            background: '#000000',
+                            color: '#FFFFFF'
+                        });
+                    }
+                    break;
+                }
+            }
+        });
+    }
+    catch(ex){
+
+        HidePreloader();
+
+        Swal.fire({
+            title: '¡Error!',
+            text: ex,
+            imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+            imageWidth: 100,
+            imageHeight: 123,
+            background: '#000000',
+            color: '#FFFFFF',
+            imageAlt: 'Error Image'
+        });
+    }
+
 }
 
 //#endregion
@@ -237,116 +440,17 @@ $(".nav-link").on("click",  (e) => {
     }
 });
 
-document.getElementById("agregar-pregunta").addEventListener("click", function(){
-
-    Swal.fire({
-        icon: 'question',
-        title: 'Crear nueva pregunta',
-        padding: '0.5em',
-        background: '#000000',
-        color: '#FFFFFF',
-        width: 600,
-        html: `<input type="text" id="pregunta" class="swal2-input" placeholder="Pregunta" minlenght="3"  maxlenght="150">
-        <textarea  id="descripcion" class="swal2-input" placeholder="Descripción" maxlenght="1000">`,
-        confirmButtonText: 'Registrar',
-        showCancelButton: true,
-        cancelButtonText: `Cancelar`,
-        focusConfirm: false,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        preConfirm: () => {
-          const pregunta = Swal.getPopup().querySelector('#pregunta').value;
-          const descripcion	 = Swal.getPopup().querySelector('#descripcion').value;
-          if (!pregunta || !descripcion) {
-            Swal.showValidationMessage(`Por favor ingrese los valores con un formato adecuado`)
-          }
-          return { pregunta: pregunta, descripcion: descripcion }
-        }
-      }).then(async (result) => {
-            if(result.isConfirmed){
-
-                try{
-
-                    ShowPreloader();
-
-                    let response = await axios({
-                        url: '/preguntasrespuestas/registrar',
-                        baseURL: BaseURL,
-                        method: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
-                        },
-                        data: {
-                            "IdUsuario": null,
-                            "Pregunta": AvailableString(result.value.pregunta),
-                            "Descripcion": AvailableString(result.value.descripcion)
-                        }
-                    });
-
-                    HidePreloader();
-
-                    let resultado = response.data;
-
-                    switch (resultado.code) {
-                        case 200:{
-                           let data = resultado.data;
-                        }
-                        break;
-                        case 500:{
-                            Swal.fire({
-                                title: '¡Error!',
-                                text: resultado.data,
-                                imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
-                                imageWidth: 100,
-                                imageHeight: 123,
-                                background: '#000000',
-                                color: '#FFFFFF',
-                                imageAlt: 'Error Image'
-                            });
-                        }
-                        break;
-                        default:{
-                            Swal.fire({
-                                title: '¡Alerta!',
-                                text: resultado.data,
-                                imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
-                                imageWidth: 100,
-                                imageHeight: 123,
-                                imageAlt: 'Alert Image',
-                                background: '#000000',
-                                color: '#FFFFFF'
-                            });
-                        }
-                        break;
-                    }
-                }
-                catch(ex){
-
-                    HidePreloader();
-
-                    Swal.fire({
-                        title: '¡Error!',
-                        text: ex,
-                        imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
-                        imageWidth: 100,
-                        imageHeight: 123,
-                        background: '#000000',
-                        color: '#FFFFFF',
-                        imageAlt: 'Error Image'
-                    });
-                }
-
-            }
-      })
-
-});
-
-document.getElementById("form-buscar-usuarios").addEventListener('submit', async (e) => {
-    e.preventDefault();
+document.getElementById("button-buscar-usuarios").addEventListener('click', async (e) => {
 
     try{
 
         ShowPreloader();
+
+        let formData = new FormData();
+
+        formData.append('Nombre', document.getElementById("input-nombre-usuario").value);
+        formData.append('Paterno', document.getElementById("input-paterno-usuario").value);
+        formData.append('Materno', document.getElementById("input-materno-usuario").value);
 
         let response = await axios({
             url: '/usuarios/buscar',
@@ -355,9 +459,7 @@ document.getElementById("form-buscar-usuarios").addEventListener('submit', async
             headers: {
                 'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
             },
-            data: {
-                "Busqueda": AvailableString(document.getElementById("input-buscar-usuarios").value),
-            }
+            data: formData
         });
 
         HidePreloader();
@@ -367,9 +469,9 @@ document.getElementById("form-buscar-usuarios").addEventListener('submit', async
         switch (result.code) {
             case 200:{
                 let filas = result.data;
-                dataTableBuscarPreguntas.destroy();
+                dataTableBuscarUsuarios.destroy();
 
-                dataTableBuscarPreguntas = $("#table-buscar-usuarios").DataTable({
+                dataTableBuscarUsuarios = $("#table-buscar-usuarios").DataTable({
                     pagingType: 'full_numbers',
                     dom: 'rtp',
                     language: {
@@ -385,29 +487,32 @@ document.getElementById("form-buscar-usuarios").addEventListener('submit', async
                         loadingRecords: "Cargando..."
                     },
                     columns: [
-                        { title: "IdPregunta" },
-                        { title: "Pregunta" },
-                        { title: "Preguntador" },
-                        { title: "Fecha de registro" },
-                        { title: "Estatus" },
-                        { title: "Detalle" }
+                        { data: "idUsuario", title: "Id Usuario"},
+                        { data: "nombreCompleto", title: "Usuario"},
+                        { data: "imagen", title: "Imagen"},
+                        { data: "correoElectronico", title: "Correo Electronico"},
+                        { data: "tipoUsuario", title: "Tipo de usuario"},
+                        { data: "", title : "Acción"},
                     ],
                     columnDefs:[
-                        {className: "text-center fuenteNormal segundo-color-fuente", targets: "_all"},
+                        {className: "text-center fuenteNormal segundo-color-letra", defaultContent: "-", targets: "_all"},
+                        {className: "info-usuario", target: 1},
+                        {className: "span-detalle", target: 5},
                     ],
-                    data: filas,
-                    createdRow: function(row, data, index){
-                        $(row).css('color', SegundoColorLetra);
-                        $('.btn-detalle', row).html('<span class="span-detalle text-center" onclick="DetallePregunta('.concat(data.IdPregunta,')">Ver detalle</span>'));
-                    }
+                    createdRow: (row, data) => {
+                        $('.segundo-color-letra',row).css('color', SegundoColorLetra);
+                        $('.info-usuario', row).html('<div class="container"><div class="row"><div class="col-5"><img class="img-fluid" alt="Imagen del usuario" src="'.concat(assetsRoute,'/',data.imagen,'"/></div><div class="col-7 p-0"><p class="fuenteNormal">',data.nombreCompleto,'</p></div></div></div>'));
+                        $('.span-detalle', row).html('<span class="fuenteNormal fw-bolder text-decoration-underline" onclick="Chatear('.concat(data.idUsuario,')">¿Chatear?</span>'));
+                    },
+                    data: filas
                 });
 
-                dataTableBuscarPreguntas.column(0).visible(false);
-
+                dataTableBuscarUsuarios.column(0).visible(false);
+                dataTableBuscarUsuarios.column(2).visible(false);
             }
             break;
             case 500:{
-                dataTableBuscarPreguntas.clear().draw();
+                dataTableBuscarUsuarios.clear().draw();
                 Swal.fire({
                     title: '¡Error!',
                     text: result.data,
@@ -421,7 +526,7 @@ document.getElementById("form-buscar-usuarios").addEventListener('submit', async
             }
             break;
             default:{
-                dataTableBuscarPreguntas.clear().draw();
+                dataTableBuscarUsuarios.clear().draw();
                 Swal.fire({
                     title: '¡Alerta!',
                     text: result.data,
@@ -439,7 +544,7 @@ document.getElementById("form-buscar-usuarios").addEventListener('submit', async
     catch(ex){
 
         HidePreloader();
-        dataTableBuscarPreguntas.clear().draw();
+        dataTableBuscarUsuarios.clear().draw();
         Swal.fire({
             title: '¡Error!',
             text: ex,
@@ -456,3 +561,5 @@ document.getElementById("form-buscar-usuarios").addEventListener('submit', async
 
 
 //#endregion
+
+

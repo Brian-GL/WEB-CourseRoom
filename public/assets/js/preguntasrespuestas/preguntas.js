@@ -155,7 +155,7 @@ async function ObtenerMisPreguntas(){
                         { title: "Detalle" }
                     ],
                     columnDefs:[
-                        {className: "text-center fuenteNormal segundo-color-fuente", targets: "_all"},
+                        {className: "text-center fuenteNormal segundo-color-fuente", defaultContent: "-", targets: "_all"},
                         {className: "btn-detalle", targets: "4"}
                     ],
                     rowCallback: function(row, data, index){
@@ -393,7 +393,7 @@ document.getElementById("form-buscar-preguntas").addEventListener('submit', asyn
                         { title: "Detalle" }
                     ],
                     columnDefs:[
-                        {className: "text-center fuenteNormal segundo-color-fuente", targets: "_all"},
+                        {className: "text-center fuenteNormal segundo-color-fuente", defaultContent: "-", targets: "_all"},
                     ],
                     data: filas,
                     createdRow: function(row, data, index){

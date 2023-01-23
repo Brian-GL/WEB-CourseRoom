@@ -726,10 +726,23 @@ class UsuariosController extends Controller
 
             $url = env('COURSEROOM_API');
 
-            $nombre = $request->string('Nombre')->trim();
-            $paterno = $request->string('Paterno')->trim();
-            $materno = $request->string('Materno')->trim();
 
+            $nombre = null;
+            $paterno = null;
+            $materno = null;
+
+            if($request->has('Nombre')){
+                $nombre = $request->string('Nombre')->trim();
+            }
+
+            if($request->has('Paterno')){
+                $paterno = $request->string('Paterno')->trim();
+            }
+
+            if($request->has('Materno')){
+                $materno = $request->string('Materno')->trim();
+            }
+            
             if($url != ''){
 
                 $response = Http::withHeaders([
@@ -747,7 +760,7 @@ class UsuariosController extends Controller
                     return response()->json(['code' => 200 , 'data' => $result], 200);
 
                 } else{
-                    return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                    return response()->json(['code' => 400 , 'data' => $response->body()], 200);
                 }
 
             } else{

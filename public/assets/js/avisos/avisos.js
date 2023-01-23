@@ -92,6 +92,7 @@ document.Detalle = async function(IdAviso, Estatus) {
             switch (result.code) {
                 case 200:{
                     MostrarDetalle(IdAviso);
+                    ObtenerAvisos();
                 }
                 break;
                 case 500:{
@@ -291,15 +292,15 @@ async function ObtenerAvisos(){
                         { data: "", title: "Detalle" },
                     ],
                     columnDefs:[
-                        {className: "text-center fuenteNormal segundo-color-letra", "defaultContent": "-", targets: "_all"},
-                        { className: "fechaRegistro", targets: [1]},
-                        { className: "detalle", targets: [5]},
+                        {className: "text-center fuenteNormal segundo-color-letra", defaultContent: "-", targets: "_all"},
+                        { className: "fechaRegistro", target: 1},
+                        { className: "span-detalle", target: 5},
                     ],
                     createdRow: (row, data) => {
+                        $('.segundo-color-letra',row).css('color', SegundoColorLetra);
                         let fechaRegistro = data.fechaRegistro.substring(0, data.fechaRegistro.length -1 );
-                        $(row).css('color', SegundoColorLetra);
                         $('.fechaRegistro', row).text(dayjs(fechaRegistro).format('dddd DD MMM YYYY h:mm A'));
-                        $('.detalle', row).html('<span class="fuenteNormal span-detalle fw-bolder text-decoration-underline" onclick="document.Detalle('.concat(data.idAviso,', \'',data.estatus,'\')">Ver detalle</span>'));
+                        $('.span-detalle', row).html('<span class="fuenteNormal fw-bolder text-decoration-underline" onclick="document.Detalle('.concat(data.idAviso,', \'',data.estatus,'\')">Ver detalle</span>'));
                     },
                     data: filas
                 });

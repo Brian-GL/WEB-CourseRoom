@@ -126,14 +126,12 @@ async function ObtenerSesiones(){
                         { data: "fechaActualizacion", title: "Actualizado" },
                     ],
                     columnDefs:[
-                        {className: "text-center fuenteNormal segundo-color-letra", "defaultContent": "-", targets: "_all"},
+                        {className: "text-center fuenteNormal segundo-color-letra", defaultContent: "-", targets: "_all"},
                         { className: "fechaRegistro", targets: [8]},
                         { className: "fechaActualizacion", targets: [9]}
                     ],
                     createdRow: (row, data) => {
-
-                        $(row).css('color', SegundoColorLetra);
-
+                        $('.segundo-color-letra',row).css('color', SegundoColorLetra);
                         $('.fechaRegistro', row).text(dayjs(data.fechaRegistro.substring(0,data.fechaRegistro.length-1)).format('LLLL'));
                         let fechaActualizacion = dayjs(data.fechaActualizacion?.substring(0,data.fechaActualizacion?.length-1));
                         if(fechaActualizacion.isValid()){

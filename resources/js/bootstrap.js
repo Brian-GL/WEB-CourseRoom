@@ -32,6 +32,9 @@ window.dayjs = dayjs;
 import platform from 'platform';
 window.platform = platform;
 
+import * as Calendar from 'fullcalendar';
+window.Calendar = Calendar;
+
 import 'bootstrap';
 
 /**
