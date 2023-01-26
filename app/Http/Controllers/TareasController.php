@@ -10,6 +10,16 @@ class TareasController extends Controller
 {
     #region Views
 
+    public function tareas(){
+
+        $DatosUsuario = session('DatosUsuario');
+        $DatosCuenta = session('DatosCuenta');
+        //$IdTipoUsuario = session('IdTipoUsuario');
+        $IdTipoUsuario = 2;
+
+        return view('tareas.tareas', compact('DatosUsuario', 'DatosCuenta','IdTipoUsuario'));
+    }
+
     #endregion
 
     #region AJAX

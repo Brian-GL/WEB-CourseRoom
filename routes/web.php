@@ -105,15 +105,17 @@ Route::post('/grupos/tareapendienteregistrar',  [GruposController::class, 'grupo
 
 #region Tareas
 
+Route::get('/mis-tareas',  [TareasController::class, 'tareas'])->name('tareas.inicio')->middleware('session.token');
+
 Route::post('/tareas/archivosadjuntos',  [TareasController::class, 'tareaarchivosadjuntos_obtener'])->middleware('session.token');
 Route::post('/tareas/estudiantedetalle',  [TareasController::class, 'tareaestudiantedetalle_obtener'])->middleware('session.token');
 Route::post('/tareas/mes',  [TareasController::class, 'tareasmes_obtener'])->middleware('session.token');
 Route::post('/tareas/imagenesentregadas',  [TareasController::class, 'tareaimagenesentregadas_obtener'])->middleware('session.token');
 Route::post('/tareas/retroalimentaciondetalle',  [TareasController::class, 'tarearetroalimentaciondetalle_obtener'])->middleware('session.token');
-Route::put('/tareas/actualizar',  [TareasController::class, 'tarea_actualizar'])->middleware('session.token');
-Route::put('/tareas/calificar',  [TareasController::class, 'tareacalificar_actualizar'])->middleware('session.token');
+Route::post('/tareas/actualizar',  [TareasController::class, 'tarea_actualizar'])->middleware('session.token');
+Route::post('/tareas/calificar',  [TareasController::class, 'tareacalificar_actualizar'])->middleware('session.token');
 Route::post('/tareas/archivoentregado',  [TareasController::class, 'tareaarchivoentregado_registrar'])->middleware('session.token');
-Route::delete('/tareas/remover',  [TareasController::class, 'tarea_remover'])->middleware('session.token');
+Route::post('/tareas/remover',  [TareasController::class, 'tarea_remover'])->middleware('session.token');
 Route::post('/tareas/registrar',  [TareasController::class, 'tarea_registrar'])->middleware('session.token');
 Route::post('/tareas/retroalimentacion',  [TareasController::class, 'tarearetroalimentacion_registrar'])->middleware('session.token');
 

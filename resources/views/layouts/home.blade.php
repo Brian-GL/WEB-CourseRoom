@@ -83,7 +83,7 @@
                 <div class="row justify-content-center">
 
                     <div class="col-5">
-                        <a type="button" class="btn btn-lg segundo-color-letra" {{--href="{{route('tareas.inicio')}}"--}} title="Ir a mis tareas">
+                        <a type="button" class="btn btn-lg segundo-color-letra" href="{{route('tareas.inicio')}}" title="Ir a mis tareas">
                             <i class="fa-solid fa-house-laptop"></i> Tareas
                         </a>
                     </div>

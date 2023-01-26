@@ -1,6 +1,6 @@
 'use strict';
 
-let dataTableMisChats, dataTableBuscarUsuarios
+let dataTableMisChats, dataTableBuscarUsuarios;
 let SegundoColor = localStorage.getItem("SegundoColor");
 let SegundoColorLetra = localStorage.getItem("SegundoColorLetra");
 let TercerColor = localStorage.getItem("TercerColor");
