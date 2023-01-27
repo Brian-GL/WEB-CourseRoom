@@ -20,6 +20,66 @@ class ChatsController extends Controller
 
     #region AJAX
 
+    public function conversacion(Request $request){ 
+        
+
+        $DatosChat = null;
+        $DatosUsuario = session('DatosUsuario');
+        $DatosCuenta = session('DatosCuenta');
+
+        $validator = Validator::make($request->all(), $rules = [
+            'IdChat' => ['required'],
+            'IdUsuarioReceptor' => ['required'],
+        ], $messages = [
+            'required' => 'El campo :attribute es requerido'
+        ]);
+
+        if (!$validator->fails()) {
+
+            $url = env('COURSEROOM_API');
+
+            $idChat = $request->integer('IdChat');
+            $idUsuarioReceptor = $request->integer('IdUsuarioReceptor');
+
+            if($url != ''){
+
+                //Obtener datos del usuario receptor:
+                $response = Http::withHeaders([
+                    'Authorization' => env('COURSEROOM_API_KEY'),
+                ])->post($url.'/api/usuarios/detalle', [
+                    'IdUsuario' => $idUsuarioReceptor
+                ]);
+    
+                if ($response->ok()){
+                    $DatosUsuarioReceptor = json_decode($response->body());  
+                    //Obtener datos de la cuenta:
+                    
+                    $response = Http::withHeaders([
+                        'Authorization' => env('COURSEROOM_API_KEY'),
+                    ])->post($url.'/api/usuarios/cuentaobtener', [
+                        'IdUsuario' => $idUsuarioReceptor
+                    ]);
+        
+                    if ($response->ok()){
+                        
+                        $DatosCuentaReceptor = json_decode($response->body());
+
+                        $DatosChat = [
+                            'IdChat' => $idChat,
+                            'IdUsuarioReceptor'=> $idUsuarioReceptor,
+                            'NombreReceptor' => $DatosUsuarioReceptor->nombre.' '.$DatosUsuarioReceptor->paterno.' '.$DatosUsuarioReceptor->materno,
+                            'ImagenReceptor' => $DatosCuentaReceptor->imagen,
+                            'CorreoReceptor' => $DatosCuentaReceptor->correoElectronico,
+                            'TipoUsuarioReceptor' => $DatosUsuarioReceptor->tipoUsuario,
+                        ];
+                    } 
+                }  
+            } 
+        }
+
+        return view('chats.detallechat', compact('DatosChat', 'DatosUsuario', 'DatosCuenta')); 
+    }
+
     public function chat_registrar(Request $request)
     {
         try {

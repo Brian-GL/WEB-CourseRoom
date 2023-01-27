@@ -172,7 +172,7 @@ async function ObtenerMisChats(){
                     data: filas,
                     createdRow: (row, data) => {
                         $('.segundo-color-letra',row).css('color', SegundoColorLetra);
-                        $('.span-detalle', row).html('<span class="fuenteNormal span-detalle text-center text-decoration-underline" onclick="DetalleChat('.concat(data.idChat,')">Ver detalle</span>'));
+                        $('.span-detalle', row).html('<span class="fuenteNormal span-detalle text-center text-decoration-underline" onclick="DetalleChat('.concat(data.idChat,',',data.idUsuarioReceptor,')">Ver detalle</span>'));
                         $('.info-usuario', row).html('<div class="container"><div class="row"><div class="col-5"><img class="img-fluid" alt="Imagen del usuario" src="'.concat(assetsRoute,'/',data.imagenReceptor,'"/></div><div class="col-7 p-0"><p class="fuenteNormal">',data.receptor,'</p></div></div></div>'));
                         let fechaRegistro = data.fechaRegistro.substring(0, data.fechaRegistro.length -1 );
                         $('.fechaRegistro', row).text(dayjs(fechaRegistro).format('dddd DD MMM YYYY h:mm A'));
@@ -236,63 +236,18 @@ async function ObtenerMisChats(){
     }
 }
 
-document.DetalleChat = async function(IdChat){
+document.DetalleChat = async function(IdChat, IdUsuarioReceptor){
     try{
 
         ShowPreloader();
 
-        let formData = new FormData();
-
-        formData.append('IdChat', IdChat);
-
-        let response = await axios({
-            url: '/chats/detalle',
-            baseURL: BaseURL,
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
-            },
-            data: formData
-        });
+        $('<form/>', { action: '/chats/conversacion', method: 'POST' }).append(
+            $('<input>', {type: 'hidden', id: '_token', name: '_token', value: document.head.querySelector("[name~=csrf-token][content]").content}),
+            $('<input>', {type: 'hidden', id: 'IdChat', name: 'IdChat', value: IdChat}),
+            $('<input>', {type: 'hidden', id: 'IdUsuarioReceptor', name: 'IdUsuarioReceptor', value: IdUsuarioReceptor}),
+        ).appendTo('body').submit();
 
         HidePreloader();
-
-        let result = response.data;
-
-        switch (result.code) {
-            case 200:{
-               
-            }
-            break;
-            case 500:{
-                dataTableBuscarUsuarios.clear().draw();
-                Swal.fire({
-                    title: '¡Error!',
-                    text: result.data,
-                    imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
-                    imageWidth: 100,
-                    imageHeight: 123,
-                    background: '#000000',
-                    color: '#FFFFFF',
-                    imageAlt: 'Error Image'
-                });
-            }
-            break;
-            default:{
-                dataTableBuscarUsuarios.clear().draw();
-                Swal.fire({
-                    title: '¡Alerta!',
-                    text: result.data,
-                    imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
-                    imageWidth: 100,
-                    imageHeight: 123,
-                    imageAlt: 'Alert Image',
-                    background: '#000000',
-                    color: '#FFFFFF'
-                });
-            }
-            break;
-        }
     }
     catch(ex){
 
