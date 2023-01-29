@@ -63,8 +63,7 @@ class ChatsController extends Controller
                     if ($response->ok()){
                         
                         $DatosCuentaReceptor = json_decode($response->body());
-
-                        $DatosChat = [
+                        $DatosChat =  (object) [
                             'IdChat' => $idChat,
                             'IdUsuarioReceptor'=> $idUsuarioReceptor,
                             'NombreReceptor' => $DatosUsuarioReceptor->nombre.' '.$DatosUsuarioReceptor->paterno.' '.$DatosUsuarioReceptor->materno,

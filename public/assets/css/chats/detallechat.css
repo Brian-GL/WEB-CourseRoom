@@ -1,0 +1,38 @@
+.fuenteGrande {
+    font-family: 'Albert Sans', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.titulado{
+    margin-bottom: 0 !important;
+}
+
+#contenedor{
+    max-height: 90vh;
+    height: 90vh;
+}
+
+#mensajear-chat{
+    overflow: hidden;
+}
+
+#contenido-chat{
+    max-height: 90%;
+    height: 67%;
+    overflow-y: scroll !important;
+}
+
+#informacion-chat{
+    max-height: 20%;
+}
+
+.mask-custom {
+    background: rgba(24, 24, 16, 0.2) !important;
+    border-radius: 2em;
+    backdrop-filter: blur(15px);
+    border: 2px solid rgba(255, 255, 255, 0.05) !important;
+    background-clip: padding-box;
+    box-shadow: 10px 10px 10px rgba(46, 54, 68, 0.03) !important;
+    color: white !important;
+}

@@ -50,7 +50,7 @@
                     @if(!is_null($DatosCuenta) && !is_null($DatosCuenta->imagen))
                         <img id="imagen-usuario" class="img-fluid rounded-circle mb-4 shadow-lg" alt="Imagen del usuario" src="{{ asset('usuarios/'.$DatosCuenta->imagen)}}" crossorigin="anonymous"/>
                     @else
-                    <img id="imagen-usuario" class="img-fluid rounded-circle mb-4 shadow-lg" alt="Imagen del usuario" crossorigin="anonymous"/>
+                        <img id="imagen-usuario" class="img-fluid rounded-circle mb-4 shadow-lg" alt="Imagen del usuario" crossorigin="anonymous"/>
                     @endif
                     <!--Nombre del usuario-->
                     @if(!is_null($DatosUsuario))
