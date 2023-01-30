@@ -1,7 +1,6 @@
 @php
     use Carbon\Carbon;
     $year = Carbon::now()->format('Y');
-
 @endphp
 
 <!DOCTYPE html>
@@ -141,28 +140,38 @@
     <div class="container-fluid min-vh-100">
         <nav class="navbar shadow mt-2 mb-3 mx-3 rounded navbar-expand-md segundo-color-fondo">
             <div class="container-fluid">
-                <button class="btn primer-color-letra primer-color-fondo" type="button" data-bs-toggle="offcanvas" data-bs-target="#inicio-offcanvas" aria-controls="inicio-offcanvas-label">
-                    <i class="fa fa-bars fa-xl"></i>
-                </button>
-                <a type="button" id="boton-notificaciones" class="btn tercer-color-letra tercer-color-fondo" type="button" title="Notificaciones" href="{{route('avisos.inicio')}}">
-                    <i class="fa-solid fa-envelope-open fa-xl" id="icono-notificaciones"></i>
-                </a>
-                <div class="dropdown dropstart">
-                    <button class="btn dropdown-toggle primer-color-letra primer-color-fondo" type="button" id="boton-perfil" data-bs-toggle="dropdown" aria-expanded="false">
-                        <!-- Nombre usuario -->
-                        @if(!is_null($DatosUsuario))
-                            {{$DatosUsuario->nombre.' '.$DatosUsuario->paterno}}
-                        @else
-                            Más
-                        @endif
-                    </button>
-                    <ul class="dropdown-menu primer-color-letra primer-color-fondo" aria-labelledby="boton-perfil">
-                        <li><a class="dropdown-item primer-color-letra" href="{{route('usuarios.perfil')}}"><i class="fa-solid fa-user"></i>&nbsp;&nbsp;Perfil</a></li>
-                        <li><a class="dropdown-item primer-color-letra" href="{{route('usuarios.sesiones')}}"><i class="fa-solid fa-desktop"></i>&nbsp;&nbsp;Sesiones</a></li>
-                        <li><hr class="dropdown-divider primer-color-letra"></li>
-                        <li><a class="dropdown-item primer-color-letra" id="cerrar-sesion"><i class="fa-solid fa-person-walking-arrow-right"></i>&nbsp;&nbsp;Cerrar sesión</a></li>
-                    </ul>
+                <div class="row d-flex w-100">
+                    <div class="col justify-content-start">
+                        <button class="btn primer-color-letra primer-color-fondo" type="button" data-bs-toggle="offcanvas" data-bs-target="#inicio-offcanvas" aria-controls="inicio-offcanvas-label">
+                            <i class="fa fa-bars fa-xl"></i>
+                        </button>
+                    </div>
+                    <div class="col justify-content-center text-center">
+                        <span class="fuenteMediana segundo-color-letra" id="reloj"></span>
+                    </div>
+                    <div class="col d-flex justify-content-md-end">
+                        <div class="dropdown dropstart justify-content.md-end">
+                            <button class="btn dropdown-toggle primer-color-letra primer-color-fondo" type="button" id="boton-perfil" data-bs-toggle="dropdown" aria-expanded="false">
+                                <!-- Nombre usuario -->
+                                @if(!is_null($DatosUsuario))
+                                    {{$DatosUsuario->nombre.' '.$DatosUsuario->paterno}}
+                                @else
+                                    Más
+                                @endif
+                            </button>
+                            <ul class="dropdown-menu primer-color-letra primer-color-fondo" aria-labelledby="boton-perfil">
+                                <li><a id="boton-notificaciones" class=" fuenteNormal dropdown-item primer-color-letra" type="button" title="Notificaciones" href="{{route('avisos.inicio')}}"><i class="fa-solid fa-envelope-open" id="icono-notificaciones"></i>&nbsp;Notificaciones</a></li>
+                                <li><a class="dropdown-item primer-color-letra fuenteNormal" href="{{route('usuarios.perfil')}}"><i class="fa-solid fa-user"></i>&nbsp;&nbsp;Perfil</a></li>
+                                <li><a class="dropdown-item primer-color-letra fuenteNormal" href="{{route('usuarios.sesiones')}}"><i class="fa-solid fa-desktop"></i>&nbsp;&nbsp;Sesiones</a></li>
+                                <li><hr class="dropdown-divider primer-color-letra"></li>
+                                <li><a class="dropdown-item primer-color-letra fuenteNormal" id="cerrar-sesion"><i class="fa-solid fa-person-walking-arrow-right"></i>&nbsp;&nbsp;Cerrar sesión</a></li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
+              
+                
+                
             </div>
         </nav>
         <div class="row">

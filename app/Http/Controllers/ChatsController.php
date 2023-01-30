@@ -24,6 +24,8 @@ class ChatsController extends Controller
         
 
         $DatosChat = null;
+        $Mensajes = array();
+        $IdUsuario = session('IdUsuario');
         $DatosUsuario = session('DatosUsuario');
         $DatosCuenta = session('DatosCuenta');
 
@@ -65,18 +67,32 @@ class ChatsController extends Controller
                         $DatosCuentaReceptor = json_decode($response->body());
                         $DatosChat =  (object) [
                             'IdChat' => $idChat,
+                            'IdUsuarioEmisor'=> $IdUsuario,
                             'IdUsuarioReceptor'=> $idUsuarioReceptor,
                             'NombreReceptor' => $DatosUsuarioReceptor->nombre.' '.$DatosUsuarioReceptor->paterno.' '.$DatosUsuarioReceptor->materno,
                             'ImagenReceptor' => $DatosCuentaReceptor->imagen,
                             'CorreoReceptor' => $DatosCuentaReceptor->correoElectronico,
                             'TipoUsuarioReceptor' => $DatosUsuarioReceptor->tipoUsuario,
                         ];
+
+                        //Obtener mensajes del chat:
+
+                        $response = Http::withHeaders([
+                            'Authorization' => env('COURSEROOM_API_KEY'),
+                        ])->post($url.'/api/chats/mensajesobtener', [
+                            'IdChat' => $idChat,
+                            'Ultimo' => null
+                        ]);
+
+                        if($response->ok()){
+                            $Mensajes = json_decode($response->body());
+                        }
                     } 
                 }  
             } 
         }
 
-        return view('chats.detallechat', compact('DatosChat', 'DatosUsuario', 'DatosCuenta')); 
+        return view('chats.detallechat', compact('DatosChat', 'DatosUsuario', 'DatosCuenta', 'Mensajes')); 
     }
 
     public function chat_registrar(Request $request)

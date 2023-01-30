@@ -48,6 +48,18 @@
     font-weight: 600;
 }
 
+.fuenteGrande {
+    font-family: 'Albert Sans', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.fuenteMediana {
+    font-family: 'Albert Sans', sans-serif;
+    font-size: 1.5em;
+    font-weight: 600;
+}
+
 .fuenteNormal {
     font-family: 'Albert Sans', sans-serif;
     font-weight: 300;

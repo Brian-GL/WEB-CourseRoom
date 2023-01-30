@@ -38,7 +38,7 @@ class AvisosController extends Controller
                 $url = env('COURSEROOM_API');
 
                 $idAviso = $request->integer('IdAviso');
-                $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
+                $IdUsuario = session('IdUsuario');
 
                 if($url != ''){
 
@@ -88,7 +88,7 @@ class AvisosController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
+                $IdUsuario = session('IdUsuario');
                 $aviso = $request->string('Aviso')->trim();
                 $descripcion = $request->string('Descripcion')->trim();
                 $idTipoAviso = $request->integer('IdTipoAviso');
@@ -140,7 +140,7 @@ class AvisosController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
+                $IdUsuario = session('IdUsuario');
                 $idAviso = $request->integer('IdAviso');
 
                 if($url != ''){
@@ -238,7 +238,7 @@ class AvisosController extends Controller
                 $url = env('COURSEROOM_API');
 
                 $idProfesor = $request->integer('IdProfesor');
-                $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
+                $IdUsuario = session('IdUsuario');
                 $idTarea = $request->integer('IdTarea');
                 $nombreArchivo = $request->string('NombreArchivo')->trim();
 
@@ -279,7 +279,7 @@ class AvisosController extends Controller
 
             $url = env('COURSEROOM_API');
 
-            $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
+            $IdUsuario = session('IdUsuario');
 
             if($url != ''){
 
@@ -317,14 +317,12 @@ class AvisosController extends Controller
 
             if($url != ''){
 
-                $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
-                $fechaVisualizacion = Carbon::now();
+                $IdUsuario = session('IdUsuario');
                 
                 $response = Http::withHeaders([
                     'Authorization' => env('COURSEROOM_API_KEY'),
                 ])->post($url.'/api/avisos/validar', [
-                    'IdUsuario' => $IdUsuario,
-                    'FechaVisualizacion' => $fechaVisualizacion
+                    'IdUsuario' => $IdUsuario
                 ]);
 
                 if ($response->ok()){

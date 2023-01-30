@@ -7,6 +7,7 @@ let AsciiAccents = [241, 209, 192, 239, 180, 186, 211, 201, 193, 205, 218, 225, 
 let Preloader;
 let BaseURL = window.location.origin;
 let IconoNotificaciones;
+let ElementoReloj;
 
 //#region Methods
 
@@ -25,12 +26,11 @@ async function ValidarNotificaciones(){
         });
 
         let result = response.data;
-
-        if(result.codigo === 200){
+        if(result.code === 200){
             IconoNotificaciones.classList.replace("fa-envelope-open","fa-envelope-open-text");
 
             for(let aviso of result.data){
-                MostrarNotificacion(aviso.TipoAviso, aviso.Aviso, aviso.FechaRegistro);
+                MostrarNotificacion(aviso.tipoAviso, aviso.aviso, aviso.fechaRegistro);
             }
 
         } else{
@@ -52,6 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
     Preloader.hidden = true;
 
     IconoNotificaciones = document.getElementById("icono-notificaciones");
+    ElementoReloj = document.getElementById("reloj");
     NotificationsThread();
     ColorearWeb();
 
@@ -281,15 +282,16 @@ window.AvailableString = function(value){
 }
 
 window.MostrarNotificacion = function(tipoAviso, aviso, fechaRegistro){
-    toastr.info('<span class="fuenteNormal fw-semibold d-block">'.concat(tipoAviso,'</span><span class="fuenteNormal d-block">',aviso,'</span><span class="d-block text-end">',fechaRegistro,'</span>'), {
+
+    dayjs
+    toastr.info('<span class="fuenteNormal fw-semibold d-block">'.concat('<i class="fa-regular fa-bell"></i>&nbsp; Aviso de ',tipoAviso,'</span><span class="fuenteNormal d-block">&nbsp;',aviso,'</span><span class="d-block text-end">',dayjs(fechaRegistro).format('dddd DD MMM YYYY h:mm A'),'</span>'), {
         "closeButton": false,
         "debug": false,
         "newestOnTop": true,
         "progressBar": true,
-        //"escapeHtml": false,
         "positionClass": "toast-top-center",
         "preventDuplicates": false,
-        "showDuration": "300",
+        "showDuration": "1000",
         "hideDuration": "1000",
         "timeOut": "5000",
         "extendedTimeOut": "1000",
@@ -317,9 +319,22 @@ window.GetBase64FromUrl = async (url) => {
 async function NotificationsThread(){
     let flag = false;
     let timer = 0;
+    const options = {
+        year: "numeric",
+        month: "2-digit",
+        day: "numeric",
+        hour: "numeric",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: true,
+        timeZone: 'America/Panama'
+    };
+
     while(true){
         if(flag){
             while(timer < 10){
+                let date = new Date();
+                ElementoReloj.innerText = date.toLocaleString('es-MX', options);
                 await Sleep(1000);
                 timer = timer + 1;
             }
@@ -329,6 +344,7 @@ async function NotificationsThread(){
         ValidarNotificaciones();
     }
 }
+
 
 async function Sleep(msec){
     return new Promise(resolve => setTimeout(resolve, msec));
@@ -341,9 +357,6 @@ function RandomInt(min, max) {
 }
 
 //#endregion
-
-
-
 
 
 
