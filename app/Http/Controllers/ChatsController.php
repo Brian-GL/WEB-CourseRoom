@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
+use App\Models\ChatsArchivosMensajes;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 class ChatsController extends Controller
 {
@@ -197,7 +200,6 @@ class ChatsController extends Controller
 
             $validator = Validator::make($request->all(), $rules = [
                 'IdChat' => ['required'],
-                'IdUsuarioEmisor' => ['required'],
                 'Mensaje' => ['required']
             ], $messages = [
                 'required' => 'El campo :attribute es requerido'
@@ -210,10 +212,19 @@ class ChatsController extends Controller
                 $url = env('COURSEROOM_API');
 
                 $idChat = $request->integer('IdChat');
-                $idUsuarioEmisor = $request->integer('IdUsuarioEmisor');
+                $idUsuarioEmisor = session('IdUsuario');
                 $mensaje = $request->string('Mensaje')->trim();
-                $archivo = $request->string('Archivo')->trim();
-
+                
+                $Base64Archivo = null;
+                if($request->has('Base64Archivo')){
+                    $Base64Archivo = $request->input('Base64Archivo');
+                }
+                
+                $filename = null;
+                if($request->hasFile('Archivo')) {
+                    $filename = time().'_'.$request->file('Archivo')->getClientOriginalName();
+                }
+               
                 if($url != ''){
 
                     $response = Http::withHeaders([
@@ -222,17 +233,39 @@ class ChatsController extends Controller
                         'IdChat' => $idChat,
                         'IdUsuarioEmisor' => $idUsuarioEmisor,
                         'Mensaje' => $mensaje,
-                        'Archivo' => $archivo
+                        'Archivo' => $filename
                     ]);
 
                     if ($response->ok()){
-
+                        $fechaRegistro = Carbon::now('America/Panama');
                         $result = json_decode($response->body());
 
-                        return response()->json(['code' => 200 , 'data' => $result], 200);
+                        if($result->codigo > 0){
+                            if($filename != null){
+
+                                $file = $request->file('Archivo');
+
+                                // File extension
+                                $extension = $file->getClientOriginalExtension();
+
+                                //Guardar imagen en mongo si no esta vácia:
+                                $mongoChatArchivosMensajes = new ChatsArchivosMensajes;
+
+                                $mongoChatArchivosMensajes->idMensaje = $result->codigo;
+                                $mongoChatArchivosMensajes->archivo = $Base64Archivo;
+                                $mongoChatArchivosMensajes->extension = $extension;
+
+                                $mongoChatArchivosMensajes->save();
+
+                                //Guardar imagen en storage:
+                                Storage::putFileAs('chats', $file, $filename);
+                            }
+                        }
+
+                        return response()->json(['code' => 200 , 'data' => $result ,'FechaRegistro' => $fechaRegistro, 'NombreArchivo' => $filename], 200);
 
                     } else{
-                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                        return response()->json(['code' => 400 , 'data' => $response->body()], 200);
                     }
 
                 } else{

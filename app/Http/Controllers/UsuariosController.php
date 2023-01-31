@@ -726,7 +726,6 @@ class UsuariosController extends Controller
 
             $url = env('COURSEROOM_API');
 
-
             $nombre = null;
             $paterno = null;
             $materno = null;

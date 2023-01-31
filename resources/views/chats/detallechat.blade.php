@@ -1,3 +1,9 @@
+@php
+    
+use Carbon\Carbon;
+
+@endphp
+
 @extends('layouts.home')
 
 @section('title', 'Conversacion')
@@ -8,7 +14,15 @@
 
 @section('content')
 
-<input type="hidden" value="{{ asset('usuarios/')}}" id="assets"/>
+
+@if (!is_null($DatosChat))
+    <input type="hidden" value="{{ $DatosChat->IdChat}}" id="id-chat"/>
+@else
+    <input type="hidden" value="0" id="id-chat"/>
+@endif
+
+<input type="hidden" value="{{ asset('chats/').'/'}}" id="assets-chats"/>
+<input type="hidden" value="{{ asset('usuarios/').'/'}}" id="assets-usuarios"/>
 
 
 <div class="col-md-12">
@@ -57,14 +71,25 @@
                 @foreach ($Mensajes as $mensaje)
 
                     @if (!is_null($DatosChat) && $mensaje->idUsuarioEmisor == $DatosChat->IdUsuarioEmisor)
-                        <!-- Usuario actual -->
+                        
+                    <!-- Usuario actual -->
                         <div class="col-md-12 d-flex justify-content-end">
                             <div class="w-50">
-                                <div class="d-flex justify-content-between mb-4">
+                                <div class="d-flex justify-content-end mb-4">
                                     <div class="card mask-custom">
-                                        <div class="card-header d-flex justify-content-between p-3"style="border-bottom: 1px solid rgba(255,255,255,.3);">
-                                            <p class="fw-bold mb-0">{{$mensaje->nombreUsuarioEmisor}}</p>
-                                            <p class="text-light small mb-0"><i class="far fa-clock"></i> {{$mensaje->fechaRegistro}}</p>
+                                        <div class="card-header d-flex justify-content-betweem p-3"style="border-bottom: 1px solid rgba(255,255,255,.3);">
+                                            <div class="row">
+                                                <div class="col-md-6 text-center text-wrap">
+                                                    <p class="fw-bold mb-0">{{$mensaje->nombreUsuarioEmisor}}</p>
+                                                </div>
+                                                <div class="col-md-6 text-center text-wrap">
+                                                    @php
+                                                        $fechaRegistro = new Carbon($mensaje->fechaRegistro);
+                                                        $fechaRegistroFormat = $fechaRegistro->format('d/m/Y h:i A'); 
+                                                    @endphp
+                                                    <p class="text-light small mb-0"><i class="far fa-clock"></i>&nbsp;{{$fechaRegistroFormat}}</p>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="card-body">
 
@@ -84,12 +109,20 @@
                     @else
                         <div class="col-md-12 d-flex justify-content-start">
                             <div class="w-50">
-                                <div class="d-flex justify-content-between mb-4">
+                                <div class="d-flex justify-content-start mb-4">
                                     <img src="{{ asset('usuarios/'.$mensaje->imagenEmisor)}}" alt="avatar" class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60">
                                     <div class="card mask-custom">
                                         <div class="card-header d-flex justify-content-between p-3" style="border-bottom: 1px solid rgba(255,255,255,.3);">
-                                            <p class="fw-bold mb-0">{{$mensaje->nombreUsuarioEmisor}}</p>
-                                            <p class="text-light small mb-0"><i class="far fa-clock"></i> {{$mensaje->fechaRegistro}}</p>
+                                            <div class="col-md-6 text-center text-wrap">
+                                                <p class="fw-bold mb-0">{{$mensaje->nombreUsuarioEmisor}}</p>
+                                            </div>
+                                            <div class="col-md-6 text-center text-wrap">
+                                                @php
+                                                    $fechaRegistro = new Carbon($mensaje->fechaRegistro);
+                                                    $fechaRegistroFormat = $fechaRegistro->format('d/m/Y h:i A'); 
+                                                @endphp
+                                                <p class="text-light small mb-0"><i class="far fa-clock"></i>&nbsp;{{$fechaRegistroFormat}}</p>
+                                            </div>
                                         </div>
                                         <div class="card-body">
 
@@ -113,7 +146,7 @@
             <div class="col-md-12 my-2">
                 <div class="row g-5">
                     <div class="col-md-11">
-                        <textarea class="w-100 fuenteNormal form-control tercer-color-fondo tercer-color-letra" type="text" id="mensaje" name="mensaje" placeholder="Escribe un mensaje..." rows="1" maxlength="4000" minlength="1"></textarea>
+                        <input type="text" class="w-100 fuenteNormal form-control tercer-color-fondo tercer-color-letra" type="text" id="mensaje" name="mensaje" placeholder="Escribe un mensaje..."  maxlength="4000" minlength="1"/>
                     </div>
                     <div class="col-md-1 d-flex justify-content-end">
 

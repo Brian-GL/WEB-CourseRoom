@@ -150,7 +150,7 @@
                         <span class="fuenteMediana segundo-color-letra" id="reloj"></span>
                     </div>
                     <div class="col d-flex justify-content-md-end">
-                        <div class="dropdown dropstart justify-content.md-end">
+                        <div class="dropdown dropstart justify-content-md-end">
                             <button class="btn dropdown-toggle primer-color-letra primer-color-fondo" type="button" id="boton-perfil" data-bs-toggle="dropdown" aria-expanded="false">
                                 <!-- Nombre usuario -->
                                 @if(!is_null($DatosUsuario))
