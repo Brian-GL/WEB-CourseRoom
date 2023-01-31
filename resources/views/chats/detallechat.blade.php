@@ -17,8 +17,10 @@ use Carbon\Carbon;
 
 @if (!is_null($DatosChat))
     <input type="hidden" value="{{ $DatosChat->IdChat}}" id="id-chat"/>
+    <input type="hidden" value="{{ $DatosChat->IdUsuarioEmisor}}" id="id-usuario-emisor"/>
 @else
     <input type="hidden" value="0" id="id-chat"/>
+    <input type="hidden" value="0" id="id-usuario-emisor"/>
 @endif
 
 <input type="hidden" value="{{ asset('chats/').'/'}}" id="assets-chats"/>
@@ -72,7 +74,7 @@ use Carbon\Carbon;
 
                     @if (!is_null($DatosChat) && $mensaje->idUsuarioEmisor == $DatosChat->IdUsuarioEmisor)
                         
-                    <!-- Usuario actual -->
+                        <!-- Usuario actual -->
                         <div class="col-md-12 d-flex justify-content-end">
                             <div class="w-50">
                                 <div class="d-flex justify-content-end mb-4">

@@ -347,7 +347,7 @@ async function NotificationsThread(){
 }
 
 
-async function Sleep(msec){
+window.Sleep = async function (msec){
     return new Promise(resolve => setTimeout(resolve, msec));
 }
 

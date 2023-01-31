@@ -11,17 +11,63 @@ let BaseURL = window.location.origin;
 
 let assetsChatsRoute = document.getElementById("assets-chats").value;
 let assetsUsuariosRoute = document.getElementById("assets-usuarios").value;
+let IdChat = document.getElementById("id-chat").value;
+let IdUsuarioEmisor = document.getElementById("id-usuario-emisor").value;
 
 //#region Methods
+
+async function ObtenerMensajes(){
+    try{
+
+        let formData;
+        while(true){
+
+            formData = new FormData();
+            formData.append("IdChat", IdChat);
+
+            let response = await axios({
+                url: '/chats/mensajesobtener',
+                baseURL: BaseURL,
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
+                },
+                data: formData
+            });
+
+            let result = response.data;
+            if(result.code === 200){
+
+                let mensajes = result.data;
+                let fechaRegistroFormat;
+                for(let mensaje of mensajes){
+                    fechaRegistroFormat = dayjs(mensaje.fechaRegistro).format('DD/MM/YYYY h:mm A');
+                    
+                    if(mensaje.idUsuarioEmisor == IdUsuarioEmisor){
+                        GenerarMensajeEmisor(fechaRegistroFormat, mensaje.mensaje, mensaje.archivo, mensaje.nombreUsuarioEmisor, mensaje.imagenEmisor);
+                    }else{
+                        GenerarMensajeReceptor(fechaRegistroFormat, mensaje.mensaje, mensaje.archivo, mensaje.nombreUsuarioEmisor, mensaje.imagenEmisor);
+                    }
+                }
+            }else if(result.code === 500){
+                console.error(result.data);
+            }
+
+            await Sleep(3000);
+        }
+    }
+    catch(ex){
+
+        console.error(ex);
+    }
+}
 
 async function EnviarMensaje(mensaje, archivo, base64Archivo) {
 
     try {
 
-        ShowPreloader();
-
         let formData = new FormData();
-        formData.append("IdChat", document.getElementById("id-chat").value);
+        formData.append("IdChat", IdChat);
         formData.append("Mensaje", mensaje);
         formData.append("Base64Archivo", base64Archivo);
         formData.append("Archivo", archivo);
@@ -35,19 +81,9 @@ async function EnviarMensaje(mensaje, archivo, base64Archivo) {
             },
             data: formData
         });
-
-        HidePreloader();
-
         let result = response.data;
 
         switch (result.code) {
-            case 200: {
-                const date = new Date();
-                let fechaRegistroFormat = dayjs(result.FechaRegistro).format('DD/MM/YYYY h:mm A');
-                let nombreArchivo = result.NombreArchivo;
-                GenerarMensajeEmisor(fechaRegistroFormat, mensaje, nombreArchivo);
-            }
-                break;
             case 500: {
                 Swal.fire({
                     title: '¡Error!',
@@ -61,7 +97,7 @@ async function EnviarMensaje(mensaje, archivo, base64Archivo) {
                 });
             }
                 break;
-            default: {
+            case 400: {
                 Swal.fire({
                     title: '¡Alerta!',
                     text: result.data,
@@ -77,8 +113,6 @@ async function EnviarMensaje(mensaje, archivo, base64Archivo) {
         }
     }
     catch (ex) {
-
-        HidePreloader();
 
         Swal.fire({
             title: '¡Error!',
@@ -97,12 +131,15 @@ async function EnviarMensaje(mensaje, archivo, base64Archivo) {
 
 //#region Events
 
+document.addEventListener('DOMContentLoaded',  function() {setTimeout(ObtenerMensajes, 3000);}, false);
+
 document.getElementById("enviar-mensaje").addEventListener("click", () => {
 
     let mensaje = document.getElementById("mensaje").value;
 
     if (mensaje !== null && mensaje !== undefined && mensaje !== '') {
-        EnviarMensaje(mensaje, null);
+        EnviarMensaje(mensaje, null, null);
+        document.getElementById("mensaje").value = "";
     }
 
 });
@@ -114,6 +151,7 @@ document.getElementById("mensaje").addEventListener("keypress", (e) => {
 
         if (mensaje !== null && mensaje !== undefined && mensaje !== '') {
             EnviarMensaje(mensaje, null, null);
+            document.getElementById("mensaje").value = "";
         }
     }
 
@@ -190,22 +228,33 @@ document.getElementById("enviar-archivo").addEventListener("click", async () => 
 
 //#region Functions
 
-function GenerarMensajeEmisor(fechaRegistro, mensaje, nombreArchivo) {
-
-    let nombreUsuarioEmisor = document.getElementById("nombre-usuario").textContent;
-    let imagenUsuarioEmisor = document.getElementById("imagen-usuario").src;
+function GenerarMensajeEmisor(fechaRegistro, mensaje, nombreArchivo, nombreUsuarioEmisor, imagenEmisor) {
 
     let elemento;
 
     if (nombreArchivo === undefined || nombreArchivo === null || nombreArchivo === '') {
         elemento =
-            `<div class="col-md-12 d-flex justify-content-end"><div class="w-50"><div class="d-flex justify-content-end mb-4"><div class="card mask-custom"><div class="card-header d-flex justify-content-between p-3"style="border-bottom: 1px solid rgba(255,255,255,.3);"><div class="row"><div class="col-md-6 text-center text-wrap"><p class="fw-bold mb-0">${nombreUsuarioEmisor}</p></div><div class="col-md-6 text-center text-wrap"><p class="text-light small mb-0"><i class="far fa-clock"></i> ${fechaRegistro}</p></div></div></div><div class="card-body"><p class="mb-0">${mensaje}</p></div></div><img src="${imagenUsuarioEmisor}" alt="avatar" class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60"></div></div></div>`;
+            `<div class="col-md-12 d-flex justify-content-end"><div class="w-50"><div class="d-flex justify-content-end mb-4"><div class="card mask-custom"><div class="card-header d-flex justify-content-between p-3"style="border-bottom: 1px solid rgba(255,255,255,.3);"><div class="row"><div class="col-md-6 text-center text-wrap"><p class="fw-bold mb-0">${nombreUsuarioEmisor}</p></div><div class="col-md-6 text-center text-wrap"><p class="text-light small mb-0"><i class="far fa-clock"></i> ${fechaRegistro}</p></div></div></div><div class="card-body"><p class="mb-0">${mensaje}</p></div></div><img src="${assetsUsuariosRoute}${imagenEmisor}" alt="avatar" class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60"></div></div></div>`;
     } else {
         elemento =
-            `<div class="col-md-12 d-flex justify-content-end"><div class="w-50"><div class="d-flex justify-content-end mb-4"><div class="card mask-custom"><div class="card-header d-flex justify-content-between p-3"style="border-bottom: 1px solid rgba(255,255,255,.3);"><div class="row"><div class="col-md-6 text-center text-wrap"><p class="fw-bold mb-0">${nombreUsuarioEmisor}</p></div><div class="col-md-6 text-center text-wrap"><p class="text-light small mb-0"><i class="far fa-clock"></i> ${fechaRegistro}</p></div></div></div><div class="card-body"><a href="${assetsChatsRoute}${nombreArchivo}" target="_blank"><i class="fa-solid fa-file-lines"></i>&nbsp;${mensaje}'</a></div></div><img src="${imagenUsuarioEmisor}" alt="avatar" class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60"></div></div></div>`;
+            `<div class="col-md-12 d-flex justify-content-end"><div class="w-50"><div class="d-flex justify-content-end mb-4"><div class="card mask-custom"><div class="card-header d-flex justify-content-between p-3"style="border-bottom: 1px solid rgba(255,255,255,.3);"><div class="row"><div class="col-md-6 text-center text-wrap"><p class="fw-bold mb-0">${nombreUsuarioEmisor}</p></div><div class="col-md-6 text-center text-wrap"><p class="text-light small mb-0"><i class="far fa-clock"></i> ${fechaRegistro}</p></div></div></div><div class="card-body"><a href="${assetsChatsRoute}${nombreArchivo}" target="_blank"><i class="fa-solid fa-file-lines"></i>&nbsp;${mensaje}'</a></div></div><img src="${assetsUsuariosRoute}${imagenEmisor}" alt="avatar" class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60"></div></div></div>`;
     }
+    
+    $("#mensajes").append(elemento);
 
-    console.log(elemento);
+}
+
+function GenerarMensajeReceptor(fechaRegistro, mensaje, nombreArchivo, nombreUsuarioEmisor, imagenEmisor) {
+
+    let elemento;
+
+    if (nombreArchivo === undefined || nombreArchivo === null || nombreArchivo === '') {
+        elemento =
+            `<div class="col-md-12 d-flex justify-content-start"><div class="w-50"><div class="d-flex justify-content-start mb-4"><img src="${assetsUsuariosRoute}${imagenEmisor}" alt="avatar" class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60"><div class="card mask-custom"><div class="card-header d-flex justify-content-between p-3"style="border-bottom: 1px solid rgba(255,255,255,.3);"><div class="row"><div class="col-md-6 text-center text-wrap"><p class="fw-bold mb-0">${nombreUsuarioEmisor}</p></div><div class="col-md-6 text-center text-wrap"><p class="text-light small mb-0"><i class="far fa-clock"></i> ${fechaRegistro}</p></div></div></div><div class="card-body"><p class="mb-0">${mensaje}</p></div></div></div></div></div>`;
+    } else {
+        elemento =
+            `<div class="col-md-12 d-flex justify-content-start"><div class="w-50"><div class="d-flex justify-content-start mb-4"><img src="${assetsUsuariosRoute}${imagenEmisor}" alt="avatar" class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60"><div class="card mask-custom"><div class="card-header d-flex justify-content-between p-3"style="border-bottom: 1px solid rgba(255,255,255,.3);"><div class="row"><div class="col-md-6 text-center text-wrap"><p class="fw-bold mb-0">${nombreUsuarioEmisor}</p></div><div class="col-md-6 text-center text-wrap"><p class="text-light small mb-0"><i class="far fa-clock"></i> ${fechaRegistro}</p></div></div></div><div class="card-body"><a href="${assetsChatsRoute}${nombreArchivo}" target="_blank"><i class="fa-solid fa-file-lines"></i>&nbsp;${mensaje}'</a></div></div></div></div></div>`;
+    }
 
     $("#mensajes").append(elemento);
 

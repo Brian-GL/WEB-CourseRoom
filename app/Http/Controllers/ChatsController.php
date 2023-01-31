@@ -84,7 +84,7 @@ class ChatsController extends Controller
                             'Authorization' => env('COURSEROOM_API_KEY'),
                         ])->post($url.'/api/chats/mensajesobtener', [
                             'IdChat' => $idChat,
-                            'Ultimo' => null
+                            'FechaVisualizacion' => null
                         ]);
 
                         if($response->ok()){
@@ -237,7 +237,7 @@ class ChatsController extends Controller
                     ]);
 
                     if ($response->ok()){
-                        $fechaRegistro = Carbon::now('America/Panama');
+                        
                         $result = json_decode($response->body());
 
                         if($result->codigo > 0){
@@ -262,7 +262,7 @@ class ChatsController extends Controller
                             }
                         }
 
-                        return response()->json(['code' => 200 , 'data' => $result ,'FechaRegistro' => $fechaRegistro, 'NombreArchivo' => $filename], 200);
+                        return response()->json(['code' => 200 , 'data' => $result], 200);
 
                     } else{
                         return response()->json(['code' => 400 , 'data' => $response->body()], 200);
@@ -337,8 +337,7 @@ class ChatsController extends Controller
         try {
 
             $validator = Validator::make($request->all(), $rules = [
-                'IdChat' => ['required'],
-                'Ultimo' => ['required']
+                'IdChat' => ['required']
             ], $messages = [
                 'required' => 'El campo :attribute es requerido'
             ]);
@@ -350,15 +349,15 @@ class ChatsController extends Controller
                 $url = env('COURSEROOM_API');
 
                 $idChat = $request->integer('IdChat');
-                $ultimo = $request->boolean('Ultimo');
 
                 if($url != ''){
 
+                    $fechaVisualizacion = Carbon::now()->addHours(-5);
                     $response = Http::withHeaders([
                         'Authorization' => env('COURSEROOM_API_KEY'),
                     ])->post($url.'/api/chats/mensajesobtener', [
                         'IdChat' => $idChat,
-                        'Ultimo' => $ultimo
+                        'FechaVisualizacion' => $fechaVisualizacion
                     ]);
 
                     if ($response->ok()){
@@ -368,7 +367,7 @@ class ChatsController extends Controller
                         return response()->json(['code' => 200 , 'data' => $result], 200);
 
                     } else{
-                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                        return response()->json(['code' => 400 , 'data' => $response->body()], 200);
                     }
 
                 } else{
