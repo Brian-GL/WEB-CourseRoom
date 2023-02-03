@@ -11,6 +11,7 @@ use App\Http\Controllers\PreguntasRespuestasController;
 use App\Http\Controllers\TareasController;
 use App\Http\Controllers\UsuariosController;
 use App\Http\Controllers\CursosController;
+use App\Http\Controllers\ArchivosController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -212,5 +213,9 @@ Route::put('/cursos/estudiantefinalizaractualizar',  [CursosController::class, '
 Route::post('/cursos/cuestionariorespuestaregistrar',   [CursosController::class, 'curso_cuestionariorespuestaregistrar'])->middleware('session.token');
 #endregion
 
+#region Archivo
+Route::put('/archivo/actualizar',  [CursosController::class, 'archivo_actualizar'])->middleware('session.token');
+
+#endregion
 Auth::routes();
 
