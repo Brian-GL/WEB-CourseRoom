@@ -216,7 +216,7 @@ function ColorearWeb(){
                     indice++;
                 }
 
-                let fondo = "linear-gradient(to bottom, ".concat(PrimerColor,", ",SegundoColor,", ",TercerColor,")");;
+                let fondo = "linear-gradient(to bottom, ".concat(PrimerColor,", ",SegundoColor,",",TercerColor,")");
                 document.getElementById("fondo").style.background = fondo;
                 document.getElementById("inicio-offcanvas").style.background = fondo;
 
@@ -282,9 +282,10 @@ window.AvailableString = function(value){
 }
 
 window.MostrarNotificacion = function(tipoAviso, aviso, fechaRegistro){
+    let fechaRegistroSubstring = fechaRegistro.substring(0, fechaRegistro.length -1 );
+    let fechaRegistroFormat = dayjs(fechaRegistroSubstring).format('dddd DD MMM YYYY h:mm A');
 
-    dayjs
-    toastr.info('<span class="fuenteNormal fw-semibold d-block">'.concat('<i class="fa-regular fa-bell"></i>&nbsp; Aviso de ',tipoAviso,'</span><span class="fuenteNormal d-block">&nbsp;',aviso,'</span><span class="d-block text-end">',dayjs(fechaRegistro).format('dddd DD MMM YYYY h:mm A'),'</span>'), {
+    toastr.info('<span class="fuenteNormal fw-semibold d-block">'.concat('<i class="fa-regular fa-bell"></i>&nbsp; Aviso de ',tipoAviso,'</span><span class="fuenteNormal d-block">&nbsp;',aviso,'</span><span class="d-block text-end">',fechaRegistroFormat,'</span>'), {
         "closeButton": false,
         "debug": false,
         "newestOnTop": true,
@@ -346,7 +347,7 @@ async function NotificationsThread(){
 }
 
 
-async function Sleep(msec){
+window.Sleep = async function (msec){
     return new Promise(resolve => setTimeout(resolve, msec));
 }
 
