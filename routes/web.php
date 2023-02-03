@@ -71,6 +71,7 @@ Route::post('/catalogos/preguntarespuesta',  [CatalogosController::class, 'catal
 Route::post('/catalogos/preguntascuestionario',  [CatalogosController::class, 'catalogopreguntascuestionario_obtener'])->middleware('session.token');
 Route::post('/catalogos/tematicas',  [CatalogosController::class, 'catalogotematicas_obtener'])->middleware('session.token');
 Route::post('/catalogos/tiposusuario',  [CatalogosController::class, 'catalogotiposusuario_obtener'])->middleware('session.token');
+Route::post('/catalogos/tiposarchivo',  [CatalogosController::class, 'catalogotiposarchivo_obtener'])->middleware('session.token');
 
 #endregion
 
@@ -103,6 +104,14 @@ Route::delete('/grupos/miembroremover',  [GruposController::class, 'grupomiembro
 Route::post('/grupos/miembroregistrar',  [GruposController::class, 'grupomiembro_registrar'])->middleware('session.token');
 Route::put('/grupos/tareapendienteactualizar',  [GruposController::class, 'grupotareapendiente_actualizar'])->middleware('session.token');
 Route::post('/grupos/tareapendienteregistrar',  [GruposController::class, 'grupotareapendiente_registrar'])->middleware('session.token');
+Route::post('/grupos/registrar',  [GruposController::class, 'grupos_registrar'])->middleware('session.token');
+Route::delete('/grupos/remover',  [GruposController::class, 'grupos_remover'])->middleware('session.token');
+Route::put('/grupos/abandonaractualizar',  [GruposController::class, 'gruposabandonar_actualizar'])->middleware('session.token');
+Route::delete('/grupos/archivocompartidoremover',  [GruposController::class, 'gruposarchivocompartido_remover'])->middleware('session.token');
+Route::post('/grupos/detalleobtener',  [GruposController::class, 'gruposdetalle_obtener'])->middleware('session.token');
+Route::post('/grupos/mensajeregistrar',  [GruposController::class, 'gruposmensaje_registrar'])->middleware('session.token');
+Route::delete('/grupos/mensajeremover',  [GruposController::class, 'gruposmensaje_remover'])->middleware('session.token');
+
 
 #endregion
 

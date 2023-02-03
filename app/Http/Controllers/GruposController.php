@@ -558,5 +558,365 @@ class GruposController extends Controller
         }
     }
 
+    public function grupos_registrar(Request $request)
+    {
+        try {
+
+            $validator = Validator::make($request->all(), $rules = [
+                'IdCurso' => ['required'],
+                'Nombre' => ['required']
+            ], $messages = [
+                'required' => 'El campo :attribute es requerido'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
+            } else {
+
+                $url = env('COURSEROOM_API');
+
+                $idCurso = $request->integer('IdCurso');
+                $nombre = $request->integer('Nombre');
+                $descripcion = input('Descripcion');
+                $imagen = input('Imagen');
+
+                if($url != ''){
+
+                    $response = Http::withHeaders([
+                        'Authorization' => env('COURSEROOM_API_KEY'),
+                    ])->post($url.'/api/grupos/registrar', [
+                        'IdCurso' => $idCurso,
+                        'Nombre' => $nombre,
+                        'Descripcion' => $descripcion,
+                        'Imagen' => $imagen
+                    ]);
+
+                    if ($response->ok()){
+
+                        $result = json_decode($response->body());
+
+                        return response()->json(['code' => 200 , 'data' => $result], 200);
+
+                    } else{
+                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                    }
+
+                } else{
+                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
+                }
+            }
+
+        } catch (\Throwable $th) {
+            return response()->json(['code' => 500 , 'data' => $th->getMessage()], 200);
+        }
+    }
+
+    public function grupos_remover(Request $request)
+    {
+        try {
+
+            $validator = Validator::make($request->all(), $rules = [
+                'IdGrupo' => ['required'],
+                'IdProfesor' => ['required'],
+                'IdCurso' => ['required'],
+            ], $messages = [
+                'required' => 'El campo :attribute es requerido'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
+            } else {
+
+                $url = env('COURSEROOM_API');
+                
+                $idGrupo = $request->integer('IdGrupo');
+                $idProfesor = $request->integer('IdProfesor');
+                $idCurso = (int)$request->session()->get('IdCurso', 0);
+
+                if($url != ''){
+
+                    $response = Http::withHeaders([
+                        'Authorization' => env('COURSEROOM_API_KEY'),
+                    ])->delete($url.'/api/grupos/remover', [
+                        'IdGrupo' => $idGrupo,
+                        'IdProfesor' => $idProfesor,
+                        'IdCurso' => $idCurso
+                    ]);
+
+                    if ($response->ok()){
+
+                        $result = json_decode($response->body());
+
+                        return response()->json(['code' => 200 , 'data' => $result], 200);
+
+                    } else{
+                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                    }
+
+                } else{
+                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
+                }
+            }
+
+        } catch (\Throwable $th) {
+            return response()->json(['code' => 500 , 'data' => $th->getMessage()], 200);
+        }
+    }
+
+    public function gruposabandonar_actualizar(Request $request)
+    {
+        try {
+
+            $validator = Validator::make($request->all(), $rules = [
+                'IdGrupo' => ['required'],
+                'IdUsuario' => ['required']
+            ], $messages = [
+                'required' => 'El campo :attribute es requerido'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
+            } else {
+
+                $url = env('COURSEROOM_API');
+                
+                $idGrupo = $request->integer('IdGrupo');
+                $IdUsuario = $request->integer('IdUsuario');
+                
+
+                if($url != ''){
+
+                    $response = Http::withHeaders([
+                        'Authorization' => env('COURSEROOM_API_KEY'),
+                    ])->put($url.'/api/grupos/abandonaractualizar', [
+                        'IdGrupo' => $idGrupo,
+                        'IdUsuario' => $idUsuario,
+                        
+                    ]);
+
+                    if ($response->ok()){
+
+                        $result = json_decode($response->body());
+
+                        return response()->json(['code' => 200 , 'data' => $result], 200);
+
+                    } else{
+                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                    }
+
+                } else{
+                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
+                }
+            }
+
+        } catch (\Throwable $th) {
+            return response()->json(['code' => 500 , 'data' => $th->getMessage()], 200);
+        }
+    }
+
+    public function gruposarchivocompartido_remover(Request $request)
+    {
+        try {
+
+            $validator = Validator::make($request->all(), $rules = [
+                'IdArchivoCompartido' => ['required'],
+                'IdGrupo' => ['required'],
+                'IdUsuario' => ['required'],
+            ], $messages = [
+                'required' => 'El campo :attribute es requerido'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
+            } else {
+
+                $url = env('COURSEROOM_API');
+                               
+                $idArchivoCompartido = $request->integer('IdArchivoCompartido');
+                $idGrupo = $request->integer('IdGrupo');
+                $idUsuario = $request->integer('IdUsuario');
+
+                if($url != ''){
+
+                    $response = Http::withHeaders([
+                        'Authorization' => env('COURSEROOM_API_KEY'),
+                    ])->delete($url.'/api/grupos/archivocompartidoremover', [
+                        'IdArchivoCompartido' => $idArchivoCompartido,
+                        'IdGrupo' => $idGrupo,
+                        'IdUsuario' => $idUsuario
+                    ]);
+
+                    if ($response->ok()){
+
+                        $result = json_decode($response->body());
+
+                        return response()->json(['code' => 200 , 'data' => $result], 200);
+
+                    } else{
+                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                    }
+
+                } else{
+                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
+                }
+            }
+
+        } catch (\Throwable $th) {
+            return response()->json(['code' => 500 , 'data' => $th->getMessage()], 200);
+        }
+    }
+
+    public function gruposdetalle_obtener(Request $request)
+    {
+        try {
+
+            $validator = Validator::make($request->all(), $rules = [
+                'IdGrupo' => ['required']
+            ], $messages = [
+                'required' => 'El campo :attribute es requerido'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
+            } else {
+
+                $url = env('COURSEROOM_API');
+
+                $idGrupo = $request->integer('IdGrupo');
+
+                if($url != ''){
+
+                    $response = Http::withHeaders([
+                        'Authorization' => env('COURSEROOM_API_KEY'),
+                    ])->post($url.'/api/grupos/detalleobtener', [
+                        'IdGrupo' => $idGrupo
+                    ]);
+
+                    if ($response->ok()){
+
+                        $result = json_decode($response->body());
+
+                        return response()->json(['code' => 200 , 'data' => $result], 200);
+
+                    } else{
+                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                    }
+
+                } else{
+                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
+                }
+            }
+
+        } catch (\Throwable $th) {
+            return response()->json(['code' => 500 , 'data' => $th->getMessage()], 200);
+        }
+    }
+
+    public function gruposmensaje_registrar(Request $request)
+    {
+        try {
+
+            $validator = Validator::make($request->all(), $rules = [
+                'IdCurso' => ['required'],
+                'IdUsuarioEmisor' => ['required'],
+                'Mensaje' => ['required']
+            ], $messages = [
+                'required' => 'El campo :attribute es requerido'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
+            } else {
+
+                $url = env('COURSEROOM_API');
+                
+                $idGrupo = $request->integer('IdGrupo');
+                $idUsuarioEmisor = $request->integer('IdUsuarioEmisor');
+                $mensaje = $request->integer('Mensaje');
+                $archivo = input('Archivo');
+
+                if($url != ''){
+
+                    $response = Http::withHeaders([
+                        'Authorization' => env('COURSEROOM_API_KEY'),
+                    ])->post($url.'/api/grupos/mensajeregistrar', [
+                        'IdGrupo' => $idGrupo,
+                        'IdUsuarioEmisor' => $ddUsuarioEmisor,
+                        'Mensaje' => $mensaje,
+                        'Archivo' => $archivo
+                    ]);
+
+                    if ($response->ok()){
+
+                        $result = json_decode($response->body());
+
+                        return response()->json(['code' => 200 , 'data' => $result], 200);
+
+                    } else{
+                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                    }
+
+                } else{
+                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
+                }
+            }
+
+        } catch (\Throwable $th) {
+            return response()->json(['code' => 500 , 'data' => $th->getMessage()], 200);
+        }
+    }
+
+    public function gruposmensaje_remover(Request $request)
+    {
+        try {
+
+            $validator = Validator::make($request->all(), $rules = [
+                'IdUsuarioEmisor' => ['required'],
+                'IdGrupo' => ['required'],
+                'IdMensaje' => ['required'],
+            ], $messages = [
+                'required' => 'El campo :attribute es requerido'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
+            } else {
+
+                $url = env('COURSEROOM_API');
+                              
+                $idUsuarioEmisor = $request->integer('IdUsuarioEmisor');
+                $idGrupo = $request->integer('IdGrupo');
+                $idMensaje = $request->integer('IdMensaje');
+
+                if($url != ''){
+
+                    $response = Http::withHeaders([
+                        'Authorization' => env('COURSEROOM_API_KEY'),
+                    ])->delete($url.'/api/grupos/mensajeremover', [
+                        'IdUsuarioEmisor' => $idUsuarioEmisor,
+                        'IdGrupo' => $idGrupo,
+                        'IdMensaje' => $idMensaje
+                    ]);
+
+                    if ($response->ok()){
+
+                        $result = json_decode($response->body());
+
+                        return response()->json(['code' => 200 , 'data' => $result], 200);
+
+                    } else{
+                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                    }
+
+                } else{
+                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
+                }
+            }
+
+        } catch (\Throwable $th) {
+            return response()->json(['code' => 500 , 'data' => $th->getMessage()], 200);
+        }
+    }
+    
     #endregion
 }

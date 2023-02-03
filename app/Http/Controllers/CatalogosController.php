@@ -296,5 +296,40 @@ class CatalogosController extends Controller
         }
     }
 
+    public function catalogotiposarchivo_obtener(Request $request)
+    {
+        try {
+
+            $url = env('COURSEROOM_API');
+
+            $idTipoArchivo = $request->integer('IdTipoArchivo');
+
+            if($url != ''){
+
+                $response = Http::withHeaders([
+                    'Authorization' => env('COURSEROOM_API_KEY'),
+                ])->post($url.'/api/catalogos/tiposarchivo', [
+                    'IdTipoArchivo' => $idTipoArchivo
+                ]);
+
+                if ($response->ok()){
+
+                    $result = json_decode($response->body());
+
+                    return response()->json(['code' => 200 , 'data' => $result], 200);
+
+                } else{
+                    return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                }
+
+            } else{
+                return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
+            }
+
+        } catch (\Throwable $th) {
+            return response()->json(['code' => 500 , 'data' => $th->getMessage()], 200);
+        }
+    }
+
     #endregion
 }
