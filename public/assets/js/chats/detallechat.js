@@ -53,7 +53,7 @@ async function ObtenerMensajes(){
                 console.error(result.data);
             }
 
-            await Sleep(3000);
+            await Sleep(2000);
         }
     }
     catch(ex){
@@ -131,7 +131,7 @@ async function EnviarMensaje(mensaje, archivo, base64Archivo) {
 
 //#region Events
 
-document.addEventListener('DOMContentLoaded',  function() {setTimeout(ObtenerMensajes, 3000);}, false);
+document.addEventListener('DOMContentLoaded',  function() {setTimeout(ObtenerMensajes, 2000);}, false);
 
 document.getElementById("enviar-mensaje").addEventListener("click", () => {
 

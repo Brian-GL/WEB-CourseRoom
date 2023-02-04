@@ -146,7 +146,7 @@ Route::post('/herramientas/multimedia',  [HerramientasController::class, 'multim
 
 #region PreguntasRespuestas
 
-Route::get('/preguntas',  [PreguntasRespuestasController::class, 'inicio'])->name('preguntasrespuestas.inicio')->middleware('session.token');
+Route::get('/mis-preguntas',  [PreguntasRespuestasController::class, 'inicio'])->name('preguntasrespuestas.inicio')->middleware('session.token');
 
 #endregion
 
