@@ -188,7 +188,7 @@ Route::put('/cursos/abandonaractualizar',  [CursosController::class, 'curso_aban
 Route::put('/cursos/cuestionarioabandonaractualizar',  [CursosController::class, 'curso_cuestionarioabandonaractualizar'])->middleware('session.token');
 Route::post('/cursos/desempenoobtener',  [CursosController::class, 'curso_desempenoobtener'])->middleware('session.token');
 Route::post('/cursos/estudianteregistrar',  [CursosController::class, 'curso_estudianteregistrar'])->middleware('session.token');
-Route::pots('/cursos/estudiantedetalleobtener',  [CursosController::class, 'curso_estudiantedetalleobtener'])->middleware('session.token');
+Route::post('/cursos/estudiantedetalleobtener',  [CursosController::class, 'curso_estudiantedetalleobtener'])->middleware('session.token');
 Route::put('/cursos/finalizaractualizar',  [CursosController::class, 'curso_finalizaractualizar'])->middleware('session.token');
 Route::post('/cursos/materialregistrar',  [CursosController::class, 'curso_materialregistrar'])->middleware('session.token');
 Route::delete('/cursos/materialremover',  [CursosController::class, 'curso_materialremover'])->middleware('session.token');
