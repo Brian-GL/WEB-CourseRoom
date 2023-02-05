@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Http;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 class TareasController extends Controller
 {
@@ -14,8 +16,7 @@ class TareasController extends Controller
 
         $DatosUsuario = session('DatosUsuario');
         $DatosCuenta = session('DatosCuenta');
-        //$IdTipoUsuario = session('IdTipoUsuario');
-        $IdTipoUsuario = 2;
+        $IdTipoUsuario = session('IdTipoUsuario');
 
         return view('tareas.tareas', compact('DatosUsuario', 'DatosCuenta','IdTipoUsuario'));
     }
@@ -119,45 +120,34 @@ class TareasController extends Controller
     public function tareasmes_obtener(Request $request){
         try {
 
-            $validator = Validator::make($request->all(), $rules = [
-                'Mes' => ['required']
-            ], $messages = [
-                'required' => 'El campo :attribute es requerido'
-            ]);
+            $url = env('COURSEROOM_API');
 
-            if ($validator->fails()) {
-                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
-            } else {
+            $IdUsuario = session('IdUsuario');
+            $mes = Carbon::now()->addHours(-5)->month;
 
-                $url = env('COURSEROOM_API');
+            if($url != ''){
 
-                $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
-                $mes = $request->integer('Mes');
+                $response = Http::withHeaders([
+                    'Authorization' => env('COURSEROOM_API_KEY'),
+                ])->post($url.'/api/tareas/mes', [
+                    'IdUsuario' => $IdUsuario,
+                    'Mes' => $mes
+                ]);
 
-                if($url != ''){
+                if ($response->ok()){
 
-                    $response = Http::withHeaders([
-                        'Authorization' => env('COURSEROOM_API_KEY'),
-                    ])->post($url.'/api/tareas/mes', [
-                        'IdUsuario' => $idUsuario,
-                        'Mes' => $mes
-                    ]);
+                    $result = json_decode($response->body());
 
-                    if ($response->ok()){
-
-                        $result = json_decode($response->body());
-
-                        return response()->json(['code' => 200 , 'data' => $result], 200);
-
-                    } else{
-                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
-                    }
+                    return response()->json(['code' => 200 , 'data' => $result], 200);
 
                 } else{
-                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
+                    return response()->json(['code' => 400 , 'data' => $response->body()], 200);
                 }
-            }
 
+            } else{
+                return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
+            }
+            
         } catch (\Throwable $th) {
             return response()->json(['code' => 500 , 'data' => $th->getMessage()], 200);
         }

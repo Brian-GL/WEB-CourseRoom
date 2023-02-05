@@ -322,9 +322,9 @@ async function NotificationsThread(){
     let timer = 0;
     const options = {
         year: "numeric",
-        month: "2-digit",
-        day: "numeric",
-        hour: "numeric",
+        month: "long",
+        day: "2-digit",
+        hour: "2-digit",
         minute: "2-digit",
         second: "2-digit",
         hour12: true,
