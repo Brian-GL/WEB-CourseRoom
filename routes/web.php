@@ -80,7 +80,6 @@ Route::post('/catalogos/tiposarchivo',  [CatalogosController::class, 'catalogoti
 
 Route::get('/conversaciones',  [ChatsController::class, 'chats'])->name('chats.inicio')->middleware('session.token');
 Route::get('/chats/conversacion',  [ChatsController::class, 'conversacion'])->name('chats.conversacion')->middleware('session.token');
-
 Route::post('/chats/conversacion',  [ChatsController::class, 'conversacion'])->middleware('session.token');
 Route::post('/chats/registrar',  [ChatsController::class, 'chat_registrar'])->middleware('session.token');
 Route::delete('/chats/remover',  [ChatsController::class, 'chat_remover'])->middleware('session.token');
@@ -131,6 +130,16 @@ Route::post('/tareas/archivoentregado',  [TareasController::class, 'tareaarchivo
 Route::post('/tareas/remover',  [TareasController::class, 'tarea_remover'])->middleware('session.token');
 Route::post('/tareas/registrar',  [TareasController::class, 'tarea_registrar'])->middleware('session.token');
 Route::post('/tareas/retroalimentacion',  [TareasController::class, 'tarearetroalimentacion_registrar'])->middleware('session.token');
+Route::post('/tareas/archivosentregados',  [TareasController::class, 'tareaarchivosentregados_obtener'])->middleware('session.token');
+Route::post('/tareas/estudiante',  [TareasController::class, 'tareaestudiante_obtener'])->middleware('session.token');
+Route::post('/tareas/creadaprofesor',  [TareasController::class, 'tareacreadaprofesor_obtener'])->middleware('session.token');
+Route::post('/tareas/retroalimentaciones',  [TareasController::class, 'tareareatroalimentaciones_obtener'])->middleware('session.token');
+Route::post('/tareas/calificarobtener',  [TareasController::class, 'tareacalificar_obtener'])->middleware('session.token');
+Route::post('/tareas/entregar',  [TareasController::class, 'tareaentregar_actualizar'])->middleware('session.token');
+Route::delete('/tareas/archivoentregadoremover',  [TareasController::class, 'tareaarchivoentregado_remover'])->middleware('session.token');
+Route::delete('/tareas/archivoadjunto',  [TareasController::class, 'tareaarchivoadjunto_remover'])->middleware('session.token');
+Route::post('/tareas/archivoadjuntoregistrar',  [TareasController::class, 'tareaarchivoadjunto_registrar'])->middleware('session.token');
+
 
 #endregion
 
@@ -211,6 +220,7 @@ Route::post('/cursos/estudiantedesempenoobtener',  [CursosController::class, 'cu
 Route::post('/cursos/estudiantessingrupoobtener',  [CursosController::class, 'curso_estudiantessingrupoobtener'])->middleware('session.token');
 Route::put('/cursos/estudiantefinalizaractualizar',  [CursosController::class, 'curso_estudiantefinalizaractualizar'])->middleware('session.token');
 Route::post('/cursos/cuestionariorespuestaregistrar',   [CursosController::class, 'curso_cuestionariorespuestaregistrar'])->middleware('session.token');
+
 #endregion
 
 #region Archivo

@@ -580,5 +580,498 @@ class TareasController extends Controller
         }
     }
 
+    public function tareaarchivosentregados_obtener(Request $request){
+        try {
+
+            $validator = Validator::make($request->all(), $rules = [
+                'IdTarea' => ['required'],
+                'IdUsuario' => ['required']
+            ], $messages = [
+                'required' => 'El campo :attribute es requerido'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
+            } else {
+
+                $url = env('COURSEROOM_API');
+
+                $idTarea = $request->integer('IdTarea');
+                $idUsuario = $request->integer('IdUsuario');
+
+                if($url != ''){
+
+                    $response = Http::withHeaders([
+                        'Authorization' => env('COURSEROOM_API_KEY'),
+                    ])->post($url.'/api/tareas/archivosentregados', [
+                        'IdTarea' => $idTarea,
+                        'IdUsuario' => $idUsuario,
+                    ]);
+
+                    if ($response->ok()){
+
+                        $result = json_decode($response->body());
+
+                        return response()->json(['code' => 200 , 'data' => $result], 200);
+
+                    } else{
+                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                    }
+
+                } else{
+                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
+                }
+            }
+
+        } catch (\Throwable $th) {
+            return response()->json(['code' => 500 , 'data' => $th->getMessage()], 200);
+        }
+    }
+
+    public function tareaestudiante_obtener(Request $request){
+        try {
+
+            $validator = Validator::make($request->all(), $rules = [
+                'IdUsuario' => ['required']
+            ], $messages = [
+                'required' => 'El campo :attribute es requerido'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
+            } else {
+
+                $url = env('COURSEROOM_API');
+                
+                $idUsuario = $request->integer('IdUsuario');
+
+                if($url != ''){
+
+                    $response = Http::withHeaders([
+                        'Authorization' => env('COURSEROOM_API_KEY'),
+                    ])->post($url.'/api/tareas/estudiante', [
+                        'IdUsuario' => $idUsuario,
+                    ]);
+
+                    if ($response->ok()){
+
+                        $result = json_decode($response->body());
+
+                        return response()->json(['code' => 200 , 'data' => $result], 200);
+
+                    } else{
+                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                    }
+
+                } else{
+                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
+                }
+            }
+
+        } catch (\Throwable $th) {
+            return response()->json(['code' => 500 , 'data' => $th->getMessage()], 200);
+        }
+    }
+
+    public function tareacreadaprofesor_obtener(Resquest $request)
+    {
+        try {
+
+            $validator = Validator::make($request->all(), $rules = [
+                'IdProfesor' => ['required']
+            ], $messages = [
+                'required' => 'El campo :attribute es requerido'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
+            } else {
+
+                $url = env('COURSEROOM_API');
+                
+                $idProfesor = $request->integer('IdProfesor');
+
+                if($url != ''){
+
+                    $response = Http::withHeaders([
+                        'Authorization' => env('COURSEROOM_API_KEY'),
+                    ])->post($url.'/api/tareas/creadaprofesor', [
+                        'IdProfesor' => $idProfesor,
+                    ]);
+
+                    if ($response->ok()){
+
+                        $result = json_decode($response->body());
+
+                        return response()->json(['code' => 200 , 'data' => $result], 200);
+
+                    } else{
+                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                    }
+
+                } else{
+                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
+                }
+            }
+
+        } catch (\Throwable $th) {
+            return response()->json(['code' => 500 , 'data' => $th->getMessage()], 200);
+        }
+    }
+
+    public function tareaprofesordetalle_obtener(Resquest $request)
+    {
+        try {
+
+            $validator = Validator::make($request->all(), $rules = [
+                'IdProfesor' => ['required'],
+                'IdTarea' => ['required'],
+            ], $messages = [
+                'required' => 'El campo :attribute es requerido'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
+            } else {
+
+                $url = env('COURSEROOM_API');
+                
+                $idProfesor = $request->integer('IdProfesor');
+                $idTarea = $request->integer('IdTarea');
+
+                if($url != ''){
+
+                    $response = Http::withHeaders([
+                        'Authorization' => env('COURSEROOM_API_KEY'),
+                    ])->post($url.'/api/tareas/profesordetalle', [
+                        'IdProfesor' => $idProfesor,
+                        'IdTarea' => $idTarea,
+                    ]);
+
+                    if ($response->ok()){
+
+                        $result = json_decode($response->body());
+
+                        return response()->json(['code' => 200 , 'data' => $result], 200);
+
+                    } else{
+                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                    }
+
+                } else{
+                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
+                }
+            }
+
+        } catch (\Throwable $th) {
+            return response()->json(['code' => 500 , 'data' => $th->getMessage()], 200);
+        }
+    }
+
+    public function tareareatroalimentaciones_obtener(Resquest $request)
+    {
+        try {
+
+            $validator = Validator::make($request->all(), $rules = [
+                'IdUsuario' => ['required'],
+                'IdTarea' => ['required'],
+            ], $messages = [
+                'required' => 'El campo :attribute es requerido'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
+            } else {
+
+                $url = env('COURSEROOM_API');
+                
+                $idUsuario = $request->integer('IdUsuario');
+                $idTarea = $request->integer('IdTarea');
+                
+                if($url != ''){
+
+                    $response = Http::withHeaders([
+                        'Authorization' => env('COURSEROOM_API_KEY'),
+                    ])->post($url.'/api/tareas/retroalimentaciones', [
+                        'IdUsuario' => $idUsuario,
+                        'IdTarea' => $idTarea,
+                    ]);
+
+                    if ($response->ok()){
+
+                        $result = json_decode($response->body());
+
+                        return response()->json(['code' => 200 , 'data' => $result], 200);
+
+                    } else{
+                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                    }
+
+                } else{
+                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
+                }
+            }
+
+        } catch (\Throwable $th) {
+            return response()->json(['code' => 500 , 'data' => $th->getMessage()], 200);
+        }
+    }
+
+    public function tareacalificar_obtener(Resquest $request)
+    {
+        try {
+
+            $validator = Validator::make($request->all(), $rules = [
+                'IdProfesor' => ['required'],
+            ], $messages = [
+                'required' => 'El campo :attribute es requerido'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
+            } else {
+
+                $url = env('COURSEROOM_API');
+                
+                $idProfesor = $request->integer('IdProfesor');
+                
+                if($url != ''){
+
+                    $response = Http::withHeaders([
+                        'Authorization' => env('COURSEROOM_API_KEY'),
+                    ])->post($url.'/api/tareas/calificarobtener', [
+                        'IdProfesor' => $idProfesor,
+                    ]);
+
+                    if ($response->ok()){
+
+                        $result = json_decode($response->body());
+
+                        return response()->json(['code' => 200 , 'data' => $result], 200);
+
+                    } else{
+                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                    }
+
+                } else{
+                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
+                }
+            }
+
+        } catch (\Throwable $th) {
+            return response()->json(['code' => 500 , 'data' => $th->getMessage()], 200);
+        }
+    }
+
+    public function tareaentregar_actualizar(Resquest $request)
+    {
+        try {
+
+            $validator = Validator::make($request->all(), $rules = [
+                'IdTarea' => ['required'],
+                'IdUsusrio' => ['required']
+            ], $messages = [
+                'required' => 'El campo :attribute es requerido'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
+            } else {
+
+                $url = env('COURSEROOM_API');
+                
+                $idTarea = $request->integer('IdTarea');
+                $idUsuario = $request->integer('IdUsuario');
+
+                if($url != ''){
+
+                    $response = Http::withHeaders([
+                        'Authorization' => env('COURSEROOM_API_KEY'),
+                    ])->put($url.'/api/tareas/entregar', [
+                        'IdTarea' => $idTarea,
+                        'IdUsuario' => $idUsuario,
+                    ]);
+
+                    if ($response->ok()){
+
+                        $result = json_decode($response->body());
+
+                        return response()->json(['code' => 200 , 'data' => $result], 200);
+
+                    } else{
+                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                    }
+
+                } else{
+                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
+                }
+            }
+
+        } catch (\Throwable $th) {
+            return response()->json(['code' => 500 , 'data' => $th->getMessage()], 200);
+        }
+    }
+
+    public function tareaarchivoentregado_remover(Resquest $request)
+    {
+        try {
+
+            $validator = Validator::make($request->all(),$rules = [
+                'IdTarea' => ['required'],
+                'IdUsuario' => ['required'],
+                'IdArchivoEntregado' => ['required'],
+            ], $messages = [
+                'required' => 'El campo :attribute es requerido'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
+            } else {
+
+                $url = env('COURSEROOM_API');
+
+                $idTarea = $request->integer('IdTarea');
+                $idUsuario = $request->integer('IdUsaurio');
+                $idArchivoEntregado = $request->integer('IdArchivoEntregado');
+
+                if($url != ''){
+
+                    $response = Http::withHeaders([
+                        'Authorization' => env('COURSEROOM_API_KEY'),
+                    ])->delete($url.'/api/tareas/archivoentregadoremover', [
+                        'IdUsuario' => $idUsuario,
+                        'IdTarea' => $idTarea,
+                        'IdArchivoEntregado' => $idArchivoEntregado,
+                    ]);
+
+                    if ($response->ok()){
+
+                        $result = json_decode($response->body());
+
+                        return response()->json(['code' => 200 , 'data' => $result], 200);
+
+                    } else{
+                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                    }
+
+                } else{
+                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
+                }
+            }
+
+        } catch (\Throwable $th) {
+            return response()->json(['code' => 500 , 'data' => $th->getMessage()], 200);
+        }
+
+    }
+
+    public function tareaarchivoadjunto_remover(Resquest $request)
+    {
+        try {
+
+            $validator = Validator::make($request->all(),$rules = [
+                'IdTarea' => ['required'],
+                'IdUsuario' => ['required'],
+                'IdArchivoAdjunto' => ['required'],
+            ], $messages = [
+                'required' => 'El campo :attribute es requerido'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
+            } else {
+
+                $url = env('COURSEROOM_API');
+                
+                $idTarea = $request->integer('IdTarea');
+                $idUsuario = $request->integer('IdUsaurio');
+                $idArchivoAdjunto = $request->integer('IdArchivoAdjunto');
+
+                if($url != ''){
+
+                    $response = Http::withHeaders([
+                        'Authorization' => env('COURSEROOM_API_KEY'),
+                    ])->delete($url.'/api/tareas/archivoadjunto', [
+                        'IdUsuario' => $idUsuario,
+                        'IdTarea' => $idTarea,
+                        'IdArchivoAdjunto' => $idArchivoAdjunto,
+                    ]);
+
+                    if ($response->ok()){
+
+                        $result = json_decode($response->body());
+
+                        return response()->json(['code' => 200 , 'data' => $result], 200);
+
+                    } else{
+                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                    }
+
+                } else{
+                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
+                }
+            }
+
+        } catch (\Throwable $th) {
+            return response()->json(['code' => 500 , 'data' => $th->getMessage()], 200);
+        }
+
+    }
+
+    public function tareaarchivoadjunto_registrar(Request $request)
+    {
+        try {
+
+            $validator = Validator::make($request->all(), $rules = [
+                'IdTarea' => ['required'],
+                'IdProfesor' => ['required'],
+                'NombreArchivo' => ['required'],
+                'Archivo' => ['required']
+            ], $messages = [
+                'required' => 'El campo :attribute es requerido'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
+            } else {
+
+                $url = env('COURSEROOM_API');
+
+                $idTarea = $request->input('IdTarea');
+                $idProfesor = $request->input('IdProfesor');
+                $nombre = $request->input('Nombre');
+                $archivo = $request->input('Archivo');
+
+                if($url != ''){
+
+                    $response = Http::withHeaders([
+                        'Authorization' => env('COURSEROOM_API_KEY'),
+                    ])->post($url.'/api/tareas/archivoadjuntoregistrar', [
+                        'IdTarea' => $idTarea,
+                        'IdProfesor' => $idProfesor,
+                        'Nombre' => $nombre,
+                        'Archivo' => $archivo
+                    ]);
+
+                    if ($response->ok()){
+
+                        $result = json_decode($response->body());
+
+                        return response()->json(['code' => 200 , 'data' => $result], 200);
+
+                    } else{
+                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                    }
+
+                } else{
+                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
+                }
+            }
+
+        } catch (\Throwable $th) {
+            return response()->json(['code' => 500 , 'data' => $th->getMessage()], 200);
+        }
+    }
+
     #endregion
 }
