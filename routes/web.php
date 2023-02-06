@@ -159,6 +159,18 @@ Route::post('/herramientas/multimedia',  [HerramientasController::class, 'multim
 
 Route::get('/mis-preguntas',  [PreguntasRespuestasController::class, 'inicio'])->name('preguntasrespuestas.inicio')->middleware('session.token');
 
+Route::put('/preguntas/actualizar',  [PreguntasRespuestasController::class, 'pregunta_actualizar'])->middleware('session.token');
+Route::post('/preguntas/registrar',  [PreguntasRespuestasController::class, 'preguntasrespuesta_registar'])->middleware('session.token');
+Route::delete('/preguntas/remover',  [PreguntasRespuestasController::class, 'preguntasrespuesta_remover'])->middleware('session.token');
+Route::post('/preguntas/detalle',  [PreguntasRespuestasController::class, 'preguntasrespuestadetalle_obtener'])->middleware('session.token');
+Route::put('/preguntas/estatus',  [PreguntasRespuestasController::class, 'preguntasrespuestaestatus_actualizar'])->middleware('session.token');
+Route::post('/preguntas/mensajeregistrar',  [PreguntasRespuestasController::class, 'preguntasrespuestamensaje_registrar'])->middleware('session.token');
+Route::delete('/preguntas/mensajeremover',  [PreguntasRespuestasController::class, 'preguntasrespuestamensaje_remover'])->middleware('session.token');
+Route::post('/preguntas/mensajeobtener',  [PreguntasRespuestasController::class, 'preguntasrespuestamensajes_obtener'])->middleware('session.token');
+Route::post('/preguntas/buscar',  [PreguntasRespuestasController::class, 'preguntasrespuestas_buscar'])->middleware('session.token');
+Route::post('/preguntas/obtener',  [PreguntasRespuestasController::class, 'preguntasrespuestas_obtener'])->middleware('session.token');
+
+
 #endregion
 
 #region Usuarios
