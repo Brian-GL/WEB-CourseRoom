@@ -94,6 +94,8 @@ Route::post('/chats/obtener',  [ChatsController::class, 'chats_obtener'])->middl
 
 #region Grupos
 
+Route::get('/mis-grupos',  [GruposController::class, 'grupos'])->name('grupos.inicio')->middleware('session.token');
+
 Route::put('/grupos/actualizar',  [GruposController::class, 'grupo_actualizar'])->middleware('session.token');
 Route::post('/grupos/mensajes',  [GruposController::class, 'gruposmensajes_obtener'])->middleware('session.token');
 Route::post('/grupos/obtener',  [GruposController::class, 'grupos_obtener'])->middleware('session.token');

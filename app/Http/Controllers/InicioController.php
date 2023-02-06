@@ -14,6 +14,7 @@ class InicioController extends Controller
     public function inicio(){
         
         $IdUsuario = session('IdUsuario');
+        $IdTipoUsuario = session('IdTipoUsuario');
 
         //Obtener datos del usuario:
         $url = env('COURSEROOM_API');
@@ -57,15 +58,16 @@ class InicioController extends Controller
             } 
         } 
 
-        return view('inicio.inicio',compact('DatosUsuario', 'DatosCuenta')); 
+        return view('inicio.inicio',compact('DatosUsuario', 'DatosCuenta', 'IdTipoUsuario')); 
     }
     
     public function acerca(){ 
         
         $DatosUsuario = session('DatosUsuario');
         $DatosCuenta = session('DatosCuenta');
+        $IdTipoUsuario = session('IdTipoUsuario');
 
-        return view('inicio.acerca', compact('DatosUsuario', 'DatosCuenta')); 
+        return view('inicio.acerca', compact('DatosUsuario', 'DatosCuenta', 'IdTipoUsuario')); 
     }
     
     #endregion

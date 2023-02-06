@@ -252,7 +252,6 @@ document.DetalleChat = async function(IdChat, IdUsuarioReceptor){
     catch(ex){
 
         HidePreloader();
-        dataTableBuscarUsuarios.clear().draw();
         Swal.fire({
             title: '¡Error!',
             text: ex,

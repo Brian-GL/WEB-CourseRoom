@@ -14,8 +14,9 @@ class PreguntasRespuestasController extends Controller
         
         $DatosUsuario = session('DatosUsuario');
         $DatosCuenta = session('DatosCuenta');
+        $IdTipoUsuario = session('IdTipoUsuario');
 
-        return view('preguntasrespuestas.preguntas', compact('DatosUsuario', 'DatosCuenta'));}
+        return view('preguntasrespuestas.preguntas', compact('DatosUsuario', 'DatosCuenta', 'IdTipoUsuario'));}
 
     #endregion
 
