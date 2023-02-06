@@ -32,9 +32,9 @@ class ArchivosController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $archivo = $request -> input('Archivo');
-                $idTipoArchivo = $request -> input('IdTipoArchivo');
-                $idRegistro = input('IdRegistro');
+                $archivo = $request->input('Archivo');
+                $idTipoArchivo = $request->integer('IdTipoArchivo');
+                $idRegistro = $request->integer('IdRegistro');
 
                 if($url != ''){
 
@@ -64,7 +64,6 @@ class ArchivosController extends Controller
         } catch (\Throwable $th) {
             return response()->json(['code' => 500 , 'data' => $th->getMessage()], 200);
         }
-
     }
 
     #endregion

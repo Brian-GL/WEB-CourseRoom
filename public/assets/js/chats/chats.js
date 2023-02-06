@@ -252,7 +252,6 @@ document.DetalleChat = async function(IdChat, IdUsuarioReceptor){
     catch(ex){
 
         HidePreloader();
-        dataTableBuscarUsuarios.clear().draw();
         Swal.fire({
             title: '¡Error!',
             text: ex,
@@ -318,12 +317,15 @@ document.Chatear = async function(IdUsuario){
                             imageUrl: BaseURL.concat("/assets/templates/HappyOwl.png"),
                             imageWidth: 100,
                             imageHeight: 123,
-                            imageAlt: 'Alert Image',
+                            imageAlt: 'Ok Image',
                             background: '#000000',
-                            color: '#FFFFFF'
+                            color: '#FFFFFF',
+                            showCloseButton: false,
+                            showDenyButton: false,
+                            showCancelButton: false,
                         }).then((res) => {
                             if (res.isConfirmed) {
-                                DetalleChat(result.codigo);
+                                DetalleChat(result.data.codigo);
                             }
                         });
                     }

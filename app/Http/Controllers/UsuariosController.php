@@ -16,6 +16,7 @@ class UsuariosController extends Controller
 
         $DatosUsuario = session('DatosUsuario');
         $DatosCuenta = session('DatosCuenta');
+        $IdTipoUsuario = session('IdTipoUsuario');
 
         //Localidades:
         $localidades = array();
@@ -50,13 +51,15 @@ class UsuariosController extends Controller
             $tipos_usuario = json_decode($response->body());
         }
 
-        return view('usuarios.perfil', compact('localidades','tipos_usuario', 'DatosUsuario', 'DatosCuenta'));
+        return view('usuarios.perfil', compact('localidades','tipos_usuario', 'DatosUsuario', 'DatosCuenta', 'IdTipoUsuario'));
     }
 
     public function sesiones(){
         $DatosUsuario = session('DatosUsuario');
         $DatosCuenta = session('DatosCuenta');
-        return view('usuarios.sesiones', compact('DatosUsuario', 'DatosCuenta'));
+        $IdTipoUsuario = session('IdTipoUsuario');
+        
+        return view('usuarios.sesiones', compact('DatosUsuario', 'DatosCuenta', 'IdTipoUsuario'));
     }
 
     #endregion

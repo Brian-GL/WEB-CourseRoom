@@ -16,8 +16,9 @@ class HerramientasController extends Controller
         
         $DatosUsuario = session('DatosUsuario');
         $DatosCuenta = session('DatosCuenta');
+        $IdTipoUsuario = session('IdTipoUsuario');
         
-        return view('herramientas.musica', compact('DatosUsuario', 'DatosCuenta'));
+        return view('herramientas.musica', compact('DatosUsuario', 'DatosCuenta', 'IdTipoUsuario'));
     }
 
     public function matematicas(){
@@ -42,8 +43,9 @@ class HerramientasController extends Controller
 
         $DatosUsuario = session('DatosUsuario');
         $DatosCuenta = session('DatosCuenta');
+        $IdTipoUsuario = session('IdTipoUsuario');
 
-        return view('herramientas.matematicas', compact('operaciones', 'DatosUsuario', 'DatosCuenta'));
+        return view('herramientas.matematicas', compact('operaciones', 'DatosUsuario', 'DatosCuenta', 'IdTipoUsuario'));
     }
 
     #endregion

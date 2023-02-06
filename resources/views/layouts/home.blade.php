@@ -72,9 +72,11 @@
                     </div>
 
                     <div class="col-5">
-                        <a type="button" class="btn btn-lg segundo-color-letra" {{--href="{{route('grupos.inicio')}}"--}} title="Ir a mis grupos">
-                            <i class="fa-solid fa-users-rectangle"></i> Grupos
-                        </a>
+                        @if ($IdTipoUsuario == 1)
+                            <a type="button" class="btn btn-lg segundo-color-letra" href="{{route('grupos.inicio')}}" title="Ir a mis grupos">
+                                <i class="fa-solid fa-users-rectangle"></i> Grupos
+                            </a>
+                        @endif
                     </div>
 
                 </div>

@@ -4,6 +4,12 @@
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset ('assets/css/tareas/tareas.css')}}">
+@if($IdTipoUsuario == 1)
+<link rel="stylesheet" href="{{ asset ('assets/css/layout/evo-calendar.midnight-blue.min.css')}}">
+<link rel="stylesheet" href="{{ asset ('assets/css/layout/evo-calendar.min.css')}}">
+<link rel="stylesheet" href="{{ asset ('assets/css/layout/evo-calendar.orange-coral.min.css')}}">
+<link rel="stylesheet" href="{{ asset ('assets/css/layout/evo-calendar.royal-navy.min.css')}}">
+@endif
 @endpush
 
 @section('content')
@@ -11,6 +17,7 @@
 <input type="hidden" value="{{ asset('cursos/')}}" id="assets-cursos"/>
 <input type="hidden" value="{{ asset('usuarios/')}}" id="assets-usuarios"/>
 <input type="hidden" value="{{$IdTipoUsuario}}" id="id-tipo-usuario"/>
+
 
 <div class="col-md-12">
     <div class="container">
@@ -31,7 +38,7 @@
                             </li>
                         @else
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link fuenteNormal tercer-color-letra tercer-color-fondo" id="tareas-calificar-tab" data-bs-toggle="tab" data-bs-target="#tareas-calificar" type="button" role="tab" aria-controls="tareas-calificar" aria-selected="false">Tareas por calificr</button>
+                                <button class="nav-link fuenteNormal tercer-color-letra tercer-color-fondo" id="tareas-calificar-tab" data-bs-toggle="tab" data-bs-target="#tareas-calificar" type="button" role="tab" aria-controls="tareas-calificar" aria-selected="false">Tareas por calificar</button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link active fuenteNormal primer-color-letra primer-color-fondo" id="mis-tareas-creadas-tab" data-bs-toggle="tab" data-bs-target="#mis-tareas-creadas" type="button" role="tab" aria-controls="mis-tareas-creadas" aria-selected="true">Tareas creadas</button>
@@ -59,7 +66,7 @@
                             <div class="tab-pane fade" id="tareas-mes" role="tabpanel" aria-labelledby="tareas-mes-tab">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        
+                                        <div id="tareas-calendario" class="mt-3 mx-2"></div>
                                     </div>
                                 </div>
                             </div>
@@ -96,5 +103,9 @@
 
 
 @push('scripts')
+@if($IdTipoUsuario == 1)
+<script type="module" src="{{asset('assets/js/layout/evo-calendar.min.js')}}"></script>
+@endif
 <script type="module" src=" {{asset('assets/js/tareas/tareas.js')}}"></script>
+
 @endpush

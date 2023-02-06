@@ -3,6 +3,7 @@ window.Swal = Swal;
 
 import $ from 'jquery'
 window.$ = $;
+window.jQuery = $;
 
 import * as Memes from 'random-memes'
 window.Memes = Memes;
@@ -32,8 +33,6 @@ window.dayjs = dayjs;
 import platform from 'platform';
 window.platform = platform;
 
-import * as Calendar from 'fullcalendar';
-window.Calendar = Calendar;
 
 import 'bootstrap';
 

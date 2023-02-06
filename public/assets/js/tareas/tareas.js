@@ -40,10 +40,8 @@ $(".nav-link").on("click",  (e) => {
 });
 
 
-
 //Si eres estudiante
-if(idTipoUsuario === 1){
-
+if(idTipoUsuario == 1){
 
     let dataTableMisTareas;
 
@@ -96,8 +94,12 @@ if(idTipoUsuario === 1){
     dataTableMisTareas.column(2).visible(false);
     dataTableMisTareas.column(4).visible(false);
 
+    document.addEventListener('DOMContentLoaded',  ObtenerInformacionInicial, false);
 
-    document.addEventListener('DOMContentLoaded',  ObtenerMisTareas, false);
+    async function ObtenerInformacionInicial(){
+        ObtenerMisTareas();
+        ObtenerTareasMes();
+    }
 
     //#region Methods
 
@@ -237,6 +239,125 @@ if(idTipoUsuario === 1){
 
             HidePreloader();
             dataTableMisTareas.clear().draw();
+            Swal.fire({
+                title: '¡Error!',
+                text: ex,
+                imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+                imageWidth: 100,
+                imageHeight: 123,
+                background: '#000000',
+                color: '#FFFFFF',
+                imageAlt: 'Error Image'
+            });
+        }
+    }
+
+    async function ObtenerTareasMes(){
+       
+        
+        try{
+
+            ShowPreloader();
+
+            let response = await axios({
+                url: '/tareas/mes',
+                baseURL: BaseURL,
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
+                },
+                data: null
+            });
+
+            HidePreloader();
+
+            let result = response.data;
+
+            switch (result.code) {
+                case 200:{
+                    
+                    let filas = result.data;
+                    let eventos = [];
+                    let counter = 0;
+                    let fechaEntrega;
+                    let tipoEvento;
+
+                    for(let data of filas)
+                    {
+                        if(data.fechaEntrega !== null && data.fechaEntrega !== undefined && data.fechaEntrega !== ''){
+                            fechaEntrega = data.fechaEntrega.substring(0, data.fechaEntrega.length -1 );
+
+                            if(data.estatus == 'Entregada'){
+                                tipoEvento = 'holiday';
+                            }
+                            else if(data.estatus == 'Calificada'){
+                                tipoEvento = 'birthday';
+                            }else{
+                                tipoEvento = 'event';
+                            }
+
+                            eventos.push(
+                                {
+                                    id: 'evento'.concat(counter),
+                                    name: data.estatus,
+                                    date: dayjs(fechaEntrega).format('MMMM/D/YYYY'),
+                                    type: tipoEvento,
+                                    everyYear: false,
+                                    description:  data.nombre,
+                                    data: data.idTarea
+                                }
+                            );
+
+                            counter = counter + 1;
+                        }
+                    }
+                    $('#tareas-calendario').evoCalendar({
+                        theme: 'Midnight Blue',
+                        language: 'es',
+                        todayHighlight: true,
+                        titleFormat: 'MM yyyy',
+                        sidebarDisplayDefault: false,
+                        sidebarToggler: false,
+                        calendarEvents: eventos
+                    });
+
+                    $("#tareas-calendario").on('selectEvent', (event, activeMonth, monthIndex) => {
+                        let idTarea = activeMonth.data;
+                        DetalleTarea(idTarea);
+                    });
+    
+                }
+                break;
+                case 500:{
+                    Swal.fire({
+                        title: '¡Error!',
+                        text: result.data,
+                        imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+                        imageWidth: 100,
+                        imageHeight: 123,
+                        background: '#000000',
+                        color: '#FFFFFF',
+                        imageAlt: 'Error Image'
+                    });
+                }
+                break;
+                default:
+                    {
+                        $('#tareas-calendario').evoCalendar({
+                            theme: 'Midnight Blue',
+                            language: 'es',
+                            todayHighlight: true,
+                            titleFormat: 'MM yyyy',
+                            sidebarDisplayDefault: false,
+                            sidebarToggler: false
+                        });
+                    }
+                break;
+            }
+        }
+        catch(ex){
+
+            HidePreloader();
             Swal.fire({
                 title: '¡Error!',
                 text: ex,

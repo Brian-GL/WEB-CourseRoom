@@ -16,7 +16,9 @@ class ChatsController extends Controller
     public function chats(){
         $DatosUsuario = session('DatosUsuario');
         $DatosCuenta = session('DatosCuenta');
-        return view('chats.chats', compact('DatosUsuario', 'DatosCuenta'));
+        $IdTipoUsuario = session('IdTipoUsuario');
+
+        return view('chats.chats', compact('DatosUsuario', 'DatosCuenta','IdTipoUsuario'));
     }
 
     #endregion
@@ -28,6 +30,7 @@ class ChatsController extends Controller
 
         $DatosChat = null;
         $Mensajes = array();
+        $IdTipoUsuario = session('IdTipoUsuario');
         $IdUsuario = session('IdUsuario');
         $DatosUsuario = session('DatosUsuario');
         $DatosCuenta = session('DatosCuenta');
@@ -95,7 +98,7 @@ class ChatsController extends Controller
             } 
         }
 
-        return view('chats.detallechat', compact('DatosChat', 'DatosUsuario', 'DatosCuenta', 'Mensajes')); 
+        return view('chats.detallechat', compact('DatosChat', 'DatosUsuario', 'DatosCuenta', 'Mensajes', 'IdTipoUsuario')); 
     }
 
     public function chat_registrar(Request $request)

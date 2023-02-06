@@ -10,6 +10,15 @@ class GruposController extends Controller
 {
     #region Views
 
+    public function grupos(){
+
+        $DatosUsuario = session('DatosUsuario');
+        $DatosCuenta = session('DatosCuenta');
+        $IdTipoUsuario = session('IdTipoUsuario');
+
+        return view('grupos.grupos', compact('DatosUsuario', 'DatosCuenta', 'IdTipoUsuario'));
+    }
+
     #endregion
 
     #region AJAX
@@ -122,14 +131,13 @@ class GruposController extends Controller
 
             $url = env('COURSEROOM_API');
 
-            $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
-
             if($url != ''){
 
+                $IdUsuario = session('IdUsuario');
                 $response = Http::withHeaders([
                     'Authorization' => env('COURSEROOM_API_KEY'),
                 ])->post($url.'/api/grupos/obtener', [
-                    'IdUsuario' => $idUsuario
+                    'IdUsuario' => $IdUsuario
                 ]);
 
                 if ($response->ok()){
@@ -139,7 +147,7 @@ class GruposController extends Controller
                     return response()->json(['code' => 200 , 'data' => $result], 200);
 
                 } else{
-                    return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                    return response()->json(['code' => 400 , 'data' => $response->body()], 200);
                 }
 
             } else{

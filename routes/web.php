@@ -93,6 +93,8 @@ Route::post('/chats/obtener',  [ChatsController::class, 'chats_obtener'])->middl
 
 #region Grupos
 
+Route::get('/mis-grupos',  [GruposController::class, 'grupos'])->name('grupos.inicio')->middleware('session.token');
+
 Route::put('/grupos/actualizar',  [GruposController::class, 'grupo_actualizar'])->middleware('session.token');
 Route::post('/grupos/mensajes',  [GruposController::class, 'gruposmensajes_obtener'])->middleware('session.token');
 Route::post('/grupos/obtener',  [GruposController::class, 'grupos_obtener'])->middleware('session.token');
@@ -155,7 +157,7 @@ Route::post('/herramientas/multimedia',  [HerramientasController::class, 'multim
 
 #region PreguntasRespuestas
 
-Route::get('/preguntas',  [PreguntasRespuestasController::class, 'inicio'])->name('preguntasrespuestas.inicio')->middleware('session.token');
+Route::get('/mis-preguntas',  [PreguntasRespuestasController::class, 'inicio'])->name('preguntasrespuestas.inicio')->middleware('session.token');
 
 #endregion
 
@@ -197,7 +199,7 @@ Route::put('/cursos/abandonaractualizar',  [CursosController::class, 'curso_aban
 Route::put('/cursos/cuestionarioabandonaractualizar',  [CursosController::class, 'curso_cuestionarioabandonaractualizar'])->middleware('session.token');
 Route::post('/cursos/desempenoobtener',  [CursosController::class, 'curso_desempenoobtener'])->middleware('session.token');
 Route::post('/cursos/estudianteregistrar',  [CursosController::class, 'curso_estudianteregistrar'])->middleware('session.token');
-Route::pots('/cursos/estudiantedetalleobtener',  [CursosController::class, 'curso_estudiantedetalleobtener'])->middleware('session.token');
+Route::post('/cursos/estudiantedetalleobtener',  [CursosController::class, 'curso_estudiantedetalleobtener'])->middleware('session.token');
 Route::put('/cursos/finalizaractualizar',  [CursosController::class, 'curso_finalizaractualizar'])->middleware('session.token');
 Route::post('/cursos/materialregistrar',  [CursosController::class, 'curso_materialregistrar'])->middleware('session.token');
 Route::delete('/cursos/materialremover',  [CursosController::class, 'curso_materialremover'])->middleware('session.token');

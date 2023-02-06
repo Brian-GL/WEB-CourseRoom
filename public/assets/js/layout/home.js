@@ -97,10 +97,9 @@ document.getElementById("cerrar-sesion").addEventListener("click", async () => {
             imageAlt: 'Alert Image',
             showCloseButton: true,
             showDenyButton: true,
-            showCancelButton: true,
+            showCancelButton: false,
             confirmButtonText: 'Sí, ya estudié demasiado 😩',
-            denyButtonText: 'No, me falta aprender ciertas cosas 😎',
-            cancelButtonText: 'Me equivoque de botón 😥'
+            denyButtonText: 'No, me falta aprender ciertas cosas 😎'
         }).then(async (result) => {
             if(result.isConfirmed){
                 
@@ -306,7 +305,6 @@ window.MostrarNotificacion = function(tipoAviso, aviso, fechaRegistro){
 window.GetBase64FromUrl = async (url) => {
     const data = await fetch(url);
     const blob = await data.blob();
-    console.log(blob);
     return new Promise((resolve) => {
         const reader = new FileReader();
         reader.readAsDataURL(blob); 
@@ -322,9 +320,9 @@ async function NotificationsThread(){
     let timer = 0;
     const options = {
         year: "numeric",
-        month: "2-digit",
-        day: "numeric",
-        hour: "numeric",
+        month: "long",
+        day: "2-digit",
+        hour: "2-digit",
         minute: "2-digit",
         second: "2-digit",
         hour12: true,

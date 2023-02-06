@@ -56,7 +56,6 @@ window.AvailableString = function(value){
 window.GetBase64FromUrl = async (url) => {
     const data = await fetch(url);
     const blob = await data.blob();
-    console.log(blob);
     return new Promise((resolve) => {
         const reader = new FileReader();
         reader.readAsDataURL(blob); 

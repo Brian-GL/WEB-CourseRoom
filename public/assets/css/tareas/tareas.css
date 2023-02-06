@@ -128,3 +128,15 @@ table {
 .span-detalle {
     cursor: pointer;
 }
+
+#tareas-calendario{
+    max-height: 95%;
+}
+
+.event-header > p{
+    color: white !important;
+}
+
+.event-title, .event-desc{
+    color: white !important;
+}
