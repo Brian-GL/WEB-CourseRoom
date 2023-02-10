@@ -165,6 +165,9 @@
                                 <li><a id="boton-notificaciones" class=" fuenteNormal dropdown-item primer-color-letra" type="button" title="Notificaciones" href="{{route('avisos.inicio')}}"><i class="fa-solid fa-envelope-open" id="icono-notificaciones"></i>&nbsp;Notificaciones</a></li>
                                 <li><a class="dropdown-item primer-color-letra fuenteNormal" href="{{route('usuarios.perfil')}}"><i class="fa-solid fa-user"></i>&nbsp;&nbsp;Perfil</a></li>
                                 <li><a class="dropdown-item primer-color-letra fuenteNormal" href="{{route('usuarios.sesiones')}}"><i class="fa-solid fa-desktop"></i>&nbsp;&nbsp;Sesiones</a></li>
+                                @if ($IdTipoUsuario == 1)
+                                    <li><a class="dropdown-item primer-color-letra fuenteNormal" href=""><i class="fa-solid fa-desktop"></i>&nbsp;&nbsp;Desempeño</a></li>
+                                @endif
                                 <li><hr class="dropdown-divider primer-color-letra"></li>
                                 <li><a class="dropdown-item primer-color-letra fuenteNormal" id="cerrar-sesion"><i class="fa-solid fa-person-walking-arrow-right"></i>&nbsp;&nbsp;Cerrar sesión</a></li>
                             </ul>
