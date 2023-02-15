@@ -157,7 +157,7 @@ Route::post('/herramientas/multimedia',  [HerramientasController::class, 'multim
 
 #region PreguntasRespuestas
 
-Route::get('/mis-preguntas',  [PreguntasRespuestasController::class, 'inicio'])->name('preguntasrespuestas.inicio')->middleware('session.token');
+Route::get('/preguntas',  [PreguntasRespuestasController::class, 'inicio'])->name('preguntasrespuestas.inicio')->middleware('session.token');
 
 Route::put('/preguntas/actualizar',  [PreguntasRespuestasController::class, 'pregunta_actualizar'])->middleware('session.token');
 Route::post('/preguntas/registrar',  [PreguntasRespuestasController::class, 'preguntasrespuesta_registar'])->middleware('session.token');

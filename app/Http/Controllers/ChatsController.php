@@ -27,7 +27,6 @@ class ChatsController extends Controller
 
     public function conversacion(Request $request){ 
         
-
         $DatosChat = null;
         $Mensajes = array();
         $IdTipoUsuario = session('IdTipoUsuario');

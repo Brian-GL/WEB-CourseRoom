@@ -39,7 +39,7 @@ dataTableMisPreguntas = $("#table-mis-preguntas").DataTable({
     ],
     columnDefs:[
         {className: "text-center fuenteNormal segundo-color-fuente", targets: "_all"},
-        {className: "btn-detalle span-detalle", targets: "4"}
+        {className: "span-detalle", target: 4}
     ],
     rowCallback: function(row, data, index){
         $(row).css('color', SegundoColorLetra);
@@ -64,16 +64,18 @@ dataTableBuscarPreguntas = $("#table-buscar-preguntas").DataTable({
         loadingRecords: "Cargando..."
     },
     columns: [
-        { title: "IdPregunta" },
-        { title: "Pregunta" },
-        { title: "Preguntador" },
-        { title: "Fecha de registro" },
-        { title: "Estatus" },
+        { title: "IdPregunta"},
+        { title: "IdUsuario"},
+        { title: "ImagenUsuario"},
+        { title: "Preguntad@ por"},
+        { title: "Pregunta"},
+        { title: "Fecha de registro"},
+        { title: "Estatus"},
         { title: "Detalle" }
     ],
     columnDefs:[
         {className: "text-center fuenteNormal segundo-color-fuente", targets: "_all"},
-        {className: "btn-detalle span-detalle", targets: "5"}
+        {className: "span-detalle", target: 7}
     ],
     rowCallback: function(row, data, index){
         $(row).css('color', SegundoColorLetra);
@@ -81,6 +83,8 @@ dataTableBuscarPreguntas = $("#table-buscar-preguntas").DataTable({
 });
 
 dataTableBuscarPreguntas.column(0).visible(false);
+dataTableBuscarPreguntas.column(1).visible(false);
+dataTableBuscarPreguntas.column(2).visible(false);
 
 let elementos = document.querySelectorAll('input[type="search"]');
 for(let elemento of elementos){
@@ -105,15 +109,13 @@ async function ObtenerMisPreguntas(){
         ShowPreloader();
 
         let response = await axios({
-            url: '/preguntasrespuestas/obtener',
+            url: '/preguntas/obtener',
             baseURL: BaseURL,
             method: 'POST',
             headers: {
                 'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
             },
-            data: {
-                "IdUsuario": null,
-            }
+            data: null
         });
 
         HidePreloader();
@@ -148,27 +150,27 @@ async function ObtenerMisPreguntas(){
                         loadingRecords: "Cargando..."
                     },
                     columns: [
-                        { title: "IdPregunta" },
-                        { title: "Pregunta" },
-                        { title: "Fecha de registro" },
-                        { title: "Estatus" },
-                        { title: "Detalle" }
+                        { data: "idPregunta", title: "IdPregunta" },
+                        { data: "pregunta", title: "Pregunta" },
+                        { data: "fechaRegistro", title: "Fecha de registro" },
+                        { data: "estatusPregunta", title: "Estatus" },
+                        { data: "", title: "Detalle" }
                     ],
                     columnDefs:[
                         {className: "text-center fuenteNormal segundo-color-fuente", defaultContent: "-", targets: "_all"},
-                        {className: "btn-detalle", targets: "4"}
+                        {className: "span-detalle", target: 4},
+                        {className: "fechaRegistro", target: 2},
                     ],
-                    rowCallback: function(row, data, index){
-                        $(row).css('color', SegundoColorLetra);
-                    },
                     data: filas,
-                    createdRow: function(row, data, index){
-                        $('.btn-detalle', row).html('<span class="span-detalle text-center" onclick="DetallePregunta('.concat(data.IdPregunta,')">Ver detalle</span>'));
+                    createdRow: (row, data) => {
+                        $('.segundo-color-letra',row).css('color', SegundoColorLetra);
+                        $('.span-detalle', row).html('<span class="fuenteNormal span-detalle text-center text-decoration-underline" onclick="DetallePregunta('.concat(data.IdPregunta,')">Ver detalle</span>'));
+                        let fechaRegistro = data.fechaRegistro.substring(0, data.fechaRegistro.length -1 );
+                        $('.fechaRegistro', row).text(dayjs(fechaRegistro).format('dddd DD MMM YYYY h:mm A'));
                     }
                 });
 
                 dataTableMisPreguntas.column(0).visible(false);
-
             }
             break;
             case 500:{
@@ -205,6 +207,34 @@ async function ObtenerMisPreguntas(){
 
         HidePreloader();
         dataTableMisPreguntas.clear().draw();
+        Swal.fire({
+            title: '¡Error!',
+            text: ex,
+            imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+            imageWidth: 100,
+            imageHeight: 123,
+            background: '#000000',
+            color: '#FFFFFF',
+            imageAlt: 'Error Image'
+        });
+    }
+}
+
+document.DetallePregunta = async function(IdPreguntaRespuesta){
+    try{
+
+        ShowPreloader();
+
+        $('<form/>', { action: '/preguntas/detalle', method: 'POST' }).append(
+            $('<input>', {type: 'hidden', id: '_token', name: '_token', value: document.head.querySelector("[name~=csrf-token][content]").content}),
+            $('<input>', {type: 'hidden', id: 'IdPreguntaRespuesta', name: 'IdPreguntaRespuesta', value: IdPreguntaRespuesta}),
+        ).appendTo('body').submit();
+
+        HidePreloader();
+    }
+    catch(ex){
+
+        HidePreloader();
         Swal.fire({
             title: '¡Error!',
             text: ex,
@@ -349,7 +379,7 @@ document.getElementById("form-buscar-preguntas").addEventListener('submit', asyn
         ShowPreloader();
 
         let response = await axios({
-            url: '/preguntasrespuestas/buscar',
+            url: '/preguntas/buscar',
             baseURL: BaseURL,
             method: 'POST',
             headers: {
@@ -385,24 +415,35 @@ document.getElementById("form-buscar-preguntas").addEventListener('submit', asyn
                         loadingRecords: "Cargando..."
                     },
                     columns: [
-                        { title: "IdPregunta" },
-                        { title: "Pregunta" },
-                        { title: "Preguntador" },
-                        { title: "Fecha de registro" },
-                        { title: "Estatus" },
-                        { title: "Detalle" }
+                        { data: "idPregunta", title: "IdPregunta"},
+                        { data: "idUsuario", title: "IdUsuario"},
+                        { data: "imagenUsuario", title: "ImagenUsuario"},
+                        { data: "nombreUsuario", title: "Preguntad@ por"},
+                        { data: "pregunta", title: "Pregunta"},
+                        { data: "fechaRegistro", title: "Fecha de registro"},
+                        { data: "estatusPregunta", title: "Estatus"},
+                        { data: "",title: "Detalle" }
                     ],
                     columnDefs:[
                         {className: "text-center fuenteNormal segundo-color-fuente", defaultContent: "-", targets: "_all"},
+                        {className: "span-detalle", target: 7},
+                        {className: "fechaRegistro", target: 5},
+                        {className: "info-usuario", target: 3},
                     ],
                     data: filas,
-                    createdRow: function(row, data, index){
-                        $(row).css('color', SegundoColorLetra);
-                        $('.btn-detalle', row).html('<span class="span-detalle text-center" onclick="DetallePregunta('.concat(data.IdPregunta,')">Ver detalle</span>'));
+                    createdRow: (row, data) => {
+                        $('.segundo-color-letra',row).css('color', SegundoColorLetra);
+                        $('.span-detalle', row).html('<span class="fuenteNormal span-detalle text-center text-decoration-underline" onclick="DetallePregunta('.concat(data.IdPregunta,')">Ver detalle</span>'));
+                        let fechaRegistro = data.fechaRegistro.substring(0, data.fechaRegistro.length -1 );
+                        $('.fechaRegistro', row).text(dayjs(fechaRegistro).format('dddd DD MMM YYYY h:mm A'));
+                        $('.info-usuario', row).html('<div class="container"><div class="row"><div class="col-5"><img class="img-fluid" alt="Imagen del usuario" src="'.concat(assetsRoute,'/',data.imagenUsuario,'"/></div><div class="col-7 p-0"><p class="fuenteNormal">',data.nombreUsuario,'</p></div></div></div>'));
                     }
                 });
 
+                                
                 dataTableBuscarPreguntas.column(0).visible(false);
+                dataTableBuscarPreguntas.column(1).visible(false);
+                dataTableBuscarPreguntas.column(2).visible(false);
 
             }
             break;

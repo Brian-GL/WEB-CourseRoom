@@ -16,7 +16,62 @@ class PreguntasRespuestasController extends Controller
         $DatosCuenta = session('DatosCuenta');
         $IdTipoUsuario = session('IdTipoUsuario');
 
-        return view('preguntasrespuestas.preguntas', compact('DatosUsuario', 'DatosCuenta', 'IdTipoUsuario'));}
+        return view('preguntasrespuestas.preguntas', compact('DatosUsuario', 'DatosCuenta', 'IdTipoUsuario'));
+    }
+
+    public function preguntasrespuestadetalle_obtener(Request $request)
+    {
+
+        $DatosPregunta = null;
+        $Respuestas = array();
+        $IdTipoUsuario = session('IdTipoUsuario');
+        $DatosUsuario = session('DatosUsuario');
+        $DatosCuenta = session('DatosCuenta');
+
+        $validator = Validator::make($request->all(), $rules = [
+            'IdPreguntaRespuesta' => ['required']
+        ], $messages = [
+            'required' => 'El campo :attribute es requerido'
+        ]);
+
+        if (!$validator->fails()) {
+
+            $url = env('COURSEROOM_API');
+
+            $idPreguntaRespuesta = $request->integer('IdPreguntaRespuesta');
+
+            if($url != ''){
+
+                //Obtener detalle de la pregunta:
+
+                $response = Http::withHeaders([
+                    'Authorization' => env('COURSEROOM_API_KEY'),
+                ])->post($url.'/api/preguntas/detalle', [
+                    'IdPreguntaRespuesta' => $idPreguntaRespuesta
+                ]);
+
+                if ($response->ok()){
+                    $DatosPregunta = json_decode($response->body());
+                } 
+               
+                //Obtener respuestas de la pregunta:
+
+                $response = Http::withHeaders([
+                    'Authorization' => env('COURSEROOM_API_KEY'),
+                ])->post($url.'/api/preguntas/mensajeobtener', [
+                    'IdPreguntaRespuesta' => $idPreguntaRespuesta
+                ]);
+
+                if($response->ok()){
+                    $Respuestas = json_decode($response->body());
+                }
+            } 
+        }
+
+        return view('preguntasrespuestas.detallepregunta', compact('DatosPregunta', 'DatosUsuario', 'DatosCuenta', 'IdTipoUsuario', 'Respuestas')); 
+    }
+
+
 
     #endregion
 
@@ -27,7 +82,6 @@ class PreguntasRespuestasController extends Controller
         try {
 
             $validator = Validator::make($request->all(), $rules = [
-                'IdUsuario' => ['required'],
                 'IdPreguntaRespuesta' => ['required'],
                 'IdPregunta' => ['required'],
                 'Descripcion' => ['required']
@@ -41,7 +95,7 @@ class PreguntasRespuestasController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idUsuario = $request->integer('IdUsuario');
+                $idUsuario = session('IdUsuario');
                 $idPreguntaRespuesta = $request->integer('IdPreguntaRespuesta');
                 $IdPregunta= (int)$request->session()->get('IdPregunta', 0);
                 $descripcion = $request->float('Descripcion');
@@ -82,7 +136,6 @@ class PreguntasRespuestasController extends Controller
         try {
 
             $validator = Validator::make($request->all(), $rules = [
-                'IdUsuario' => ['required'],
                 'IdPregunta' => ['required'],
                 'Descripcion' => ['required']
             ], $messages = [
@@ -95,7 +148,7 @@ class PreguntasRespuestasController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idUsuario = $request->integer('IdUsuario');
+                $idUsuario = session('IdUsuario');
                 $idPregunta = (int)$request->session()->get('IdPregunta', 0);
                 $descripcion = $request->string('Descripcion')->trim();
 
@@ -134,7 +187,6 @@ class PreguntasRespuestasController extends Controller
         try {
 
             $validator = Validator::make($request->all(), $rules = [
-                'IdUsuario' => ['required'],
                 'IdPreguntaRespuesta' => ['required']
             ], $messages = [
                 'required' => 'El campo :attribute es requerido'
@@ -146,7 +198,7 @@ class PreguntasRespuestasController extends Controller
 
                 $url = env('COURSEROOM_API');
                 
-                $idUsuario = $request->integer('IdUsuario');
+                $idUsuario = session('IdUsuario');
                 $idPreguntaRespuesta = $request->integer('IdPreguntaRespuesta');
 
                 if($url != ''){
@@ -178,58 +230,11 @@ class PreguntasRespuestasController extends Controller
         }
     }
 
-    public function preguntasrespuestadetalle_obtener(Request $request)
-    {
-        try {
-
-            $validator = Validator::make($request->all(), $rules = [
-                'IdPreguntaRespuesta' => ['required']
-            ], $messages = [
-                'required' => 'El campo :attribute es requerido'
-            ]);
-
-            if ($validator->fails()) {
-                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
-            } else {
-
-                $url = env('COURSEROOM_API');
-
-                $idPreguntaRespuesta = $request->integer('IdPreguntaRespuesta');
-
-                if($url != ''){
-
-                    $response = Http::withHeaders([
-                        'Authorization' => env('COURSEROOM_API_KEY'),
-                    ])->post($url.'/api/preguntas/detalle', [
-                        'IdPreguntaRespuesta' => $idPreguntaRespuesta
-                    ]);
-
-                    if ($response->ok()){
-
-                        $result = json_decode($response->body());
-
-                        return response()->json(['code' => 200 , 'data' => $result], 200);
-
-                    } else{
-                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
-                    }
-
-                } else{
-                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
-                }
-            }
-
-        } catch (\Throwable $th) {
-            return response()->json(['code' => 500 , 'data' => $th->getMessage()], 200);
-        }
-    }
-
     public function preguntasrespuestaestatus_actualizar(Request $request)
     {
         try {
 
             $validator = Validator::make($request->all(), $rules = [
-                'IdUsuario' => ['required'],
                 'IdPreguntaRespuesta' => ['required'],
                 'IdEstatusPregunta' => ['required']
             ], $messages = [
@@ -242,7 +247,7 @@ class PreguntasRespuestasController extends Controller
 
                 $url = env('COURSEROOM_API');
             
-                $idUsuario = $request->integer('IdUsuario');
+                $idUsuario = session('IdUsuario');
                 $idPreguntaRespuesta = $request->integer('IdPreguntaRespuesta');
                 $idEstatusPregunta = (int)$request->session()->get('IdEstatusPregunta', 0);
 
@@ -282,7 +287,6 @@ class PreguntasRespuestasController extends Controller
 
             $validator = Validator::make($request->all(), $rules = [
                 'IdPreguntaRespuesta' => ['required'],
-                'IdUsuarioEmisor' => ['required'],
                 'Mensaje' => ['required'],
                 'Archivo' => ['required']
             ], $messages = [
@@ -296,7 +300,7 @@ class PreguntasRespuestasController extends Controller
                 $url = env('COURSEROOM_API');
 
                 $idPreguntaRespuesta = $request->integer('IdPreguntaRespuesta');
-                $idUsuarioEmisor = (int)$request->session()->get('IdUsuarioEmisor', 0);
+                $idUsuarioEmisor = session('IdUsuario');
                 $mensaje = $request->string('Mensaje')->trim();
                 $archivo = $request->string('Archivo')->trim();
 
@@ -337,7 +341,6 @@ class PreguntasRespuestasController extends Controller
 
             $validator = Validator::make($request->all(), $rules = [
                 'IdPreguntaRespuesta' => ['required'],
-                'IdUsuarioEmisor' => ['required'],
                 'IdMensaje' => ['required']
             ], $messages = [
                 'required' => 'El campo :attribute es requerido'
@@ -350,7 +353,7 @@ class PreguntasRespuestasController extends Controller
                 $url = env('COURSEROOM_API');
 
                 $idPreguntaRespuesta = $request->integer('IdPreguntaRespuesta');
-                $idUsuarioEmisor = $request->integer('IdUsuarioEmisor');
+                $idUsuarioEmisor = session('IdUsuario');
                 $idMensaje = $request->integer('IdMensaje');
 
                 if($url != ''){
@@ -440,7 +443,6 @@ class PreguntasRespuestasController extends Controller
                 $busqueda = $request->string('Nombre')->trim();
             }
 
-           
             if($url != ''){
 
                 $response = Http::withHeaders([
@@ -472,42 +474,33 @@ class PreguntasRespuestasController extends Controller
     {
         try {
 
-            $validator = Validator::make($request->all(), $rules = [
-                'IdUsuario' => ['required']
-            ], $messages = [
-                'required' => 'El campo :attribute es requerido'
-            ]);
+           
+            $url = env('COURSEROOM_API');
 
-            if ($validator->fails()) {
-                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
-            } else {
+            $idUsuario = session('IdUsuario');
+        
+            if($url != ''){
 
-                $url = env('COURSEROOM_API');
+                $response = Http::withHeaders([
+                    'Authorization' => env('COURSEROOM_API_KEY'),
+                ])->post($url.'/api/preguntas/obtener', [
+                    'IdUsuario' => $idUsuario
+                ]);
 
-                $idUsuario = $request->integer('IdUsuario');
-            
-                if($url != ''){
+                if ($response->ok()){
 
-                    $response = Http::withHeaders([
-                        'Authorization' => env('COURSEROOM_API_KEY'),
-                    ])->post($url.'/api/preguntas/obtener', [
-                        'IdUsuario' => $idUsuario
-                    ]);
+                    $result = json_decode($response->body());
 
-                    if ($response->ok()){
-
-                        $result = json_decode($response->body());
-
-                        return response()->json(['code' => 200 , 'data' => $result], 200);
-
-                    } else{
-                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
-                    }
+                    return response()->json(['code' => 200 , 'data' => $result], 200);
 
                 } else{
-                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
+                    return response()->json(['code' => 500 , 'data' => $response->body()], 200);
                 }
+
+            } else{
+                return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
             }
+            
 
         } catch (\Throwable $th) {
             return response()->json(['code' => 500 , 'data' => $th->getMessage()], 200);
