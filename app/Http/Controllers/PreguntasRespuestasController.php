@@ -83,7 +83,7 @@ class PreguntasRespuestasController extends Controller
 
             $validator = Validator::make($request->all(), $rules = [
                 'IdPreguntaRespuesta' => ['required'],
-                'IdPregunta' => ['required'],
+                'Pregunta' => ['required'],
                 'Descripcion' => ['required']
             ], $messages = [
                 'required' => 'El campo :attribute es requerido'
@@ -97,7 +97,7 @@ class PreguntasRespuestasController extends Controller
 
                 $idUsuario = session('IdUsuario');
                 $idPreguntaRespuesta = $request->integer('IdPreguntaRespuesta');
-                $IdPregunta= (int)$request->session()->get('IdPregunta', 0);
+                $Pregunta= (string)$request->session()->get('Pregunta', 0);
                 $descripcion = $request->float('Descripcion');
 
                 if($url != ''){
@@ -107,7 +107,7 @@ class PreguntasRespuestasController extends Controller
                     ])->put($url.'/api/preguntas/actualizar', [
                         'IdUsuario' => $idUsuario,
                         'IdPreguntaRespuesta' => $idPreguntaRespuesta,
-                        'IdPregunta' => $IdPregunta,
+                        'Pregunta' => $Pregunta,
                         'Descripcion' => $descripcion
                     ]);
 
@@ -136,7 +136,7 @@ class PreguntasRespuestasController extends Controller
         try {
 
             $validator = Validator::make($request->all(), $rules = [
-                'IdPregunta' => ['required'],
+                'Pregunta' => ['required'],
                 'Descripcion' => ['required']
             ], $messages = [
                 'required' => 'El campo :attribute es requerido'
