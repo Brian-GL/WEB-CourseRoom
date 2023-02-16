@@ -278,9 +278,9 @@ document.getElementById("agregar-pregunta").addEventListener("click", function()
         width: 600,
         html: `<input type="text" id="pregunta" class="swal2-input" placeholder="Pregunta" minlenght="3"  maxlenght="150">
         <textarea  id="descripcion" class="swal2-input" placeholder="Descripción" maxlenght="1000">`,
-        confirmButtonText: 'Registrar',
+        confirmButtonText: '💾 Registrar',
         showCancelButton: true,
-        cancelButtonText: `Cancelar`,
+        cancelButtonText: `❌ Cancelar`,
         focusConfirm: false,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
@@ -319,7 +319,7 @@ document.getElementById("agregar-pregunta").addEventListener("click", function()
 
                     switch (resultado.code) {
                         case 200:{
-                           let data = resultado.data;
+                           document.DetallePregunta(resultado.data.codigo);
                         }
                         break;
                         case 500:{

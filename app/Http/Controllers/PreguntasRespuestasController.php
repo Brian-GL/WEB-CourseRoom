@@ -149,7 +149,7 @@ class PreguntasRespuestasController extends Controller
                 $url = env('COURSEROOM_API');
 
                 $idUsuario = session('IdUsuario');
-                $idPregunta = (int)$request->session()->get('IdPregunta', 0);
+                $Pregunta = $request->string('Pregunta')->trim();
                 $descripcion = $request->string('Descripcion')->trim();
 
                 if($url != ''){
@@ -158,7 +158,7 @@ class PreguntasRespuestasController extends Controller
                         'Authorization' => env('COURSEROOM_API_KEY'),
                     ])->post($url.'/api/preguntas/registrar', [
                         'IdUsuario' => $idUsuario,
-                        'IdPregunta' => $idPregunta,
+                        'Pregunta' => $Pregunta,
                         'Descripcion' => $descripcion
                     ]);
 
@@ -494,7 +494,7 @@ class PreguntasRespuestasController extends Controller
                     return response()->json(['code' => 200 , 'data' => $result], 200);
 
                 } else{
-                    return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                    return response()->json(['code' => 400 , 'data' => $response->body()], 200);
                 }
 
             } else{
