@@ -97,8 +97,8 @@ class PreguntasRespuestasController extends Controller
 
                 $idUsuario = session('IdUsuario');
                 $idPreguntaRespuesta = $request->integer('IdPreguntaRespuesta');
-                $Pregunta= (string)$request->session()->get('Pregunta', 0);
-                $descripcion = $request->float('Descripcion');
+                $Pregunta= $request->string('Pregunta')->trim();
+                $descripcion = $request->string('Descripcion')->trim();
 
                 if($url != ''){
 
@@ -169,7 +169,7 @@ class PreguntasRespuestasController extends Controller
                         return response()->json(['code' => 200 , 'data' => $result], 200);
 
                     } else{
-                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                        return response()->json(['code' => 400 , 'data' => $response->body()], 200);
                     }
 
                 } else{

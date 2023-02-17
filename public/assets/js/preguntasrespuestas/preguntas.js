@@ -38,7 +38,7 @@ dataTableMisPreguntas = $("#table-mis-preguntas").DataTable({
         { title: "Detalle" }
     ],
     columnDefs:[
-        {className: "text-center fuenteNormal segundo-color-fuente", targets: "_all"},
+        {className: "text-center fuenteNormal segundo-color-letra", targets: "_all"},
         {className: "span-detalle", target: 4}
     ],
     rowCallback: function(row, data, index){
@@ -74,7 +74,7 @@ dataTableBuscarPreguntas = $("#table-buscar-preguntas").DataTable({
         { title: "Detalle" }
     ],
     columnDefs:[
-        {className: "text-center fuenteNormal segundo-color-fuente", targets: "_all"},
+        {className: "text-center fuenteNormal segundo-color-letra", targets: "_all"},
         {className: "span-detalle", target: 7}
     ],
     rowCallback: function(row, data, index){
@@ -157,7 +157,7 @@ async function ObtenerMisPreguntas(){
                         { data: "", title: "Detalle" }
                     ],
                     columnDefs:[
-                        {className: "text-center fuenteNormal segundo-color-fuente", defaultContent: "-", targets: "_all"},
+                        {className: "text-center fuenteNormal segundo-color-letra", defaultContent: "-", targets: "_all"},
                         {className: "span-detalle", target: 4},
                         {className: "fechaRegistro", target: 2},
                     ],
@@ -276,8 +276,8 @@ document.getElementById("agregar-pregunta").addEventListener("click", function()
         background: '#000000',
         color: '#FFFFFF',
         width: 600,
-        html: `<input type="text" id="pregunta" class="swal2-input" placeholder="Pregunta" minlenght="3"  maxlenght="150">
-        <textarea  id="descripcion" class="swal2-input" placeholder="Descripción" maxlenght="1000">`,
+        html: `<input type="text" id="pregunta" class="swal2-input" placeholder="Pregunta" minlenght="3" maxlenght="150">
+        <textarea id="descripcion" class="swal2-input" placeholder="Descripción" maxlenght="1000">`,
         confirmButtonText: '💾 Registrar',
         showCancelButton: true,
         cancelButtonText: `❌ Cancelar`,
@@ -288,7 +288,7 @@ document.getElementById("agregar-pregunta").addEventListener("click", function()
           const pregunta = Swal.getPopup().querySelector('#pregunta').value;
           const descripcion	 = Swal.getPopup().querySelector('#descripcion').value;
           if (!pregunta || !descripcion) {
-            Swal.showValidationMessage(`Por favor ingrese los valores con un formato adecuado`)
+            Swal.showValidationMessage(`Por favor ingrese los valores con un formato adecuado`);
           }
           return { pregunta: pregunta, descripcion: descripcion }
         }
@@ -300,19 +300,20 @@ document.getElementById("agregar-pregunta").addEventListener("click", function()
                     ShowPreloader();
 
                     let response = await axios({
-                        url: '/preguntasrespuestas/registrar',
+                        url: '/preguntas/registrar',
                         baseURL: BaseURL,
                         method: 'POST',
                         headers: {
                             'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
                         },
                         data: {
-                            "IdUsuario": null,
                             "Pregunta": AvailableString(result.value.pregunta),
                             "Descripcion": AvailableString(result.value.descripcion)
                         }
                     });
 
+                    console.log(result.value.pregunta);
+                    console.log(result.value.descripcion);
                     HidePreloader();
 
                     let resultado = response.data;
@@ -425,7 +426,7 @@ document.getElementById("form-buscar-preguntas").addEventListener('submit', asyn
                         { data: "",title: "Detalle" }
                     ],
                     columnDefs:[
-                        {className: "text-center fuenteNormal segundo-color-fuente", defaultContent: "-", targets: "_all"},
+                        {className: "text-center fuenteNormal segundo-color-letra", defaultContent: "-", targets: "_all"},
                         {className: "span-detalle", target: 7},
                         {className: "fechaRegistro", target: 5},
                         {className: "info-usuario", target: 3},

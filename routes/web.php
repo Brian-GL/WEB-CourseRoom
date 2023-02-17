@@ -203,6 +203,10 @@ Route::post('/usuarios/credencial',  [UsuariosController::class, 'usuariocredenc
 
 
 #region Cursos
+
+Route::get('/mis-cursos',  [CursosController::class, 'cursos'])->name('cursos.inicio')->middleware('session.token');
+
+
 Route::post('/cursos/registrar',  [CursosController::class, 'curso_registrar'])->middleware('session.token');
 Route::delete('/cursos/remover',  [CursosController::class, 'curso_remover'])->middleware('session.token');
 Route::post('/cursos/grupos',  [CursosController::class, 'curso_gruposobtener'])->middleware('session.token');

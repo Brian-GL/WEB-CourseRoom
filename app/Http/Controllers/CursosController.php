@@ -7,7 +7,16 @@ use Illuminate\Http\Request;
 
 class CursosController extends Controller
 {
-    #region view
+    #region views
+
+    public function cursos(){
+
+        $DatosUsuario = session('DatosUsuario');
+        $DatosCuenta = session('DatosCuenta');
+        $IdTipoUsuario = session('IdTipoUsuario');
+
+        return view('cursos.cursos', compact('DatosUsuario', 'DatosCuenta','IdTipoUsuario'));
+    }
 
     #endregion
 

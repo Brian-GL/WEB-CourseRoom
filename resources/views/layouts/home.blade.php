@@ -66,7 +66,7 @@
                 <div class="row justify-content-center">
 
                     <div class="col-5">
-                        <a type="button" class="btn btn-lg segundo-color-letra" {{--href="{{route('cursos.inicio')}}"--}} title="Ir a mis cursos">
+                        <a type="button" class="btn btn-lg segundo-color-letra" href="{{route('cursos.inicio')}}" title="Ir a mis cursos">
                             <i class="fa-solid fa-chalkboard-user"></i> Cursos
                         </a>
                     </div>
