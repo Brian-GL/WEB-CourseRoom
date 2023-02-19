@@ -8,6 +8,7 @@ let TercerColorLetra = localStorage.getItem("TercerColorLetra");
 let PrimerColor = localStorage.getItem("PrimerColor");
 let PrimerColorLetra = localStorage.getItem("PrimerColorLetra");
 let BaseURL = window.location.origin;
+let assetsRoute = document.getElementById("assets-usuarios").value;
 
 dataTableMisPreguntas = $("#table-mis-preguntas").DataTable({
     pagingType: 'full_numbers',
@@ -164,7 +165,7 @@ async function ObtenerMisPreguntas(){
                     data: filas,
                     createdRow: (row, data) => {
                         $('.segundo-color-letra',row).css('color', SegundoColorLetra);
-                        $('.span-detalle', row).html('<span class="fuenteNormal span-detalle text-center text-decoration-underline" onclick="DetallePregunta('.concat(data.IdPregunta,')">Ver detalle</span>'));
+                        $('.span-detalle', row).html('<span class="fuenteNormal span-detalle text-center text-decoration-underline" onclick="DetallePregunta('.concat(data.idPregunta,')">Ver detalle</span>'));
                         let fechaRegistro = data.fechaRegistro.substring(0, data.fechaRegistro.length -1 );
                         $('.fechaRegistro', row).text(dayjs(fechaRegistro).format('dddd DD MMM YYYY h:mm A'));
                     }
@@ -312,15 +313,14 @@ document.getElementById("agregar-pregunta").addEventListener("click", function()
                         }
                     });
 
-                    console.log(result.value.pregunta);
-                    console.log(result.value.descripcion);
                     HidePreloader();
 
                     let resultado = response.data;
 
                     switch (resultado.code) {
                         case 200:{
-                           document.DetallePregunta(resultado.data.codigo);
+                            let data = resultado.data;
+                            document.DetallePregunta(data.codigo);
                         }
                         break;
                         case 500:{

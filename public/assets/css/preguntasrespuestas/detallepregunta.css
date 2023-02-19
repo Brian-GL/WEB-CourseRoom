@@ -2,9 +2,9 @@
     margin-bottom: 0 !important;
 }
 
-#contenedor{
-    max-height: 90vh;
-    height: 90vh;
+#respuestas{
+    max-height: 80vh;
+    height: 80vh;
 }
 
 #mensajear-pregunta{
@@ -13,13 +13,10 @@
 
 #contenido-pregunta{
     max-height: 90%;
-    height: 67%;
+    height: 87%;
     overflow-y: scroll !important;
 }
 
-#informacion-pregunta{
-    max-height: 20%;
-}
 
 .mask-custom {
     background: rgba(24, 24, 16, 0.2) !important;

@@ -23,10 +23,12 @@ class PreguntasRespuestasController extends Controller
     {
 
         $DatosPregunta = null;
+        
         $Respuestas = array();
         $IdTipoUsuario = session('IdTipoUsuario');
         $DatosUsuario = session('DatosUsuario');
         $DatosCuenta = session('DatosCuenta');
+        $IdUsuario = session('IdUsuario');
 
         $validator = Validator::make($request->all(), $rules = [
             'IdPreguntaRespuesta' => ['required']
@@ -68,7 +70,7 @@ class PreguntasRespuestasController extends Controller
             } 
         }
 
-        return view('preguntasrespuestas.detallepregunta', compact('DatosPregunta', 'DatosUsuario', 'DatosCuenta', 'IdTipoUsuario', 'Respuestas')); 
+        return view('preguntasrespuestas.detallepregunta', compact('DatosPregunta', 'DatosUsuario', 'DatosCuenta', 'IdTipoUsuario', 'Respuestas', 'idPreguntaRespuesta', 'IdUsuario')); 
     }
 
 
