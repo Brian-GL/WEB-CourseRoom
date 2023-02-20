@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Http;
+use App\Models\PreguntasRespuestasArchivosMensajes;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 class PreguntasRespuestasController extends Controller
 {
@@ -120,7 +123,7 @@ class PreguntasRespuestasController extends Controller
                         return response()->json(['code' => 200 , 'data' => $result], 200);
 
                     } else{
-                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                        return response()->json(['code' => 400 , 'data' => $response->body()], 200);
                     }
 
                 } else{
@@ -251,7 +254,7 @@ class PreguntasRespuestasController extends Controller
             
                 $idUsuario = session('IdUsuario');
                 $idPreguntaRespuesta = $request->integer('IdPreguntaRespuesta');
-                $idEstatusPregunta = (int)$request->session()->get('IdEstatusPregunta', 0);
+                $idEstatusPregunta = $request->integer('IdEstatusPregunta');
 
                 if($url != ''){
 
@@ -270,7 +273,7 @@ class PreguntasRespuestasController extends Controller
                         return response()->json(['code' => 200 , 'data' => $result], 200);
 
                     } else{
-                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                        return response()->json(['code' => 400 , 'data' => $response->body()], 200);
                     }
 
                 } else{
@@ -289,8 +292,7 @@ class PreguntasRespuestasController extends Controller
 
             $validator = Validator::make($request->all(), $rules = [
                 'IdPreguntaRespuesta' => ['required'],
-                'Mensaje' => ['required'],
-                'Archivo' => ['required']
+                'Mensaje' => ['required']
             ], $messages = [
                 'required' => 'El campo :attribute es requerido'
             ]);
@@ -304,7 +306,16 @@ class PreguntasRespuestasController extends Controller
                 $idPreguntaRespuesta = $request->integer('IdPreguntaRespuesta');
                 $idUsuarioEmisor = session('IdUsuario');
                 $mensaje = $request->string('Mensaje')->trim();
-                $archivo = $request->string('Archivo')->trim();
+
+                $Base64Archivo = null;
+                if($request->has('Base64Archivo')){
+                    $Base64Archivo = $request->input('Base64Archivo');
+                }
+                
+                $filename = null;
+                if($request->hasFile('Archivo')) {
+                    $filename = time().'_'.$request->file('Archivo')->getClientOriginalName();
+                }
 
                 if($url != ''){
 
@@ -314,17 +325,41 @@ class PreguntasRespuestasController extends Controller
                         'IdPreguntaRespuesta' => $idPreguntaRespuesta,
                         'IdUsuarioEmisor' => $idUsuarioEmisor,
                         'Mensaje' => $mensaje,
-                        'Archivo' => $archivo
+                        'Archivo' => $filename
                     ]);
 
                     if ($response->ok()){
-
+                        $fechaRegistro = Carbon::now()->addHours(-5);
                         $result = json_decode($response->body());
 
-                        return response()->json(['code' => 200 , 'data' => $result], 200);
+                        if($result->codigo > 0){
+                            if($filename != null){
+
+                                $file = $request->file('Archivo');
+
+                                // File extension
+                                $extension = $file->getClientOriginalExtension();
+
+                                //Guardar imagen en mongo si no esta vácia:
+                                $mongoCollection = new PreguntasRespuestasArchivosMensajes;
+
+                                $mongoCollection->idMensaje = $result->codigo;
+                                $mongoCollection->archivo = $Base64Archivo;
+                                $mongoCollection->extension = $extension;
+
+                                $mongoCollection->save();
+
+                                //Guardar imagen en storage:
+                                Storage::putFileAs('preguntas', $file, $filename);
+                            }
+                        }
+                        return response()->json(['code' => 200 , 'data' => $result, 
+                        'fecha' => $fechaRegistro, 
+                        'nombreArchivo' => $filename,
+                        'imagenEmisor' => session('DatosCuenta')->imagen], 200);
 
                     } else{
-                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                        return response()->json(['code' => 400 , 'data' => $response->body()], 200);
                     }
 
                 } else{
@@ -332,6 +367,7 @@ class PreguntasRespuestasController extends Controller
                 }
             }
 
+           
         } catch (\Throwable $th) {
             return response()->json(['code' => 500 , 'data' => $th->getMessage()], 200);
         }
@@ -421,7 +457,7 @@ class PreguntasRespuestasController extends Controller
                         return response()->json(['code' => 200 , 'data' => $result], 200);
 
                     } else{
-                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                        return response()->json(['code' => 400 , 'data' => $response->body()], 200);
                     }
 
                 } else{
