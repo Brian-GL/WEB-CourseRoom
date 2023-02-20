@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Http;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 
 class CursosController extends Controller
@@ -1198,8 +1202,7 @@ class CursosController extends Controller
         try {
 
             $validator = Validator::make($request->all(), $rules = [
-                'IdEstatusUsuario' => ['required'],
-                'IdUsuario' => ['required'],                
+                'IdEstatusUsuario' => ['required'],           
             ], $messages = [
                 'required' => 'El campo :attribute es requerido'
             ]);
@@ -1210,39 +1213,16 @@ class CursosController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idUsuario = $request -> input('IdUsuario');
-                $idEstatusUsuario = $request -> input('IdEstatusUsuario');
-                $idCurso = input('IdCurso');
-                $curso = input('Curso');
-                $imagenCurso = input('imagenCurso');
-                $idProfesor = input('IdProfesor');
-                $profesor = input('Profesor');
-                $imagenProfesor = input('ImagenProfesor');
-                $listaTematicas = input('ListaTematicas');
-                $fechaRegistro = input('FechaRegistro');
-                $puntaje = input('Puntaje');
-                $fechaIngreso = input('FechaIngreso');
-                $estatus = input('Estatus');
+                $idUsuario = session('IdUsuario');
+                $idEstatusUsuario = $request->integer('IdEstatusUsuario');
 
                 if($url != ''){
 
                     $response = Http::withHeaders([
                         'Authorization' => env('COURSEROOM_API_KEY'),
                     ])->post($url.'/api/cursos/obtener', [
-                        'IdCurso' => $idCurso,
-                        'IdEstatusUsuario' => $idEstatusUsuario,
                         'IdUsuario' => $idUsuario,
-                        'IdCurso' => $idCurso,
-                        'Curso' => $curso,
-                        'ImagenCurso' => $imagenCurso,
-                        'IdProfesor' => $idProfesor,
-                        'Profesor' => $profesor,
-                        'ImagenProfesor,' => $imagenProfesor,
-                        'ListaTematicas' => $listaTematicas,
-                        'FechaRegistro' => $fechaRegistro,
-                        'Puntaje' => $puntaje,
-                        'FechaIngreso' => $fechaIngreso,
-                        'Estatus' => $estatus,
+                        'IdEstatusUsuario' => $idEstatusUsuario,
                     ]);
 
                     if ($response->ok()){
@@ -1252,7 +1232,7 @@ class CursosController extends Controller
                         return response()->json(['code' => 200 , 'data' => $result], 200);
 
                     } else{
-                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                        return response()->json(['code' => 400 , 'data' => $response->body()], 200);
                     }
 
                 } else{
@@ -1270,8 +1250,7 @@ class CursosController extends Controller
         try {
 
             $validator = Validator::make($request->all(), $rules = [
-                'NumeroResultados' => ['required'],
-                'IdUsuario' => ['required'],                
+                'NumeroResultados' => ['required'],        
             ], $messages = [
                 'required' => 'El campo :attribute es requerido'
             ]);
@@ -1282,32 +1261,17 @@ class CursosController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idUsuario = $request -> input('IdUsuario');
-                $numeroResultados = $request -> input('NumeroResultados');
-                $idCurso = input('IdCurso');
-                $curso = input('Curso');
-                $imagenCurso = input('imagenCurso');
-                $idProfesor = input('IdProfesor');
-                $profesor = input('Profesor');
-                $listaTematicas = input('ListaTematicas');
-                $fechaRegistro = input('FechaRegistro');
-                $puntaje = input('Puntaje');
+                $idUsuario = session('IdUsuario');
+                $numeroResultados = $request->integer('NumeroResultados');
+                
                 
                 if($url != ''){
 
                     $response = Http::withHeaders([
                         'Authorization' => env('COURSEROOM_API_KEY'),
                     ])->post($url.'/api/cursos/nuevoobtener', [
-                        'NumeroResultados' => $numeroResultados,
                         'IdUsuario' => $idUsuario,
-                        'IdCurso' => $idCurso,
-                        'Curso' => $curso,
-                        'ImagenCurso' => $imagenCurso,
-                        'IdProfesor' => $idProfesor,
-                        'Profesor' => $profesor,
-                        'ListaTematicas' => $listaTematicas,
-                        'FechaRegistro' => $fechaRegistro,
-                        'Puntaje' => $puntaje,
+                        'NumeroResultados' => $numeroResultados
                     ]);
 
                     if ($response->ok()){
@@ -1317,7 +1281,7 @@ class CursosController extends Controller
                         return response()->json(['code' => 200 , 'data' => $result], 200);
 
                     } else{
-                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                        return response()->json(['code' => 400 , 'data' => $response->body()], 200);
                     }
 
                 } else{

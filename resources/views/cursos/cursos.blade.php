@@ -27,32 +27,32 @@
                                 <button class="nav-link active fuenteNormal primer-color-letra primer-color-fondo" id="cursos-actuales-tab" data-bs-toggle="tab" data-bs-target="#cursos-actuales" type="button" role="tab" aria-controls="cursos-actuales" aria-selected="true">Cursos actuales</button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link fuenteNormal tercer-color-letra tercer-color-fondo" id="cursos-finalizados-tab" data-bs-toggle="tab" data-bs-target="#cursos-finalizados" type="button" role="tab" aria-controls="cursos-finalizados" aria-selected="false">cursos finalizados</button>
+                                <button class="nav-link fuenteNormal tercer-color-letra tercer-color-fondo" id="cursos-finalizados-tab" data-bs-toggle="tab" data-bs-target="#cursos-finalizados" type="button" role="tab" aria-controls="cursos-finalizados" aria-selected="false">Cursos finalizados</button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link fuenteNormal tercer-color-letra tercer-color-fondo" id="buscar-cursos-tab" data-bs-toggle="tab" data-bs-target="#buscar-cursos-finalizados" type="button" role="tab" aria-controls="cursos-finalizados" aria-selected="false">Buscar cursos</button>
+                                <button class="nav-link fuenteNormal tercer-color-letra tercer-color-fondo" id="cursos-nuevos-tab" data-bs-toggle="tab" data-bs-target="#cursos-nuevos" type="button" role="tab" aria-controls="cursos-nuevos" aria-selected="false">Cursos nuevos</button>
                             </li>
                         </ul>
                     </div>
                 @else
 
-                <div class="row">
-                    <div class="col-md-10">
-                        <ul class="nav nav-tabs my-0-5" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link active fuenteNormal primer-color-letra primer-color-fondo" id="cursos-actuales-tab" data-bs-toggle="tab" data-bs-target="#cursos-actuales" type="button" role="tab" aria-controls="cursos-actuales" aria-selected="true">Cursos actuales</button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link fuenteNormal tercer-color-letra tercer-color-fondo" id="cursos-finalizados-tab" data-bs-toggle="tab" data-bs-target="#cursos-finalizados" type="button" role="tab" aria-controls="cursos-finalizados" aria-selected="false">cursos finalizados</button>
-                            </li>
-                        </ul>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <ul class="nav nav-tabs my-0-5" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active fuenteNormal primer-color-letra primer-color-fondo" id="cursos-actuales-tab" data-bs-toggle="tab" data-bs-target="#cursos-actuales" type="button" role="tab" aria-controls="cursos-actuales" aria-selected="true">Cursos actuales</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link fuenteNormal tercer-color-letra tercer-color-fondo" id="cursos-finalizados-tab" data-bs-toggle="tab" data-bs-target="#cursos-finalizados" type="button" role="tab" aria-controls="cursos-finalizados" aria-selected="false">Cursos finalizados</button>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-2 d-flex justify-content-end">
+                            <button class="btn fuenteNormal my-1 text-wrap border border-2 tercer-color-letra tercer-color-fondo" type="button" id="agregar-curso" >
+                                <i class="fa-solid fa-plus"></i> Agregar Curso
+                            </button>
+                        </div>
                     </div>
-                    <div class="col-md-2 d-flex justify-content-end">
-                        <button class="btn fuenteNormal my-1 text-wrap border border-2 tercer-color-letra tercer-color-fondo" type="button" id="agregar-curso" >
-                            <i class="fa-solid fa-plus"></i> Agregar Curso
-                        </button>
-                    </div>
-                </div>
                 @endif
 
                 <div class="box row pt-1">
@@ -65,27 +65,27 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="table-responsive mt-3">
-                                            <table class="table table-striped display order-column hover nowrap" id="table-cursos-actuales"> </table>
+                                            <table class="table table-striped display order-column hover nowrap" id="table-cursos-actuales-estudiante"> </table>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="tab-pane fade show" id="cursos-finaizados" role="tabpanel" aria-labelledby="cursos-finaizados-tab">
+                            <div class="tab-pane fade show" id="cursos-finalizados" role="tabpanel" aria-labelledby="cursos-finaizados-tab">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="table-responsive mt-3">
-                                            <table class="table table-striped display order-column hover nowrap" id="table-cursos-finaizados"> </table>
+                                            <table class="table table-striped display order-column hover nowrap" id="table-cursos-finalizados-estudiante"> </table>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="tab-pane fade show" id="buscar-cursos" role="tabpanel" aria-labelledby="buscar-cursos-tab">
+                            <div class="tab-pane fade show" id="cursos-nuevos" role="tabpanel" aria-labelledby="cursos-nuevos-tab">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="table-responsive mt-3">
-                                            <table class="table table-striped display order-column hover nowrap" id="table-buscar-cursos"> </table>
+                                            <table class="table table-striped display order-column hover nowrap" id="table-cursos-nuevos"> </table>
                                         </div>
                                     </div>
                                 </div>
@@ -95,7 +95,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="table-responsive mt-3">
-                                            <table class="table table-striped display order-column hover nowrap" id="table-cursos-actuales"> </table>
+                                            <table class="table table-striped display order-column hover nowrap" id="table-cursos-actuales-profesor"> </table>
                                         </div>
                                     </div>
                                 </div>
@@ -105,7 +105,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="table-responsive mt-3">
-                                            <table class="table table-striped display order-column hover nowrap" id="table-cursos-finaizados"> </table>
+                                            <table class="table table-striped display order-column hover nowrap" id="table-cursos-finaizados-profesor"> </table>
                                         </div>
                                     </div>
                                 </div>

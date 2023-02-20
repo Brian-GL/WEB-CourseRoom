@@ -8,119 +8,192 @@ table {
     width: 100% !important;
 }
 
-#table-cursos-actuales_filter {
+#table-cursos-actuales-estudiante_filter {
     display: grid !important;
     place-content: end !important;
     padding-bottom: 1rem !important;
 }
 
-#table-cursos-actuales_filter input {
+#table-cursos-actuales-estudiante_filter input {
     width: 560px !important;
     height: 2rem !important;
 }
 
-#table-buscar-cursos_filter {
+
+#table-cursos-actuales-profesor_filter {
     display: grid !important;
     place-content: end !important;
     padding-bottom: 1rem !important;
 }
 
-#table-buscar-cursos_filter input {
+#table-cursos-actuales-profesor_filter input {
     width: 560px !important;
     height: 2rem !important;
 }
 
-#table-cursos-finalizados_filter {
+#table-cursos-nuevos_filter {
     display: grid !important;
     place-content: end !important;
     padding-bottom: 1rem !important;
 }
 
-#table-cursos-finalizados_filter input {
+#table-cursos-nuevos_filter input {
+    width: 560px !important;
+    height: 2rem !important;
+}
+
+#table-cursos-finalizados-estudiante_filter {
+    display: grid !important;
+    place-content: end !important;
+    padding-bottom: 1rem !important;
+}
+
+#table-cursos-finalizados-estudiante_filter input {
+    width: 560px !important;
+    height: 2rem !important;
+}
+
+#table-cursos-finalizados-profesor_filter {
+    display: grid !important;
+    place-content: end !important;
+    padding-bottom: 1rem !important;
+}
+
+#table-cursos-finalizados-profesor_filter input {
     width: 560px !important;
     height: 2rem !important;
 }
 
 @media (max-width:660px) {
-    #table-cursos-actuales_filter input {
+    #table-cursos-actuales-estudiante_filter input {
         width: 500px !important;
         height: 2rem !important;
     }
 
-    #table-buscar-cursos_filter input {
+    #table-cursos-actuales-profesor_filter input {
         width: 500px !important;
         height: 2rem !important;
     }
 
-    #table-cursos-finalizados_filter input {
+    #table-cursos-nuevos_filter input {
+        width: 500px !important;
+        height: 2rem !important;
+    }
+
+    #table-cursos-finalizados-estudiante_filter input {
+        width: 500px !important;
+        height: 2rem !important;
+    }
+
+    #table-cursos-finalizados-profesor_filter input {
         width: 500px !important;
         height: 2rem !important;
     }
 }
 
 @media (max-width:560px) {
-    #table-cursos-actuales_filter input {
+    #table-cursos-actuales-estudiante_filter input {
         width: 400px !important;
         height: 2rem !important;
     }
 
-    #table-buscar-cursos_filter input {
+    #table-cursos-actuales-profesor_filter input {
         width: 400px !important;
         height: 2rem !important;
     }
 
-    #table-cursos-finalizados_filter input {
+    #table-cursos-nuevos_filter input {
+        width: 400px !important;
+        height: 2rem !important;
+    }
+
+    #table-cursos-finalizados-estudiante_filter input {
+        width: 400px !important;
+        height: 2rem !important;
+    }
+
+    #table-cursos-finalizados-profesor_filter input {
         width: 400px !important;
         height: 2rem !important;
     }
 }
 
 @media (max-width:460px) {
-    #table-cursos-actuales_filter input {
+    #table-cursos-actuales-estudiante_filter input {
         width: 300px !important;
         height: 2rem !important;
     }
 
-    #table-buscar-cursos_filter input {
+    #table-cursos-actuales-profesor_filter input {
         width: 300px !important;
         height: 2rem !important;
     }
 
-    #table-cursos-finalizados_filter input {
+    #table-cursos-nuevos_filter input {
+        width: 300px !important;
+        height: 2rem !important;
+    }
+
+    #table-cursos-finalizados-estudiante_filter input {
+        width: 300px !important;
+        height: 2rem !important;
+    }
+
+    #table-cursos-finalizados-profesor_filter input {
         width: 300px !important;
         height: 2rem !important;
     }
 }
 
 @media (max-width:360px) {
-    #table-cursos-actuales_filter input {
+    #table-cursos-actuales-estudiante_filter input {
         width: 200px !important;
         height: 2rem !important;
     }
 
-    #table-buscar-cursos_filter input {
+    #table-cursos-actuales-profesor_filter input {
         width: 200px !important;
         height: 2rem !important;
     }
 
-    #table-cursos-finalizados_filter input {
+    #table-cursos-nuevos_filter input {
+        width: 200px !important;
+        height: 2rem !important;
+    }
+
+    #table-cursos-finalizados-estudiante_filter input {
+        width: 200px !important;
+        height: 2rem !important;
+    }
+
+    #table-cursos-finalizados-profesor_filter input {
         width: 200px !important;
         height: 2rem !important;
     }
 
 }
 
-#table-cursos-actuales_paginate {
+#table-cursos-actuales-estudiante_paginate {
     display: grid !important;
     place-content: center !important;
 }
 
-#table-buscar-cursos_paginate {
+#table-cursos-actuales-profesor_paginate {
     display: grid !important;
     place-content: center !important;
 }
 
-#table-cursos-finalizados_paginate {
+#table-cursos-nuevos_paginate {
+    display: grid !important;
+    place-content: center !important;
+}
+
+#table-cursos-finalizados-estudiante_paginate {
+    display: grid !important;
+    place-content: center !important;
+}
+
+#table-cursos-finalizados-profesor_paginate {
     display: grid !important;
     place-content: center !important;
 }

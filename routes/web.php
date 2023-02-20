@@ -134,9 +134,9 @@ Route::post('/tareas/registrar',  [TareasController::class, 'tarea_registrar'])-
 Route::post('/tareas/retroalimentacion',  [TareasController::class, 'tarearetroalimentacion_registrar'])->middleware('session.token');
 Route::post('/tareas/archivosentregados',  [TareasController::class, 'tareaarchivosentregados_obtener'])->middleware('session.token');
 Route::post('/tareas/estudiante',  [TareasController::class, 'tareaestudiante_obtener'])->middleware('session.token');
-Route::post('/tareas/creadaprofesor',  [TareasController::class, 'tareacreadaprofesor_obtener'])->middleware('session.token');
+Route::post('/tareas/creadasprofesor',  [TareasController::class, 'tareascreadasprofesor_obtener'])->middleware('session.token');
 Route::post('/tareas/retroalimentaciones',  [TareasController::class, 'tareareatroalimentaciones_obtener'])->middleware('session.token');
-Route::post('/tareas/calificarobtener',  [TareasController::class, 'tareacalificar_obtener'])->middleware('session.token');
+Route::post('/tareas/calificarobtener',  [TareasController::class, 'tareascalificar_obtener'])->middleware('session.token');
 Route::post('/tareas/entregar',  [TareasController::class, 'tareaentregar_actualizar'])->middleware('session.token');
 Route::delete('/tareas/archivoentregadoremover',  [TareasController::class, 'tareaarchivoentregado_remover'])->middleware('session.token');
 Route::delete('/tareas/archivoadjunto',  [TareasController::class, 'tareaarchivoadjunto_remover'])->middleware('session.token');
@@ -169,7 +169,6 @@ Route::delete('/preguntas/mensajeremover',  [PreguntasRespuestasController::clas
 Route::post('/preguntas/mensajeobtener',  [PreguntasRespuestasController::class, 'preguntasrespuestamensajes_obtener'])->middleware('session.token');
 Route::post('/preguntas/buscar',  [PreguntasRespuestasController::class, 'preguntasrespuestas_buscar'])->middleware('session.token');
 Route::post('/preguntas/obtener',  [PreguntasRespuestasController::class, 'preguntasrespuestas_obtener'])->middleware('session.token');
-
 
 #endregion
 

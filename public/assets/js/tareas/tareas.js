@@ -109,7 +109,7 @@ if(idTipoUsuario == 1){
             ShowPreloader();
 
             let response = await axios({
-                url: '/tareas/estudianteobtener',
+                url: '/tareas/estudiante',
                 baseURL: BaseURL,
                 method: 'POST',
                 headers: {
@@ -400,7 +400,7 @@ if(idTipoUsuario == 1){
                 }
                 break;
                 case 500:{
-                    dataTableBuscarUsuarios.clear().draw();
+                    
                     Swal.fire({
                         title: '¡Error!',
                         text: result.data,
@@ -414,7 +414,7 @@ if(idTipoUsuario == 1){
                 }
                 break;
                 default:{
-                    dataTableBuscarUsuarios.clear().draw();
+                    
                     Swal.fire({
                         title: '¡Alerta!',
                         text: result.data,
@@ -432,7 +432,6 @@ if(idTipoUsuario == 1){
         catch(ex){
 
             HidePreloader();
-            dataTableBuscarUsuarios.clear().draw();
             Swal.fire({
                 title: '¡Error!',
                 text: ex,
@@ -560,7 +559,7 @@ if(idTipoUsuario == 1){
             ShowPreloader();
 
             let response = await axios({
-                url: '/tareas/calificarobtener',
+                url: 'tareas/calificarobtener',
                 baseURL: BaseURL,
                 method: 'POST',
                 headers: {
@@ -705,7 +704,7 @@ if(idTipoUsuario == 1){
             ShowPreloader();
 
             let response = await axios({
-                url: '/tareas/creadas',
+                url: '/tareas/creadasprofesor',
                 baseURL: BaseURL,
                 method: 'POST',
                 headers: {
@@ -862,7 +861,7 @@ if(idTipoUsuario == 1){
                 }
                 break;
                 case 500:{
-                    dataTableBuscarUsuarios.clear().draw();
+                    
                     Swal.fire({
                         title: '¡Error!',
                         text: result.data,
@@ -876,7 +875,7 @@ if(idTipoUsuario == 1){
                 }
                 break;
                 default:{
-                    dataTableBuscarUsuarios.clear().draw();
+                    
                     Swal.fire({
                         title: '¡Alerta!',
                         text: result.data,
@@ -894,7 +893,6 @@ if(idTipoUsuario == 1){
         catch(ex){
 
             HidePreloader();
-            dataTableBuscarUsuarios.clear().draw();
             Swal.fire({
                 title: '¡Error!',
                 text: ex,
