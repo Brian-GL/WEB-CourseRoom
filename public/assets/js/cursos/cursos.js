@@ -697,6 +697,362 @@ if(idTipoUsuario == 1){
 
 }else{
     
+    let dataTableCursosActualesProfesor;
+
+    dataTableCursosActualesProfesor = $("#table-cursos-actuales-profesor").DataTable({
+        pagingType: 'full_numbers',
+        dom: 'frtp',
+        search: {
+            return: true,
+        },
+        scrollX: false,
+        language: {
+            search: "_INPUT_",
+            searchPlaceholder: "Buscar algún curso...",
+            paginate: {
+                "first":      "Primero",
+                "last":       "Último",
+                "next":       "Siguiente",
+                "previous":   "Anterior"
+            },
+            zeroRecords: "Sin resultados encontrados",
+            emptyTable: "Sin datos en la tabla",
+            infoEmpty: "Sin entradas",
+            loadingRecords: "Cargando..."
+        },
+        columns: [
+            { title: "IdCurso"},
+            { title: "Curso"},
+            { title: "ImagenCurso"},
+            { title: "Temáticas"},
+            { title: "Estatus"},
+            { title: "Fecha de registro"},
+            { title: "Puntaje"},
+            { title: "Detalle"}
+        ],
+        columnDefs:[
+            {className: "text-center fuenteNormal segundo-color-letra", targets: "_all"},
+            {className: "span-detalle", target: 7}
+        ],
+        rowCallback: function(row, data, index){
+            $(row).css('color', SegundoColorLetra);
+        }
+    });
+
+    dataTableCursosActualesProfesor.column(0).visible(false);
+    dataTableCursosActualesProfesor.column(2).visible(false);
+
+    let dataTableCursosFinalizadosProfesor;
+
+    dataTableCursosFinalizadosProfesor = $("#table-cursos-finalizados-profesor").DataTable({
+        pagingType: 'full_numbers',
+        dom: 'frtp',
+        search: {
+            return: true,
+        },
+        scrollX: false,
+        language: {
+            search: "_INPUT_",
+            searchPlaceholder: "Buscar algún curso...",
+            paginate: {
+                "first":      "Primero",
+                "last":       "Último",
+                "next":       "Siguiente",
+                "previous":   "Anterior"
+            },
+            zeroRecords: "Sin resultados encontrados",
+            emptyTable: "Sin datos en la tabla",
+            infoEmpty: "Sin entradas",
+            loadingRecords: "Cargando..."
+        },
+        columns: [
+            { title: "IdCurso"},
+            { title: "Curso"},
+            { title: "ImagenCurso"},
+            { title: "Temáticas"},
+            { title: "Estatus"},
+            { title: "Fecha de registro"},
+            { title: "Puntaje"},
+            { title: "Detalle"}
+        ],
+        columnDefs:[
+            {className: "text-center fuenteNormal segundo-color-letra", targets: "_all"},
+            {className: "span-detalle", target: 7}
+        ],
+        rowCallback: function(row, data, index){
+            $(row).css('color', SegundoColorLetra);
+        }
+    });
+
+    dataTableCursosFinalizadosProfesor.column(0).visible(false);
+    dataTableCursosFinalizadosProfesor.column(2).visible(false);
+
+    document.addEventListener('DOMContentLoaded',  ObtenerInformacionInicialProfesor, false);
+
+    async function ObtenerInformacionInicialProfesor(){
+        ObtenerCursosActualesProfesor();
+        ObtenerCursosFinalizadosProfesor();
+    }
+
+    //#region Methods
+
+    async function ObtenerCursosActualesProfesor(){
+        try{
+
+            ShowPreloader();
+
+            let response = await axios({
+                url: '/cursos/profesorobtener',
+                baseURL: BaseURL,
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
+                },
+                data: {
+                    "Finalizado": false
+                }
+            });
+
+            HidePreloader();
+
+            let result = response.data;
+
+            switch (result.code) {
+                case 200:{
+                    let filas = result.data;
+
+                    dataTableCursosActualesProfesor.destroy();
+
+                    dataTableCursosActualesProfesor = $("#table-cursos-actuales-profesor").DataTable({
+                        pagingType: 'full_numbers',
+                        dom: 'frtp',
+                        search: {
+                            return: true,
+                        },
+                        scrollX: false,
+                        language: {
+                            search: "_INPUT_",
+                            searchPlaceholder: "Buscar algún curso...",
+                            paginate: {
+                                "first":      "Primero",
+                                "last":       "Último",
+                                "next":       "Siguiente",
+                                "previous":   "Anterior"
+                            },
+                            zeroRecords: "Sin resultados encontrados",
+                            emptyTable: "Sin datos en la tabla",
+                            infoEmpty: "Sin entradas",
+                            loadingRecords: "Cargando..."
+                        },
+                        columns: [
+                            { data: "idCurso", title: "IdCurso"},
+                            { data: "curso", title: "Curso"},
+                            { data: "imagenCurso", title: "ImagenCurso"},
+                            { data: "listaTematicas", title: "Temáticas"},
+                            { data: "estatus", title: "Estatus"},
+                            { data: "fechaRegistro", title: "Fecha de registro"},
+                            { data: "puntaje", title: "Puntaje"},
+                            { data: "", title: "Detalle"}
+                        ],
+                        columnDefs:[
+                            {className: "text-center fuenteNormal segundo-color-letra", defaultContent: "-", targets: "_all"},
+                            {className: "span-detalle", target: 7},
+                            {className: "info-curso", target: 1},
+                            {className: "fechaRegistro", target: 5},
+                        ],
+                        data: filas,
+                        createdRow: (row, data) => {
+                            $('.segundo-color-letra',row).css('color', SegundoColorLetra);
+                            $('.span-detalle', row).html('<span class="fuenteNormal span-detalle text-center text-decoration-underline" onclick="DetalleCursoProfesor('.concat(data.idCurso,')">Ver detalle</span>'));
+                            $('.info-curso', row).html('<div class="container"><div class="row"><div class="col-5"><img class="img-fluid" alt="Imagen del curso" src="'.concat(assetsRouteCursos,'/',data.imagenCurso,'"/></div><div class="col-7 p-0"><p class="fuenteNormal">',data.nombreCurso,'</p></div></div></div>'));
+                            
+                            
+                            let fechaRegistro = data.fechaRegistro.substring(0, data.fechaRegistro.length -1 );
+                            $('.fechaRegistro', row).text(dayjs(fechaRegistro).format('dddd DD MMM YYYY h:mm A'));
+                        }
+                    });
+                
+                    dataTableCursosActualesProfesor.column(0).visible(false);
+                    dataTableCursosActualesProfesor.column(2).visible(false);
+
+                }
+                break;
+                case 500:{
+                    dataTableCursosActualesProfesor.clear().draw();
+                    Swal.fire({
+                        title: '¡Error!',
+                        text: result.data,
+                        imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+                        imageWidth: 100,
+                        imageHeight: 123,
+                        background: '#000000',
+                        color: '#FFFFFF',
+                        imageAlt: 'Error Image'
+                    });
+                }
+                break;
+                default:{
+                    dataTableCursosActualesProfesor.clear().draw();
+                    Swal.fire({
+                        title: '¡Alerta!',
+                        text: result.data,
+                        imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
+                        imageWidth: 100,
+                        imageHeight: 123,
+                        imageAlt: 'Alert Image',
+                        background: '#000000',
+                        color: '#FFFFFF'
+                    });
+                }
+                break;
+            }
+        }
+        catch(ex){
+
+            HidePreloader();
+            dataTableCursosActualesProfesor.clear().draw();
+            Swal.fire({
+                title: '¡Error!',
+                text: ex,
+                imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+                imageWidth: 100,
+                imageHeight: 123,
+                background: '#000000',
+                color: '#FFFFFF',
+                imageAlt: 'Error Image'
+            });
+        }
+    }
+
+    async function ObtenerCursosFinalizadosProfesor(){
+        try{
+
+            ShowPreloader();
+
+            let response = await axios({
+                url: '/cursos/profesorobtener',
+                baseURL: BaseURL,
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
+                },
+                data: {
+                    "Finalizado": true
+                }
+            });
+
+            HidePreloader();
+
+            let result = response.data;
+
+            switch (result.code) {
+                case 200:{
+                    let filas = result.data;
+
+                    dataTableCursosFinalizadosProfesor.destroy();
+
+                    dataTableCursosFinalizadosProfesor = $("#table-cursos-finalizados-profesor").DataTable({
+                        pagingType: 'full_numbers',
+                        dom: 'frtp',
+                        search: {
+                            return: true,
+                        },
+                        scrollX: false,
+                        language: {
+                            search: "_INPUT_",
+                            searchPlaceholder: "Buscar algún curso...",
+                            paginate: {
+                                "first":      "Primero",
+                                "last":       "Último",
+                                "next":       "Siguiente",
+                                "previous":   "Anterior"
+                            },
+                            zeroRecords: "Sin resultados encontrados",
+                            emptyTable: "Sin datos en la tabla",
+                            infoEmpty: "Sin entradas",
+                            loadingRecords: "Cargando..."
+                        },
+                        columns: [
+                            { data: "idCurso", title: "IdCurso"},
+                            { data: "curso", title: "Curso"},
+                            { data: "imagenCurso", title: "ImagenCurso"},
+                            { data: "listaTematicas", title: "Temáticas"},
+                            { data: "estatus", title: "Estatus"},
+                            { data: "fechaRegistro", title: "Fecha de registro"},
+                            { data: "puntaje", title: "Puntaje"},
+                            { data: "", title: "Detalle"}
+                        ],
+                        columnDefs:[
+                            {className: "text-center fuenteNormal segundo-color-letra", defaultContent: "-", targets: "_all"},
+                            {className: "span-detalle", target: 7},
+                            {className: "info-curso", target: 1},
+                            {className: "fechaRegistro", target: 5},
+                        ],
+                        data: filas,
+                        createdRow: (row, data) => {
+                            $('.segundo-color-letra',row).css('color', SegundoColorLetra);
+                            $('.span-detalle', row).html('<span class="fuenteNormal span-detalle text-center text-decoration-underline" onclick="DetalleCursoProfesor('.concat(data.idCurso,')">Ver detalle</span>'));
+                            $('.info-curso', row).html('<div class="container"><div class="row"><div class="col-5"><img class="img-fluid" alt="Imagen del curso" src="'.concat(assetsRouteCursos,'/',data.imagenCurso,'"/></div><div class="col-7 p-0"><p class="fuenteNormal">',data.nombreCurso,'</p></div></div></div>'));
+                            
+                            
+                            let fechaRegistro = data.fechaRegistro.substring(0, data.fechaRegistro.length -1 );
+                            $('.fechaRegistro', row).text(dayjs(fechaRegistro).format('dddd DD MMM YYYY h:mm A'));
+                        }
+                    });
+                
+                    dataTableCursosFinalizadosProfesor.column(0).visible(false);
+                    dataTableCursosFinalizadosProfesor.column(2).visible(false);
+
+                }
+                break;
+                case 500:{
+                    dataTableCursosFinalizadosProfesor.clear().draw();
+                    Swal.fire({
+                        title: '¡Error!',
+                        text: result.data,
+                        imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+                        imageWidth: 100,
+                        imageHeight: 123,
+                        background: '#000000',
+                        color: '#FFFFFF',
+                        imageAlt: 'Error Image'
+                    });
+                }
+                break;
+                default:{
+                    dataTableCursosFinalizadosProfesor.clear().draw();
+                    Swal.fire({
+                        title: '¡Alerta!',
+                        text: result.data,
+                        imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
+                        imageWidth: 100,
+                        imageHeight: 123,
+                        imageAlt: 'Alert Image',
+                        background: '#000000',
+                        color: '#FFFFFF'
+                    });
+                }
+                break;
+            }
+        }
+        catch(ex){
+
+            HidePreloader();
+            dataTableCursosFinalizadosProfesor.clear().draw();
+            Swal.fire({
+                title: '¡Error!',
+                text: ex,
+                imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+                imageWidth: 100,
+                imageHeight: 123,
+                background: '#000000',
+                color: '#FFFFFF',
+                imageAlt: 'Error Image'
+            });
+        }
+    }
+  
+
     document.DetalleCursoProfesor = async function(IdCurso){
         try{
 
@@ -772,6 +1128,9 @@ if(idTipoUsuario == 1){
         }
     }
 
+    document.getElementById("crear-curso").addEventListener("click", async () => {
+
+    });
 }
 
 

@@ -1299,7 +1299,7 @@ class CursosController extends Controller
         try {
 
             $validator = Validator::make($request->all(), $rules = [
-                'IdProfesor' => ['required']                
+                'Finalizado' => ['required']                
             ], $messages = [
                 'required' => 'El campo :attribute es requerido'
             ]);
@@ -1310,13 +1310,8 @@ class CursosController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idProfesor = $request -> input('IdProfesor');;
-                $idCurso = input('IdCurso');
-                $curso = input('Curso');
-                $imagen = input('imagen');
-                $listaTematicas = input('ListaTematicas');
-                $fechaRegistro = input('FechaRegistro');
-                $puntaje = input('Puntaje');
+                $idProfesor = session('IdUsuario');
+                $finalizado = $request->boolean('Finalizado');
                 
                 if($url != ''){
 
@@ -1324,12 +1319,7 @@ class CursosController extends Controller
                         'Authorization' => env('COURSEROOM_API_KEY'),
                     ])->post($url.'/api/cursos/profesorobtener', [
                         'IdProfesor' => $idProfesor,
-                        'IdCurso' => $idCurso,
-                        'Curso' => $curso,
-                        'Imagen' => $imagen,
-                        'ListaTematicas' => $listaTematicas,
-                        'FechaRegistro' => $fechaRegistro,
-                        'Puntaje' => $puntaje,                        
+                        'Finalizado' => $finalizado,                       
                     ]);
 
                     if ($response->ok()){
@@ -1339,7 +1329,7 @@ class CursosController extends Controller
                         return response()->json(['code' => 200 , 'data' => $result], 200);
 
                     } else{
-                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                        return response()->json(['code' => 400 , 'data' => $response->body()], 200);
                     }
 
                 } else{

@@ -48,7 +48,7 @@
                             </ul>
                         </div>
                         <div class="col-md-2 d-flex justify-content-end">
-                            <button class="btn fuenteNormal my-1 text-wrap border border-2 tercer-color-letra tercer-color-fondo" type="button" id="agregar-curso" >
+                            <button class="btn fuenteNormal my-1 text-wrap border border-2 tercer-color-letra tercer-color-fondo" type="button" id="agregar-curso" data-bs-toggle="modal" data-bs-target="#agregar-curso-modal" >
                                 <i class="fa-solid fa-plus"></i> Agregar Curso
                             </button>
                         </div>
@@ -101,11 +101,11 @@
                                 </div>
                             </div>
 
-                            <div class="tab-pane fade show" id="cursos-finaizados" role="tabpanel" aria-labelledby="cursos-finaizados-tab">
+                            <div class="tab-pane fade show" id="cursos-finalizados" role="tabpanel" aria-labelledby="cursos-finalizados-tab">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="table-responsive mt-3">
-                                            <table class="table table-striped display order-column hover nowrap" id="table-cursos-finaizados-profesor"> </table>
+                                            <table class="table table-striped display order-column hover nowrap" id="table-cursos-finalizados-profesor"> </table>
                                         </div>
                                     </div>
                                 </div>
@@ -113,6 +113,28 @@
                         @endif
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade text-center" id="agregar-curso-modal" tabindex="-1" role="dialog" aria-labelledby="titulo-modal-agregar-curso" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content primer-color-letra primer-color-fondo">
+            <div class="modal-header">
+                <h5 class="modal-title" id="titulo-modal-agregar-curso">Agregar curso</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    Add rows here
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn segundo-color-letra segundo-color-fondo" data-bs-dismiss="modal">❌ Cancelar</button>
+                <button type="button" class="btn tercer-color-letra tercer-color-fondo" id="crear-curso">✅ Crear curso</button>
             </div>
         </div>
     </div>
