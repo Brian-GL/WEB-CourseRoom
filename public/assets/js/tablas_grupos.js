@@ -1,4 +1,3 @@
-//#region tablas grupos
 
 //Archivos compartidos:
 
@@ -289,17 +288,3 @@ dataTableGrupoTareasPendientes.column(4).visible(false);
 dataTableGrupoTareasPendientes.column(5).visible(false);
 dataTableGrupoTareasPendientes.column(7).visible(false);
 
-
-//#endregion
-
-//#region tablas tareas
-
-
-
-//#endregion
-
-
-//#region tablas cursos
-
-
-//#endregion
