@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Http;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
+use App\Models\CursosImagenes;
 
 
 class CursosController extends Controller
@@ -32,8 +33,7 @@ class CursosController extends Controller
 
             $validator = Validator::make($request->all(), $rules = [
                 'Nombre' => ['required'],
-	            'Descripcion' => ['required'],
-	            'IdProfesor' =>['required'] 
+	            'Descripcion' => ['required']
             ], $messages = [
                 'required' => 'El campo :attribute es requerido'
             ]);
@@ -44,19 +44,29 @@ class CursosController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $Nombre = $request -> input('Nombre');
-	            $Descripcion = $request -> input('Descripcion');
-	            $Imagen = input('Imagen');
-                $IdProfesor = $request -> input('IdProfesor');
-
                 if($url != ''){
 
+                    $Nombre = $request->string('Nombre')->trim();
+                    $Descripcion = $request->string('Descripcion')->trim();
+                    $Imagen = input('Imagen');
+                    $IdProfesor = session('IdUsuario');
+    
+                    $Base64Archivo = null;
+                    if($request->has('Base64Imagen')){
+                        $Base64Archivo = $request->input('Base64Imagen');
+                    }
+                    
+                    $filename = null;
+                    if($request->hasFile('Imagen')) {
+                        $filename = time().'_'.$request->file('Imagen')->getClientOriginalName();
+                    }
+    
                     $response = Http::withHeaders([
                         'Authorization' => env('COURSEROOM_API_KEY'),
                     ])->post($url.'/api/cursos/registrar', [
                         'Nombre' => $nombre,
                         'Descripcion' => $descripcion,
-                        'Imagen' => $imagen,
+                        'Imagen' => $filename,
                         'IdProfesor' => $idProfesor,
                     ]);
 
@@ -64,10 +74,32 @@ class CursosController extends Controller
 
                         $result = json_decode($response->body());
 
+                        if($result->codigo > 0){
+                            if($filename != null){
+
+                                $file = $request->file('Imagen');
+
+                                // File extension
+                                $extension = $file->getClientOriginalExtension();
+
+                                //Guardar imagen en mongo si no esta vácia:
+                                $mongoCollection = new CursosImagenes;
+
+                                $mongoCollection->idCurso = $result->codigo;
+                                $mongoCollection->archivo = $Base64Archivo;
+                                $mongoCollection->extension = $extension;
+
+                                $mongoCollection->save();
+
+                                //Guardar imagen en storage:
+                                Storage::putFileAs('cursos', $file, $filename);
+                            }
+                        }
+
                         return response()->json(['code' => 200 , 'data' => $result], 200);
 
                     } else{
-                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                        return response()->json(['code' => 400 , 'data' => $response->body()], 200);
                     }
 
                 } else{

@@ -93,6 +93,7 @@ if(idTipoUsuario == 1){
     dataTableCursosActualesEstudiante.column(2).visible(false);
     dataTableCursosActualesEstudiante.column(3).visible(false);
     dataTableCursosActualesEstudiante.column(5).visible(false);
+    dataTableCursosActualesEstudiante.column(6).visible(false);
 
     let dataTableCursosFinalizadosEstudiante;
 
@@ -144,6 +145,7 @@ if(idTipoUsuario == 1){
     dataTableCursosFinalizadosEstudiante.column(2).visible(false);
     dataTableCursosFinalizadosEstudiante.column(3).visible(false);
     dataTableCursosFinalizadosEstudiante.column(5).visible(false);
+    dataTableCursosFinalizadosEstudiante.column(6).visible(false);
 
     let dataTableCursosNuevos;
 
@@ -193,6 +195,7 @@ if(idTipoUsuario == 1){
     dataTableCursosNuevos.column(2).visible(false);
     dataTableCursosNuevos.column(3).visible(false);
     dataTableCursosNuevos.column(5).visible(false);
+    dataTableCursosNuevos.column(6).visible(false);
 
     document.addEventListener('DOMContentLoaded',  ObtenerInformacionInicial, false);
 
@@ -295,6 +298,7 @@ if(idTipoUsuario == 1){
                     dataTableCursosActualesEstudiante.column(2).visible(false);
                     dataTableCursosActualesEstudiante.column(3).visible(false);
                     dataTableCursosActualesEstudiante.column(5).visible(false);
+                    dataTableCursosActualesEstudiante.column(6).visible(false);
 
                 }
                 break;
@@ -436,6 +440,7 @@ if(idTipoUsuario == 1){
                     dataTableCursosFinalizadosEstudiante.column(2).visible(false);
                     dataTableCursosFinalizadosEstudiante.column(3).visible(false);
                     dataTableCursosFinalizadosEstudiante.column(5).visible(false);
+                    dataTableCursosFinalizadosEstudiante.column(6).visible(false);
 
                 }
                 break;
@@ -570,6 +575,7 @@ if(idTipoUsuario == 1){
                     dataTableCursosNuevos.column(2).visible(false);
                     dataTableCursosNuevos.column(3).visible(false);
                     dataTableCursosNuevos.column(5).visible(false);
+                    dataTableCursosNuevos.column(6).visible(false);
 
                 }
                 break;
@@ -741,6 +747,8 @@ if(idTipoUsuario == 1){
 
     dataTableCursosActualesProfesor.column(0).visible(false);
     dataTableCursosActualesProfesor.column(2).visible(false);
+    dataTableCursosActualesProfesor.column(3).visible(false);
+
 
     let dataTableCursosFinalizadosProfesor;
 
@@ -786,6 +794,7 @@ if(idTipoUsuario == 1){
 
     dataTableCursosFinalizadosProfesor.column(0).visible(false);
     dataTableCursosFinalizadosProfesor.column(2).visible(false);
+    dataTableCursosFinalizadosProfesor.column(3).visible(false);
 
     document.addEventListener('DOMContentLoaded',  ObtenerInformacionInicialProfesor, false);
 
@@ -874,6 +883,7 @@ if(idTipoUsuario == 1){
                 
                     dataTableCursosActualesProfesor.column(0).visible(false);
                     dataTableCursosActualesProfesor.column(2).visible(false);
+                    dataTableCursosActualesProfesor.column(3).visible(false);
 
                 }
                 break;
@@ -1002,6 +1012,7 @@ if(idTipoUsuario == 1){
                 
                     dataTableCursosFinalizadosProfesor.column(0).visible(false);
                     dataTableCursosFinalizadosProfesor.column(2).visible(false);
+                    dataTableCursosFinalizadosProfesor.column(3).visible(false);
 
                 }
                 break;
@@ -1128,9 +1139,156 @@ if(idTipoUsuario == 1){
         }
     }
 
-    document.getElementById("crear-curso").addEventListener("click", async () => {
+    async function RegistrarCurso(base64Image, file){
 
+        try{
+    
+            ShowPreloader();
+    
+            let formData = new FormData();
+    
+            formData.append("Nombre", document.getElementById("nombre-curso").value);
+            formData.append("Descripcion", document.getElementById("descripcion-curso").value);
+            formData.append("Imagen", file);
+            formData.append("Base64Image", base64Image);
+    
+            let response = await axios({
+                url: '/cursos/registrar',
+                baseURL: BaseURL,
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
+                },
+                data: formData
+            });
+    
+            HidePreloader();
+    
+            let resultado = response.data;
+            
+            switch (resultado.code) {
+                case 200:{
+                    Swal.fire({
+                        title: 'Creación de curso',
+                        text: resultado.data.mensaje,
+                        imageUrl: BaseURL.concat("/assets/templates/HappyOwl.png"),
+                        imageWidth: 100,
+                        imageHeight: 123,
+                        imageAlt: 'Ok Image',
+                        background: '#000000',
+                        color: '#FFFFFF'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            DetalleCursoProfesor(resultado.data.codigo);
+                        }
+                    });
+                }
+                break;
+                case 500:{
+                    Swal.fire({
+                        title: '¡Error!',
+                        text: resultado.data,
+                        imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+                        imageWidth: 100,
+                        imageHeight: 123,
+                        background: '#000000',
+                        color: '#FFFFFF',
+                        imageAlt: 'Error Image'
+                    });
+                }
+                break;
+                default:{
+                    Swal.fire({
+                        title: '¡Alerta!',
+                        text: resultado.data,
+                        imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
+                        imageWidth: 100,
+                        imageHeight: 123,
+                        imageAlt: 'Alert Image',
+                        background: '#000000',
+                        color: '#FFFFFF'
+                    });
+                }
+                break;
+            }
+    
+         }
+         catch(ex){
+    
+             HidePreloader();
+    
+             Swal.fire({
+                 title: '¡Error!',
+                 text: ex,
+                 imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+                 imageWidth: 100,
+                 imageHeight: 123,
+                 background: '#000000',
+                 color: '#FFFFFF',
+                 imageAlt: 'Error Image'
+             });
+         }
+     }
+    
+
+    document.getElementById("form-agregar-curso").addEventListener("submit", async (e) => {
+
+        e.preventDefault();
+
+        let imagen_file = document.getElementById("imagen");
+        let imagen_element = document.getElementById("imagen-seleccionada");
+        let base64 = await GetBase64FromUrl(imagen_element.src);
+        
+        if(imagen_file.files.length > 0){
+            RegistrarCurso(base64, imagen_file.files[0]);
+        } else{
+            RegistrarCurso(base64, null);
+        }
     });
+
+    document.getElementById("imagen").addEventListener("change", (e) => {
+
+        ShowPreloader();
+    
+        try{
+            if(e.target.files.length > 0){
+                let selectedFile = e.target.files[0];
+    
+                let reader = new FileReader();
+    
+                let imagen = document.getElementById("imagen-seleccionada");
+                imagen.title = selectedFile.name;
+    
+                reader.addEventListener("load", (e) => {
+                    imagen.src = e.target.result;
+                });
+    
+                reader.readAsDataURL(selectedFile);
+    
+            }else{
+                document.getElementById("imagen-seleccionada").src = "https://storage.needpix.com/thumbs/blank-profile-picture-973460_1280.png";
+            }
+            HidePreloader();
+        } catch(ex){
+    
+            document.getElementById("imagen-seleccionada").src = "https://storage.needpix.com/thumbs/blank-profile-picture-973460_1280.png";
+    
+            HidePreloader();
+    
+            Swal.fire({
+                title: '¡Error!',
+                html: ex,
+                imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+                imageWidth: 100,
+                imageHeight: 123,
+                background: '#000000',
+                color: '#FFFFFF',
+                imageAlt: 'Error Image'
+            });
+    
+        }
+    });
+
 }
 
 

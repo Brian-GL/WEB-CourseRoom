@@ -127,15 +127,44 @@
                 <h5 class="modal-title" id="titulo-modal-agregar-curso">Agregar curso</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <div class="container-fluid">
-                    Add rows here
+            <form method="HEAD" id="form-agregar-curso">
+                <div class="modal-body">
+                    <div class="container-fluid g-5">
+                    
+                        <div class="row mt-2">
+                            <div class="col-md-12 form-group">
+                                <label for="nombre-curso" class="form-label">Nombre del curso*</label>
+                                <input type="text" class="form-control fuenteNormal" name="nombre-curso" id="nombre-curso" placeholder="Ingrese el nombre del curso" maxlength="250" minlength="3" required>
+                            </div>
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col-md-12 form-group">
+                                <label for="descripcion-curso" class="form-label">Descripción del curso*</label>
+                                <textarea class="form-control fuenteNormal" name="descripcion-curso" cols="30" rows="10" id="descripcion-curso" placeholder="Ingrese la descripción del curso" maxlength="4000" required></textarea>
+                            </div>
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col-md-12 form-group">
+                                <div class="d-flex justify-content-center mb-4" id="seleccionar-imagen">
+                                    <img id="imagen-seleccionada" class="img-fluid shadow-lg" src="https://storage.needpix.com/thumbs/blank-profile-picture-973460_1280.png" class="rounded img-fluid" alt="Imagen de curso"/>
+                                </div>
+                                <div class="d-flex justify-content-center">
+                                    <div class="btn btn-rounded tercer-color-letra tercer-color-fondo">
+                                        <label class="form-label m-1 fuenteNormal" for="imagen">Cambiar imagen</label>
+                                        <input type="file" class="form-control d-none fuenteNormal" id="imagen" accept="image/png, imagejpg, image/jpeg"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn segundo-color-letra segundo-color-fondo" data-bs-dismiss="modal">❌ Cancelar</button>
-                <button type="button" class="btn tercer-color-letra tercer-color-fondo" id="crear-curso">✅ Crear curso</button>
-            </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn segundo-color-letra segundo-color-fondo" data-bs-dismiss="modal">❌ Cancelar</button>
+                    <button type="submit" class="btn tercer-color-letra tercer-color-fondo" id="crear-curso">✅ Crear curso</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
