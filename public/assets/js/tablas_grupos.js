@@ -34,7 +34,6 @@ dataTableGrupoArchivosCompartidos = $("#table-archivos-compartidos").DataTable({
     ],
     columnDefs:[
         {className: "text-center fuenteNormal segundo-color-letra", defaultContent: "-", targets: "_all"},
-        {className: "span-detalle", target: 6},
     ],
     rowCallback: (row) => {
         $(row).css('color', SegundoColorLetra);
@@ -105,7 +104,7 @@ dataTableGrupoMiembros = $("#table-miembros").DataTable({
     scrollX: false,
     language: {
         search: "_INPUT_",
-        searchPlaceholder: "Buscar algún archivo compartido...",
+        searchPlaceholder: "Buscar algún integrante...",
         paginate: {
             "first":      "Primero",
             "last":       "Último",
@@ -126,7 +125,6 @@ dataTableGrupoMiembros = $("#table-miembros").DataTable({
     ],
     columnDefs:[
         {className: "text-center fuenteNormal segundo-color-letra", defaultContent: "-", targets: "_all"},
-        {className: "fechaRegistro", target: 3},
     ],
     rowCallback: (row) => {
         $(row).css('color', SegundoColorLetra);
@@ -146,7 +144,7 @@ dataTableGrupoMiembros = $("#table-miembros").DataTable({
     scrollX: false,
     language: {
         search: "_INPUT_",
-        searchPlaceholder: "Buscar algún archivo compartido...",
+        searchPlaceholder: "Buscar algún integrante...",
         paginate: {
             "first":      "Primero",
             "last":       "Último",
@@ -168,10 +166,12 @@ dataTableGrupoMiembros = $("#table-miembros").DataTable({
     columnDefs:[
         {className: "text-center fuenteNormal segundo-color-letra", defaultContent: "-", targets: "_all"},
         {className: "fechaRegistro", target: 3},
+        {className: "info-usuario", target: 1},
     ],
     data: filas,
     createdRow: (row, data) => {
         $('.segundo-color-letra',row).css('color', SegundoColorLetra);
+        $('.info-usuario', row).html('<div class="container"><div class="row"><div class="col-5"><img class="img-fluid" alt="Imagen del usuario" src="'.concat(assetsRouteUsuarios,'/',data.imagen,'"/></div><div class="col-7 p-0"><p class="fuenteNormal">',data.nombreCompleto,'</p></div></div></div>'));
         let fechaRegistro = data.fechaRegistro.substring(0, data.fechaRegistro.length -1 );
         $('.fechaRegistro', row).text(dayjs(fechaRegistro).format('dddd DD MMM YYYY h:mm A'));
     }
@@ -188,6 +188,8 @@ dataTableGrupoTareasPendientes = $("#table-tareas-pendientes").DataTable({
     pagingType: 'full_numbers',
     dom: 'rtp',
     language: {
+        search: "_INPUT_",
+        searchPlaceholder: "Buscar alguna tarea pendiente...",
         paginate: {
             "first":      "Primero",
             "last":       "Último",
@@ -232,6 +234,8 @@ dataTableGrupoTareasPendientes = $("#table-tareas-pendientes").DataTable({
     pagingType: 'full_numbers',
     dom: 'rtp',
     language: {
+        search: "_INPUT_",
+        searchPlaceholder: "Buscar alguna tarea pendiente...",
         paginate: {
             "first":      "Primero",
             "last":       "Último",
