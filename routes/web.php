@@ -217,6 +217,7 @@ Route::post('/cursos/desempenoobtener',  [CursosController::class, 'curso_desemp
 Route::post('/cursos/estudianteregistrar',  [CursosController::class, 'curso_estudianteregistrar'])->middleware('session.token');
 Route::post('/cursos/estudiantedetalleobtener',  [CursosController::class, 'curso_estudiantedetalleobtener'])->middleware('session.token');
 Route::put('/cursos/finalizaractualizar',  [CursosController::class, 'curso_finalizaractualizar'])->middleware('session.token');
+Route::post('/cursos/materialesobtener',  [CursosController::class, 'cursomateriales_obtener'])->middleware('session.token');
 Route::post('/cursos/materialregistrar',  [CursosController::class, 'curso_materialregistrar'])->middleware('session.token');
 Route::delete('/cursos/materialremover',  [CursosController::class, 'curso_materialremover'])->middleware('session.token');
 Route::post('/cursos/mensajeregistrar',  [CursosController::class, 'curso_mensajeregistrar'])->middleware('session.token');

@@ -27,6 +27,52 @@ class CursosController extends Controller
 
     #region AJAX
 
+    public function cursomateriales_obtener(Request $request)
+    {
+        try {
+
+            $validator = Validator::make($request->all(), $rules = [
+                'IdCurso' => ['required'],
+            ], $messages = [
+                'required' => 'El campo :attribute es requerido'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
+            } else {
+
+                $url = env('COURSEROOM_API');
+
+                $idCurso = $request->integer('IdCurso');
+
+                if($url != ''){
+
+                    $response = Http::withHeaders([
+                        'Authorization' => env('COURSEROOM_API_KEY'),
+                    ])->post($url.'/api/cursos/materialesobtener', [
+                        'IdCurso' => $idCurso,
+                    ]);
+
+                    if ($response->ok()){
+
+                        $result = json_decode($response->body());
+
+                        return response()->json(['code' => 200 , 'data' => $result], 200);
+
+                    } else{
+                        return response()->json(['code' => 400 , 'data' => $response->body()], 200);
+                    }
+
+                } else{
+                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
+                }
+            }
+
+        } catch (\Throwable $th) {
+            return response()->json(['code' => 500 , 'data' => $th->getMessage()], 200);
+        }
+    }
+
     public function curso_registrar(Request $request)
     {
         try {
@@ -170,7 +216,6 @@ class CursosController extends Controller
 
             $validator = Validator::make($request->all(), $rules = [
                 'IdCurso' => ['required'],
-                'Activo' => ['required']
             ], $messages = [
                 'required' => 'El campo :attribute es requerido'
             ]);
@@ -181,23 +226,15 @@ class CursosController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idCurso = $request -> input('IdCurso');
-                $activo = $request -> input('Activo');
-                $idGrupo = input('IdGrupo');
-                $nombre = input('Nombre');
-                $imagen = input('Imagen');
-                $numeroIntegrantes = input('NumeroIntegrantes');
+                $idCurso = $request->integer('IdCurso');
+
                 if($url != ''){
 
                     $response = Http::withHeaders([
                         'Authorization' => env('COURSEROOM_API_KEY'),
                     ])->post($url.'/api/cursos/grupos', [
                         'IdCurso' => $idCurso,
-                        'Activo' => $activo,
-                        'IdGrupo' => $idGrupo,
-                        'Nombre' => $nombre,
-                        'Imagen' => $imagen,
-                        'NumeroIntegrantes' => $numeroIntegrantes
+                        'Activo' => null,
                     ]);
 
                     if ($response->ok()){
@@ -207,7 +244,7 @@ class CursosController extends Controller
                         return response()->json(['code' => 200 , 'data' => $result], 200);
 
                     } else{
-                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                        return response()->json(['code' => 400 , 'data' => $response->body()], 200);
                     }
 
                 } else{
@@ -398,42 +435,14 @@ class CursosController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idCurso = $request -> input('IdCurso');
-                $idDesempeno = input('IdDesempeno');
-                $idUsuario = input('IdUsuario');
-                $nombreCompleto = input('NombreCompleto');
-                $imagen = input('Imagen');
-                $idTarea = input('IdTarea');
-                $tarea = input('Tarea');
-                $calificacion = input('Calificacion');
-                $promedioCurso = input('PromedioCurso');
-                $predeccionPromedioCurso = input('PrediccionPromedioCurso');
-                $rumboPromedioCurso = input('RumboPromedioCurso');
-                $puntualidadCurso = input('PuntualidadCurso');
-                $prediccionPuntualidadCurso = input('PrediccionPuntualidad');
-                $rumboPuntualidadCurso = input('RumboPuntualidadCurso');
-                $fechaRegistro = input('FechaRegistro');
+                $idCurso = $request->integer('IdCurso');
                 
                 if($url != ''){
 
                     $response = Http::withHeaders([
                         'Authorization' => env('COURSEROOM_API_KEY'),
                     ])->post($url.'/api/cursos/desempenoobtener', [
-                        'IdCurso' => $idCurso,
-                        'IdDesempeno' => $idDesempeno,
-                        'IdUsuario' => $idUsuario,
-                        'NombreCompleto' => $nombreCompleto,
-                        'Imagen' => $imagen,
-                        'IdTarea' => $idTarea,
-                        'Tarea' => $tarea,
-                        'Calificacion' => $calificacion,
-                        'PromedioCurso' => $promedioCurso,
-                        'PrediccionPromedioCurso' => $predeccionPromedioCurso,
-                        'RumboPromediocurso' => $rumboPromedioCurso,
-                        'PuntualidadCurso' => $puntualidadCurso,
-                        'PrediccionPuntualidadCurso' => $prediccionPuntualidadCurso,
-                        'RumboPuntualidadCurso' => $rumboPuntualidadCurso,
-                        'FechaRegistro' => $fechaRegistro
+                        'IdCurso' => $idCurso
                     ]);
 
                     if ($response->ok()){
@@ -443,7 +452,7 @@ class CursosController extends Controller
                         return response()->json(['code' => 200 , 'data' => $result], 200);
 
                     } else{
-                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                        return response()->json(['code' => 400 , 'data' => $response->body()], 200);
                     }
 
                 } else{
@@ -946,25 +955,14 @@ class CursosController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idCurso = $request -> input('IdCurso');
-                $idUsuario = input('IdUsuario');
-                $nombreCompleto = input('NombreCompleto');
-                $imagen = input('Imagen');
-                $fechaRegistro = input('FechaRegistro');
-                $fechaActualizacion = input('FechaActualizacion');
-                $estatus = input('Estatus');
+                $idCurso = $request->integer('IdCurso');
+              
                 if($url != ''){
 
                     $response = Http::withHeaders([
                         'Authorization' => env('COURSEROOM_API_KEY'),
                     ])->post($url.'/api/cursos/estudianteobtener', [
                         'IdCurso' => $idCurso,
-                        'IdUsuario' => $idUsuario,
-                        'NombreCompleto' => $nombreCompleto,
-                        'Imagen' => $imagen,
-                        'FechaRegistro' => $fechaRegistro,
-                        'FechaActualizacion' => $fechaActualizacion,
-                        'Estatus' => $estatus,
                     ]);
 
                     if ($response->ok()){
@@ -974,7 +972,7 @@ class CursosController extends Controller
                         return response()->json(['code' => 200 , 'data' => $result], 200);
 
                     } else{
-                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                        return response()->json(['code' => 400 , 'data' => $response->body()], 200);
                     }
 
                 } else{
@@ -1057,8 +1055,7 @@ class CursosController extends Controller
         try {
 
             $validator = Validator::make($request->all(), $rules = [
-                'IdCurso' => ['required'],
-                'IdProfesor' => ['required']                
+                'IdCurso' => ['required'],          
             ], $messages = [
                 'required' => 'El campo :attribute es requerido'
             ]);
@@ -1070,12 +1067,7 @@ class CursosController extends Controller
                 $url = env('COURSEROOM_API');
 
                 $idCurso = $request -> input('IdCurso');
-                $idProfesor = $request -> input('IdProfesor');
-                $idTarea = input('IdTarea');
-                $tarea = input('Tarea');
-                $fechaRegistro = input('FechaRegistro');
-                $fechaEntrega = input('FechaEntrega');
-                $estatusEntrega = input('EstatusEntrega');
+                $idProfesor = session('IdUsuario');
                 if($url != ''){
 
                     $response = Http::withHeaders([
@@ -1083,11 +1075,6 @@ class CursosController extends Controller
                     ])->post($url.'/api/cursos/profesortareasobtener', [
                         'IdCurso' => $idCurso,
                         'IdProfesor' => $idProfesor,
-                        'IdTarea' => $idTarea,
-                        'Tarea' => $tarea,
-                        'FechaRegistro' => $fechaRegistro,
-                        'FechaEntrega' => $fechaEntrega,
-                        'EstatusEntrega' => $estatusEntrega,
                     ]);
 
                     if ($response->ok()){
@@ -1097,7 +1084,7 @@ class CursosController extends Controller
                         return response()->json(['code' => 200 , 'data' => $result], 200);
 
                     } else{
-                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                        return response()->json(['code' => 400 , 'data' => $response->body()], 200);
                     }
 
                 } else{
@@ -1391,13 +1378,8 @@ class CursosController extends Controller
 
                 $url = env('COURSEROOM_API');
                 
-                $idCurso = $request -> input('IdCurso');
-                $idUsuario = $request -> input('IdUsuario');
-                $idTarea = input('IdTarea');
-                $nombre = input('nombre');
-                $fechaRegistro = input('FechaRegistro');
-                $fechaEntrega = input('FechaEntrega');
-                $fechaEntregada = input('fechaEntregada');
+                $idCurso = $request->integer('IdCurso');
+                $idUsuario = $request->integer('IdUsuario');
                 
                 if($url != ''){
 
@@ -1405,12 +1387,7 @@ class CursosController extends Controller
                         'Authorization' => env('COURSEROOM_API_KEY'),
                     ])->post($url.'/api/cursos/tareasestudianteobtener', [
                         'IdUsuario' => $idUsuario,
-                        'IdCurso' => $idCurso,
-                        'IdTarea' => $idTarea,
-                        'Nombre' => $nombre,
-                        'FechaRegistro' => $fechaRegistro,
-                        'FechaEntrega' => $fechaEntrega,
-                        'FechaEntregada' => $fechaEntregada,                        
+                        'IdCurso' => $idCurso,                   
                     ]);
 
                     if ($response->ok()){
@@ -1420,7 +1397,7 @@ class CursosController extends Controller
                         return response()->json(['code' => 200 , 'data' => $result], 200);
 
                     } else{
-                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                        return response()->json(['code' => 400 , 'data' => $response->body()], 200);
                     }
 
                 } else{
@@ -1608,19 +1585,8 @@ class CursosController extends Controller
 
                 $url = env('COURSEROOM_API');
                 
-                $idCurso = $request -> input('IdCurso');
-                $idUsuario = $request -> input('IdUsuario');                
-                $idDesempeno = input('IdDesempeno');
-                $idTarea = input('IdTarea');
-                $tarea = input('Tarea');
-                $calificacion = input('Calificacion');
-                $promedioCurso = input('PromedioCurso');
-                $prediccionPromedioCurso = input('PrediccionPromedioCurso');
-                $rumboPromedioCurso = input('RumboPromedioCurso');
-                $puntualidadCurso = input('PuntualidadCurso');
-                $prediccionPuntualidadCurso = input('PrediccionPuntualidadCurso');
-                $rumboPuntualidadCurso = input('RumboPuntualidadCurso');
-                $fechaRegistro = input('FechaRegistro');
+                $idCurso = $request->integer('IdCurso');
+                $idUsuario = $request->integer('IdUsuario'); 
                
                 if($url != ''){
 
@@ -1629,17 +1595,6 @@ class CursosController extends Controller
                     ])->post($url.'/api/cursos/estudiantedesempenoobtener', [
                         'IdCurso' => $idCurso,
                         'IdUsuario' => $idUsuario,
-                        'IdDesempeno' => $idDesempeno,
-                        'IdTarea' => $idTarea,
-                        'Tarea' => $tarea,
-                        'Calificacion' => $calificacion,
-                        'PromedioCurso' => $promedioCurso,
-                        'PrediccionPromedioCurso' => $prediccionPromedioCurso,
-                        'RumboPromedioCurso' => $rumboPromedioCurso,
-                        'PuntualidadCurso' => $puntualidadCurso,
-                        'PrediccionPuntualidadCurso' => $prediccionPuntualidadCurso,
-                        'RumboPuntualidadCurso' => $rumboPuntualidadCurso,
-                        'FechaRegistro' => $fechaRegistro,
                     ]);
 
                     if ($response->ok()){
@@ -1649,7 +1604,7 @@ class CursosController extends Controller
                         return response()->json(['code' => 200 , 'data' => $result], 200);
 
                     } else{
-                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                        return response()->json(['code' => 400 , 'data' => $response->body()], 200);
                     }
 
                 } else{
