@@ -99,6 +99,7 @@ Route::put('/grupos/actualizar',  [GruposController::class, 'grupo_actualizar'])
 Route::post('/grupos/mensajes',  [GruposController::class, 'gruposmensajes_obtener'])->middleware('session.token');
 Route::post('/grupos/obtener',  [GruposController::class, 'grupos_obtener'])->middleware('session.token');
 Route::post('/grupos/miembros',  [GruposController::class, 'grupomiembros_obtener'])->middleware('session.token');
+Route::post('/grupos/archivoscompartidos',  [GruposController::class, 'grupoarchivoscompartidos_obtener'])->middleware('session.token');
 Route::post('/grupos/tareaspendientes',  [GruposController::class, 'grupotareaspendientes_obtener'])->middleware('session.token');
 Route::post('/grupos/tareapendientedetalle',  [GruposController::class, 'grupotareapendientedetalle_obtener'])->middleware('session.token');
 Route::put('/grupos/tareapendienteestatus',  [GruposController::class, 'grupotareapendienteestatus_actualizar'])->middleware('session.token');
