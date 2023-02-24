@@ -554,6 +554,94 @@ async function ObtenerTareasPendientes(){
     }
 }
 
+async function grupo_actualizar(){
+
+    try{
+
+        ShowPreloader();
+
+        let formData = new FormData();
+
+        formData.append("IdGrupo", IdGrupo);
+        formData.append("IdCurso", IdCurso);
+        formData.append("Nombre", document.getElementById("nombre-grupo").value);
+        formData.append("Descripcion", document.getElementById("descripcion-grupo").value);
+        formData.append("Imagen", document.getElementById("imagen-grupo").value);
+
+        let response = await axios({
+            url: '/grupos/actualizar',
+            baseURL: BaseURL,
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
+            },
+            data: formData
+        });
+
+        HidePreloader();
+
+        let resultado = response.data;
+
+        switch (resultado.code) {
+            case 200:{
+                Swal.fire({
+                    title: 'Actualización de grupo',
+                    text: resultado.data,
+                    imageUrl: BaseURL.concat("/assets/templates/HappyOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    imageAlt: 'Ok Image',
+                    background: '#000000',
+                    color: '#FFFFFF'
+                });
+            }
+            break;
+            case 500:{
+                Swal.fire({
+                    title: '¡Error!',
+                    text: resultado.data,
+                    imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    background: '#000000',
+                    color: '#FFFFFF',
+                    imageAlt: 'Error Image'
+                });
+            }
+            break;
+            default:{
+                Swal.fire({
+                    title: '¡Alerta!',
+                    text: resultado.data,
+                    imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    imageAlt: 'Alert Image',
+                    background: '#000000',
+                    color: '#FFFFFF'
+                });
+            }
+            break;
+        }
+    }
+    catch(ex){
+
+        HidePreloader();
+
+        Swal.fire({
+            title: '¡Error!',
+            text: ex,
+            imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+            imageWidth: 100,
+            imageHeight: 123,
+            background: '#000000',
+            color: '#FFFFFF',
+            imageAlt: 'Error Image'
+        });
+    }
+
+}
+
 //#endregion
 
 //#region Events
