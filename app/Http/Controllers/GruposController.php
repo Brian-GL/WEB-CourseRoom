@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Http;
+use App\Models\GruposArchivosMensajes;
 
 class GruposController extends Controller
 {
@@ -158,8 +159,6 @@ class GruposController extends Controller
             return response()->json(['code' => 500 , 'data' => $th->getMessage()], 200);
         }
     }
-
-    
 
     public function grupomiembros_obtener(Request $request){
         try {
@@ -633,7 +632,16 @@ class GruposController extends Controller
                 $idCurso = $request->integer('IdCurso');
                 $nombre = $request->integer('Nombre');
                 $descripcion = input('Descripcion');
-                $imagen = input('Imagen');
+                
+                $Base64Archivo = null;
+                if($request->has('Base64Archivo')){
+                    $Base64Archivo = $request->input('Base64Archivo');
+                }
+                
+                $filename = null;
+                if($request->hasFile('Archivo')) {
+                    $filename = time().'_'.$request->file('Archivo')->getClientOriginalName();
+                }
 
                 if($url != ''){
 
@@ -643,12 +651,34 @@ class GruposController extends Controller
                         'IdCurso' => $idCurso,
                         'Nombre' => $nombre,
                         'Descripcion' => $descripcion,
-                        'Imagen' => $imagen
+                        'Imagen' => $filename
                     ]);
 
                     if ($response->ok()){
 
                         $result = json_decode($response->body());
+
+                        if($result->codigo > 0){
+                            if($filename != null){
+
+                                $file = $request->file('Archivo');
+
+                                // File extension
+                                $extension = $file->getClientOriginalExtension();
+
+                                //Guardar imagen en mongo si no esta vácia:
+                                $mongoCollection = new GruposImagenes;
+
+                                $mongoCollection->idGrupo = $result->codigo;
+                                $mongoCollection->archivo = $Base64Archivo;
+                                $mongoCollection->extension = $extension;
+
+                                $mongoCollection->save();
+
+                                //Guardar imagen en storage:
+                                Storage::putFileAs('grupos', $file, $filename);
+                            }
+                        }
 
                         return response()->json(['code' => 200 , 'data' => $result], 200);
 
@@ -888,7 +918,16 @@ class GruposController extends Controller
                 $idGrupo = $request->integer('IdGrupo');
                 $idUsuarioEmisor = $request->integer('IdUsuarioEmisor');
                 $mensaje = $request->integer('Mensaje');
-                $archivo = input('Archivo');
+                
+                $Base64Archivo = null;
+                if($request->has('Base64Archivo')){
+                    $Base64Archivo = $request->input('Base64Archivo');
+                }
+                
+                $filename = null;
+                if($request->hasFile('Archivo')) {
+                    $filename = time().'_'.$request->file('Archivo')->getClientOriginalName();
+                }
 
                 if($url != ''){
 
@@ -898,12 +937,34 @@ class GruposController extends Controller
                         'IdGrupo' => $idGrupo,
                         'IdUsuarioEmisor' => $ddUsuarioEmisor,
                         'Mensaje' => $mensaje,
-                        'Archivo' => $archivo
+                        'Archivo' => $filename
                     ]);
 
                     if ($response->ok()){
 
                         $result = json_decode($response->body());
+
+                        if($result->codigo > 0){
+                            if($filename != null){
+
+                                $file = $request->file('Archivo');
+
+                                // File extension
+                                $extension = $file->getClientOriginalExtension();
+
+                                //Guardar imagen en mongo si no esta vácia:
+                                $mongoCollection = new GruposArchivosMensajes;
+
+                                $mongoCollection->idMensaje = $result->codigo;
+                                $mongoCollection->archivo = $Base64Archivo;
+                                $mongoCollection->extension = $extension;
+
+                                $mongoCollection->save();
+
+                                //Guardar imagen en storage:
+                                Storage::putFileAs('grupos', $file, $filename);
+                            }
+                        }
 
                         return response()->json(['code' => 200 , 'data' => $result], 200);
 

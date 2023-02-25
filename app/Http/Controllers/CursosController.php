@@ -484,8 +484,6 @@ class CursosController extends Controller
 
 	            $idCurso = $request -> input('IdCurso');
                 $idUsuario = $request -> input('IdUsuario');
-                $codigo = input('Codigo');
-                $mensaje = input('Mensaje');
 
                 if($url != ''){
 
@@ -494,8 +492,6 @@ class CursosController extends Controller
                     ])->post($url.'/api/cursos/estudianteregistrar', [
                         'IdCurso' => $idCurso,
                         'IdUsuario' => $idUsuario,
-                        'Codigo' => $codigo,
-                        'Mensaje' => $mensaje,
                     ]);
 
                     if ($response->ok()){
@@ -505,7 +501,7 @@ class CursosController extends Controller
                         return response()->json(['code' => 200 , 'data' => $result], 200);
 
                     } else{
-                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                        return response()->json(['code' => 400 , 'data' => $response->body()], 200);
                     }
 
                 } else{
@@ -613,8 +609,6 @@ class CursosController extends Controller
 
                 $idCurso = $request -> input ('IdCurso');
                 $idProfesor = $request -> input ('Idprofesor');
-                $codigo  = input ('Codigo');
-                $mensaje  = input ('Mensaje');
 
                 if($url != ''){
 
@@ -623,8 +617,6 @@ class CursosController extends Controller
                     ])->put($url.'/api/cursos/finalizaractualizar', [
                         'IdCurso' => $idCurso,
                         'IdProfesor' => $idProfesor,
-                        'Codigo' => $codigo,
-                        'Mensaje' => $mensaje
                     ]);
 
                     if ($response->ok()){

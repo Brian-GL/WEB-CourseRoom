@@ -70,11 +70,11 @@ for(let elemento of elementos){
     elemento.style.setProperty('background-color',SegundoColor,'important');
 }
 
-document.addEventListener('DOMContentLoaded',  ObtenerMisgrupos, false);
+document.addEventListener('DOMContentLoaded',  ObtenerMisGrupos, false);
 
 //#region Methods
 
-async function ObtenerMisgrupos(){
+async function ObtenerMisGrupos(){
     try{
 
         ShowPreloader();
