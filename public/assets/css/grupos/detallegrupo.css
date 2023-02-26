@@ -1,0 +1,158 @@
+.titulado{
+    margin-bottom: 0 !important;
+}
+
+#mensajes{
+    max-height: 71vh;
+    height: 71vh;
+}
+
+#mensajear-grupo{
+    overflow: hidden;
+}
+
+#contenido-grupo{
+    max-height: 90%;
+    height: 87%;
+    overflow-y: scroll !important;
+}
+
+.mask-custom {
+    background: rgba(24, 24, 16, 0.2) !important;
+    border-radius: 2em;
+    backdrop-filter: blur(15px);
+    border: 2px solid rgba(255, 255, 255, 0.05) !important;
+    background-clip: padding-box;
+    box-shadow: 10px 10px 10px rgba(46, 54, 68, 0.03) !important;
+    color: white !important;
+}
+
+#contenedor {
+    --padding: 1.25rem;
+    padding-left: var(--padding);
+    padding-right: var(--padding);
+}
+
+table {
+    width: 100% !important;
+}
+
+#table-miembros_filter {
+    display: grid !important;
+    place-content: end !important;
+    padding-bottom: 1rem !important;
+}
+
+#table-miembros_filter input {
+    width: 560px !important;
+    height: 2rem !important;
+}
+
+#table-miembros_paginate {
+    display: grid !important;
+    place-content: center !important;
+}
+
+#table-archivos-compartidos_filter {
+    display: grid !important;
+    place-content: end !important;
+    padding-bottom: 1rem !important;
+}
+
+#table-archivos-compartidos_filter input {
+    width: 560px !important;
+    height: 2rem !important;
+}
+
+#table-archivos-compartidos_paginate {
+    display: grid !important;
+    place-content: center !important;
+}
+
+#table-tareas-pendientes_filter {
+    display: grid !important;
+    place-content: end !important;
+    padding-bottom: 1rem !important;
+}
+
+#table-tareas-pendientes_filter input {
+    width: 560px !important;
+    height: 2rem !important;
+}
+
+#table-tareas-pendientes_paginate {
+    display: grid !important;
+    place-content: center !important;
+}
+
+.span-detalle {
+    cursor: pointer;
+}
+
+@media (max-width:660px) {
+    #table-miembros_filter input {
+        width: 500px !important;
+        height: 2rem !important;
+    }
+
+    #table-archivos-compartidos_filter input {
+        width: 500px !important;
+        height: 2rem !important;
+    }
+
+    #table-tareas-pendientes_filter input {
+        width: 500px !important;
+        height: 2rem !important;
+    }
+}
+
+@media (max-width:560px) {
+    #table-miembros_filter input {
+        width: 400px !important;
+        height: 2rem !important;
+    }
+
+    #table-archivos-compartidos_filter input {
+        width: 400px !important;
+        height: 2rem !important;
+    }
+
+    #table-tareas-pendientes_filter input {
+        width: 400px !important;
+        height: 2rem !important;
+    }
+}
+
+@media (max-width:460px) {
+    #table-miembros_filter input {
+        width: 300px !important;
+        height: 2rem !important;
+    }
+
+    #table-archivos-compartidos_filter input {
+        width: 300px !important;
+        height: 2rem !important;
+    }
+
+    #table-tareas-pendientes_filter input {
+        width: 300px !important;
+        height: 2rem !important;
+    }
+}
+
+@media (max-width:360px) {
+    #table-miembros_filter input {
+        width: 200px !important;
+        height: 2rem !important;
+    }
+
+    #table-archivos-compartidos_filter input {
+        width: 200px !important;
+        height: 2rem !important;
+    }
+
+    #table-tareas-pendientes_filter input {
+        width: 200px !important;
+        height: 2rem !important;
+    }
+}

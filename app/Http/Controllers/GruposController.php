@@ -20,6 +20,56 @@ class GruposController extends Controller
         return view('grupos.grupos', compact('DatosUsuario', 'DatosCuenta', 'IdTipoUsuario'));
     }
 
+    public function gruposdetalle_obtener(Request $request)
+    {
+        $DatosGrupo = null;
+        $Mensajes = null;
+        $idGrupo = null;
+        $DatosUsuario = session('DatosUsuario');
+        $DatosCuenta = session('DatosCuenta');
+        $IdTipoUsuario = session('IdTipoUsuario');
+
+        $validator = Validator::make($request->all(), $rules = [
+            'IdGrupo' => ['required']
+        ], $messages = [
+            'required' => 'El campo :attribute es requerido'
+        ]);
+
+        if (!$validator->fails()) {
+            $url = env('COURSEROOM_API');
+
+            $idGrupo = $request->integer('IdGrupo');
+
+            if($url != ''){
+
+                //Obtener datos grupo:
+                $response = Http::withHeaders([
+                    'Authorization' => env('COURSEROOM_API_KEY'),
+                ])->post($url.'/api/grupos/detalleobtener', [
+                    'IdGrupo' => $idGrupo
+                ]);
+
+                if ($response->ok()){
+                    $DatosGrupo = json_decode($response->body());
+                } 
+
+                //Obtener mensajes grupo:
+                $response = Http::withHeaders([
+                    'Authorization' => env('COURSEROOM_API_KEY'),
+                ])->post($url.'/api/grupos/mensajes', [
+                    'IdGrupo' => $idGrupo
+                ]);
+
+                if ($response->ok()){
+
+                    $Mensajes = json_decode($response->body());
+                } 
+            } 
+        }
+            
+        return view('grupos.detallegrupo', compact('DatosUsuario', 'DatosCuenta', 'IdTipoUsuario', 'DatosGrupo','idGrupo', 'Mensajes'));
+    }
+
     #endregion
 
     #region AJAX
@@ -83,8 +133,7 @@ class GruposController extends Controller
         try {
 
             $validator = Validator::make($request->all(), $rules = [
-                'IdGrupo' => ['required'],
-                'UltimoMensaje' => ['required']
+                'IdGrupo' => ['required']
             ], $messages = [
                 'required' => 'El campo :attribute es requerido'
             ]);
@@ -96,15 +145,13 @@ class GruposController extends Controller
                 $url = env('COURSEROOM_API');
 
                 $idGrupo = $request->integer('IdGrupo');
-                $ultimoMensaje = $request->integer('UltimoMensaje');
 
                 if($url != ''){
 
                     $response = Http::withHeaders([
                         'Authorization' => env('COURSEROOM_API_KEY'),
                     ])->post($url.'/api/grupos/mensajes', [
-                        'IdGrupo' => $idGrupo,
-                        'UltimoMensaje' => $ultimoMensaje
+                        'IdGrupo' => $idGrupo
                     ]);
 
                     if ($response->ok()){
@@ -114,7 +161,7 @@ class GruposController extends Controller
                         return response()->json(['code' => 200 , 'data' => $result], 200);
 
                     } else{
-                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                        return response()->json(['code' => 400 , 'data' => $response->body()], 200);
                     }
 
                 } else{
@@ -829,52 +876,6 @@ class GruposController extends Controller
                         'IdArchivoCompartido' => $idArchivoCompartido,
                         'IdGrupo' => $idGrupo,
                         'IdUsuario' => $idUsuario
-                    ]);
-
-                    if ($response->ok()){
-
-                        $result = json_decode($response->body());
-
-                        return response()->json(['code' => 200 , 'data' => $result], 200);
-
-                    } else{
-                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
-                    }
-
-                } else{
-                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
-                }
-            }
-
-        } catch (\Throwable $th) {
-            return response()->json(['code' => 500 , 'data' => $th->getMessage()], 200);
-        }
-    }
-
-    public function gruposdetalle_obtener(Request $request)
-    {
-        try {
-
-            $validator = Validator::make($request->all(), $rules = [
-                'IdGrupo' => ['required']
-            ], $messages = [
-                'required' => 'El campo :attribute es requerido'
-            ]);
-
-            if ($validator->fails()) {
-                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
-            } else {
-
-                $url = env('COURSEROOM_API');
-
-                $idGrupo = $request->integer('IdGrupo');
-
-                if($url != ''){
-
-                    $response = Http::withHeaders([
-                        'Authorization' => env('COURSEROOM_API_KEY'),
-                    ])->post($url.'/api/grupos/detalleobtener', [
-                        'IdGrupo' => $idGrupo
                     ]);
 
                     if ($response->ok()){

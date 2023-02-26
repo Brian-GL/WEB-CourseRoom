@@ -95,6 +95,7 @@ Route::post('/chats/obtener',  [ChatsController::class, 'chats_obtener'])->middl
 
 Route::get('/mis-grupos',  [GruposController::class, 'grupos'])->name('grupos.inicio')->middleware('session.token');
 
+Route::post('/grupos/detalle',  [GruposController::class, 'gruposdetalle_obtener'])->middleware('session.token');
 Route::post('/grupos/actualizar',  [GruposController::class, 'grupo_actualizar'])->middleware('session.token');
 Route::post('/grupos/mensajes',  [GruposController::class, 'gruposmensajes_obtener'])->middleware('session.token');
 Route::post('/grupos/obtener',  [GruposController::class, 'grupos_obtener'])->middleware('session.token');
@@ -111,7 +112,6 @@ Route::post('/grupos/registrar',  [GruposController::class, 'grupos_registrar'])
 Route::delete('/grupos/remover',  [GruposController::class, 'grupos_remover'])->middleware('session.token');
 Route::put('/grupos/abandonaractualizar',  [GruposController::class, 'gruposabandonar_actualizar'])->middleware('session.token');
 Route::delete('/grupos/archivocompartidoremover',  [GruposController::class, 'gruposarchivocompartido_remover'])->middleware('session.token');
-Route::post('/grupos/detalleobtener',  [GruposController::class, 'gruposdetalle_obtener'])->middleware('session.token');
 Route::post('/grupos/mensajeregistrar',  [GruposController::class, 'gruposmensaje_registrar'])->middleware('session.token');
 Route::delete('/grupos/mensajeremover',  [GruposController::class, 'gruposmensaje_remover'])->middleware('session.token');
 
