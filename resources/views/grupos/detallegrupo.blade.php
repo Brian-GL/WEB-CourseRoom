@@ -1,7 +1,7 @@
 @php
-    
 use Carbon\Carbon;
-
+$max_date = Carbon::now()->addMonths(6)->toDateTimeString();
+$min_date = Carbon::now()->toDateTimeString();
 @endphp
 
 @extends('layouts.home')
@@ -14,11 +14,12 @@ use Carbon\Carbon;
 
 @section('content')
 
-
 @if (!is_null($DatosGrupo))
     <input type="hidden" value="{{ $idGrupo}}" id="id-grupo"/>
+    <input type="hidden" value="{{$DatosGrupo->imagen}}" id="imagen-anterior">
 @else
     <input type="hidden" value="0" id="id-grupo"/>
+    <input type="hidden" value="" id="imagen-anterior">
 @endif
 
 <input type="hidden" value="{{ asset('usuarios/').'/'}}" id="assets-usuarios"/>
@@ -111,7 +112,10 @@ use Carbon\Carbon;
                                     @if (!is_null($DatosGrupo))
                                         <div class="d-block mt-1 mx-2">
                                             <button id="actualizar-grupo" type="button" onclick="ActualizarGrupo()" class="btn btn-lg segundo-color-letra segundo-color-fondo">Actualizar grupo</button>
-                                            <button id="cambiar-imagen" type="button" onclick="CambiarImagen()" class="btn btn-lg primer-color-letra primer-color-fondo">Cambiar Imagen</button>
+                                            <div class="btn btn-rounded tercer-color-letra tercer-color-fondo">
+                                                <label class="form-label m-1 fuenteNormal" for="imagen">Cambiar imagen</label>
+                                                <input type="file" class="form-control d-none fuenteNormal" id="imagen" accept="image/png, imagejpg, image/jpeg"/>
+                                            </div>
                                         </div>
                                     @endif
                                 </div>
@@ -168,7 +172,6 @@ use Carbon\Carbon;
                                 </div>
                             </div>
                     
-                           
                             <div class="row primer-color-fondo rounded-3 shadow-lg" id="mensajear-grupo">
                                 <div class="col-md-12 my-2">
                                     <div class="row g-5">
@@ -240,7 +243,55 @@ use Carbon\Carbon;
     </div>
 </div>
 
+<!-- Modal Crear Tarea Pendiente -->
+<div class="modal fade text-center" id="agregar-tarea-pendiente-modal" tabindex="-1" role="dialog" aria-labelledby="titulo-modal-agregar-tarea-pendiente" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content primer-color-letra primer-color-fondo">
+            <div class="modal-header">
+                <h5 class="modal-title" id="titulo-modal-agregar-tarea-pendiente">Agregar tarea pendiente</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="HEAD" id="form-agregar-tarea-pendiente">
+                <div class="modal-body">
+                    <div class="container-fluid g-5">
+                    
+                        <div class="row mt-2">
+                            <div class="col-md-12 form-group">
+                                <label for="nombre-tarea-pendiente" class="form-label">Nombre*</label>
+                                <input type="text" class="form-control fuenteNormal tercer-color-fondo tercer-color-letra" name="nombre-tarea-pendiente" id="nombre-tarea-pendiente" placeholder="Ingrese el nombre de la tarea pendiente" maxlength="150" minlength="3" required>
+                            </div>
+                        </div>
 
+                        <div class="row mt-4">
+                            <div class="col-md-12 form-group">
+                                <label for="descripcion-tarea-pendiente" class="form-label">Descripción</label>
+                                <textarea class="form-control fuenteNormal primer-color-fondo primer-color-letra" name="descripcion-tarea-pendiente" cols="30" rows="10" id="descripcion-curso" placeholder="Ingrese la descripción de la tarea pendiente" maxlength="4000" required></textarea>
+                            </div>
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col-md-12 form-group">
+                                <label for="fecha-finalizacion-tarea-pendiente" class="form-label">Fecha de finalización</label>
+                                <input class="fuenteNormal form-control tercer-color-fondo tercer-color-letra" type="datetime" name="fecha-finalizacion-tarea-pendiente" id="fecha-finalizacion-tarea-pendiente" min="{{$min_date}}" max="{{$max_date}}" required>
+                            </div>
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col-md-12 form-group">
+                                <label for="miembro-a-cargo-tarea-pendiente" class="form-label">Miembro a cargo</label>
+                                <select class="form-select fuenteNormal form-select-lg primer-color-fondo primer-color-letra" name="miembro-a-cargo-tarea-pendiente" id="miembro-a-cargo-tarea-pendiente" required></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn segundo-color-letra segundo-color-fondo" data-bs-dismiss="modal">❌ Cancelar</button>
+                    <button type="submit" class="btn tercer-color-letra tercer-color-fondo" id="crear-curso">✅ Crear tarea pendiente</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 @stop
 

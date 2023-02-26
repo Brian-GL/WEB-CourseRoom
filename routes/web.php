@@ -101,6 +101,7 @@ Route::post('/grupos/mensajes',  [GruposController::class, 'gruposmensajes_obten
 Route::post('/grupos/obtener',  [GruposController::class, 'grupos_obtener'])->middleware('session.token');
 Route::post('/grupos/miembros',  [GruposController::class, 'grupomiembros_obtener'])->middleware('session.token');
 Route::post('/grupos/archivoscompartidos',  [GruposController::class, 'grupoarchivoscompartidos_obtener'])->middleware('session.token');
+Route::post('/grupos/archivocompartidoregistrar',  [GruposController::class, 'grupoarchivocompartido_registrar'])->middleware('session.token');
 Route::post('/grupos/tareaspendientes',  [GruposController::class, 'grupotareaspendientes_obtener'])->middleware('session.token');
 Route::post('/grupos/tareapendientedetalle',  [GruposController::class, 'grupotareapendientedetalle_obtener'])->middleware('session.token');
 Route::post('/grupos/tareapendienteestatus',  [GruposController::class, 'grupotareapendienteestatus_actualizar'])->middleware('session.token');

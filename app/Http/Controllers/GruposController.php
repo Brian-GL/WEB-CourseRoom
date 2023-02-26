@@ -79,7 +79,6 @@ class GruposController extends Controller
 
             $validator = Validator::make($request->all(), $rules = [
                 'IdGrupo' => ['required'],
-                'IdCurso' => ['required'],
                 'Nombre' => ['required']
             ], $messages = [
                 'required' => 'El campo :attribute es requerido'
@@ -92,10 +91,16 @@ class GruposController extends Controller
                 $url = env('COURSEROOM_API');
 
                 $idGrupo = $request->integer('IdGrupo');
-                $idCurso = $request->integer('IdCurso');
                 $nombre = $request->string('Nombre')->trim();
                 $descripcion = $request->string('Descripcion')->trim();
-                $imagen = $request->string('Imagen')->trim();
+                
+                $Base64Image = $request->input('Base64Image');
+                $ImagenAnterior = $request->string('ImagenAnterior');
+
+                $filename = $ImagenAnterior;
+                if($request->hasFile('Imagen')) {
+                    $filename = time().'_'.$request->file('Imagen')->getClientOriginalName();
+                }
 
                 if($url != ''){
 
@@ -106,17 +111,39 @@ class GruposController extends Controller
                         'IdCurso' => $idCurso,
                         'Nombre' => $nombre,
                         'Descripcion' => $descripcion,
-                        'Imagen' => $imagen
+                        'Imagen' => $filename
                     ]);
 
                     if ($response->ok()){
 
                         $result = json_decode($response->body());
 
+                        //Actualizar imagen
+                        if($filename != $ImagenAnterior){
+
+                            $file = $request->file('Imagen');
+
+                            // File extension
+                            $extension = $file->getClientOriginalExtension();
+
+                            //Actualizar imagen en mongo si no esta vácia:
+                            $mongoImagenes = GruposImagenes::where('idGrupo', $idGrupo)->first();
+
+                            if(!is_null($mongoImagenes)){
+                                $mongoImagenes->update(
+                                    ['imagen' => $Base64Image,
+                                    'extension' => $extension]);
+                            }
+
+                            Storage::delete('grupos/'.$ImagenAnterior);
+                            //Guardar imagen en storage:
+                            Storage::putFileAs('grupos', $file, $filename);
+                        }
+
                         return response()->json(['code' => 200 , 'data' => $result], 200);
 
                     } else{
-                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                        return response()->json(['code' => 400 , 'data' => $response->body()], 200);
                     }
 
                 } else{
@@ -606,9 +633,10 @@ class GruposController extends Controller
 
             $validator = Validator::make($request->all(), $rules = [
                 'IdGrupo' => ['required'],
-                'IdUsuarioEmisor' => ['required'],
                 'IdUsuarioReceptor' => ['required'],
-                'Nombre' => ['required']
+                'Nombre' => ['required'],
+                'Descripcion' => ['required'],
+                'FechaFinalizacion' => ['required']
             ], $messages = [
                 'required' => 'El campo :attribute es requerido'
             ]);
@@ -620,7 +648,7 @@ class GruposController extends Controller
                 $url = env('COURSEROOM_API');
 
                 $idGrupo = $request->integer('IdGrupo');
-                $idUsuarioEmisor = $request->integer('IdUsuarioEmisor');
+                $idUsuario = session('IdUsuario');
                 $idUsuarioReceptor = $request->integer('IdUsuarioReceptor');
                 $nombre = $request->string('Nombre')->trim();
                 $descripcion = $request->string('Descripcion')->trim();
@@ -633,7 +661,7 @@ class GruposController extends Controller
                     ])->post($url.'/api/grupos/tareapendienteregistrar', [
                         'IdGrupo' => $idGrupo,
                         'IdUsuarioEmisor' => $idUsuario,
-                        'idUsuarioReceptor' => $idUsuarioReceptor,
+                        'IdUsuarioReceptor' => $idUsuarioReceptor,
                         'Nombre' => $nombre,
                         'Descripcion' => $descripcion,
                         'FechaFinalizacion' => $fechaFinalizacion
@@ -646,7 +674,7 @@ class GruposController extends Controller
                         return response()->json(['code' => 200 , 'data' => $result], 200);
 
                     } else{
-                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                        return response()->json(['code' => 400 , 'data' => $response->body()], 200);
                     }
 
                 } else{
@@ -846,6 +874,91 @@ class GruposController extends Controller
         }
     }
 
+    public function grupoarchivocompartido_registrar(Request $request)
+    {
+        try {
+
+            $validator = Validator::make($request->all(), $rules = [
+                'IdGrupo' => ['required'],
+                'Archivo' => ['required'],
+                'NombreArchivo' => ['required'],
+            ], $messages = [
+                'required' => 'El campo :attribute es requerido'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
+            } else {
+
+                $url = env('COURSEROOM_API');
+                
+                $idGrupo = $request->integer('IdGrupo');
+                $idUsuario = session('IdUsuario');
+                $nombreArchivo = $request->string('NombreArchivo');
+                
+                $Base64Archivo = null;
+                if($request->has('Base64Archivo')){
+                    $Base64Archivo = $request->input('Base64Archivo');
+                }
+                
+                $filename = null;
+                if($request->hasFile('Archivo')) {
+                    $filename = time().'_'.$request->file('Archivo')->getClientOriginalName();
+                }
+
+                if($url != ''){
+
+                    $response = Http::withHeaders([
+                        'Authorization' => env('COURSEROOM_API_KEY'),
+                    ])->post($url.'/api/grupos/archivocompartido', [
+                        'IdGrupo' => $idGrupo,
+                        'IdUsuario' => $idUsuario,
+                        'NombreArchivo' => $nombreArchivo,
+                        'Archivo' => $filename
+                    ]);
+
+                    if ($response->ok()){
+
+                        $result = json_decode($response->body());
+
+                        if($result->codigo > 0){
+                            if($filename != null){
+
+                                $file = $request->file('Archivo');
+
+                                // File extension
+                                $extension = $file->getClientOriginalExtension();
+
+                                //Guardar imagen en mongo si no esta vácia:
+                                $mongoCollection = new GrupoArchivosCompartidos;
+
+                                $mongoCollection->idArchivoCompartido = $result->codigo;
+                                $mongoCollection->archivo = $Base64Archivo;
+                                $mongoCollection->extension = $extension;
+
+                                $mongoCollection->save();
+
+                                //Guardar imagen en storage:
+                                Storage::putFileAs('grupos', $file, $filename);
+                            }
+                        }
+
+                        return response()->json(['code' => 200 , 'data' => $result], 200);
+
+                    } else{
+                        return response()->json(['code' => 400 , 'data' => $response->body()], 200);
+                    }
+
+                } else{
+                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
+                }
+            }
+
+        } catch (\Throwable $th) {
+            return response()->json(['code' => 500 , 'data' => $th->getMessage()], 200);
+        }
+    }
+
     public function gruposarchivocompartido_remover(Request $request)
     {
         try {
@@ -903,8 +1016,7 @@ class GruposController extends Controller
         try {
 
             $validator = Validator::make($request->all(), $rules = [
-                'IdCurso' => ['required'],
-                'IdUsuarioEmisor' => ['required'],
+                'IdGrupo' => ['required'],
                 'Mensaje' => ['required']
             ], $messages = [
                 'required' => 'El campo :attribute es requerido'
@@ -917,7 +1029,7 @@ class GruposController extends Controller
                 $url = env('COURSEROOM_API');
                 
                 $idGrupo = $request->integer('IdGrupo');
-                $idUsuarioEmisor = $request->integer('IdUsuarioEmisor');
+                $idUsuarioEmisor = session('IdUsuario');
                 $mensaje = $request->integer('Mensaje');
                 
                 $Base64Archivo = null;
@@ -936,7 +1048,7 @@ class GruposController extends Controller
                         'Authorization' => env('COURSEROOM_API_KEY'),
                     ])->post($url.'/api/grupos/mensajeregistrar', [
                         'IdGrupo' => $idGrupo,
-                        'IdUsuarioEmisor' => $ddUsuarioEmisor,
+                        'IdUsuarioEmisor' => $idUsuarioEmisor,
                         'Mensaje' => $mensaje,
                         'Archivo' => $filename
                     ]);
@@ -970,7 +1082,7 @@ class GruposController extends Controller
                         return response()->json(['code' => 200 , 'data' => $result], 200);
 
                     } else{
-                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                        return response()->json(['code' => 400 , 'data' => $response->body()], 200);
                     }
 
                 } else{

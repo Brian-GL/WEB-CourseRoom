@@ -126,7 +126,7 @@ async function Actualizar(base64Image, file){
              imageAlt: 'Error Image'
          });
      }
- }
+}
 
 
 //#endregion
