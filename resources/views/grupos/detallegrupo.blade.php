@@ -265,7 +265,7 @@ $min_date = Carbon::now()->toDateTimeString();
                         <div class="row mt-4">
                             <div class="col-md-12 form-group">
                                 <label for="descripcion-tarea-pendiente" class="form-label">Descripción</label>
-                                <textarea class="form-control fuenteNormal primer-color-fondo primer-color-letra" name="descripcion-tarea-pendiente" cols="30" rows="10" id="descripcion-curso" placeholder="Ingrese la descripción de la tarea pendiente" maxlength="4000" required></textarea>
+                                <textarea class="form-control fuenteNormal primer-color-fondo primer-color-letra" name="descripcion-tarea-pendiente" cols="30" rows="10" id="descripcion-tarea-pendiente" placeholder="Ingrese la descripción de la tarea pendiente" maxlength="4000" required></textarea>
                             </div>
                         </div>
 
@@ -286,7 +286,80 @@ $min_date = Carbon::now()->toDateTimeString();
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn segundo-color-letra segundo-color-fondo" data-bs-dismiss="modal">❌ Cancelar</button>
-                    <button type="submit" class="btn tercer-color-letra tercer-color-fondo" id="crear-curso">✅ Crear tarea pendiente</button>
+                    <button type="submit" class="btn tercer-color-letra tercer-color-fondo" id="crear-tarea-pendiente">✅ Crear tarea pendiente</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal Detalle Tarea Pendiente -->
+<div class="modal fade text-center" id="detalle-tarea-pendiente-modal" tabindex="-1" role="dialog" aria-labelledby="titulo-modal-detalle-tarea-pendiente" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content primer-color-letra primer-color-fondo">
+            <div class="modal-header">
+                <h5 class="modal-title" id="titulo-modal-detalle-tarea-pendiente">Detalle tarea pendiente</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="HEAD" id="form-detalle-tarea-pendiente">
+                <div class="modal-body">
+                    <div class="container-fluid g-5">
+                    
+                        <input type="hidden" name="id-tarea-pendiente" id="id-tarea-pendiente" required>
+                        <div class="row mt-2">
+                            <div class="col-md-12 form-group">
+                                <label for="nombre-detalle-tarea-pendiente" class="form-label">Nombre*</label>
+                                <input type="text" class="form-control fuenteNormal tercer-color-fondo tercer-color-letra" name="nombre-detalle-tarea-pendiente" id="nombre-detalle-tarea-pendiente" placeholder="Ingrese el nombre de la tarea pendiente" maxlength="150" minlength="3" readonly>
+                            </div>
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col-md-12 form-group">
+                                <label for="descripcion-detalle-tarea-pendiente" class="form-label">Descripción</label>
+                                <textarea class="form-control fuenteNormal primer-color-fondo primer-color-letra" name="descripcion-detalle-tarea-pendiente" cols="30" rows="10" id="descripcion-detalle-tarea-pendiente" placeholder="Ingrese la descripción de la tarea pendiente" maxlength="4000" readonly></textarea>
+                            </div>
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col-md-12 form-group">
+                                <label for="fecha-finalizacion-detalle-tarea-pendiente" class="form-label">Fecha de finalización</label>
+                                <input class="fuenteNormal form-control tercer-color-fondo tercer-color-letra" type="datetime" name="fecha-finalizacion-detalle-tarea-pendiente" id="fecha-finalizacion-detalle-tarea-pendiente" readonly>
+                            </div>
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col-md-12 form-group">
+                                <label for="miembro-creador-detalle-tarea-pendiente" class="form-label">Creada por</label>
+                                <input type="text" class="form-control fuenteNormal tercer-color-fondo tercer-color-letra" name="miembro-creador-detalle-tarea-pendiente" id="miembro-creador-detalle-tarea-pendiente" placeholder="Ingrese el nombre de la tarea pendiente" maxlength="150" minlength="3" readonly>
+                            </div>
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col-md-12 form-group">
+                                <label for="miembro-a-cargo-detalle-tarea-pendiente" class="form-label">Miembro a cargo</label>
+                                <input type="text" class="form-control fuenteNormal tercer-color-fondo tercer-color-letra" name="miembro-a-cargo-detalle-tarea-pendiente" id="nombre-detalle-tarea-pendiente" placeholder="Ingrese el nombre de la tarea pendiente" maxlength="150" minlength="3" readonly>
+                            </div>
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col-md-12 form-group">
+                                <label for="fecha-registro-detalle-tarea-pendiente" class="form-label">Creada el</label>
+                                <input class="fuenteNormal form-control tercer-color-fondo tercer-color-letra" type="datetime" name="fecha-registro-detalle-tarea-pendiente" id="fecha-registro-detalle-tarea-pendiente" readonly>
+                            </div>
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col-md-12 form-group">
+                                <label for="estatus-detalle-tarea-pendiente" class="form-label">Estatus</label>
+                                <select class="form-select fuenteNormal form-select-lg primer-color-fondo primer-color-letra" name="estatus-detalle-tarea-pendiente" id="estatus-detalle-tarea-pendiente" required></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn segundo-color-letra segundo-color-fondo" data-bs-dismiss="modal">❌ Cancelar</button>
+                    <button type="submit" class="btn tercer-color-letra tercer-color-fondo" id="crear-curso">✅ Actualizar estatus</button>
                 </div>
             </form>
         </div>

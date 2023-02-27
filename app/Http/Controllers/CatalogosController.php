@@ -90,14 +90,12 @@ class CatalogosController extends Controller
 
             $url = env('COURSEROOM_API');
 
-            $idEstatusTareaPendiente = $request->integer('IdEstatusTareaPendiente');
-
             if($url != ''){
 
                 $response = Http::withHeaders([
                     'Authorization' => env('COURSEROOM_API_KEY'),
                 ])->post($url.'/api/catalogos/estatustareapendiente', [
-                    'IdEstatusTareaPendiente' => $idEstatusTareaPendiente
+                    'IdEstatusTareaPendiente' => null
                 ]);
 
                 if ($response->ok()){
@@ -107,7 +105,7 @@ class CatalogosController extends Controller
                     return response()->json(['code' => 200 , 'data' => $result], 200);
 
                 } else{
-                    return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                    return response()->json(['code' => 400 , 'data' => $response->body()], 200);
                 }
 
             } else{

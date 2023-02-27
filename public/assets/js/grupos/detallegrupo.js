@@ -558,180 +558,6 @@ async function ObtenerTareasPendientes(){
     }
 }
 
-async function grupo_actualizar(){
-
-    try{
-
-        ShowPreloader();
-
-        let formData = new FormData();
-
-        formData.append("IdGrupo", IdGrupo);
-        formData.append("IdCurso", IdCurso);
-        formData.append("Nombre", document.getElementById("nombre-grupo").value);
-        formData.append("Descripcion", document.getElementById("descripcion-grupo").value);
-        formData.append("Imagen", document.getElementById("imagen-grupo").value);
-
-        let response = await axios({
-            url: '/grupos/actualizar',
-            baseURL: BaseURL,
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
-            },
-            data: formData
-        });
-
-        HidePreloader();
-
-        let resultado = response.data;
-
-        switch (resultado.code) {
-            case 200:{
-                Swal.fire({
-                    title: 'Actualización de grupo',
-                    text: resultado.data,
-                    imageUrl: BaseURL.concat("/assets/templates/HappyOwl.png"),
-                    imageWidth: 100,
-                    imageHeight: 123,
-                    imageAlt: 'Ok Image',
-                    background: '#000000',
-                    color: '#FFFFFF'
-                });
-            }
-            break;
-            case 500:{
-                Swal.fire({
-                    title: '¡Error!',
-                    text: resultado.data,
-                    imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
-                    imageWidth: 100,
-                    imageHeight: 123,
-                    background: '#000000',
-                    color: '#FFFFFF',
-                    imageAlt: 'Error Image'
-                });
-            }
-            break;
-            default:{
-                Swal.fire({
-                    title: '¡Alerta!',
-                    text: resultado.data,
-                    imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
-                    imageWidth: 100,
-                    imageHeight: 123,
-                    imageAlt: 'Alert Image',
-                    background: '#000000',
-                    color: '#FFFFFF'
-                });
-            }
-            break;
-        }
-    }
-    catch(ex){
-
-        HidePreloader();
-
-        Swal.fire({
-            title: '¡Error!',
-            text: ex,
-            imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
-            imageWidth: 100,
-            imageHeight: 123,
-            background: '#000000',
-            color: '#FFFFFF',
-            imageAlt: 'Error Image'
-        });
-    }
-
-}
-
-async function grupotareapendienteestatus_actualizar(){
-
-    try{
-
-        ShowPreloader();
-
-        let formData = new FormData();
-
-        formData.append("IdGrupo", IdGrupo);
-        formData.append("IdTareaPendiente", document.getElementById("id-tarea-pendiente").value);
-        formData.append("IdUsuarioReceptor", document.getElementById("id-usuario-receptor").value);
-        formData.append("IdEstatusTareaPendiente", document.getElementById("id-estatus-tarea-pendiente").value);
-
-        let response = await axios({
-            url: '/grupos/tareapendienteestatus',
-            baseURL: BaseURL,
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
-            },
-            data: formData
-        });
-
-        HidePreloader();
-
-        let resultado = response.data;
-
-        switch (resultado.code) {
-            case 200:{
-                Swal.fire({
-                    title: 'Actualización de tarea pendiente',
-                    text: resultado.data,
-                    imageUrl: BaseURL.concat("/assets/templates/HappyOwl.png"),
-                    imageWidth: 100,
-                    imageHeight: 123,
-                    imageAlt: 'Ok Image',
-                    background: '#000000',
-                    color: '#FFFFFF'
-                });
-            }
-            break;
-            case 500:{
-                Swal.fire({
-                    title: '¡Error!',
-                    text: resultado.data,
-                    imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
-                    imageWidth: 100,
-                    imageHeight: 123,
-                    background: '#000000',
-                    color: '#FFFFFF',
-                    imageAlt: 'Error Image'
-                });
-            }
-            break;
-            default:{
-                Swal.fire({
-                    title: '¡Alerta!',
-                    text: resultado.data,
-                    imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
-                    imageWidth: 100,
-                    imageHeight: 123,
-                    imageAlt: 'Alert Image',
-                    background: '#000000',
-                    color: '#FFFFFF'
-                });
-            }
-            break;
-        }
-    }
-    catch(ex){
-
-        HidePreloader();
-
-        Swal.fire({
-            title: '¡Error!',
-            text: ex,
-            imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
-            imageWidth: 100,
-            imageHeight: 123,
-            background: '#000000',
-            color: '#FFFFFF',
-            imageAlt: 'Error Image'
-        });
-    }
-
-}
 
 document.ActualizarGrupo = async function (){
 
@@ -1010,6 +836,152 @@ async function EnviarArchivoCompartido(filename, base64, file) {
             imageAlt: 'Error Image'
         });
     }
+}
+
+document.DetalleTareaPendiente = async function(IdTareaPendiente){
+
+    try{
+
+        ShowPreloader();
+
+        let formData = new FormData();
+
+        formData.append("IdTareaPendiente", IdTareaPendiente);
+
+        let response = await axios({
+            url: '/grupos/tareapendientedetalle',
+            baseURL: BaseURL,
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
+            },
+            data: formData
+        });
+
+        HidePreloader();
+
+        let resultado = response.data;
+
+        switch (resultado.code) {
+            case 200:{
+                let tarea_pendiente = resultado.data;
+
+                //Obtener estatus tareas pendientes:
+
+                response = await axios({
+                    url: '/catalogos/estatustareapendiente',
+                    baseURL: BaseURL,
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
+                    },
+                    data: null
+                });
+
+                resultado = response.data;
+
+                if(resultado.code == 200){
+                    let catalogoestatus = resultado.data;
+
+                    for(let estatus of catalogoestatus){
+                        $("#estatus-detalle-tarea-pendiente").append($('<option>', {
+                            value: estatus.idEstatus,
+                            text: estatus.estatus
+                        }));
+                    }
+                }
+
+                //Llenar info de detalle tarea pendiente modal:
+
+                document.getElementById("id-tarea-pendiente").value = IdTareaPendiente;
+
+                document.getElementById("nombre-detalle-tarea-pendiente").value = tarea_pendiente.nombre;
+                document.getElementById("descripcion-detalle-tarea-pendiente").value = tarea_pendiente.descripcion;
+                document.getElementById("fecha-finalizacion-detalle-tarea-pendiente").value = tarea_pendiente.fechaFinalizacion;
+                document.getElementById("miembro-creador-detalle-tarea-pendiente").value = tarea_pendiente.nombreUsuarioCreador;
+                document.getElementById("miembro-a-cargo-detalle-tarea-pendiente").value = tarea_pendiente.nombreUsuarioResponsable;
+                document.getElementById("fecha-registro-detalle-tarea-pendiente").value = tarea_pendiente.fechaRegistro;
+
+                $("#estatus-detalle-tarea-pendiente option:contains('".concat(tarea_pendiente.estatus,"')")).prop("selected", true);
+
+                $("#detalle-tarea-pendiente-modal").show();
+
+            }
+            break;
+            case 500:{
+                document.getElementById("id-tarea-pendiente").value = "";
+                document.getElementById("nombre-detalle-tarea-pendiente").value = "";
+                document.getElementById("descripcion-detalle-tarea-pendiente").value = "";
+                document.getElementById("fecha-finalizacion-detalle-tarea-pendiente").value = "";
+                document.getElementById("miembro-creador-detalle-tarea-pendiente").value = "";
+                document.getElementById("miembro-a-cargo-detalle-tarea-pendiente").value = "";
+                document.getElementById("fecha-registro-detalle-tarea-pendiente").value = "";
+
+                $("#estatus-detalle-tarea-pendiente").empty();
+
+                Swal.fire({
+                    title: '¡Error!',
+                    text: resultado.data,
+                    imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    background: '#000000',
+                    color: '#FFFFFF',
+                    imageAlt: 'Error Image'
+                });
+            }
+            break;
+            default:{
+                document.getElementById("id-tarea-pendiente").value = "";
+                document.getElementById("nombre-detalle-tarea-pendiente").value = "";
+                document.getElementById("descripcion-detalle-tarea-pendiente").value = "";
+                document.getElementById("fecha-finalizacion-detalle-tarea-pendiente").value = "";
+                document.getElementById("miembro-creador-detalle-tarea-pendiente").value = "";
+                document.getElementById("miembro-a-cargo-detalle-tarea-pendiente").value = "";
+                document.getElementById("fecha-registro-detalle-tarea-pendiente").value = "";
+
+                $("#estatus-detalle-tarea-pendiente").empty();
+
+                Swal.fire({
+                    title: '¡Alerta!',
+                    text: resultado.data,
+                    imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    imageAlt: 'Alert Image',
+                    background: '#000000',
+                    color: '#FFFFFF'
+                });
+            }
+            break;
+        }
+    }
+    catch(ex){
+
+        HidePreloader();
+        document.getElementById("id-tarea-pendiente").value = "";
+        document.getElementById("nombre-detalle-tarea-pendiente").value = "";
+        document.getElementById("descripcion-detalle-tarea-pendiente").value = "";
+        document.getElementById("fecha-finalizacion-detalle-tarea-pendiente").value = "";
+        document.getElementById("miembro-creador-detalle-tarea-pendiente").value = "";
+        document.getElementById("miembro-a-cargo-detalle-tarea-pendiente").value = "";
+        document.getElementById("fecha-registro-detalle-tarea-pendiente").value = "";
+
+        $("#estatus-detalle-tarea-pendiente").empty();
+
+        Swal.fire({
+            title: '¡Error!',
+            text: ex,
+            imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+            imageWidth: 100,
+            imageHeight: 123,
+            background: '#000000',
+            color: '#FFFFFF',
+            imageAlt: 'Error Image'
+        });
+    }
+
+
 }
 
 //#endregion
@@ -1319,6 +1291,98 @@ document.getElementById("form-agregar-tarea-pendiente").addEventListener("submit
         });
     }
    
+});
+
+document.getElementById("form-detalle-tarea-pendiente").addEventListener("submit", async () => {
+    e.preventDefault();
+
+    try{
+
+        ShowPreloader();
+
+        let formData = new FormData();
+
+        formData.append("IdGrupo", IdGrupo);
+        formData.append("IdTareaPendiente", document.getElementById("id-tarea-pendiente").value);
+        formData.append("IdEstatusTareaPendiente", $("#estatus-detalle-tarea-pendiente").val());
+
+        let response = await axios({
+            url: '/grupos/tareapendienteestatus',
+            baseURL: BaseURL,
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
+            },
+            data: formData
+        });
+
+        HidePreloader();
+
+        let resultado = response.data;
+
+        switch (resultado.code) {
+            case 200:{
+                Swal.fire({
+                    title: 'Actualización de tarea pendiente',
+                    text: resultado.data,
+                    imageUrl: BaseURL.concat("/assets/templates/HappyOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    imageAlt: 'Ok Image',
+                    background: '#000000',
+                    color: '#FFFFFF'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                       ObtenerTareasPendientes();
+                    }
+                });
+            }
+            break;
+            case 500:{
+                Swal.fire({
+                    title: '¡Error!',
+                    text: resultado.data,
+                    imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    background: '#000000',
+                    color: '#FFFFFF',
+                    imageAlt: 'Error Image'
+                });
+            }
+            break;
+            default:{
+                Swal.fire({
+                    title: '¡Alerta!',
+                    text: resultado.data,
+                    imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    imageAlt: 'Alert Image',
+                    background: '#000000',
+                    color: '#FFFFFF'
+                });
+            }
+            break;
+        }
+    }
+    catch(ex){
+
+        HidePreloader();
+
+        Swal.fire({
+            title: '¡Error!',
+            text: ex,
+            imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+            imageWidth: 100,
+            imageHeight: 123,
+            background: '#000000',
+            color: '#FFFFFF',
+            imageAlt: 'Error Image'
+        });
+    }
+
+
 });
 
 //#endregion
