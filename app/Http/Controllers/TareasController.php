@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Http;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
+use App\Models\TareaArchivosEntregados;
 
 class TareasController extends Controller
 {
@@ -86,7 +87,7 @@ class TareasController extends Controller
                 $url = env('COURSEROOM_API');
 
                 $idTarea = $request->integer('IdTarea');
-                $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
+                $IdUsuario = session('IdUsuario');
 
                 if($url != ''){
 
@@ -169,7 +170,7 @@ class TareasController extends Controller
                 $url = env('COURSEROOM_API');
 
                 $idTarea = $request->integer('IdTarea');
-                $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
+                $IdUsuario = session('IdUsuario');
 
                 if($url != ''){
 
@@ -318,7 +319,7 @@ class TareasController extends Controller
 
                 $idTarea = $request->integer('IdTarea');
                 $idProfesor = $request->integer('IdProfesor');
-                $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
+                $IdUsuario = session('IdUsuario');
                 $calificacion = $request->float('Calificacion');
 
                 if($url != ''){
@@ -370,9 +371,19 @@ class TareasController extends Controller
                 $url = env('COURSEROOM_API');
 
                 $idTarea = $request->integer('IdTarea');
-                $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
-                $nombreArchivo = $request->string('NombreArchivo')->trim();
-                $archivo = $request->string('Archivo')->trim();
+                $IdUsuario = session('IdUsuario');
+                
+                $nombreArchivo = $request->string('NombreArchivo');
+
+                $Base64Archivo = null;
+                if($request->has('Base64Archivo')){
+                    $Base64Archivo = $request->input('Base64Archivo');
+                }
+                
+                $filename = null;
+                if($request->hasFile('Archivo')) {
+                    $filename = time().'_'.$request->file('Archivo')->getClientOriginalName();
+                }
 
                 if($url != ''){
 
@@ -382,12 +393,34 @@ class TareasController extends Controller
                         'IdTarea' => $idTarea,
                         'IdUsuario' => $idUsuario,
                         'NombreArchivo' => $nombreArchivo,
-                        'Archivo' => $archivo
+                        'Archivo' => $filename
                     ]);
 
                     if ($response->ok()){
 
                         $result = json_decode($response->body());
+
+                        if($result->codigo > 0){
+                            if($filename != null){
+
+                                $file = $request->file('Archivo');
+
+                                // File extension
+                                $extension = $file->getClientOriginalExtension();
+
+                                //Guardar imagen en mongo si no esta vácia:
+                                $mongoCollection = new TareaArchivosEntregados;
+
+                                $mongoCollection->idArchivoEntregado = $result->codigo;
+                                $mongoCollection->archivo = $Base64Archivo;
+                                $mongoCollection->extension = $extension;
+
+                                $mongoCollection->save();
+
+                                //Guardar imagen en storage:
+                                Storage::putFileAs('tareas', $file, $filename);
+                            }
+                        }
 
                         return response()->json(['code' => 200 , 'data' => $result], 200);
 
@@ -530,7 +563,7 @@ class TareasController extends Controller
 
                 $idTarea = $request->integer('IdTarea');
                 $idProfesor = $request->integer('IdProfesor');
-                $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
+                $IdUsuario = session('IdUsuario');
                 $nombre = $request->string('Nombre')->trim();
                 $retroalimentacion = $request->string('Retroalimentacion')->trim();
                 $nombreArchivo = $request->string('NombreArchivo')->trim();

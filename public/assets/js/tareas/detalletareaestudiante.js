@@ -544,4 +544,90 @@ async function ObtenerArchivosEntregados(){
     }
 }
 
+async function EnviarArchivoEntregado(filename, base64, file) {
+
+    try {
+
+        ShowPreloader();
+        let formData = new FormData();
+        formData.append("IdTarea", IdTarea);
+        formData.append("NombreArchivo", filename);
+        formData.append("Base64Archivo", base64);
+        formData.append("Archivo", file);
+
+        let response = await axios({
+            url: '/tareas/archivoentregado',
+            baseURL: BaseURL,
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
+            },
+            data: formData
+        });
+
+        HidePreloader();
+
+        let result = response.data;
+
+        switch (result.code) {
+            case 200:{
+                Swal.fire({
+                    title: 'Subir archivo',
+                    text: resultado.data,
+                    imageUrl: BaseURL.concat("/assets/templates/HappyOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    imageAlt: 'Ok Image',
+                    background: '#000000',
+                    color: '#FFFFFF'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                       ObtenerArchivosEntregados();
+                    }
+                });
+            }
+            break;
+            case 500: {
+                Swal.fire({
+                    title: '¡Error!',
+                    text: result.data,
+                    imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    background: '#000000',
+                    color: '#FFFFFF',
+                    imageAlt: 'Error Image'
+                });
+            }
+                break;
+            case 400: {
+                Swal.fire({
+                    title: '¡Alerta!',
+                    text: result.data,
+                    imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    imageAlt: 'Alert Image',
+                    background: '#000000',
+                    color: '#FFFFFF'
+                });
+            }
+                break;
+        }
+    }
+    catch (ex) {
+        HidePreloader();
+        Swal.fire({
+            title: '¡Error!',
+            text: ex,
+            imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+            imageWidth: 100,
+            imageHeight: 123,
+            background: '#000000',
+            color: '#FFFFFF',
+            imageAlt: 'Error Image'
+        });
+    }
+}
+
 //#endregion
