@@ -9,7 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use App\Models\CursosImagenes;
 use App\Models\CursoArchivosMensajes;
-
+use App\Models\CursoArchivoMaterialRegistrar;
 
 class CursosController extends Controller
 {
@@ -664,8 +664,19 @@ class CursosController extends Controller
                 $idUsuario = $request -> input('IdUsuario');
                 $nombreArchivo = $request -> input('nombreArchivo');
                 $archivo = $request -> input('Archivo');
-                $codigo = input('Codigo');
-                $mensaje = input('Mensaje');
+                
+
+                $nombreArchivo = $request->string('NombreArchivo');
+
+                $Base64Archivo = null;
+                if($request->has('Base64Archivo')){
+                    $Base64Archivo = $request->input('Base64Archivo');
+                }
+                
+                $filename = null;
+                if($request->hasFile('Archivo')) {
+                    $filename = time().'_'.$request->file('Archivo')->getClientOriginalName();
+                }
 
                 if($url != ''){
 
@@ -675,14 +686,35 @@ class CursosController extends Controller
                         'IdCurso' => $idCurso,
                         'IdUsuario' => $idUsuario,
                         'NombreArchivo' => $nombreArchivo,
-                        'archivo' => $archivo,
-                        'Codigo' => $codigo,
-                        'Mensaje' => $mensaje,
+                        'archivo' => $filename,
+                        
                     ]);
 
                     if ($response->ok()){
 
                         $result = json_decode($response->body());
+
+                        if($result->codigo > 0){
+                            if($filename != null){
+
+                                $file = $request->file('Archivo');
+
+                                // File extension
+                                $extension = $file->getClientOriginalExtension();
+
+                                //Guardar imagen en mongo si no esta vácia:
+                                $mongoCollection = new CursoArchivoMaterialRegistrar;
+
+                                $mongoCollection->idArchivomaterial = $result->codigo;
+                                $mongoCollection->archivo = $Base64Archivo;
+                                $mongoCollection->extension = $extension;
+
+                                $mongoCollection->save();
+
+                                //Guardar imagen en storage:
+                                Storage::putFileAs('cursos', $file, $filename);
+                            }
+                        }
 
                         return response()->json(['code' => 200 , 'data' => $result], 200);
 

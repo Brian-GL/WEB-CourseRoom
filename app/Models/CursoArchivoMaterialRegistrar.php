@@ -4,10 +4,10 @@ namespace App\Models;
 
 use Jenssegers\Mongodb\Eloquent\Model;
 
-class ChatsArchivosMensajes extends Model
+class CursoArchivoMaterialRegistrar extends Model
 {
     protected $connection = 'mongodb';
-    protected $collection = 'cursoArchivosCompartidos';
+    protected $collection = 'cursoArchivosMaterialRegistrar';
 
     protected $fillable = ['archivo', 'extension'];
 }
