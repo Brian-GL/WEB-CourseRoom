@@ -106,7 +106,7 @@ class HerramientasController extends Controller
                         return response()->json(['code' => 404 , 'data' => 'Not found'], 200);
 
                     } else{
-                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                        return response()->json(['code' => 400 , 'data' => $response->body()], 200);
                     }
 
                 } else{
@@ -155,7 +155,7 @@ class HerramientasController extends Controller
                         ]], 200);
 
                     } else{
-                        return response()->json(['code' => 500 , 'data' => 'Not found'], 200);
+                        return response()->json(['code' => 400 , 'data' => 'Not found'], 200);
                     }
                 } else{
                     return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
@@ -226,7 +226,7 @@ class HerramientasController extends Controller
                         return response()->json(['code' => 404 , 'data' => 'Not found'], 404);
 
                     } else{
-                        return response()->json(['code' => 500 , 'data' => $response->body()], 200);
+                        return response()->json(['code' => 400 , 'data' => $response->body()], 200);
                     }
 
                 } else{
