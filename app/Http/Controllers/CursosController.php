@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Http;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use App\Models\CursosImagenes;
+use App\Models\CursoArchivosMensajes;
 
 
 class CursosController extends Controller
@@ -776,10 +777,18 @@ class CursosController extends Controller
                 $url = env('COURSEROOM_API');
 
 	            $idCurso = $request -> input('IdCurso');
-                $idUsuarioEmisor = $request -> input('IdUsuarioEmisor');
-                $mensaje = $request -> input('Mensaje');
-                $archivo = $request -> input('Archivo');
-                $codigo = input('Codigo');
+                $idUsuarioEmisor = session('IdUsuario');
+                $mensaje = $request->string('Mensaje')->trim();
+               
+                $Base64Archivo = null;
+                if($request->has('Base64Archivo')){
+                    $Base64Archivo = $request->input('Base64Archivo');
+                }
+                
+                $filename = null;
+                if($request->hasFile('Archivo')) {
+                    $filename = time().'_'.$request->file('Archivo')->getClientOriginalName();
+                }
 
                 if($url != ''){
 
@@ -789,13 +798,34 @@ class CursosController extends Controller
                         'IdCurso' => $idCurso,
                         'IdUsuarioEmisor' => $idUsuarioEmisor,
                         'Mensaje' => $mensaje,
-                        'Archivo' => $archivo,
-                        'Codigo' => $codigo,
+                        'Archivo' => $filename
                     ]);
 
                     if ($response->ok()){
 
                         $result = json_decode($response->body());
+
+                        if($result->codigo > 0){
+                            if($filename != null){
+
+                                $file = $request->file('Archivo');
+
+                                // File extension
+                                $extension = $file->getClientOriginalExtension();
+
+                                //Guardar imagen en mongo si no esta vácia:
+                                $mongoCollection = new CursoArchivosMensajes;
+
+                                $mongoCollection->idMensaje = $result->codigo;
+                                $mongoCollection->archivo = $Base64Archivo;
+                                $mongoCollection->extension = $extension;
+
+                                $mongoCollection->save();
+
+                                //Guardar imagen en storage:
+                                Storage::putFileAs('cursos', $file, $filename);
+                            }
+                        }
 
                         return response()->json(['code' => 200 , 'data' => $result], 200);
 
