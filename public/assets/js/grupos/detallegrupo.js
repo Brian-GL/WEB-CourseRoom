@@ -706,7 +706,7 @@ async function EnviarMensaje(mensaje, archivo, base64Archivo) {
                 });
             }
                 break;
-            case 400: {
+            default: {
                 Swal.fire({
                     title: '¡Alerta!',
                     text: result.data,
@@ -775,9 +775,9 @@ async function EnviarArchivoCompartido(filename, base64, file) {
 
         HidePreloader();
 
-        let result = response.data;
+        let resultado = response.data;
 
-        switch (result.code) {
+        switch (resultado.code) {
             case 200:{
                 Swal.fire({
                     title: 'Compartir archivo',
@@ -798,7 +798,7 @@ async function EnviarArchivoCompartido(filename, base64, file) {
             case 500: {
                 Swal.fire({
                     title: '¡Error!',
-                    text: result.data,
+                    text: resultado.data,
                     imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
                     imageWidth: 100,
                     imageHeight: 123,
@@ -808,10 +808,10 @@ async function EnviarArchivoCompartido(filename, base64, file) {
                 });
             }
                 break;
-            case 400: {
+            default: {
                 Swal.fire({
                     title: '¡Alerta!',
-                    text: result.data,
+                    text: resultado.data,
                     imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
                     imageWidth: 100,
                     imageHeight: 123,
@@ -1229,9 +1229,9 @@ document.getElementById("form-agregar-tarea-pendiente").addEventListener("submit
 
         HidePreloader();
 
-        let result = response.data;
+        let resultado = response.data;
 
-        switch (result.code) {
+        switch (resultado.code) {
             case 200:{
                 Swal.fire({
                     title: 'Crear tarea pendiente',
@@ -1252,7 +1252,7 @@ document.getElementById("form-agregar-tarea-pendiente").addEventListener("submit
             case 500: {
                 Swal.fire({
                     title: '¡Error!',
-                    text: result.data,
+                    text: resultado.data,
                     imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
                     imageWidth: 100,
                     imageHeight: 123,
@@ -1262,10 +1262,10 @@ document.getElementById("form-agregar-tarea-pendiente").addEventListener("submit
                 });
             }
                 break;
-            case 400: {
+            default: {
                 Swal.fire({
                     title: '¡Alerta!',
-                    text: result.data,
+                    text: resultado.data,
                     imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
                     imageWidth: 100,
                     imageHeight: 123,

@@ -12,10 +12,14 @@ use Carbon\Carbon;
 
 @section('content')
 
-@if (!is_null($Datostarea))
-    <input type="hidden" value="{{ $idtarea}}" id="id-tarea"/>
+@if (!is_null($DatosTarea))
+    <input type="hidden" value="{{ $IdTarea}}" id="id-tarea"/>
+    <input type="hidden" value="{{ $IdUsuario}}" id="id-usuario"/>
+    <input type="hidden" value="{{ $DatosTarea->estatus}}" id="estatus-tarea"/>
 @else
     <input type="hidden" value="0" id="id-tarea"/>
+    <input type="hidden" value="0" id="id-usuario"/>
+    <input type="hidden" value="" id="estatus-tarea"/>
 @endif
 
 <input type="hidden" value="{{ asset('usuarios/').'/'}}" id="assets-usuarios"/>
@@ -64,52 +68,64 @@ use Carbon\Carbon;
                         <div class="tab-pane fade show active" id="datos-generales" role="tabpanel" aria-labelledby="datos-generales-tab">
                             <div class="row">
                                 <div class="col-md-6">
-                                    @if (!is_null($Datostarea))
+                                    @if (!is_null($DatosTarea))
                                        
                                         @php
-                                            $fechaRegistro = new Carbon($Datostarea->fechaRegistro);
+                                            $fechaRegistro = new Carbon($DatosTarea->fechaRegistro);
                                             $fechaRegistroFormat = $fechaRegistro->format('d/m/Y h:i A');
-                                            $fechaActualizacionFormat = 'No disponible'; 
+
+                                            $fechaEntrega = new Carbon($DatosTarea->fechaEntrega);
+                                            $fechaEntregaFormat = $fechaRegistro->format('d/m/Y h:i A');
+
+                                            $fechaCalificacionFormat = 'No disponible'; 
                                             
-                                            if (!is_null($Datostarea->fechaActualizacion))
+                                            if (!is_null($DatosTarea->fechaCalificacion))
                                             {
-                                                $fechaActualizacion = new Carbon($Datostarea->fechaActualizacion);
-                                                $fechaActualizacionFormat = $fechaActualizacion->format('d/m/Y h:i A'); 
+                                                $fechaCalificacion = new Carbon($DatosTarea->fechaCalificacion);
+                                                $fechaCalificacionFormat = $fechaCalificacion->format('d/m/Y h:i A'); 
+                                            }
+
+                                            $fechaEntregadaFormat = 'No disponible'; 
+                                            
+                                            if (!is_null($DatosTarea->fechaEntregada))
+                                            {
+                                                $fechaEntregada = new Carbon($DatosTarea->fechaEntregada);
+                                                $fechaEntregadaFormat = $fechaEntregada->format('d/m/Y h:i A'); 
                                             }
                                            
                                         @endphp
 
                                         <div class="mt-1">
-                                            <p class="titulado fuenteGrande segundo-color-letra d-inline" contenteditable="true" id="nombre-value"> {{$Datostarea->nombre}}</p> 
-                                            <p class="fuenteNormal segundo-color-letra d-inline"><i class="fa-solid fa-pen-to-square"></i></p>
+                                            <p class="titulado fuenteGrande segundo-color-letra"> {{$DatosTarea->tarea}}</p> 
+                                            <span class="fuenteNormal tercer-color-letra">{{$DatosTarea->estatus}}</span>
                                         </div>
                                         <div class="mt-2 mb-4">
-                                            <p class="titulado fuenteNormal segundo-color-letra text-wrap d-inline" contenteditable="true" id="descripcion-value">{{$Datostarea->descripcion}}</p> 
-                                            <p class="fuenteNormal segundo-color-letra d-inline"><i class="fa-solid fa-pen-to-square"></i></p>
+                                            <p class="titulado fuenteNormal segundo-color-letra text-wrap">{{$DatosTarea->descripcion}}</p> 
                                         </div>
-                                        <p class="titulado fuenteNormal segundo-color-letra">Creado el {{$fechaRegistroFormat}}</p>
-                                        <p class="titulado fuenteNormal segundo-color-letra text-wrap">Del curso: <b>{{$Datostarea->curso}}</b></p>
-                                        <p class="titulado fuenteNormal segundo-color-letra text-wrap">Actualizada: {{$fechaActualizacionFormat}}</p>
+                                        <p class="titulado fuenteNormal segundo-color-letra">Creada el {{$fechaRegistroFormat}}</p>
+                                        <p class="titulado fuenteNormal segundo-color-letra">Para entrega el <b>{{$fechaEntregaFormat}}</b></p>
+                                        <p class="titulado fuenteNormal segundo-color-letra">Entregada el {{$fechaEntregadaFormat}}</p>
+                                        <p class="titulado fuenteNormal segundo-color-letra">Calificada el <b>{{$fechaCalificacionFormat}}</b></p>
+                                        <br>
+                                        <hr>
+                                        <p class="titulado fuenteNormal segundo-color-letra">Calificación: <b>{{$DatosTarea->calificacion}}</b></p>
+                                        <p class="titulado fuenteNormal segundo-color-letra">Puntualidad: <b>{{$DatosTarea->puntualidad}}</b></p>
                                     @else
-                                        <p class="fuenteGrande segundo-color-letra">tarea desconocido</p>
+                                        <p class="fuenteGrande segundo-color-letra">Tarea desconocida</p>
                                     @endif
                                 </div>
         
                                 <div class="col-md-6 text-center">
-                                    @if(!is_null($Datostarea) && !is_null($Datostarea->imagen))
-                                        <img id="imagen-tarea" class="img-fluid rounded-circle shadow-lg h-75 mb-1" alt="Imagen del tarea" src="{{ asset('tareas/'.$Datostarea->imagen)}}" />
-                                    @else
-                                        <img id="imagen-tarea" class="img-fluid rounded-circle shadow-lg h-75 mb-1" alt="Imagen del tarea" src="https://raw.githubusercontent.com/Brian-GL/CourseRoom/main/src/recursos/imagenes/Course_Room_Brand_Readme.png"/>
-                                    @endif
-
-                                    @if (!is_null($Datostarea))
-                                        <div class="d-block mt-1 mx-2">
-                                            <button id="actualizar-tarea" type="button" onclick="Actualizartarea()" class="btn btn-lg segundo-color-letra segundo-color-fondo">Actualizar tarea</button>
-                                            <div class="btn btn-rounded tercer-color-letra tercer-color-fondo">
-                                                <label class="form-label m-1 fuenteNormal" for="imagen">Cambiar imagen</label>
-                                                <input type="file" class="form-control d-none fuenteNormal" id="imagen" accept="image/png, imagejpg, image/jpeg"/>
-                                            </div>
-                                        </div>
+                                    @if(!is_null($DatosTarea))
+                                        @if( !is_null($DatosTarea->imagenProfesor))
+                                            <img id="imagen-profesor" class="img-fluid rounded-circle shadow-lg h-75 mb-1" alt="Imagen del profesor" src="{{ asset('usuarios/'.$DatosTarea->imagenProfesor)}}" />
+                                        @endif
+                                        <p class="titulado fuenteNormal segundo-color-letra">Creada por {{$DatosTarea->nombreProfesor}}</p>
+                                        <hr>
+                                        @if(!is_null($DatosTarea->imagenCurso))
+                                            <img id="imagen-curso" class="img-fluid rounded-circle shadow-lg h-75 mb-1" alt="Imagen del curso" src="{{ asset('cursos/'.$DatosTarea->imagenCurso)}}" />
+                                        @endif
+                                        <p class="titulado fuenteNormal segundo-color-letra text-wrap">Del curso <b>{{$DatosTarea->curso}}</b></p>
                                     @endif
                                 </div>
                             </div>
@@ -124,23 +140,26 @@ use Carbon\Carbon;
                                 </div>
                             </div>
                         </div>
+
                         <div class="tab-pane fade" id="archivos-entregados" role="tabpanel" aria-labelledby="archivos-entregados-tab">
                             <div class="row">
                                 <div class="col-md-12">
                                     
                                     <div class="row">
-                                        <div class="col-md-7"></div>
-                                        <div class="col-md-2 d-flex justify-content-center">
-                                            <button type="submit" class="w-100 btn tercer-color-letra tercer-color-fondo" id="subir-archivo-entregado">
-                                                <i class="fa-solid fa-upload"></i>&nbsp;Subir archivo
-                                            </button>
-                                        </div>
-                                        <div class="col-md-1"></div>
-                                        <div class="col-md-2 d-flex justify-content-center">
-                                            <button type="submit" class="w-100 btn primer-color-letra primer-color-fondo" id="entregar-tarea">
-                                                <i class="fa-solid fa-upload"></i>&nbsp;Entregar tarea
-                                            </button>
-                                        </div>
+                                        @if (!is_null($DatosTarea) && $DatosTarea->estatus != 'Calificada')
+                                            <div class="col-md-2 d-flex justify-content-center">
+                                                <button type="submit" class="w-100 btn primer-color-letra primer-color-fondo" id="entregar-tarea">
+                                                    <i class="fa-solid fa-house-laptop"></i>&nbsp;Entregar tarea
+                                                </button>
+                                            </div>
+                                            <div class="col-md-8"></div>
+                                            <div class="col-md-2 d-flex justify-content-center">
+                                                <button type="submit" class="w-100 btn tercer-color-letra tercer-color-fondo" id="subir-archivo-entregado">
+                                                    <i class="fa-solid fa-upload"></i>&nbsp;Subir archivo para entrega
+                                                </button>
+                                            </div>
+                                        @endif
+                                       
                                     </div>
                                     <div class="table-responsive mt-3">
                                         <table class="table table-striped display order-column hover nowrap" id="table-archivos-entregados-estudiante"> </table>
@@ -163,6 +182,57 @@ use Carbon\Carbon;
 
                 </div>
 
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Detalle Retroalimentacion -->
+<div class="modal fade text-center" id="detalle-retroalimentacion-modal" tabindex="-1" role="dialog" aria-labelledby="titulo-modal-detalle-retroalimentacion" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content primer-color-letra primer-color-fondo">
+            <div class="modal-header">
+                <h5 class="modal-title" id="titulo-modal-detalle-retroalimentacion">Detalle de la retroalimentación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid g-5">
+                
+                    <div class="row mt-2">
+                        <div class="col-md-12 form-group">
+                            <label for="nombre-detalle-retroalimentacion" class="form-label">Nombre</label>
+                            <input type="text" class="form-control fuenteNormal tercer-color-fondo tercer-color-letra" name="nombre-detalle-retroalimentacion" id="nombre-detalle-retroalimentacion" readonly>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-md-12 form-group">
+                            <label for="descripcion-detalle-retroalimentacion" class="form-label">Descripción</label>
+                            <textarea class="form-control fuenteNormal primer-color-fondo primer-color-letra" name="descripcion-detalle-retroalimentacion" cols="30" rows="10" id="descripcion-detalle-retroalimentacion" readonly></textarea>
+                        </div>
+                    </div>
+                    
+
+                    <div class="row mt-4">
+                        <div class="col-md-12 form-group">
+                            <label for="archivo-detalle-retroalimentacion" class="form-label">Archivo de retroalimentación</label>
+                            <input type="text" class="form-control fuenteNormal tercer-color-fondo tercer-color-letra" name="archivo-detalle-retroalimentacion" id="archivo-detalle-retroalimentacion" readonly>
+                            <a href="" id="descargar-archivo-detalle-retroalimentacion" target="_blank" class="segundo-color-fondo segundo-color-letra">
+                                <i class="fa-solid fa-file-arrow-down"></i>&nbsp;Descargar archivo
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-md-12 form-group">
+                            <label for="fecha-registro-detalle-retroalimentacion" class="form-label">Creada el</label>
+                            <input class="fuenteNormal form-control tercer-color-fondo tercer-color-letra" type="datetime" name="fecha-registro-detalle-retroalimentacion" id="fecha-registro-detalle-retroalimentacion" readonly>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn segundo-color-letra segundo-color-fondo" data-bs-dismiss="modal">❌ Cerrar</button>
             </div>
         </div>
     </div>

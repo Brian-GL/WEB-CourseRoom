@@ -140,7 +140,7 @@ Route::post('/tareas/creadasprofesor',  [TareasController::class, 'tareascreadas
 Route::post('/tareas/retroalimentaciones',  [TareasController::class, 'tareareatroalimentaciones_obtener'])->middleware('session.token');
 Route::post('/tareas/calificarobtener',  [TareasController::class, 'tareascalificar_obtener'])->middleware('session.token');
 Route::post('/tareas/entregar',  [TareasController::class, 'tareaentregar_actualizar'])->middleware('session.token');
-Route::delete('/tareas/archivoentregadoremover',  [TareasController::class, 'tareaarchivoentregado_remover'])->middleware('session.token');
+Route::post('/tareas/archivoentregadoremover',  [TareasController::class, 'tareaarchivoentregado_remover'])->middleware('session.token');
 Route::delete('/tareas/archivoadjunto',  [TareasController::class, 'tareaarchivoadjunto_remover'])->middleware('session.token');
 Route::post('/tareas/archivoadjuntoregistrar',  [TareasController::class, 'tareaarchivoadjunto_registrar'])->middleware('session.token');
 

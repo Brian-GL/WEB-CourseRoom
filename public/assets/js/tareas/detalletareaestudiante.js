@@ -8,10 +8,12 @@ let PrimerColor = localStorage.getItem("PrimerColor");
 let PrimerColorLetra = localStorage.getItem("PrimerColorLetra");
 let BaseURL = window.location.origin;
 
-let assestRouteTareas = document.getElementById("assets-tareas").value;
+let assetsRouteTareas = document.getElementById("assets-tareas").value;
 let assetsRouteUsuarios = document.getElementById("assets-usuarios").value;
-let IdGrupo = document.getElementById("id-grupo").value;
+
+let IdTarea = document.getElementById("id-tarea").value;
 let IdUsuario = document.getElementById("id-usuario").value;
+let EstatusTarea = document.getElementById("estatus-tarea").value;
 
 let elementos = document.querySelectorAll('input[type="search"]');
 for(let elemento of elementos){
@@ -364,7 +366,7 @@ async function ObtenerRetroalimentaciones(){
                     data: filas,
                     createdRow: (row, data) => {
                         $('.segundo-color-letra',row).css('color', SegundoColorLetra);
-                        $('.span-detalle', row).html('<span class="fuenteNormal span-detalle text-center text-decoration-underline" onclick="DetalleRetroalimentación('.concat(data.idRetroalimentacion,')">Ver detalle</span>'));
+                        $('.span-detalle', row).html('<span class="fuenteNormal span-detalle text-center text-decoration-underline" onclick="DetalleRetroalimentacion('.concat(data.idRetroalimentacion,')">Ver detalle</span>'));
                         let fechaRegistro = data.fechaRegistro.substring(0, data.fechaRegistro.length -1 );
                         $('.fechaRegistro', row).text(dayjs(fechaRegistro).format('dddd DD MMM YYYY h:mm A'));
                     }
@@ -485,7 +487,13 @@ async function ObtenerArchivosEntregados(){
                     data: filas,
                     createdRow: (row, data) => {
                         $('.segundo-color-letra',row).css('color', SegundoColorLetra);
-                        $('.span-remover', row).html('<span class="fuenteNormal span-detalle text-center text-decoration-underline" onclick="RemoverArchivoEntregado('.concat(data.idArchivoEntregado,')">¿Remover archivo?</span>'));
+                        if(EstatusTarea != "Calificada"){
+                            $('.span-remover', row).html('<span class="fuenteNormal span-detalle text-center text-decoration-underline" onclick="RemoverArchivoEntregado('.concat(data.idArchivoEntregado,')">¿Remover archivo?</span>'));
+                        }
+                        else{
+                            $('.span-remover', row).html('<span class="fuenteNormal span-detalle text-center text-decoration-underline">⛔ No Permisible</span>');
+                        }
+
                         $('.span-detalle', row).html('<a class="fuenteNormal span-detalle text-center text-decoration-underline" href="'.concat(assetsRouteTareas,'/',data.archivo,'">Descargar archivo</a>'));
                         let fechaRegistro = data.fechaRegistro.substring(0, data.fechaRegistro.length -1 );
                         $('.fechaRegistro', row).text(dayjs(fechaRegistro).format('dddd DD MMM YYYY h:mm A'));
@@ -567,12 +575,12 @@ async function EnviarArchivoEntregado(filename, base64, file) {
 
         HidePreloader();
 
-        let result = response.data;
+        let resultado = response.data;
 
-        switch (result.code) {
+        switch (resultado.code) {
             case 200:{
                 Swal.fire({
-                    title: 'Subir archivo',
+                    title: 'Entregar archivo',
                     text: resultado.data,
                     imageUrl: BaseURL.concat("/assets/templates/HappyOwl.png"),
                     imageWidth: 100,
@@ -590,7 +598,7 @@ async function EnviarArchivoEntregado(filename, base64, file) {
             case 500: {
                 Swal.fire({
                     title: '¡Error!',
-                    text: result.data,
+                    text: resultado.data,
                     imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
                     imageWidth: 100,
                     imageHeight: 123,
@@ -600,10 +608,10 @@ async function EnviarArchivoEntregado(filename, base64, file) {
                 });
             }
                 break;
-            case 400: {
+            default: {
                 Swal.fire({
                     title: '¡Alerta!',
-                    text: result.data,
+                    text: resultado.data,
                     imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
                     imageWidth: 100,
                     imageHeight: 123,
@@ -629,5 +637,365 @@ async function EnviarArchivoEntregado(filename, base64, file) {
         });
     }
 }
+
+document.RemoverArchivoEntregado = async function(IdArchivoEntregado){
+    try {
+
+        ShowPreloader();
+        
+        let formData = new FormData();
+        formData.append("IdArchivoEntregado", IdArchivoEntregado);
+        formData.append("IdTarea", IdTarea);
+        formData.append("IdUsuario", IdUsuario);
+
+        let response = await axios({
+            url: '/tareas/archivoentregadoremover',
+            baseURL: BaseURL,
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
+            },
+            data: formData
+        });
+
+        HidePreloader();
+
+        let resultado = response.data;
+
+        switch (resultado.code) {
+            case 200:{
+                Swal.fire({
+                    title: 'Remover archivo entregado',
+                    text: resultado.data,
+                    imageUrl: BaseURL.concat("/assets/templates/HappyOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    imageAlt: 'Ok Image',
+                    background: '#000000',
+                    color: '#FFFFFF'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                       ObtenerArchivosEntregados();
+                    }
+                });
+            }
+            break;
+            case 500: {
+                Swal.fire({
+                    title: '¡Error!',
+                    text: resultado.data,
+                    imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    background: '#000000',
+                    color: '#FFFFFF',
+                    imageAlt: 'Error Image'
+                });
+            }
+                break;
+            default: {
+                Swal.fire({
+                    title: '¡Alerta!',
+                    text: resultado.data,
+                    imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    imageAlt: 'Alert Image',
+                    background: '#000000',
+                    color: '#FFFFFF'
+                });
+            }
+                break;
+        }
+    }
+    catch (ex) {
+        HidePreloader();
+        Swal.fire({
+            title: '¡Error!',
+            text: ex,
+            imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+            imageWidth: 100,
+            imageHeight: 123,
+            background: '#000000',
+            color: '#FFFFFF',
+            imageAlt: 'Error Image'
+        });
+    }
+}
+
+document.DetalleRetroalimentacion = async function(IdRetroalimentacion){
+    try {
+
+        ShowPreloader();
+        let formData = new FormData();
+        formData.append("IdRetroalimentacion", IdRetroalimentacion);
+
+        let response = await axios({
+            url: '/tareas/retroalimentaciondetalle',
+            baseURL: BaseURL,
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
+            },
+            data: formData
+        });
+
+        HidePreloader();
+
+        let resultado = response.data;
+
+        switch (resultado.code) {
+            case 200:{
+               let retroalimentacion = resultado.data;
+
+               //Llenar info de detalle retroalimentacion modal:
+
+               document.getElementById("nombre-detalle-retroalimentacion").value = retroalimentacion.nombre;
+               document.getElementById("descripcion-detalle-retroalimentacion").value = retroalimentacion.retroalimentacion;
+               document.getElementById("archivo-detalle-retroalimentacion").value = retroalimentacion.nombreArchivo;
+               document.getElementById("descargar-archivo-detalle-retroalimentacion").href =  assetsRouteTareas.concat("/",retroalimentacion.archivo);
+               document.getElementById("fecha-registro-detalle-retroalimentacion").value = retroalimentacion.fechaRegistro;
+
+               $("#detalle-retroalimentacion-modal").show();
+
+            }
+            break;
+            case 500: {
+
+                document.getElementById("nombre-detalle-retroalimentacion").value = "";
+                document.getElementById("descripcion-detalle-retroalimentacion").value = "";
+                document.getElementById("archivo-detalle-retroalimentacion").value = "";
+                document.getElementById("descargar-archivo-detalle-retroalimentacion").href =  "";
+                document.getElementById("fecha-registro-detalle-retroalimentacion").value = "";
+
+                Swal.fire({
+                    title: '¡Error!',
+                    text: resultado.data,
+                    imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    background: '#000000',
+                    color: '#FFFFFF',
+                    imageAlt: 'Error Image'
+                });
+            }
+                break;
+            default: {
+
+                document.getElementById("nombre-detalle-retroalimentacion").value = "";
+                document.getElementById("descripcion-detalle-retroalimentacion").value = "";
+                document.getElementById("archivo-detalle-retroalimentacion").value = "";
+                document.getElementById("descargar-archivo-detalle-retroalimentacion").href =  "";
+                document.getElementById("fecha-registro-detalle-retroalimentacion").value = "";
+
+                Swal.fire({
+                    title: '¡Alerta!',
+                    text: resultado.data,
+                    imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    imageAlt: 'Alert Image',
+                    background: '#000000',
+                    color: '#FFFFFF'
+                });
+            }
+                break;
+        }
+    }
+    catch (ex) {
+        HidePreloader();
+
+        document.getElementById("nombre-detalle-retroalimentacion").value = "";
+        document.getElementById("descripcion-detalle-retroalimentacion").value = "";
+        document.getElementById("archivo-detalle-retroalimentacion").value = "";
+        document.getElementById("descargar-archivo-detalle-retroalimentacion").href =  "";
+        document.getElementById("fecha-registro-detalle-retroalimentacion").value = "";
+
+        Swal.fire({
+            title: '¡Error!',
+            text: ex,
+            imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+            imageWidth: 100,
+            imageHeight: 123,
+            background: '#000000',
+            color: '#FFFFFF',
+            imageAlt: 'Error Image'
+        });
+    }
+}
+
+//#endregion
+
+//#region Events
+
+$("#subir-archivo-entregado").on('click', async () => {
+    try {
+
+        const { value: file } = await Swal.fire({
+            title: 'Subir archivo para entrega',
+            text: "Selecciona un archivo para entregar",
+            imageUrl: 'https://freesvg.org/img/file_server.png',
+            imageWidth: 100,
+            imageHeight: 123,
+            background: '#000000',
+            color: '#FFFFFF',
+            imageAlt: 'File image',
+            input: 'file',
+            inputAttributes: {
+                'class': 'form-control',
+                'aria-label': 'Sube tu archivo',
+            },
+            showCloseButton: true,
+            showConfirmButton: true,
+            confirmButtonText: 'Subir Archivo 📄'
+        });
+
+        if (file) {
+
+            if (file.size < 15000000) { //MAX 15 MB
+                const reader = new FileReader();
+                reader.onload = async (e) => {
+
+                    let base64 = await GetBase64FromUrl(e.target.result);
+                    let filename = file.name;
+
+                    EnviarArchivoEntregado(filename, base64, file);
+                }
+                reader.readAsDataURL(file);
+            } else {
+
+            }
+        } else {
+            Swal.fire({
+                title: '¡Alerta!',
+                text: 'Es necesario subir archivo 😐',
+                imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
+                imageWidth: 100,
+                imageHeight: 123,
+                imageAlt: 'Alert Image',
+                background: '#000000',
+                color: '#FFFFFF'
+            });
+        }
+    }
+    catch (ex) {
+
+        Swal.fire({
+            title: '¡Error!',
+            text: ex,
+            imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+            imageWidth: 100,
+            imageHeight: 123,
+            background: '#000000',
+            color: '#FFFFFF',
+            imageAlt: 'Error Image'
+        });
+    }
+});
+
+$("#entregar-tarea").on('click', async () => {
+    try {
+
+        Swal.fire({
+            title: 'Entregar tarea',
+            text: '¿Está segur@ de entregar los archivos para calificación? (Esta acción no puede cambiarse)',
+            imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+            imageWidth: 100,
+            imageHeight: 123,
+            background: '#000000',
+            color: '#FFFFFF',
+            imageAlt: 'Alert Image',
+            showCloseButton: true,
+            showDenyButton: true,
+            showCancelButton: false,
+            confirmButtonText: 'Sí 😎',
+            denyButtonText: 'Por el momento no 😓 '
+        }).then(async (result) => {
+            if(result.isConfirmed){
+
+                ShowPreloader();
+        
+                let formData = new FormData();
+                formData.append("IdTarea", IdTarea);
+                formData.append("IdUsuario", IdUsuario);
+
+                let response = await axios({
+                    url: '/tareas/entregar',
+                    baseURL: BaseURL,
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
+                    },
+                    data: formData
+                });
+
+                HidePreloader();
+
+                let resultado = response.data;
+
+                switch (resultado.code) {
+                    case 200:{
+                        Swal.fire({
+                            title: 'Entregar tarea',
+                            text: resultado.data,
+                            imageUrl: BaseURL.concat("/assets/templates/HappyOwl.png"),
+                            imageWidth: 100,
+                            imageHeight: 123,
+                            imageAlt: 'Ok Image',
+                            background: '#000000',
+                            color: '#FFFFFF'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = "/mis-tareas";
+                            }
+                        });
+                    }
+                    break;
+                    case 500: {
+                        Swal.fire({
+                            title: '¡Error!',
+                            text: resultado.data,
+                            imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+                            imageWidth: 100,
+                            imageHeight: 123,
+                            background: '#000000',
+                            color: '#FFFFFF',
+                            imageAlt: 'Error Image'
+                        });
+                    }
+                        break;
+                    default: {
+                        Swal.fire({
+                            title: '¡Alerta!',
+                            text: resultado.data,
+                            imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
+                            imageWidth: 100,
+                            imageHeight: 123,
+                            imageAlt: 'Alert Image',
+                            background: '#000000',
+                            color: '#FFFFFF'
+                        });
+                    }
+                        break;
+                }
+
+            }
+        });
+
+    }
+    catch (ex) {
+
+        Swal.fire({
+            title: '¡Error!',
+            text: ex,
+            imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+            imageWidth: 100,
+            imageHeight: 123,
+            background: '#000000',
+            color: '#FFFFFF',
+            imageAlt: 'Error Image'
+        });
+    }
+});
 
 //#endregion

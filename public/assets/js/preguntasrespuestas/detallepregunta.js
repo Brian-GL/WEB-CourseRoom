@@ -60,7 +60,7 @@ async function EnviarMensaje(mensaje, archivo, base64Archivo) {
                 });
             }
                 break;
-            case 400: {
+            default: {
                 Swal.fire({
                     title: '¡Alerta!',
                     text: result.data,
