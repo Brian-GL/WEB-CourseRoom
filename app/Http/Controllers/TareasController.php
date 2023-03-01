@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Http;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use App\Models\TareaArchivosEntregados;
+use App\Models\TareaArchivosRetroalimentaciones;
+use App\Models\TareaArchivosAdjuntos;
 
 class TareasController extends Controller
 {
@@ -548,8 +550,18 @@ class TareasController extends Controller
                 $IdUsuario = session('IdUsuario');
                 $nombre = $request->string('Nombre')->trim();
                 $retroalimentacion = $request->string('Retroalimentacion')->trim();
-                $nombreArchivo = $request->string('NombreArchivo')->trim();
-                $archivo = $request->string('Archivo')->trim();
+                
+                $nombreArchivo = $request->string('NombreArchivo');
+
+                $Base64Archivo = null;
+                if($request->has('Base64Archivo')){
+                    $Base64Archivo = $request->input('Base64Archivo');
+                }
+                
+                $filename = null;
+                if($request->hasFile('Archivo')) {
+                    $filename = time().'_'.$request->file('Archivo')->getClientOriginalName();
+                }
 
                 if($url != ''){
 
@@ -562,12 +574,34 @@ class TareasController extends Controller
                         'Nombre' => $nombre,
                         'Retroalimentacion' => $retroalimentacion,
                         'NombreArchivo' => $nombreArchivo,
-                        'Archivo' => $archivo
+                        'Archivo' => $filename
                     ]);
 
                     if ($response->ok()){
 
                         $result = json_decode($response->body());
+
+                        if($result->codigo > 0){
+                            if($filename != null){
+
+                                $file = $request->file('Archivo');
+
+                                // File extension
+                                $extension = $file->getClientOriginalExtension();
+
+                                //Guardar imagen en mongo si no esta vácia:
+                                $mongoCollection = new TareaArchivosRetroalimentaciones;
+
+                                $mongoCollection->idRetroalimentacion = $result->codigo;
+                                $mongoCollection->archivo = $Base64Archivo;
+                                $mongoCollection->extension = $extension;
+
+                                $mongoCollection->save();
+
+                                //Guardar imagen en storage:
+                                Storage::putFileAs('tareas', $file, $filename);
+                            }
+                        }
 
                         return response()->json(['code' => 200 , 'data' => $result], 200);
 
@@ -1018,6 +1052,18 @@ class TareasController extends Controller
                 $nombre = $request->input('Nombre');
                 $archivo = $request->input('Archivo');
 
+                $nombreArchivo = $request->string('NombreArchivo');
+
+                $Base64Archivo = null;
+                if($request->has('Base64Archivo')){
+                    $Base64Archivo = $request->input('Base64Archivo');
+                }
+                
+                $filename = null;
+                if($request->hasFile('Archivo')) {
+                    $filename = time().'_'.$request->file('Archivo')->getClientOriginalName();
+                }
+
                 if($url != ''){
 
                     $response = Http::withHeaders([
@@ -1025,13 +1071,35 @@ class TareasController extends Controller
                     ])->post($url.'/api/tareas/archivoadjuntoregistrar', [
                         'IdTarea' => $idTarea,
                         'IdProfesor' => $idProfesor,
-                        'Nombre' => $nombre,
-                        'Archivo' => $archivo
+                        'Nombre' => $nombreArchivo,
+                        'Archivo' => $filename
                     ]);
 
                     if ($response->ok()){
 
                         $result = json_decode($response->body());
+
+                        if($result->codigo > 0){
+                            if($filename != null){
+
+                                $file = $request->file('Archivo');
+
+                                // File extension
+                                $extension = $file->getClientOriginalExtension();
+
+                                //Guardar imagen en mongo si no esta vácia:
+                                $mongoCollection = new TareaArchivosAdjuntos;
+
+                                $mongoCollection->idArchivoAdjunto = $result->codigo;
+                                $mongoCollection->archivo = $Base64Archivo;
+                                $mongoCollection->extension = $extension;
+
+                                $mongoCollection->save();
+
+                                //Guardar imagen en storage:
+                                Storage::putFileAs('tareas', $file, $filename);
+                            }
+                        }
 
                         return response()->json(['code' => 200 , 'data' => $result], 200);
 
