@@ -265,8 +265,7 @@ class CursosController extends Controller
             $validator = Validator::make($request->all(), $rules = [
                 'IdCurso' => ['required'],
                 'Nombre' => ['required'],
-                'Descripcion' => ['required'],
-                'Imagen' => ['required']
+                'Descripcion' => ['required']
             ], $messages = [
                 'required' => 'El campo :attribute es requerido'
             ]);
@@ -277,11 +276,19 @@ class CursosController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idCurso = $request -> input('IdCurso');
-                $idProfesor = input('IdProfesor');
-                $nombre = $request -> input ('Nombre');
-                $descripcion = $request -> input('Descripcion');
-                $imagen = $request -> input('Imagen');
+                $idCurso = $request->integer('IdCurso');
+                $idProfesor = $request->integer('IdProfesor');
+                $nombre = $request->string('Nombre');
+                $descripcion = $request->string('Descripcion');
+                
+                $Base64Image = $request->input('Base64Image');
+                $ImagenAnterior = $request->string('ImagenAnterior');
+
+                $filename = $ImagenAnterior;
+                if($request->hasFile('Imagen')) {
+                    $filename = time().'_'.$request->file('Imagen')->getClientOriginalName();
+                }
+
                 if($url != ''){
 
                     $response = Http::withHeaders([
@@ -291,12 +298,35 @@ class CursosController extends Controller
                         'IdProfesor' => $idProfesor,
                         'Nombre' => $nombre,
                         'Descripcion' => $descripcion,
-                        'Imagen' => $imagen
+                        'Imagen' => $filename
                     ]);
 
                     if ($response->ok()){
 
                         $result = json_decode($response->body());
+
+                        //Actualizar imagen
+                        if($filename != $ImagenAnterior){
+
+                            $file = $request->file('Imagen');
+
+                            // File extension
+                            $extension = $file->getClientOriginalExtension();
+
+                            //Actualizar imagen en mongo si no esta vácia:
+                            $mongoCursosImagenes = CursosImagenes::where('idCurso', $idCurso)->first();
+
+                            if(!is_null($mongoCursosImagenes)){
+                                $mongoCursosImagenes->update(
+                                    ['imagen' => $Base64Image,
+                                    'extension' => $extension]);
+                            }
+
+                            Storage::delete('cursos/'.$ImagenAnterior);
+                            
+                            //Guardar imagen en storage:
+                            Storage::putFileAs('cursos', $file, $filename);
+                        }
 
                         return response()->json(['code' => 200 , 'data' => $result], 200);
 

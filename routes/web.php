@@ -177,6 +177,7 @@ Route::post('/preguntas/obtener',  [PreguntasRespuestasController::class, 'pregu
 #region Usuarios
 Route::get('/perfil',  [UsuariosController::class, 'perfil'])->name('usuarios.perfil')->middleware('session.token');
 Route::get('/sesiones',  [UsuariosController::class, 'sesiones'])->name('usuarios.sesiones')->middleware('session.token');
+Route::get('/mi-desempeno',  [UsuariosController::class, 'mi_desempeno'])->name('usuarios.midesempeno')->middleware('session.token');
 
 Route::post('/usuarios/actualizar',  [UsuariosController::class, 'usuario_actualizar'])->middleware('session.token');
 Route::post('/usuarios/registrar',  [UsuariosController::class, 'usuario_registrar'])->middleware('session.token');

@@ -33,6 +33,9 @@ window.dayjs = dayjs;
 import platform from 'platform';
 window.platform = platform;
 
+import Chart from 'chart.js/auto';
+window.Chart = Chart;
+
 
 import 'bootstrap';
 

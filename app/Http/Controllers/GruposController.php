@@ -325,7 +325,6 @@ class GruposController extends Controller
         }
     }
 
-
     public function grupotareaspendientes_obtener(Request $request){
         try {
 

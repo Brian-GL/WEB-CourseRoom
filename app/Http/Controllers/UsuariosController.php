@@ -62,6 +62,14 @@ class UsuariosController extends Controller
         return view('usuarios.sesiones', compact('DatosUsuario', 'DatosCuenta', 'IdTipoUsuario'));
     }
 
+    public function mi_desempeno(){
+        $DatosUsuario = session('DatosUsuario');
+        $DatosCuenta = session('DatosCuenta');
+        $IdTipoUsuario = session('IdTipoUsuario');
+        
+        return view('usuarios.desempenousuario', compact('DatosUsuario', 'DatosCuenta', 'IdTipoUsuario'));
+    }
+
     #endregion
 
 
@@ -382,14 +390,14 @@ class UsuariosController extends Controller
 
             $url = env('COURSEROOM_API');
 
-            $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
-
             if($url != ''){
+
+                $IdUsuario = session('IdUsuario');
 
                 $response = Http::withHeaders([
                     'Authorization' => env('COURSEROOM_API_KEY'),
                 ])->post($url.'/api/usuarios/desempeno', [
-                    'IdUsuario' => $idUsuario
+                    'IdUsuario' => $IdUsuario
                 ]);
 
                 if ($response->ok()){
