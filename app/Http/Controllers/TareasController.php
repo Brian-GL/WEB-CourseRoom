@@ -930,6 +930,7 @@ class TareasController extends Controller
                 'IdTarea' => ['required'],
                 'IdUsuario' => ['required'],
                 'IdArchivoEntregado' => ['required'],
+                'NombreArchivoEntregado' => ['required']
             ], $messages = [
                 'required' => 'El campo :attribute es requerido'
             ]);
@@ -941,8 +942,9 @@ class TareasController extends Controller
                 $url = env('COURSEROOM_API');
 
                 $idTarea = $request->integer('IdTarea');
-                $idUsuario = $request->integer('IdUsaurio');
+                $idUsuario = $request->integer('IdUsuario');
                 $idArchivoEntregado = $request->integer('IdArchivoEntregado');
+                $nombreArchivoEntregado = $request->string('NombreArchivoEntregado');
 
                 if($url != ''){
 
@@ -957,6 +959,18 @@ class TareasController extends Controller
                     if ($response->ok()){
 
                         $result = json_decode($response->body());
+
+                        if($result->codigo > 0)
+                        {
+                            //Remover imagen en mongo:
+                            $mongoTareaArchivosEntregados = TareaArchivosEntregados::where('idArchivoEntregado', $idArchivoEntregado)->first();
+
+                            if(!is_null($mongoTareaArchivosEntregados)){
+                                $mongoTareaArchivosEntregados->delete();
+                            }
+
+                            Storage::delete('tareas/'.$nombreArchivoEntregado);
+                        }
 
                         return response()->json(['code' => 200 , 'data' => $result], 200);
 
