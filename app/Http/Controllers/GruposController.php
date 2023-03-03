@@ -705,8 +705,8 @@ class GruposController extends Controller
                 $url = env('COURSEROOM_API');
 
                 $idCurso = $request->integer('IdCurso');
-                $nombre = $request->integer('Nombre');
-                $descripcion = input('Descripcion');
+                $nombre = $request->string('Nombre')->trim();
+                $descripcion = $request->string('Descripcion');
                 
                 $Base64Archivo = null;
                 if($request->has('Base64Archivo')){

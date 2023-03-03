@@ -238,7 +238,7 @@ Route::delete('/cursos/tematicaremover',  [CursosController::class, 'curso_temat
 Route::post('/cursos/tematicaobtener',  [CursosController::class, 'curso_tematicaobtener'])->middleware('session.token');
 Route::post('/cursos/estudiantedesempenoobtener',  [CursosController::class, 'curso_estudiantedesempenoobtener'])->middleware('session.token');
 Route::post('/cursos/estudiantessingrupoobtener',  [CursosController::class, 'curso_estudiantessingrupoobtener'])->middleware('session.token');
-Route::put('/cursos/estudiantefinalizaractualizar',  [CursosController::class, 'curso_estudiantefinalizaractualizar'])->middleware('session.token');
+Route::post('/cursos/estudiantefinalizaractualizar',  [CursosController::class, 'curso_estudiantefinalizaractualizar'])->middleware('session.token');
 Route::post('/cursos/cuestionariorespuestaregistrar',   [CursosController::class, 'curso_cuestionariorespuestaregistrar'])->middleware('session.token');
 
 #endregion
