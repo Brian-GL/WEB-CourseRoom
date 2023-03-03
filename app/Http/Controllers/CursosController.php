@@ -638,8 +638,8 @@ class CursosController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idCurso = $request -> input ('IdCurso');
-                $idProfesor = $request -> input ('Idprofesor');
+                $idCurso = $request->integer('IdCurso');
+                $idProfesor = $request->integer('IdProfesor');
 
                 if($url != ''){
 
@@ -678,8 +678,7 @@ class CursosController extends Controller
             $validator = Validator::make($request->all(), $rules = [
                 'IdCurso' => ['required'],
 	            'IdUsuario' => ['required'],
-                'NombreArchivo' => ['required'],
-	            'Archivo' => ['required']
+                'NombreArchivo' => ['required']
             ], $messages = [
                 'required' => 'El campo :attribute es requerido'
             ]);
@@ -690,12 +689,8 @@ class CursosController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-	            $idCurso = $request -> input('IdCurso');
-                $idUsuario = $request -> input('IdUsuario');
-                $nombreArchivo = $request -> input('nombreArchivo');
-                $archivo = $request -> input('Archivo');
-                
-
+	            $idCurso = $request->integer('IdCurso');
+                $idUsuario = $request->integer('IdUsuario');
                 $nombreArchivo = $request->string('NombreArchivo');
 
                 $Base64Archivo = null;
@@ -716,8 +711,7 @@ class CursosController extends Controller
                         'IdCurso' => $idCurso,
                         'IdUsuario' => $idUsuario,
                         'NombreArchivo' => $nombreArchivo,
-                        'archivo' => $filename,
-                        
+                        'Archivo' => $filename
                     ]);
 
                     if ($response->ok()){
@@ -1770,10 +1764,8 @@ class CursosController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idCurso = $request -> input ('IdCurso');
-                $idUsuario = $request -> input ('IdUsaurio');
-                $codigo  = input ('Codigo');
-                $mensaje  = input ('Mensaje');
+                $idCurso = $request->integer('IdCurso');
+                $idUsuario = $request->integer('IdUsuario');
 
                 if($url != ''){
 
@@ -1781,9 +1773,7 @@ class CursosController extends Controller
                         'Authorization' => env('COURSEROOM_API_KEY'),
                     ])->put($url.'/api/cursos/estudiantefinalizaractualizar', [
                         'IdCurso' => $idCurso,
-                        'IdUsuario' => $idUsuario,
-                        'Codigo' => $codigo,
-                        'Mensaje' => $mensaje
+                        'IdUsuario' => $idUsuario
                     ]);
 
                     if ($response->ok()){
@@ -1826,24 +1816,20 @@ class CursosController extends Controller
 
                 $url = env('COURSEROOM_API');              
 
-                $idCurso = $request -> input('IdCurso');
-                $idUsuario = $request -> input('IdUsuario');
-                $idPregunta = $request -> input('IdPregunta');
-                $puntaje = $request -> input('Puntaje');
-                $mensaje = input('Mensaje');
-                $codigo = input('Codigo');
+                $idCurso = $request->integer('IdCurso');
+                $idUsuario = $request->integer('IdUsuario');
+                $idPregunta = $request->integer('IdPregunta');
+                $puntaje = $request->float('Puntaje');
                 
                 if($url != ''){
 
                     $response = Http::withHeaders([
                         'Authorization' => env('COURSEROOM_API_KEY'),
                     ])->post($url.'/api/cursos/cuestionariorespuestaregistrar', [
-                        'IdUsuario' => $ddUsuario,
+                        'IdUsuario' => $idUsuario,
                         'IdPregunta' => $idPregunta,
                         'IdCurso' => $idCurso,
-                        'Puntaje' => $puntaje,
-                        'Mensaje' => $mensaje,
-                        'Codigo' => $codigo,
+                        'Puntaje' => $puntaje
                     ]);
 
                     if ($response->ok()){
