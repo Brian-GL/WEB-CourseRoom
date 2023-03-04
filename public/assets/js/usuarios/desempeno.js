@@ -227,40 +227,98 @@ async function ObtenerDesempeno(){
 
 async function GenerarGraficaDesempeno()
 {
-    const data = [
-        { year: 2010, count: 10 },
-        { year: 2011, count: 20 },
-        { year: 2012, count: 15 },
-        { year: 2013, count: 25 },
-        { year: 2014, count: 22 },
-        { year: 2015, count: 30 },
-        { year: 2016, count: 28 },
-      ];
 
-    console.log(window);
+    try{
 
-    new window.Chart(
-        document.getElementById('canvas-desempeno'),
-        {
-            type: 'line',
-            options: {
-                responsive: true,
-                plugins: {
-                  title: {
-                    display: true,
-                    text: (ctx) => 'Point Style: ' + ctx.chart.data.datasets[0].pointStyle,
-                  }
-                }
-              },
-            data: {
-                labels: data.map(row => row.year),
-                datasets: [
+        ShowPreloader();
+
+        let response = await axios({
+            url: '/usuarios/desempeno',
+            baseURL: BaseURL,
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
+            },
+            data: null
+        });
+
+        HidePreloader();
+
+        let result = response.data;
+
+        switch (result.code) {
+            case 200:{
+                const data = result.data;
+
+                window.Chart.defaults.borderColor = TercerColorLetra;
+                window.Chart.defaults.color = TercerColorLetra;
+
+                new window.Chart(
+                    document.getElementById('canvas-desempeno'),
                     {
-                        label: 'Acquisitions by year',
-                        data: data.map(row => row.count)
+                        type: 'line',
+                        options: {
+                            responsive: true,
+                            plugins: {
+                              title: {
+                                display: true,
+                                text: (ctx) => 'Point Style: ' + ctx.chart.data.datasets[0].pointStyle,
+                              }
+                            }
+                          },
+                        data: {
+                            labels: data.map(row => row.year),
+                            datasets: [
+                                {
+                                    label: 'Resultados de calificaciones',
+                                    data: data.map(row => row.count)
+                                }
+                            ]
+                        }
                     }
-                ]
+                );
             }
+            break;
+            case 500:{
+                Swal.fire({
+                    title: '¡Error!',
+                    text: result.data,
+                    imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    background: '#000000',
+                    color: '#FFFFFF',
+                    imageAlt: 'Error Image'
+                });
+            }
+            break;
+            default:{
+                Swal.fire({
+                    title: '¡Alerta!',
+                    text: result.data,
+                    imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    imageAlt: 'Alert Image',
+                    background: '#000000',
+                    color: '#FFFFFF'
+                });
+            }
+            break;
         }
-    );
+    }
+    catch(ex){
+
+        HidePreloader();
+        Swal.fire({
+            title: '¡Error!',
+            text: ex,
+            imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+            imageWidth: 100,
+            imageHeight: 123,
+            background: '#000000',
+            color: '#FFFFFF',
+            imageAlt: 'Error Image'
+        });
+    }
 }

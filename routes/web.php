@@ -200,6 +200,7 @@ Route::post('/usuarios/tematica',  [UsuariosController::class, 'usuariotematica_
 Route::delete('/usuarios/tematicaremover',  [UsuariosController::class, 'usuariotematica_remover'])->middleware('session.token');
 Route::post('/usuarios/tematicasobtener',  [UsuariosController::class, 'usuariotematicas_obtener'])->middleware('session.token');
 Route::post('/usuarios/credencial',  [UsuariosController::class, 'usuariocredencial_obtener'])->middleware('session.token');
+Route::post('/usuarios/informacioncalculator',  [UsuariosController::class, 'usuariocalculatorinformacion_obtener'])->middleware('session.token');
 
 #endregion
 

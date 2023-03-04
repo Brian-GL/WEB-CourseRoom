@@ -100,7 +100,7 @@ class UsuariosController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
+                $IdUsuario = session('IdUsuario');
                 $nombre = $request->string('Nombre')->trim();
                 $paterno = $request->string('Paterno')->trim();
                 $materno = $request->string('Materno')->trim();
@@ -211,7 +211,7 @@ class UsuariosController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
+                $IdUsuario = session('IdUsuario');
                 $idTipoUsuario = $request->integer('IdTipoUsuario');
 
                 if($url != ''){
@@ -310,7 +310,7 @@ class UsuariosController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
+                $IdUsuario = session('IdUsuario');
                 $correoElectronico = $request->string('CorreoElectronico')->trim();
                 $contrasena = $request->string('Contrasena')->trim();
                 $chatsConmigo = $request->boolean('ChatsConmigo');
@@ -355,7 +355,7 @@ class UsuariosController extends Controller
 
             $url = env('COURSEROOM_API');
 
-            $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
+            $IdUsuario = session('IdUsuario');
 
             if($url != ''){
 
@@ -440,7 +440,7 @@ class UsuariosController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
+                $IdUsuario = session('IdUsuario');
                 $idTarea = $request->integer('IdTarea');
                 $calificacion = $request->float('Calificacion');
                 $promedioCurso = $request->float('PromedioCurso');
@@ -504,7 +504,7 @@ class UsuariosController extends Controller
 
             $url = env('COURSEROOM_API');
 
-            $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
+            $IdUsuario = session('IdUsuario');
 
             if($url != ''){
 
@@ -551,7 +551,7 @@ class UsuariosController extends Controller
                 $url = env('COURSEROOM_API');
 
                 $idCurso = $request->integer('IdCurso');
-                $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
+                $IdUsuario = session('IdUsuario');
                 $puntualidad = $request->float('Puntualidad');
 
                 if($url != ''){
@@ -600,7 +600,7 @@ class UsuariosController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
+                $IdUsuario = session('IdUsuario');
                 $puntualidad = $request->float('Puntualidad');
 
                 if($url != ''){
@@ -650,7 +650,7 @@ class UsuariosController extends Controller
                 $url = env('COURSEROOM_API');
 
                 $idCurso = $request->integer('IdCurso');
-                $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
+                $IdUsuario = session('IdUsuario');
                 $calificacion = $request->float('Calificacion');
 
                 if($url != ''){
@@ -699,7 +699,7 @@ class UsuariosController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
+                $IdUsuario = session('IdUsuario');
                 $calificacion = $request->float('Calificacion');
 
                 if($url != ''){
@@ -788,7 +788,7 @@ class UsuariosController extends Controller
 
             $url = env('COURSEROOM_API');
 
-            $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
+            $IdUsuario = session('IdUsuario');
             $IdSesion = session('IdSesion');
 
             if($url != ''){
@@ -838,7 +838,7 @@ class UsuariosController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
+                $IdUsuario = session('IdUsuario');
                 $idSesion = $request->integer('IdSesion');
 
                 if($url != ''){
@@ -876,7 +876,7 @@ class UsuariosController extends Controller
 
             $url = env('COURSEROOM_API');
 
-            $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
+            $IdUsuario = session('IdUsuario');
 
             if($url != ''){
 
@@ -921,7 +921,7 @@ class UsuariosController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
+                $IdUsuario = session('IdUsuario');
                 $idTematica = $request->integer('IdTematica');
 
                 if($url != ''){
@@ -969,7 +969,7 @@ class UsuariosController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
+                $IdUsuario = session('IdUsuario');
                 $idTematica = $request->integer('IdTematica');
 
                 if($url != ''){
@@ -1007,13 +1007,49 @@ class UsuariosController extends Controller
 
             $url = env('COURSEROOM_API');
 
-            $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
+            $IdUsuario = session('IdUsuario');
 
             if($url != ''){
 
                 $response = Http::withHeaders([
                     'Authorization' => env('COURSEROOM_API_KEY'),
                 ])->post($url.'/api/usuarios/tematicasobtener', [
+                    'IdUsuario' => $IdUsuario
+                ]);
+
+                if ($response->ok()){
+
+                    $result = json_decode($response->body());
+
+                    return response()->json(['code' => 200 , 'data' => $result], 200);
+
+                } else{
+                    return response()->json(['code' => 400 , 'data' => $response->body()], 200);
+                }
+
+            } else{
+                return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
+            }
+            
+
+        } catch (\Throwable $th) {
+            return response()->json(['code' => 500 , 'data' => $th->getMessage()], 200);
+        }
+    }
+
+    public function usuariocalculatorinformacion_obtener(Request $request)
+    {
+        try {
+
+            $url = env('COURSEROOM_API');
+
+            $IdUsuario = session('IdUsuario');
+
+            if($url != ''){
+
+                $response = Http::withHeaders([
+                    'Authorization' => env('COURSEROOM_API_KEY'),
+                ])->post($url.'/api/usuarios/informacioncalculator', [
                     'IdUsuario' => $IdUsuario
                 ]);
 
