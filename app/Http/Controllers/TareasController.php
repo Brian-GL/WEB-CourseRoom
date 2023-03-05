@@ -53,6 +53,36 @@ class TareasController extends Controller
         return view('tareas.detalletareaestudiante', compact('DatosUsuario', 'DatosCuenta','IdTipoUsuario', 'DetalleTarea', 'IdTarea', 'IdUsuario'));
     }
 
+    public function tareaprofesordetalle_obtener(Request $request){
+       
+        $DatosUsuario = session('DatosUsuario');
+        $DatosCuenta = session('DatosCuenta');
+        $IdTipoUsuario = session('IdTipoUsuario');
+        
+        $DetalleTarea = null;
+
+        $url = env('COURSEROOM_API');
+
+        $IdTarea = $request->integer('IdTarea');
+        $IdUsuario = $request->integer('IdUsuario');
+
+        if($url != ''){
+
+            $response = Http::withHeaders([
+                'Authorization' => env('COURSEROOM_API_KEY'),
+            ])->post($url.'/api/tareas/profesordetalle', [
+                'IdProfesor' => $IdUsuario,
+                'IdTarea' => $IdTarea,
+            ]);
+
+            if ($response->ok()){
+                $DetalleTarea = json_decode($response->body());
+            } 
+        } 
+        
+        return view('tareas.detalletareaprofesor', compact('DatosUsuario', 'DatosCuenta','IdTipoUsuario', 'DetalleTarea', 'IdTarea', 'IdUsuario'));
+    }
+
     #endregion
 
     #region AJAX
@@ -235,7 +265,6 @@ class TareasController extends Controller
 
             $validator = Validator::make($request->all(), $rules = [
                 'IdTarea' => ['required'],
-                'IdProfesor' => ['required'],
                 'Nombre' => ['required'],
                 'Descripcion' => ['required']
             ], $messages = [
@@ -249,7 +278,7 @@ class TareasController extends Controller
                 $url = env('COURSEROOM_API');
 
                 $idTarea = $request->integer('IdTarea');
-                $idProfesor = $request->integer('IdProfesor');
+                $idProfesor = session('IdUsuario');
                 $nombre = $request->string('Nombre')->trim();
                 $descripcion = $request->string('Descripcion')->trim();
 
@@ -289,7 +318,7 @@ class TareasController extends Controller
 
             $validator = Validator::make($request->all(), $rules = [
                 'IdTarea' => ['required'],
-                'IdProfesor' => ['required'],
+                'IdUsuario' => ['required'],
                 'Calificacion' => ['required']
             ], $messages = [
                 'required' => 'El campo :attribute es requerido'
@@ -302,8 +331,8 @@ class TareasController extends Controller
                 $url = env('COURSEROOM_API');
 
                 $idTarea = $request->integer('IdTarea');
-                $idProfesor = $request->integer('IdProfesor');
-                $IdUsuario = session('IdUsuario');
+                $idProfesor = session('IdUsuario');
+                $IdUsuario = $request->integer('IdUsuario');
                 $calificacion = $request->float('Calificacion');
 
                 if($url != ''){
@@ -532,8 +561,8 @@ class TareasController extends Controller
 
             $validator = Validator::make($request->all(), $rules = [
                 'IdTarea' => ['required'],
-                'IdProfesor' => ['required'],
                 'Nombre' => ['required'],
+                'IdUsuario' => ['required'],
                 'Retroalimentacion' => ['required']
             ], $messages = [
                 'required' => 'El campo :attribute es requerido'
@@ -546,8 +575,8 @@ class TareasController extends Controller
                 $url = env('COURSEROOM_API');
 
                 $idTarea = $request->integer('IdTarea');
-                $idProfesor = $request->integer('IdProfesor');
-                $IdUsuario = session('IdUsuario');
+                $idProfesor = session('IdUsuario');
+                $IdUsuario = $request->integer('IdUsuario');
                 $nombre = $request->string('Nombre')->trim();
                 $retroalimentacion = $request->string('Retroalimentacion')->trim();
                 
@@ -733,55 +762,6 @@ class TareasController extends Controller
                 return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
             }
             
-
-        } catch (\Throwable $th) {
-            return response()->json(['code' => 500 , 'data' => $th->getMessage()], 200);
-        }
-    }
-
-    public function tareaprofesordetalle_obtener(Request $request)
-    {
-        try {
-
-            $validator = Validator::make($request->all(), $rules = [
-                'IdProfesor' => ['required'],
-                'IdTarea' => ['required'],
-            ], $messages = [
-                'required' => 'El campo :attribute es requerido'
-            ]);
-
-            if ($validator->fails()) {
-                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
-            } else {
-
-                $url = env('COURSEROOM_API');
-                
-                $idProfesor = $request->integer('IdProfesor');
-                $idTarea = $request->integer('IdTarea');
-
-                if($url != ''){
-
-                    $response = Http::withHeaders([
-                        'Authorization' => env('COURSEROOM_API_KEY'),
-                    ])->post($url.'/api/tareas/profesordetalle', [
-                        'IdProfesor' => $idProfesor,
-                        'IdTarea' => $idTarea,
-                    ]);
-
-                    if ($response->ok()){
-
-                        $result = json_decode($response->body());
-
-                        return response()->json(['code' => 200 , 'data' => $result], 200);
-
-                    } else{
-                        return response()->json(['code' => 400 , 'data' => $response->body()], 200);
-                    }
-
-                } else{
-                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
-                }
-            }
 
         } catch (\Throwable $th) {
             return response()->json(['code' => 500 , 'data' => $th->getMessage()], 200);
@@ -1048,7 +1028,6 @@ class TareasController extends Controller
 
             $validator = Validator::make($request->all(), $rules = [
                 'IdTarea' => ['required'],
-                'IdProfesor' => ['required'],
                 'NombreArchivo' => ['required'],
                 'Archivo' => ['required']
             ], $messages = [
@@ -1061,10 +1040,9 @@ class TareasController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idTarea = $request->input('IdTarea');
-                $idProfesor = $request->input('IdProfesor');
-                $nombre = $request->input('Nombre');
-                $archivo = $request->input('Archivo');
+                $idTarea = $request->integer('IdTarea');
+                $idProfesor = session('IdUsuario');
+                $nombre = $request->string('NombreArchivo');
 
                 $nombreArchivo = $request->string('NombreArchivo');
 

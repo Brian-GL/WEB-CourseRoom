@@ -295,7 +295,6 @@ async function ObtenerArchivosCompartidos(){
     }
 }
 
-
 async function ObtenerMiembros(){
     try{
 
@@ -557,7 +556,6 @@ async function ObtenerTareasPendientes(){
         });
     }
 }
-
 
 document.ActualizarGrupo = async function (){
 
@@ -1107,7 +1105,16 @@ $("#enviar-archivo").on("click", async () => {
                 }
                 reader.readAsDataURL(file);
             } else {
-
+                Swal.fire({
+                    title: '¡Alerta!',
+                    text: 'El archivo supera el tamaño máximo permitido 😐',
+                    imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    imageAlt: 'Alert Image',
+                    background: '#000000',
+                    color: '#FFFFFF'
+                });
             }
         } else {
             Swal.fire({
@@ -1173,7 +1180,16 @@ document.getElementById("subir-archivo-compartido").addEventListener('click', as
                 }
                 reader.readAsDataURL(file);
             } else {
-
+                Swal.fire({
+                    title: '¡Alerta!',
+                    text: 'El archivo supera el tamaño máximo permitido 😐',
+                    imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    imageAlt: 'Alert Image',
+                    background: '#000000',
+                    color: '#FFFFFF'
+                });
             }
         } else {
             Swal.fire({
@@ -1246,6 +1262,7 @@ document.getElementById("form-agregar-tarea-pendiente").addEventListener("submit
                     if (result.isConfirmed) {
                        ObtenerTareasPendientes();
                     }
+                    $("#agregar-tarea-pendiente-modal").hide();
                 });
             }
             break;

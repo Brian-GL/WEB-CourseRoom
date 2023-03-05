@@ -264,7 +264,7 @@ $min_date = Carbon::now()->toDateTimeString();
 
                         <div class="row mt-4">
                             <div class="col-md-12 form-group">
-                                <label for="descripcion-tarea-pendiente" class="form-label">Descripción</label>
+                                <label for="descripcion-tarea-pendiente" class="form-label">Descripción*</label>
                                 <textarea class="form-control fuenteNormal primer-color-fondo primer-color-letra" name="descripcion-tarea-pendiente" cols="30" rows="10" id="descripcion-tarea-pendiente" placeholder="Ingrese la descripción de la tarea pendiente" maxlength="4000" required></textarea>
                             </div>
                         </div>

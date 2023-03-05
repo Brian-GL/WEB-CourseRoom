@@ -582,7 +582,7 @@ if(idTipoUsuario == 1){
                         data: filas,
                         createdRow: (row, data) => {
                             $('.segundo-color-letra',row).css('color', SegundoColorLetra);
-                            $('.span-detalle', row).html('<span class="fuenteNormal span-detalle text-center text-decoration-underline" onclick="DetalleTareaProfesor('.concat(data.idTarea,')">Ver detalle</span>'));
+                            $('.span-detalle', row).html('<span class="fuenteNormal span-detalle text-center text-decoration-underline" onclick="DetalleTareaProfesor('.concat(data.idTarea,',',idUsuario,')">Ver detalle</span>'));
                             $('.info-curso', row).html('<div class="container"><div class="row"><div class="col-5"><img class="img-fluid" alt="Imagen del curso" src="'.concat(assetsRoute,'/',data.imagenCurso,'"/></div><div class="col-7 p-0"><p class="fuenteNormal">',data.nombreCurso,'</p></div></div></div>'));
                             $('.info-usuario', row).html('<div class="container"><div class="row"><div class="col-5"><img class="img-fluid" alt="Imagen del usuario" src="'.concat(assetsRouteUsuarios,'/',data.imagenEstudiante,'"/></div><div class="col-7 p-0"><p class="fuenteNormal">',data.nombreEstudiante,'</p></div></div></div>'));
                             let fechaRegistro = data.fechaRegistro.substring(0, data.fechaRegistro.length -1 );
@@ -788,63 +788,18 @@ if(idTipoUsuario == 1){
     }
 
 
-    document.DetalleTareaProfesor = async function(IdTarea){
+    document.DetalleTareaProfesor = async function(IdTarea, IdUsuario){
         try{
 
             ShowPreloader();
 
-            let formData = new FormData();
-
-            formData.append('IdTarea', IdTarea);
-
-            let response = await axios({
-                url: '/tareas/detalle',
-                baseURL: BaseURL,
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
-                },
-                data: formData
-            });
-
-            HidePreloader();
-
-            let result = response.data;
-
-            switch (result.code) {
-                case 200:{
+            $('<form/>', { action: '/tareas/profesordetalle', method: 'POST' }).append(
+                $('<input>', {type: 'hidden', id: '_token', name: '_token', value: document.head.querySelector("[name~=csrf-token][content]").content}),
+                $('<input>', {type: 'hidden', id: 'IdTarea', name: 'IdTarea', value: IdTarea}),
+                $('<input>', {type: 'hidden', id: 'IdUsuario', name: 'IdUsuario', value: IdUsuario})
+            ).appendTo('body').submit();
                 
-                }
-                break;
-                case 500:{
-                    
-                    Swal.fire({
-                        title: '¡Error!',
-                        text: result.data,
-                        imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
-                        imageWidth: 100,
-                        imageHeight: 123,
-                        background: '#000000',
-                        color: '#FFFFFF',
-                        imageAlt: 'Error Image'
-                    });
-                }
-                break;
-                default:{
-                    
-                    Swal.fire({
-                        title: '¡Alerta!',
-                        text: result.data,
-                        imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
-                        imageWidth: 100,
-                        imageHeight: 123,
-                        imageAlt: 'Alert Image',
-                        background: '#000000',
-                        color: '#FFFFFF'
-                    });
-                }
-                break;
-            }
+            HidePreloader();
         }
         catch(ex){
 

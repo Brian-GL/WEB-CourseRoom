@@ -365,7 +365,7 @@ async function ObtenerRetroalimentaciones(){
                     data: filas,
                     createdRow: (row, data) => {
                         $('.segundo-color-letra',row).css('color', SegundoColorLetra);
-                        $('.span-detalle', row).html('<span class="fuenteNormal span-detalle text-center text-decoration-underline" onclick="DetalleRetroalimentación('.concat(data.idRetroalimentacion,')">Ver detalle</span>'));
+                        $('.span-detalle', row).html('<span class="fuenteNormal span-detalle text-center text-decoration-underline" onclick="DetalleRetroalimentacion('.concat(data.idRetroalimentacion,')">Ver detalle</span>'));
                         let fechaRegistro = data.fechaRegistro.substring(0, data.fechaRegistro.length -1 );
                         $('.fechaRegistro', row).text(dayjs(fechaRegistro).format('dddd DD MMM YYYY h:mm A'));
                     }
@@ -542,8 +542,198 @@ async function ObtenerArchivosEntregados(){
     }
 }
 
-async function ActualizarTarea(){
+async function SubirArchivoAdjunto(filename, base64, file) {
 
+    try {
+
+        ShowPreloader();
+        let formData = new FormData();
+        formData.append("IdTarea", IdTarea);
+        formData.append("NombreArchivo", filename);
+        formData.append("Base64Archivo", base64);
+        formData.append("Archivo", file);
+
+        let response = await axios({
+            url: '/tareas/archivoadjuntoregistrar',
+            baseURL: BaseURL,
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
+            },
+            data: formData
+        });
+
+        HidePreloader();
+
+        let resultado = response.data;
+
+        switch (resultado.code) {
+            case 200:{
+                Swal.fire({
+                    title: 'Subir archivo adjunto',
+                    text: resultado.data,
+                    imageUrl: BaseURL.concat("/assets/templates/HappyOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    imageAlt: 'Ok Image',
+                    background: '#000000',
+                    color: '#FFFFFF'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                       ObtenerArchivosAdjuntos();
+                    }
+                });
+            }
+            break;
+            case 500: {
+                Swal.fire({
+                    title: '¡Error!',
+                    text: resultado.data,
+                    imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    background: '#000000',
+                    color: '#FFFFFF',
+                    imageAlt: 'Error Image'
+                });
+            }
+                break;
+            default: {
+                Swal.fire({
+                    title: '¡Alerta!',
+                    text: resultado.data,
+                    imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    imageAlt: 'Alert Image',
+                    background: '#000000',
+                    color: '#FFFFFF'
+                });
+            }
+                break;
+        }
+    }
+    catch (ex) {
+        HidePreloader();
+        Swal.fire({
+            title: '¡Error!',
+            text: ex,
+            imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+            imageWidth: 100,
+            imageHeight: 123,
+            background: '#000000',
+            color: '#FFFFFF',
+            imageAlt: 'Error Image'
+        });
+    }
+}
+
+document.DetalleRetroalimentacion = async function(IdRetroalimentacion){
+    try {
+
+        ShowPreloader();
+        let formData = new FormData();
+        formData.append("IdRetroalimentacion", IdRetroalimentacion);
+
+        let response = await axios({
+            url: '/tareas/retroalimentaciondetalle',
+            baseURL: BaseURL,
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
+            },
+            data: formData
+        });
+
+        HidePreloader();
+
+        let resultado = response.data;
+
+        switch (resultado.code) {
+            case 200:{
+               let retroalimentacion = resultado.data;
+
+               //Llenar info de detalle retroalimentacion modal:
+
+               document.getElementById("nombre-detalle-retroalimentacion").value = retroalimentacion.nombre;
+               document.getElementById("descripcion-detalle-retroalimentacion").value = retroalimentacion.retroalimentacion;
+               document.getElementById("archivo-detalle-retroalimentacion").value = retroalimentacion.nombreArchivo;
+               document.getElementById("descargar-archivo-detalle-retroalimentacion").href =  assetsRouteTareas.concat("/",retroalimentacion.archivo);
+               document.getElementById("fecha-registro-detalle-retroalimentacion").value = retroalimentacion.fechaRegistro;
+
+               $("#detalle-retroalimentacion-modal").show();
+
+            }
+            break;
+            case 500: {
+
+                document.getElementById("nombre-detalle-retroalimentacion").value = "";
+                document.getElementById("descripcion-detalle-retroalimentacion").value = "";
+                document.getElementById("archivo-detalle-retroalimentacion").value = "";
+                document.getElementById("descargar-archivo-detalle-retroalimentacion").href =  "";
+                document.getElementById("fecha-registro-detalle-retroalimentacion").value = "";
+
+                Swal.fire({
+                    title: '¡Error!',
+                    text: resultado.data,
+                    imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    background: '#000000',
+                    color: '#FFFFFF',
+                    imageAlt: 'Error Image'
+                });
+            }
+                break;
+            default: {
+
+                document.getElementById("nombre-detalle-retroalimentacion").value = "";
+                document.getElementById("descripcion-detalle-retroalimentacion").value = "";
+                document.getElementById("archivo-detalle-retroalimentacion").value = "";
+                document.getElementById("descargar-archivo-detalle-retroalimentacion").href =  "";
+                document.getElementById("fecha-registro-detalle-retroalimentacion").value = "";
+
+                Swal.fire({
+                    title: '¡Alerta!',
+                    text: resultado.data,
+                    imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    imageAlt: 'Alert Image',
+                    background: '#000000',
+                    color: '#FFFFFF'
+                });
+            }
+                break;
+        }
+    }
+    catch (ex) {
+        HidePreloader();
+
+        document.getElementById("nombre-detalle-retroalimentacion").value = "";
+        document.getElementById("descripcion-detalle-retroalimentacion").value = "";
+        document.getElementById("archivo-detalle-retroalimentacion").value = "";
+        document.getElementById("descargar-archivo-detalle-retroalimentacion").href =  "";
+        document.getElementById("fecha-registro-detalle-retroalimentacion").value = "";
+
+        Swal.fire({
+            title: '¡Error!',
+            text: ex,
+            imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+            imageWidth: 100,
+            imageHeight: 123,
+            background: '#000000',
+            color: '#FFFFFF',
+            imageAlt: 'Error Image'
+        });
+    }
+}
+
+//#endregion
+
+//#region events
+
+$("#actualizar-tarea").on("click", async () => {
     try {
 
         ShowPreloader();
@@ -551,7 +741,6 @@ async function ActualizarTarea(){
         let formData = new FormData();
 
         formData.append('IdTarea', IdTarea);
-        formData.append('IdProfesor', IdProfesor);
         formData.append('Nombre', document.getElementById("nombre-tarea").value);
         formData.append('Descripcion', document.getElementById("descripcion-tarea").value);
 
@@ -625,22 +814,257 @@ async function ActualizarTarea(){
             imageAlt: 'Error Image'
         });
     }
-}
+});
 
-async function CalificarTarea(){
+
+$("#subir-archivo-adjunto").on("click", async () => {
+    try {
+
+        const { value: file } = await Swal.fire({
+            title: 'Subir archivo adjunto',
+            text: "Selecciona un archivo para adjuntar en la tarea",
+            imageUrl: 'https://freesvg.org/img/file_server.png',
+            imageWidth: 100,
+            imageHeight: 123,
+            background: '#000000',
+            color: '#FFFFFF',
+            imageAlt: 'File image',
+            input: 'file',
+            inputAttributes: {
+                'class': 'form-control',
+                'aria-label': 'Sube tu archivo',
+            },
+            showCloseButton: true,
+            showConfirmButton: true,
+            confirmButtonText: 'Subir Archivo 📄'
+        });
+
+        if (file) {
+
+            if (file.size < 15000000) { //MAX 15 MB
+                const reader = new FileReader();
+                reader.onload = async (e) => {
+
+                    let base64 = await GetBase64FromUrl(e.target.result);
+                    let filename = file.name;
+
+                    SubirArchivoAdjunto(filename, base64, file);
+                }
+                reader.readAsDataURL(file);
+            } else {
+                Swal.fire({
+                    title: '¡Alerta!',
+                    text: 'El archivo supera el tamaño máximo permitido 😐',
+                    imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    imageAlt: 'Alert Image',
+                    background: '#000000',
+                    color: '#FFFFFF'
+                });
+            }
+        } else {
+            Swal.fire({
+                title: '¡Alerta!',
+                text: 'Es necesario subir archivo 😐',
+                imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
+                imageWidth: 100,
+                imageHeight: 123,
+                imageAlt: 'Alert Image',
+                background: '#000000',
+                color: '#FFFFFF'
+            });
+        }
+    }
+    catch (ex) {
+
+        Swal.fire({
+            title: '¡Error!',
+            text: ex,
+            imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+            imageWidth: 100,
+            imageHeight: 123,
+            background: '#000000',
+            color: '#FFFFFF',
+            imageAlt: 'Error Image'
+        });
+    }
+});
+
+
+$("#calificar-tarea").on("click", async () => {
+
+
+    Swal.fire({
+        icon: 'info',
+        title: 'Calificar tarea',
+        padding: '0.5em',
+        background: '#000000',
+        color: '#FFFFFF',
+        width: 300,
+        html: `<input type=" number" id="calificacion" class="swal2-input" placeholder="Ingrese el valor de la calificación" min="0" max="100" required>`,
+        confirmButtonText: '💾 Calificar',
+        showCancelButton: true,
+        cancelButtonText: `❌ Cancelar`,
+        focusConfirm: false,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        preConfirm: () => {
+          const calificacion = Swal.getPopup().querySelector('#calificacion').value;
+          if (!calificacion || calificacion < 0 || calificacion > 100) {
+            Swal.showValidationMessage(`Por favor ingrese un valor adecuado para calificación`);
+          }
+          return { calificacion: calificacion}
+        }
+      }).then(async (result) => {
+            if(result.isConfirmed){
+
+                try {
+
+                    ShowPreloader();
+            
+                    let formData = new FormData();
+            
+                    formData.append('IdTarea', IdTarea);
+                    formData.append('IdUsuario', IdUsuario);
+                    formData.append('Calificacion', result.value.calificacion);
+            
+                    let response = await axios({
+                        url: '/tareas/calificar',
+                        baseURL: BaseURL,
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
+                        },
+                        data: formData
+                    });
+            
+                    HidePreloader();
+            
+                    let resultado = response.data;
+            
+                    switch (resultado.code) {
+                        case 200:{
+                           
+                            Swal.fire({
+                                title: 'Calificar tarea',
+                                text: resultado.data,
+                                imageUrl: BaseURL.concat("/assets/templates/HappyOwl.png"),
+                                imageWidth: 100,
+                                imageHeight: 123,
+                                imageAlt: 'Ok Image',
+                                background: '#000000',
+                                color: '#FFFFFF'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = "/mis-tareas";
+                                }
+                            });
+                        }
+                        break;
+                        case 500: {
+                            Swal.fire({
+                                title: '¡Error!',
+                                text: resultado.data,
+                                imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+                                imageWidth: 100,
+                                imageHeight: 123,
+                                background: '#000000',
+                                color: '#FFFFFF',
+                                imageAlt: 'Error Image'
+                            });
+                        }
+                            break;
+                        default: {
+                            Swal.fire({
+                                title: '¡Alerta!',
+                                text: resultado.data,
+                                imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
+                                imageWidth: 100,
+                                imageHeight: 123,
+                                imageAlt: 'Alert Image',
+                                background: '#000000',
+                                color: '#FFFFFF'
+                            });
+                        }
+                            break;
+                    }
+                }
+                catch (ex) {
+                    HidePreloader();
+                    Swal.fire({
+                        title: '¡Error!',
+                        text: ex,
+                        imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+                        imageWidth: 100,
+                        imageHeight: 123,
+                        background: '#000000',
+                        color: '#FFFFFF',
+                        imageAlt: 'Error Image'
+                    });
+                }
+
+            }
+      });
+
+});
+
+$("#agregar-retroalimentacion").on("click", async () => {
+    $("#agregar-retroalimentacion-modal").show();
+});
+
+document.getElementById("form-agregar-retroalimentacion").addEventListener("submit", async (e) => {
+
+    e.preventDefault();
+
     try {
 
         ShowPreloader();
-
         let formData = new FormData();
+        formData.append("IdTarea", IdTarea);
+        formData.append("IdUsuario", document.getElementById("id-usuario").value);
+        formData.append("Nombre", document.getElementById("nombre-retroalimentacion").value);
+        formData.append("Retroalimentacion", document.getElementById("descripcion-retroalimentacion").value);
 
-        formData.append('IdTarea', IdTarea);
-        formData.append('IdProfesor', IdProfesor);
-        formData.append('IdUsuario', IdUsuario);
-        formData.append('Calificacion', document.getElementById("calificacion-tarea").value);
+        let archivo_retroalimentacion = document.getElementById("archivo-retroalimentacion");
+        
+        if(archivo_retroalimentacion.files.length > 0){
+            file = archivo_retroalimentacion.files[0];
+
+            if (file.size < 15000000) { //MAX 15 MB
+                const reader = new FileReader();
+                reader.onload = async (e) => {
+
+                    let base64 = await GetBase64FromUrl(e.target.result);
+                    let filename = file.name;
+
+                    formData.append("NombreArchivo", filename);
+                    formData.append("Archivo", file);
+                    formData.append("Base64Archivo", base64);
+
+                }
+                reader.readAsDataURL(file);
+            } else {
+                Swal.fire({
+                    title: '¡Alerta!',
+                    text: 'El archivo supera el tamaño máximo permitido 😐',
+                    imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    imageAlt: 'Alert Image',
+                    background: '#000000',
+                    color: '#FFFFFF'
+                });
+                return;
+            }
+        }else{
+            formData.append("NombreArchivo", "");
+            formData.append("Archivo", null);
+            formData.append("Base64Archivo", "");
+        }
 
         let response = await axios({
-            url: '/tareas/calificar',
+            url: '/tareas/retroalimentacion',
             baseURL: BaseURL,
             method: 'POST',
             headers: {
@@ -651,27 +1075,31 @@ async function CalificarTarea(){
 
         HidePreloader();
 
-        let result = response.data;
+        let resultado = response.data;
 
-        switch (result.code) {
+        switch (resultado.code) {
             case 200:{
-               
                 Swal.fire({
-                    title: 'Calificar tarea',
-                    text: result.data,
+                    title: 'Agregar retroalimentación',
+                    text: resultado.data,
                     imageUrl: BaseURL.concat("/assets/templates/HappyOwl.png"),
                     imageWidth: 100,
                     imageHeight: 123,
                     imageAlt: 'Ok Image',
                     background: '#000000',
                     color: '#FFFFFF'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                       ObtenerRetroalimentaciones();
+                    }
+                    $("#agregar-retroalimentacion-modal").hide();
                 });
             }
             break;
             case 500: {
                 Swal.fire({
                     title: '¡Error!',
-                    text: result.data,
+                    text: resultado.data,
                     imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
                     imageWidth: 100,
                     imageHeight: 123,
@@ -684,7 +1112,7 @@ async function CalificarTarea(){
             default: {
                 Swal.fire({
                     title: '¡Alerta!',
-                    text: result.data,
+                    text: resultado.data,
                     imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
                     imageWidth: 100,
                     imageHeight: 123,
@@ -693,7 +1121,7 @@ async function CalificarTarea(){
                     color: '#FFFFFF'
                 });
             }
-                break;
+            break;
         }
     }
     catch (ex) {
@@ -709,6 +1137,7 @@ async function CalificarTarea(){
             imageAlt: 'Error Image'
         });
     }
-}
+   
+});
 
 //#endregion

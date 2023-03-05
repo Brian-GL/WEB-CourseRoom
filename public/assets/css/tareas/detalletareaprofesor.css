@@ -1,0 +1,143 @@
+.titulado{
+    margin-bottom: 0 !important;
+}
+
+.mask-custom {
+    background: rgba(24, 24, 16, 0.2) !important;
+    border-radius: 2em;
+    backdrop-filter: blur(15px);
+    border: 2px solid rgba(255, 255, 255, 0.05) !important;
+    background-clip: padding-box;
+    box-shadow: 10px 10px 10px rgba(46, 54, 68, 0.03) !important;
+    color: white !important;
+}
+
+#contenedor {
+    --padding: 1.25rem;
+    padding-left: var(--padding);
+    padding-right: var(--padding);
+}
+
+table {
+    width: 100% !important;
+}
+
+#table-archivos-adjuntos_filter {
+    display: grid !important;
+    place-content: end !important;
+    padding-bottom: 1rem !important;
+}
+
+#table-archivos-adjuntos_filter input {
+    width: 560px !important;
+    height: 2rem !important;
+}
+
+#table-archivos-adjuntos_paginate {
+    display: grid !important;
+    place-content: center !important;
+}
+
+#archivos-entregados-profesor_filter {
+    display: grid !important;
+    place-content: end !important;
+    padding-bottom: 1rem !important;
+}
+
+#archivos-entregados-profesor_filter input {
+    width: 560px !important;
+    height: 2rem !important;
+}
+
+#archivos-entregados-profesor_paginate {
+    display: grid !important;
+    place-content: center !important;
+}
+
+#table-retroalimentaciones_filter {
+    display: grid !important;
+    place-content: end !important;
+    padding-bottom: 1rem !important;
+}
+
+#table-retroalimentaciones_filter input {
+    width: 560px !important;
+    height: 2rem !important;
+}
+
+#table-retroalimentaciones_paginate {
+    display: grid !important;
+    place-content: center !important;
+}
+
+.span-detalle {
+    cursor: pointer;
+}
+
+@media (max-width:660px) {
+    #table-archivos-adjuntos_filter input {
+        width: 500px !important;
+        height: 2rem !important;
+    }
+
+    #archivos-entregados-profesor_filter input {
+        width: 500px !important;
+        height: 2rem !important;
+    }
+
+    #table-retroalimentaciones_filter input {
+        width: 500px !important;
+        height: 2rem !important;
+    }
+}
+
+@media (max-width:560px) {
+    #table-archivos-adjuntos_filter input {
+        width: 400px !important;
+        height: 2rem !important;
+    }
+
+    #archivos-entregados-profesor_filter input {
+        width: 400px !important;
+        height: 2rem !important;
+    }
+
+    #table-retroalimentaciones_filter input {
+        width: 400px !important;
+        height: 2rem !important;
+    }
+}
+
+@media (max-width:460px) {
+    #table-archivos-adjuntos_filter input {
+        width: 300px !important;
+        height: 2rem !important;
+    }
+
+    #archivos-entregados-profesor_filter input {
+        width: 300px !important;
+        height: 2rem !important;
+    }
+
+    #table-retroalimentaciones_filter input {
+        width: 300px !important;
+        height: 2rem !important;
+    }
+}
+
+@media (max-width:360px) {
+    #table-archivos-adjuntos_filter input {
+        width: 200px !important;
+        height: 2rem !important;
+    }
+
+    #archivos-entregados-profesor_filter input {
+        width: 200px !important;
+        height: 2rem !important;
+    }
+
+    #table-retroalimentaciones_filter input {
+        width: 200px !important;
+        height: 2rem !important;
+    }
+}

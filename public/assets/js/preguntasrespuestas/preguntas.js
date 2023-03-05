@@ -368,8 +368,7 @@ document.getElementById("agregar-pregunta").addEventListener("click", function()
                 }
 
             }
-      })
-
+      });
 });
 
 document.getElementById("form-buscar-preguntas").addEventListener('submit', async (e) => {

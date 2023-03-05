@@ -193,7 +193,16 @@ document.getElementById("enviar-archivo").addEventListener("click", async () => 
                 }
                 reader.readAsDataURL(file);
             } else {
-
+                Swal.fire({
+                    title: '¡Alerta!',
+                    text: 'El archivo supera el tamaño máximo permitido 😐',
+                    imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    imageAlt: 'Alert Image',
+                    background: '#000000',
+                    color: '#FFFFFF'
+                });
             }
         } else {
             Swal.fire({
