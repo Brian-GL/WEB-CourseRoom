@@ -13,6 +13,7 @@ let assetsRouteUsuarios = document.getElementById("assets-usuarios").value;
 
 let IdCurso = document.getElementById("id-curso").value;
 let IdUsuario = document.getElementById("id-usuario").value;
+let Finalizado = document.getElementById("estatus-curso").value;
 
 let elementos = document.querySelectorAll('input[type="search"]');
 for(let elemento of elementos){
@@ -969,5 +970,389 @@ async function RegistrarRespuestaCuestionario(){
         });
     }
 }
+
+document.DetalleTarea = async function(IdTarea){
+
+    try{
+
+        ShowPreloader();
+
+        $('<form/>', { action: '/tareas/estudiantedetalle', method: 'POST' }).append(
+            $('<input>', {type: 'hidden', id: '_token', name: '_token', value: document.head.querySelector("[name~=csrf-token][content]").content}),
+            $('<input>', {type: 'hidden', id: 'IdTarea', name: 'IdTarea', value: IdTarea})
+        ).appendTo('body').submit();
+            
+        HidePreloader();
+          
+    }
+    catch(ex){
+
+        HidePreloader();
+        Swal.fire({
+            title: '¡Error!',
+            text: ex,
+            imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+            imageWidth: 100,
+            imageHeight: 123,
+            background: '#000000',
+            color: '#FFFFFF',
+            imageAlt: 'Error Image'
+        });
+    }
+}
+
+async function EnviarMensaje(mensaje, archivo, base64Archivo) {
+
+    try {
+
+        ShowPreloader();
+        let formData = new FormData();
+        formData.append("IdCurso", IdCurso);
+        formData.append("Mensaje", mensaje);
+        formData.append("Base64Archivo", base64Archivo);
+        formData.append("Archivo", archivo);
+
+        let response = await axios({
+            url: '/cursos/mensajeregistrar',
+            baseURL: BaseURL,
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
+            },
+            data: formData
+        });
+
+        HidePreloader();
+
+        let result = response.data;
+
+        switch (result.code) {
+            case 200:{
+                let fechaRegistroFormat = dayjs(result.fecha).format('DD/MM/YYYY h:mm A');
+                GenerarMensaje(fechaRegistroFormat,mensaje, result.nombreArchivo, document.getElementById("nombre-usuario").innerHTML, result.imagenEmisor);
+            }
+            break;
+            case 500: {
+                Swal.fire({
+                    title: '¡Error!',
+                    text: result.data,
+                    imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    background: '#000000',
+                    color: '#FFFFFF',
+                    imageAlt: 'Error Image'
+                });
+            }
+                break;
+            default: {
+                Swal.fire({
+                    title: '¡Alerta!',
+                    text: result.data,
+                    imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    imageAlt: 'Alert Image',
+                    background: '#000000',
+                    color: '#FFFFFF'
+                });
+            }
+                break;
+        }
+    }
+    catch (ex) {
+        HidePreloader();
+        Swal.fire({
+            title: '¡Error!',
+            text: ex,
+            imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+            imageWidth: 100,
+            imageHeight: 123,
+            background: '#000000',
+            color: '#FFFFFF',
+            imageAlt: 'Error Image'
+        });
+    }
+}
+
+function GenerarMensaje(fechaRegistro, mensaje, nombreArchivo, nombreUsuarioEmisor, imagenEmisor) {
+
+    let elemento;
+
+    if (nombreArchivo === undefined || nombreArchivo === null || nombreArchivo === '') {
+        elemento =
+            `<div class="col-md-12 d-flex justify-content-start"><div class="d-flex justify-content-start mb-4"><img src="${assetsUsuariosRoute}${imagenEmisor}" alt="avatar" class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60"><div class="card mask-custom"><div class="card-header d-flex justify-content-between p-3"style="border-bottom: 1px solid rgba(255,255,255,.3);"><div class="row"><div class="col-md-6 text-center text-wrap"><p class="fw-bold mb-0">${nombreUsuarioEmisor}</p></div><div class="col-md-6 text-center text-wrap"><p class="text-light small mb-0"><i class="far fa-clock"></i> ${fechaRegistro}</p></div></div></div><div class="card-body"><p class="mb-0">${mensaje}</p></div></div></div></div>`;
+    } else {
+        elemento =
+            `<div class="col-md-12 d-flex justify-content-start"><div class="d-flex justify-content-start mb-4"><img src="${assetsUsuariosRoute}${imagenEmisor}" alt="avatar" class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60"><div class="card mask-custom"><div class="card-header d-flex justify-content-between p-3"style="border-bottom: 1px solid rgba(255,255,255,.3);"><div class="row"><div class="col-md-6 text-center text-wrap"><p class="fw-bold mb-0">${nombreUsuarioEmisor}</p></div><div class="col-md-6 text-center text-wrap"><p class="text-light small mb-0"><i class="far fa-clock"></i> ${fechaRegistro}</p></div></div></div><div class="card-body"><a href="${assestRouteCursos}${nombreArchivo}" target="_blank"><i class="fa-solid fa-file-lines"></i>&nbsp;${mensaje}'</a></div></div></div></div>`;
+    }
+
+    $("#mensajes").append(elemento);
+
+}
+
+async function EnviarMaterial(filename, base64, file) {
+
+    try {
+
+        ShowPreloader();
+        let formData = new FormData();
+        formData.append("IdCurso", IdCurso);
+        formData.append("NombreArchivo", filename);
+        formData.append("Base64Archivo", base64);
+        formData.append("Archivo", file);
+
+        let response = await axios({
+            url: '/cursos/materialregistrar',
+            baseURL: BaseURL,
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
+            },
+            data: formData
+        });
+
+        HidePreloader();
+
+        let resultado = response.data;
+
+        switch (resultado.code) {
+            case 200:{
+                Swal.fire({
+                    title: 'Compartir material',
+                    text: resultado.data,
+                    imageUrl: BaseURL.concat("/assets/templates/HappyOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    imageAlt: 'Ok Image',
+                    background: '#000000',
+                    color: '#FFFFFF'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                       ObtenerMateriales();
+                    }
+                });
+            }
+            break;
+            case 500: {
+                Swal.fire({
+                    title: '¡Error!',
+                    text: resultado.data,
+                    imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    background: '#000000',
+                    color: '#FFFFFF',
+                    imageAlt: 'Error Image'
+                });
+            }
+                break;
+            default: {
+                Swal.fire({
+                    title: '¡Alerta!',
+                    text: resultado.data,
+                    imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    imageAlt: 'Alert Image',
+                    background: '#000000',
+                    color: '#FFFFFF'
+                });
+            }
+                break;
+        }
+    }
+    catch (ex) {
+        HidePreloader();
+        Swal.fire({
+            title: '¡Error!',
+            text: ex,
+            imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+            imageWidth: 100,
+            imageHeight: 123,
+            background: '#000000',
+            color: '#FFFFFF',
+            imageAlt: 'Error Image'
+        });
+    }
+}
+
+//#endregion
+
+//#region Events
+
+$("#enviar-mensaje").on("click", () => {
+
+    let mensaje = document.getElementById("mensaje").value;
+
+    if (mensaje !== null && mensaje !== undefined && mensaje !== '') {
+        EnviarMensaje(mensaje, null, null);
+        document.getElementById("mensaje").value = "";
+    }
+
+});
+
+$("#mensaje").on("keypress", (e) => {
+
+    if (e.code === 'Enter') {
+        let mensaje = document.getElementById("mensaje").value;
+
+        if (mensaje !== null && mensaje !== undefined && mensaje !== '') {
+            EnviarMensaje(mensaje, null, null);
+            document.getElementById("mensaje").value = "";
+        }
+    }
+
+});
+
+$("#enviar-archivo").on("click", async () => {
+
+    try {
+
+        const { value: file } = await Swal.fire({
+            title: 'Enviar archivo',
+            text: "Selecciona un archivo para enviarlo",
+            imageUrl: 'https://freesvg.org/img/file_server.png',
+            imageWidth: 100,
+            imageHeight: 123,
+            background: '#000000',
+            color: '#FFFFFF',
+            imageAlt: 'File image',
+            input: 'file',
+            inputAttributes: {
+                'class': 'form-control',
+                'aria-label': 'Sube tu archivo',
+            },
+            showCloseButton: true,
+            showConfirmButton: true,
+            confirmButtonText: 'Subir Archivo 📄'
+        });
+
+        if (file) {
+
+            if (file.size < 15000000) { //MAX 15 MB
+                const reader = new FileReader();
+                reader.onload = async (e) => {
+
+                    let base64 = await GetBase64FromUrl(e.target.result);
+                    let filename = file.name;
+
+                    EnviarMensaje(filename, file, base64);
+                }
+                reader.readAsDataURL(file);
+            } else {
+                Swal.fire({
+                    title: '¡Alerta!',
+                    text: 'El archivo supera el tamaño máximo permitido 😐',
+                    imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    imageAlt: 'Alert Image',
+                    background: '#000000',
+                    color: '#FFFFFF'
+                });
+            }
+        } else {
+            Swal.fire({
+                title: '¡Alerta!',
+                text: 'Es necesario subir archivo 😐',
+                imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
+                imageWidth: 100,
+                imageHeight: 123,
+                imageAlt: 'Alert Image',
+                background: '#000000',
+                color: '#FFFFFF'
+            });
+        }
+    }
+    catch (ex) {
+
+        Swal.fire({
+            title: '¡Error!',
+            text: ex,
+            imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+            imageWidth: 100,
+            imageHeight: 123,
+            background: '#000000',
+            color: '#FFFFFF',
+            imageAlt: 'Error Image'
+        });
+    }
+
+});
+
+$("#subir-material").addEventListener('click', async () => {
+    try {
+
+        const { value: file } = await Swal.fire({
+            title: 'Subir material para compartir',
+            text: "Selecciona un archivo para compartir",
+            imageUrl: 'https://freesvg.org/img/file_server.png',
+            imageWidth: 100,
+            imageHeight: 123,
+            background: '#000000',
+            color: '#FFFFFF',
+            imageAlt: 'File image',
+            input: 'file',
+            inputAttributes: {
+                'class': 'form-control',
+                'aria-label': 'Sube tu archivo',
+            },
+            showCloseButton: true,
+            showConfirmButton: true,
+            confirmButtonText: 'Subir Archivo 📄'
+        });
+
+        if (file) {
+
+            if (file.size < 15000000) { //MAX 15 MB
+                const reader = new FileReader();
+                reader.onload = async (e) => {
+
+                    let base64 = await GetBase64FromUrl(e.target.result);
+                    let filename = file.name;
+
+                    EnviarMaterial(filename, base64, file);
+                }
+                reader.readAsDataURL(file);
+            } else {
+                Swal.fire({
+                    title: '¡Alerta!',
+                    text: 'El archivo supera el tamaño máximo permitido 😐',
+                    imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    imageAlt: 'Alert Image',
+                    background: '#000000',
+                    color: '#FFFFFF'
+                });
+            }
+        } else {
+            Swal.fire({
+                title: '¡Alerta!',
+                text: 'Es necesario subir archivo 😐',
+                imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
+                imageWidth: 100,
+                imageHeight: 123,
+                imageAlt: 'Alert Image',
+                background: '#000000',
+                color: '#FFFFFF'
+            });
+        }
+    }
+    catch (ex) {
+
+        Swal.fire({
+            title: '¡Error!',
+            text: ex,
+            imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+            imageWidth: 100,
+            imageHeight: 123,
+            background: '#000000',
+            color: '#FFFFFF',
+            imageAlt: 'Error Image'
+        });
+    }
+});
 
 //#endregion

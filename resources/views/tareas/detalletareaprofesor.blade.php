@@ -132,7 +132,7 @@ use Carbon\Carbon;
                             </div>
                         </div>
 
-                        <div class="tab-pane fade show active" id="archivos-adjuntos" role="tabpanel" aria-labelledby="archivos-adjuntos-tab">
+                        <div class="tab-pane fade" id="archivos-adjuntos" role="tabpanel" aria-labelledby="archivos-adjuntos-tab">
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="row">

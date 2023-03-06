@@ -122,7 +122,7 @@ $min_date = Carbon::now()->toDateTimeString();
                             </div>
                         </div>
 
-                        <div class="tab-pane fade show active" id="miembros" role="tabpanel" aria-labelledby="miembros-tab">
+                        <div class="tab-pane fade" id="miembros" role="tabpanel" aria-labelledby="miembros-tab">
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="table-responsive mt-3">

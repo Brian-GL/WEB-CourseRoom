@@ -24,11 +24,40 @@ class CursosController extends Controller
         return view('cursos.cursos', compact('DatosUsuario', 'DatosCuenta','IdTipoUsuario'));
     }
 
-    public function detallecurso(){
+    public function detallecurso(Request $request){
 
         $DatosUsuario = session('DatosUsuario');
         $DatosCuenta = session('DatosCuenta');
         $IdTipoUsuario = session('IdTipoUsuario');
+
+        $DatosCurso = null;
+
+        $url = env('COURSEROOM_API');
+
+        $IdCurso = $request->integer('IdCurso');
+
+        if($url != ''){
+
+            $response = Http::withHeaders([
+                'Authorization' => env('COURSEROOM_API_KEY'),
+            ])->post($url.'/api/cursos/detalleobtener', [
+                'IdCurso' => $IdTarea
+            ]);
+
+            if ($response->ok()){
+                $DatosCurso = json_decode($response->body());
+            } 
+        } 
+
+        return view('cursos.detallecurso', compact('DatosUsuario', 'DatosCuenta','IdTipoUsuario', 'DatosCurso'));
+    }
+
+    public function detallecursoestudiante(Request $request){
+
+        $DatosUsuario = session('DatosUsuario');
+        $DatosCuenta = session('DatosCuenta');
+        $IdTipoUsuario = session('IdTipoUsuario');
+        $IdUsuario = session('IdUsuario');
 
         $DatosCurso = null;
 
@@ -47,9 +76,21 @@ class CursosController extends Controller
             if ($response->ok()){
                 $DatosCurso = json_decode($response->body());
             } 
+
+            //Obtener mensajes curso:
+            $response = Http::withHeaders([
+                'Authorization' => env('COURSEROOM_API_KEY'),
+            ])->post($url.'/api/cursos/mensajesobtener', [
+                'IdCurso' => $IdCurso
+            ]);
+
+            if ($response->ok()){
+
+                $Mensajes = json_decode($response->body());
+            } 
         } 
 
-        return view('cursos.detallecurso', compact('DatosUsuario', 'DatosCuenta','IdTipoUsuario', 'DatosCurso'));
+        return view('cursos.detallecursoestudiante', compact('DatosUsuario', 'DatosCuenta','IdTipoUsuario', 'DatosCurso', 'Mensajes', 'IdUsuario'));
     }
 
     #endregion
@@ -704,7 +745,6 @@ class CursosController extends Controller
 
             $validator = Validator::make($request->all(), $rules = [
                 'IdCurso' => ['required'],
-	            'IdUsuario' => ['required'],
                 'NombreArchivo' => ['required']
             ], $messages = [
                 'required' => 'El campo :attribute es requerido'
@@ -717,7 +757,7 @@ class CursosController extends Controller
                 $url = env('COURSEROOM_API');
 
 	            $idCurso = $request->integer('IdCurso');
-                $idUsuario = $request->integer('IdUsuario');
+                $idUsuario = session('IdUsuario');
                 $nombreArchivo = $request->string('NombreArchivo');
 
                 $Base64Archivo = null;
@@ -756,7 +796,7 @@ class CursosController extends Controller
                                 //Guardar imagen en mongo si no esta vácia:
                                 $mongoCollection = new CursoArchivoMaterialRegistrar;
 
-                                $mongoCollection->idArchivomaterial = $result->codigo;
+                                $mongoCollection->idMaterial = $result->codigo;
                                 $mongoCollection->archivo = $Base64Archivo;
                                 $mongoCollection->extension = $extension;
 
@@ -846,7 +886,6 @@ class CursosController extends Controller
 
             $validator = Validator::make($request->all(), $rules = [
                 'IdCurso' => ['required'],
-	            'IdUsuarioEmisor' => ['required'],
                 'Mensaje' => ['required'],
 	            'Archivo' => ['required']
             ], $messages = [

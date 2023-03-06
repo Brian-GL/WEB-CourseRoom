@@ -209,6 +209,8 @@ Route::post('/usuarios/informacioncalculator',  [UsuariosController::class, 'usu
 #region Cursos
 
 Route::get('/mis-cursos',  [CursosController::class, 'cursos'])->name('cursos.inicio')->middleware('session.token');
+Route::get('/cursos/detalle',  [CursosController::class, 'detallecurso'])->middleware('session.token');
+Route::get('/cursos/detalleestudiante',  [CursosController::class, 'detallecursoestudiante'])->middleware('session.token');
 
 
 Route::post('/cursos/registrar',  [CursosController::class, 'curso_registrar'])->middleware('session.token');
