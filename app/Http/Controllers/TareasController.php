@@ -30,7 +30,7 @@ class TareasController extends Controller
         $DatosCuenta = session('DatosCuenta');
         $IdTipoUsuario = session('IdTipoUsuario');
         $IdUsuario = session('IdUsuario');
-        $DetalleTarea = null;
+        $DatosTarea = null;
 
         $url = env('COURSEROOM_API');
 
@@ -46,11 +46,11 @@ class TareasController extends Controller
             ]);
 
             if ($response->ok()){
-                $DetalleTarea = json_decode($response->body());
+                $DatosTarea = json_decode($response->body());
             } 
         } 
         
-        return view('tareas.detalletareaestudiante', compact('DatosUsuario', 'DatosCuenta','IdTipoUsuario', 'DetalleTarea', 'IdTarea', 'IdUsuario'));
+        return view('tareas.detalletareaestudiante', compact('DatosUsuario', 'DatosCuenta','IdTipoUsuario', 'DatosTarea', 'IdTarea', 'IdUsuario'));
     }
 
     public function tareaprofesordetalle_obtener(Request $request){
@@ -59,7 +59,7 @@ class TareasController extends Controller
         $DatosCuenta = session('DatosCuenta');
         $IdTipoUsuario = session('IdTipoUsuario');
         
-        $DetalleTarea = null;
+        $DatosTarea = null;
 
         $url = env('COURSEROOM_API');
 
@@ -76,11 +76,11 @@ class TareasController extends Controller
             ]);
 
             if ($response->ok()){
-                $DetalleTarea = json_decode($response->body());
+                $DatosTarea = json_decode($response->body());
             } 
         } 
         
-        return view('tareas.detalletareaprofesor', compact('DatosUsuario', 'DatosCuenta','IdTipoUsuario', 'DetalleTarea', 'IdTarea', 'IdUsuario'));
+        return view('tareas.detalletareaprofesor', compact('DatosUsuario', 'DatosCuenta','IdTipoUsuario', 'DatosTarea', 'IdTarea', 'IdUsuario'));
     }
 
     #endregion

@@ -1,0 +1,19 @@
+.titulado{
+    margin-bottom: 0 !important;
+}
+
+.mask-custom {
+    background: rgba(24, 24, 16, 0.2) !important;
+    border-radius: 2em;
+    backdrop-filter: blur(15px);
+    border: 2px solid rgba(255, 255, 255, 0.05) !important;
+    background-clip: padding-box;
+    box-shadow: 10px 10px 10px rgba(46, 54, 68, 0.03) !important;
+    color: white !important;
+}
+
+#contenedor {
+    --padding: 1.25rem;
+    padding-left: var(--padding);
+    padding-right: var(--padding);
+}

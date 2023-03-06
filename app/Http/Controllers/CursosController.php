@@ -24,6 +24,34 @@ class CursosController extends Controller
         return view('cursos.cursos', compact('DatosUsuario', 'DatosCuenta','IdTipoUsuario'));
     }
 
+    public function detallecurso(){
+
+        $DatosUsuario = session('DatosUsuario');
+        $DatosCuenta = session('DatosCuenta');
+        $IdTipoUsuario = session('IdTipoUsuario');
+
+        $DatosCurso = null;
+
+        $url = env('COURSEROOM_API');
+
+        $IdCurso = $request->integer('IdCurso');
+
+        if($url != ''){
+
+            $response = Http::withHeaders([
+                'Authorization' => env('COURSEROOM_API_KEY'),
+            ])->post($url.'/api/cursos/detalleobtenere', [
+                'IdCurso' => $IdTarea
+            ]);
+
+            if ($response->ok()){
+                $DatosCurso = json_decode($response->body());
+            } 
+        } 
+
+        return view('cursos.detallecurso', compact('DatosUsuario', 'DatosCuenta','IdTipoUsuario', 'DatosCurso'));
+    }
+
     #endregion
 
     #region AJAX
@@ -501,8 +529,7 @@ class CursosController extends Controller
         try {
 
             $validator = Validator::make($request->all(), $rules = [
-                'IdCurso' => ['required'],
-	            'IdUsuario' => ['required']
+                'IdCurso' => ['required']
             ], $messages = [
                 'required' => 'El campo :attribute es requerido'
             ]);
@@ -513,8 +540,8 @@ class CursosController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-	            $idCurso = $request -> input('IdCurso');
-                $idUsuario = $request -> input('IdUsuario');
+	            $idCurso = $request->integer('IdCurso');
+                $idUsuario = session('IdUsuario');
 
                 if($url != ''){
 
