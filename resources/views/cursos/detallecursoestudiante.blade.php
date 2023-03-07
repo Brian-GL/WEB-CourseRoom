@@ -246,7 +246,23 @@ use Carbon\Carbon;
                                         <form method="HEAD" id="form-cuestionario">
 
                                             <div class="row g-3 mt-2">
-                                                
+                                                <div class="col-md-12">
+                                                    <label for="pregunta-1" class="form-label fuente tercer-color-letra tercer-color-fondo">Pregunta</label>
+                                                    <select id="pregunta-1" class="form-control primer-color-letra primer-color-fondo">
+                                                        <option value="1"></option>
+                                                        <option value="2"></option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="row g-3 mt-2">
+                                                <div class="col-md-12">
+                                                    <label for="pregunta-2" class="form-label fuente tercer-color-letra tercer-color-fondo">Pregunta</label>
+                                                    <select id="pregunta-2" class="form-control primer-color-letra primer-color-fondo">
+                                                        <option value="1"></option>
+                                                        <option value="2"></option>
+                                                    </select>
+                                                </div>
                                             </div>
 
                                         </form>
