@@ -247,20 +247,259 @@ use Carbon\Carbon;
 
                                             <div class="row g-3 mt-2">
                                                 <div class="col-md-12">
-                                                    <label for="pregunta-1" class="form-label fuente tercer-color-letra tercer-color-fondo">Pregunta</label>
+                                                    <label for="pregunta-1" class="form-label fuente tercer-color-letra tercer-color-fondo">Mi aprendizaje se centra en asuntos que me interesan</label>
                                                     <select id="pregunta-1" class="form-control primer-color-letra primer-color-fondo">
-                                                        <option value="1"></option>
-                                                        <option value="2"></option>
+                                                        <option value="1">Casi Nunca</option>
+                                                        <option value="2">Rara Vez</option>
+                                                        <option value="3">Alguna Vez</option>
+                                                        <option value="4">A Menudo</option>
+                                                        <option value="5">Casi Siempre</option>
                                                     </select>
                                                 </div>
                                             </div>
 
                                             <div class="row g-3 mt-2">
                                                 <div class="col-md-12">
-                                                    <label for="pregunta-2" class="form-label fuente tercer-color-letra tercer-color-fondo">Pregunta</label>
+                                                    <label for="pregunta-2" class="form-label fuente tercer-color-letra tercer-color-fondo">Lo que aprendo es importante para mi práctica profesional</label>
                                                     <select id="pregunta-2" class="form-control primer-color-letra primer-color-fondo">
-                                                        <option value="1"></option>
-                                                        <option value="2"></option>
+                                                    <option value="1">Casi Nunca</option>
+                                                        <option value="2">Rara Vez</option>
+                                                        <option value="3">Alguna Vez</option>
+                                                        <option value="4">A Menudo</option>
+                                                        <option value="5">Casi Siempre</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="row g-3 mt-2">
+                                                <div class="col-md-12">
+                                                    <label for="pregunta-3" class="form-label fuente tercer-color-letra tercer-color-fondo">Aprendo cómo mejorar mi práctica profesional</label>
+                                                    <select id="pregunta-3" class="form-control primer-color-letra primer-color-fondo">
+                                                        <option value="1">Casi Nunca</option>
+                                                        <option value="2">Rara Vez</option>
+                                                        <option value="3">Alguna Vez</option>
+                                                        <option value="4">A Menudo</option>
+                                                        <option value="5">Casi Siempre</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="row g-3 mt-2">
+                                                <div class="col-md-12">
+                                                    <label for="pregunta-4" class="form-label fuente tercer-color-letra tercer-color-fondo">Lo que aprendo tiene relación con mi práctica profesional</label>
+                                                    <select id="pregunta-4" class="form-control primer-color-letra primer-color-fondo">
+                                                        <option value="1">Casi Nunca</option>
+                                                        <option value="2">Rara Vez</option>
+                                                        <option value="3">Alguna Vez</option>
+                                                        <option value="4">A Menudo</option>
+                                                        <option value="5">Casi Siempre</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="row g-3 mt-2">
+                                                <div class="col-md-12">
+                                                    <label for="pregunta-5" class="form-label fuente tercer-color-letra tercer-color-fondo">Pienso críticamente sobre cómo aprendo</label>
+                                                    <select id="pregunta-5" class="form-control primer-color-letra primer-color-fondo">
+                                                        <option value="1">Casi Nunca</option>
+                                                        <option value="2">Rara Vez</option>
+                                                        <option value="3">Alguna Vez</option>
+                                                        <option value="4">A Menudo</option>
+                                                        <option value="5">Casi Siempre</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="row g-3 mt-2">
+                                                <div class="col-md-12">
+                                                    <label for="pregunta-6" class="form-label fuente tercer-color-letra tercer-color-fondo">Pienso críticamente sobre mis propias ideas</label>
+                                                    <select id="pregunta-6" class="form-control primer-color-letra primer-color-fondo">
+                                                        <option value="1">Casi Nunca</option>
+                                                        <option value="2">Rara Vez</option>
+                                                        <option value="3">Alguna Vez</option>
+                                                        <option value="4">A Menudo</option>
+                                                        <option value="5">Casi Siempre</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="row g-3 mt-2">
+                                                <div class="col-md-12">
+                                                    <label for="pregunta-7" class="form-label fuente tercer-color-letra tercer-color-fondo">Pienso críticamente sobre las ideas de otros estudiantes</label>
+                                                    <select id="pregunta-7" class="form-control primer-color-letra primer-color-fondo">
+                                                        <option value="1">Casi Nunca</option>
+                                                        <option value="2">Rara Vez</option>
+                                                        <option value="3">Alguna Vez</option>
+                                                        <option value="4">A Menudo</option>
+                                                        <option value="5">Casi Siempre</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="row g-3 mt-2">
+                                                <div class="col-md-12">
+                                                    <label for="pregunta-8" class="form-label fuente tercer-color-letra tercer-color-fondo">Pienso críticamente sobre las ideas que leo</label>
+                                                    <select id="pregunta-8" class="form-control primer-color-letra primer-color-fondo">
+                                                        <option value="1">Casi Nunca</option>
+                                                        <option value="2">Rara Vez</option>
+                                                        <option value="3">Alguna Vez</option>
+                                                        <option value="4">A Menudo</option>
+                                                        <option value="5">Casi Siempre</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="row g-3 mt-2">
+                                                <div class="col-md-12">
+                                                    <label for="pregunta-9" class="form-label fuente tercer-color-letra tercer-color-fondo">Explico mis ideas a otros estudiantes</label>
+                                                    <select id="pregunta-9" class="form-control primer-color-letra primer-color-fondo">
+                                                        <option value="1">Casi Nunca</option>
+                                                        <option value="2">Rara Vez</option>
+                                                        <option value="3">Alguna Vez</option>
+                                                        <option value="4">A Menudo</option>
+                                                        <option value="5">Casi Siempre</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="row g-3 mt-2">
+                                                <div class="col-md-12">
+                                                    <label for="pregunta-10" class="form-label fuente tercer-color-letra tercer-color-fondo">Pido a otros estudiantes que me expliquen sus ideas</label>
+                                                    <select id="pregunta-10" class="form-control primer-color-letra primer-color-fondo">
+                                                        <option value="1">Casi Nunca</option>
+                                                        <option value="2">Rara Vez</option>
+                                                        <option value="3">Alguna Vez</option>
+                                                        <option value="4">A Menudo</option>
+                                                        <option value="5">Casi Siempre</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row g-3 mt-2">
+                                                <div class="col-md-12">
+                                                    <label for="pregunta-11" class="form-label fuente tercer-color-letra tercer-color-fondo">Otros estudiantes me piden que explique mis ideas</label>
+                                                    <select id="pregunta-11" class="form-control primer-color-letra primer-color-fondo">
+                                                        <option value="1">Casi Nunca</option>
+                                                        <option value="2">Rara Vez</option>
+                                                        <option value="3">Alguna Vez</option>
+                                                        <option value="4">A Menudo</option>
+                                                        <option value="5">Casi Siempre</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="row g-3 mt-2">
+                                                <div class="col-md-12">
+                                                    <label for="pregunta-12" class="form-label fuente tercer-color-letra tercer-color-fondo">Otros estudiantes responden a mis ideas</label>
+                                                    <select id="pregunta-12" class="form-control primer-color-letra primer-color-fondo">
+                                                        <option value="1">Casi Nunca</option>
+                                                        <option value="2">Rara Vez</option>
+                                                        <option value="3">Alguna Vez</option>
+                                                        <option value="4">A Menudo</option>
+                                                        <option value="5">Casi Siempre</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="row g-3 mt-2">
+                                                <div class="col-md-12">
+                                                    <label for="pregunta-13" class="form-label fuente tercer-color-letra tercer-color-fondo">El tutor me estimula a reflexionar</label>
+                                                    <select id="pregunta-13" class="form-control primer-color-letra primer-color-fondo">
+                                                        <option value="1">Casi Nunca</option>
+                                                        <option value="2">Rara Vez</option>
+                                                        <option value="3">Alguna Vez</option>
+                                                        <option value="4">A Menudo</option>
+                                                        <option value="5">Casi Siempre</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="row g-3 mt-2">
+                                                <div class="col-md-12">
+                                                    <label for="pregunta-14" class="form-label fuente tercer-color-letra tercer-color-fondo">El tutor me anima a participar</label>
+                                                    <select id="pregunta-14" class="form-control primer-color-letra primer-color-fondo">
+                                                        <option value="1">Casi Nunca</option>
+                                                        <option value="2">Rara Vez</option>
+                                                        <option value="3">Alguna Vez</option>
+                                                        <option value="4">A Menudo</option>
+                                                        <option value="5">Casi Siempre</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="row g-3 mt-2">
+                                                <div class="col-md-12">
+                                                    <label for="pregunta-15" class="form-label fuente tercer-color-letra tercer-color-fondo">El tutor ejemplifica las buenas disertaciones</label>
+                                                    <select id="pregunta-15" class="form-control primer-color-letra primer-color-fondo">
+                                                        <option value="1">Casi Nunca</option>
+                                                        <option value="2">Rara Vez</option>
+                                                        <option value="3">Alguna Vez</option>
+                                                        <option value="4">A Menudo</option>
+                                                        <option value="5">Casi Siempre</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="row g-3 mt-2">
+                                                <div class="col-md-12">
+                                                    <label for="pregunta-16" class="form-label fuente tercer-color-letra tercer-color-fondo">El tutor ejemplifica la auto reflexión crítica</label>
+                                                    <select id="pregunta-16" class="form-control primer-color-letra primer-color-fondo">
+                                                        <option value="1">Casi Nunca</option>
+                                                        <option value="2">Rara Vez</option>
+                                                        <option value="3">Alguna Vez</option>
+                                                        <option value="4">A Menudo</option>
+                                                        <option value="5">Casi Siempre</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="row g-3 mt-2">
+                                                <div class="col-md-12">
+                                                    <label for="pregunta-17" class="form-label fuente tercer-color-letra tercer-color-fondo">Recomendaria este curso a algún otro estudiante</label>
+                                                    <select id="pregunta-17" class="form-control primer-color-letra primer-color-fondo">
+                                                        <option value="1">Casi Nunca</option>
+                                                        <option value="2">Rara Vez</option>
+                                                        <option value="3">Alguna Vez</option>
+                                                        <option value="4">A Menudo</option>
+                                                        <option value="5">Casi Siempre</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="row g-3 mt-2">
+                                                <div class="col-md-12">
+                                                    <label for="pregunta-18" class="form-label fuente tercer-color-letra tercer-color-fondo">Volveria a tomar otro curso con el mismo profesor</label>
+                                                    <select id="pregunta-18" class="form-control primer-color-letra primer-color-fondo">
+                                                        <option value="1">Casi Nunca</option>
+                                                        <option value="2">Rara Vez</option>
+                                                        <option value="3">Alguna Vez</option>
+                                                        <option value="4">A Menudo</option>
+                                                        <option value="5">Casi Siempre</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="row g-3 mt-2">
+                                                <div class="col-md-12">
+                                                    <label for="pregunta-19" class="form-label fuente tercer-color-letra tercer-color-fondo">El profesor se dirigio con respecto hacia los estudiantes</label>
+                                                    <select id="pregunta-19" class="form-control primer-color-letra primer-color-fondo">
+                                                        <option value="1">Casi Nunca</option>
+                                                        <option value="2">Rara Vez</option>
+                                                        <option value="3">Alguna Vez</option>
+                                                        <option value="4">A Menudo</option>
+                                                        <option value="5">Casi Siempre</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="row g-3 mt-2">
+                                                <div class="col-md-12">
+                                                    <label for="pregunta-20" class="form-label fuente tercer-color-letra tercer-color-fondo">Lo aprendido en el curso encajaba con las temáticas del mismo</label>
+                                                    <select id="pregunta-20" class="form-control primer-color-letra primer-color-fondo">
+                                                        <option value="1">Casi Nunca</option>
+                                                        <option value="2">Rara Vez</option>
+                                                        <option value="3">Alguna Vez</option>
+                                                        <option value="4">A Menudo</option>
+                                                        <option value="5">Casi Siempre</option>
                                                     </select>
                                                 </div>
                                             </div>
