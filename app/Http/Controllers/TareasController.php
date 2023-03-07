@@ -1042,10 +1042,7 @@ class TareasController extends Controller
 
                 $idTarea = $request->integer('IdTarea');
                 $idProfesor = session('IdUsuario');
-                $nombre = $request->string('NombreArchivo');
-
-                $nombreArchivo = $request->string('NombreArchivo');
-
+               
                 $Base64Archivo = null;
                 if($request->has('Base64Archivo')){
                     $Base64Archivo = $request->input('Base64Archivo');

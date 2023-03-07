@@ -164,7 +164,6 @@ class CursosController extends Controller
 
                     $Nombre = $request->string('Nombre')->trim();
                     $Descripcion = $request->string('Descripcion')->trim();
-                    $Imagen = input('Imagen');
                     $IdProfesor = session('IdUsuario');
     
                     $Base64Archivo = null;
@@ -431,10 +430,9 @@ class CursosController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idCurso = $request -> input ('IdCurso');
-                $idUsuario = $request -> input ('IdUsuario');
-                $codigo  = input ('Codigo');
-                $mensaje  = input ('Mensaje');
+                $idCurso = $request->integer('IdCurso');
+                $idUsuario = $request->integer('IdUsuario');
+                
                 if($url != ''){
 
                     $response = Http::withHeaders([
@@ -484,10 +482,9 @@ class CursosController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idCurso = $request -> input ('idCurso');
-                $idUsuario = $request -> input ('idUsuario');
-                $codigo  = input ('codigo');
-                $mensaje  = input ('mensaje');
+                $idCurso = $request ->integer('idCurso');
+                $idUsuario = $request ->integer('idUsuario');
+                
                 if($url != ''){
 
                     $response = Http::withHeaders([
@@ -612,81 +609,6 @@ class CursosController extends Controller
             return response()->json(['code' => 500 , 'data' => $th->getMessage()], 200);
         }
 
-    }
-
-    public function curso_estudiantedetalleobtener(Request $request)
-    {
-        try {
-
-            $validator = Validator::make($request->all(), $rules = [
-                'IdCurso' => ['required'],
-                'IdUsuario' => ['required']
-            ], $messages = [
-                'required' => 'El campo :attribute es requerido'
-            ]);
-
-            if ($validator->fails()) {
-                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
-            } else {
-
-                $url = env('COURSEROOM_API');
-
-                $idCurso = $request -> input('IdCurso');
-                $idUsuario = $request -> input('IdUsuario');
-                $nombre = input('Nombre');
-                $descripcion = input('Descripcion');
-                $imagen = input('Imagen');
-                $idProfesor = input('IdProfesor');
-                $nombreProfesor = input('NombreProfesor');
-                $imagenProfesor = input('ImagenProfesor');
-                $fechaRegistroCurso = input('FechaRegistroCurso');
-                $fechaActualizacionCurso = input('FechaActualizacionCurso');
-                $finalizado = input('Finalizado');
-                $fechaRegistro = input('FechaRegistro');
-                $fechaActualizacion = input('FechaActualizacion');
-                $estatus = input('Estatus');
-                $descripcionEstatus = input('DescripcionEstatus');
-                
-                if($url != ''){
-
-                    $response = Http::withHeaders([
-                        'Authorization' => env('COURSEROOM_API_KEY'),
-                    ])->post($url.'/api/cursos/estudiantedetalleobtener', [
-                        'IdCurso' => $idCurso,
-                        'IdUsuario' => $idUsuario,
-                        'Nombre' => $nombre,
-                        'Descripcion' => $descripcion,
-                        'Imagen' => $imagen,
-                        'IdProfesor' => $idProfesor,
-                        'NombreProfesor' => $nombreProfesor,
-                        'ImagenProfesor' => $imagenProfesor,
-                        'FechaRegistroCurso' => $fechaRegistroCurso,
-                        'FechaActualizacionCurso' => $fechaActualizacionCurso,
-                        'Finalizado' => $finalizado,
-                        'FechaRegistro' => $fechaRegistro,
-                        'FechaActualizacion' => $fechaActualizacion,
-                        'Estatus' => $estatus,
-                        'DescripcionEstatus' => $descripcionEstatus,
-                    ]);
-
-                    if ($response->ok()){
-
-                        $result = json_decode($response->body());
-
-                        return response()->json(['code' => 200 , 'data' => $result], 200);
-
-                    } else{
-                        return response()->json(['code' => 400 , 'data' => $response->body()], 200);
-                    }
-
-                } else{
-                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
-                }
-            }
-
-        } catch (\Throwable $th) {
-            return response()->json(['code' => 500 , 'data' => $th->getMessage()], 200);
-        }
     }
 
     public function curso_finalizaractualizar(Request $request)
@@ -898,7 +820,7 @@ class CursosController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-	            $idCurso = $request -> input('IdCurso');
+	            $idCurso = $request ->integer('IdCurso');
                 $idUsuarioEmisor = session('IdUsuario');
                 $mensaje = $request->string('Mensaje')->trim();
                
@@ -984,11 +906,10 @@ class CursosController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idMensaje = $request -> input('IdMensaje');
-                $idCurso = $request -> input('IdCurso');
-                $idUsuarioEmisor = $request -> input('IdUsuarioEmisor');
-                $codigo  = input ('Codigo');
-                $mensaje  = input ('Mensaje');
+                $idMensaje = $request ->integer('IdMensaje');
+                $idCurso = $request ->integer('IdCurso');
+                $idUsuarioEmisor = $request ->integer('IdUsuarioEmisor');
+            
 
                 if($url != ''){
 
@@ -1039,14 +960,14 @@ class CursosController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idCurso = $request -> input('IdCurso');
-                $ultimoMensaje = $request -> input('UltimoMensaje');
-                $idMensaje = input('IdMensaje');
-                $mensaje = input('Mensaje');
-                $archivo = input('Archivo');
-                $idUsuarioEmisor = input('IdUsuarioEmisor');
-                $nombreUsuarioEmisor = input('NombreUsuarioEmisor');
-                $fechaRegistro = input('FechaRegistro');
+                $idCurso = $request ->integer('IdCurso');
+                $ultimoMensaje = $request ->string('UltimoMensaje');
+                $idMensaje = $request ->integer('IdMensaje');
+                $mensaje = $request ->string('Mensaje');
+                $archivo = $request ->string('Archivo');
+                $idUsuarioEmisor = $request ->integer('IdUsuarioEmisor');
+                $nombreUsuarioEmisor = $request ->string('NombreUsuarioEmisor');
+                $fechaRegistro = $request ->integer('FechaRegistro');
                 
                 if($url != ''){
 
@@ -1145,17 +1066,15 @@ class CursosController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idCurso = $request -> input('IdCurso');
-                $nombre = input('Nombre');
-                $descripcion    = input('Descripcion');
-                $imagen = input('Imagen');
-                $idProfesor = input('IdProfesor');
-                $nombreProfesor = input('NombreProfesor');
-                $imagenProfesor = input('ImagenProfesor');
-                $fechaRegistro  = input('FechaRegistro');
-                $fechaActualizacion = input('FechaActualizacion');
-                $puntaje    = input('Puntaje');
-                $finalizado = input('Finalizado');
+                $idCurso = $request->integer('IdCurso');
+                $nombre = $request->string('Nombre');
+                $descripcion = $request->string('Descripcion');
+                $idProfesor = $request->integer('IdProfesor');
+                $nombreProfesor = $request->string('NombreProfesor');
+                $fechaRegistro  = $request->integer('FechaRegistro');
+                $fechaActualizacion = $request->integer('FechaActualizacion');
+                $puntaje    = $request->integer('Puntaje');
+                $finalizado = $request->integer('Finalizado');
                 if($url != ''){
 
                     $response = Http::withHeaders([
@@ -1210,7 +1129,7 @@ class CursosController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idCurso = $request -> input('IdCurso');
+                $idCurso = $request->integer('IdCurso');
                 $idProfesor = session('IdUsuario');
                 if($url != ''){
 
@@ -1257,8 +1176,8 @@ class CursosController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idCurso = $request -> input('IdCurso');
-                $promedioCurso = input('PromedioCurso');
+                $idCurso = $request->integer('IdCurso');
+                $promedioCurso = $request->float('PromedioCurso');
                 if($url != ''){
 
                     $response = Http::withHeaders([
@@ -1306,19 +1225,17 @@ class CursosController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $busqueda = $request -> input('Busqueda');
-                $idUsuario = $request -> input('IdUsuario');
-                $idCurso = input('IdCurso');
-                $curso = input('Curso');
-                $imagenCurso = input('imagenCurso');
-                $idProfesor = input('IdProfesor');
-                $profesor = input('Profesor');
-                $imagenProfesor = input('ImagenProfesor');
-                $listaTematicas = input('ListaTematicas');
-                $fechaRegistro = input('FechaRegistro');
-                $puntaje = input('Puntaje');
-                $fechaIngreso = input('FechaIngreso');
-                $estatus = input('Estatus');
+                $busqueda = $request->integer('Busqueda');
+                $idUsuario = $request->integer('IdUsuario');
+                $idCurso = $request->integer('IdCurso');
+                $curso = $request->string('Curso');
+                $idProfesor = $request->integer('IdProfesor');
+                $profesor = $request->string('Profesor');
+                $listaTematicas = $request->string('ListaTematicas');
+                $fechaRegistro = $request->integer('FechaRegistro');
+                $puntaje = $request->float('Puntaje');
+                $fechaIngreso = $request->integer('FechaIngreso');
+                $estatus = $request->string('Estatus');
                 if($url != ''){
 
                     $response = Http::withHeaders([
@@ -1571,10 +1488,9 @@ class CursosController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idCurso = $request -> input('IdCurso');
-                $idTematica = $request -> input('IdTematica');
-                $mensaje = input('Mensaje');
-                $codigo = input('Codigo');
+                $idCurso = $request->integer('IdCurso');
+                $idTematica = $request->integer('IdTematica');
+                
                 
                 if($url != ''){
 
@@ -1625,10 +1541,9 @@ class CursosController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $idTematica = $request -> input('IdTematica');
-                $idCurso = $request -> input('IdCurso');                
-                $codigo  = input ('Codigo');
-                $mensaje  = input ('Mensaje');
+                $idTematica = $request->integer('IdTematica');
+                $idCurso = $request->integer('IdCurso');                
+                
                 
                 if($url != ''){
 
@@ -1677,9 +1592,9 @@ class CursosController extends Controller
 
                 $url = env('COURSEROOM_API');
                 
-                $idCurso = $request -> input('IdCurso');
-                $idTematica = input('IdTematica');
-                $tematica = input('Tematica');
+                $idCurso = $request->integer('IdCurso');
+                $idTematica = $request->integer('IdTematica');
+                $tematica = $request->string('Tematica');
                 
                 
                 if($url != ''){
@@ -1777,10 +1692,10 @@ class CursosController extends Controller
 
                 $url = env('COURSEROOM_API');
                 
-                $idCurso = $request -> input('IdCurso');
-                $idUsuario = input('IdUsuario');
-                $estudiante = input('Estudiante');
-                $fechaIngreso = input('FechaIngreso');
+                $idCurso = $request->integer('IdCurso');
+                $idUsuario = $request->integer('IdUsuario');
+                $estudiante = $request->string('Estudiante');
+                $fechaIngreso = $request->integer('FechaIngreso');
                
                 if($url != ''){
 
