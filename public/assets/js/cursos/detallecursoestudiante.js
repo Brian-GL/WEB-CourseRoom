@@ -720,174 +720,6 @@ async function ObtenerDesempeno(){
     }
 }
 
-async function FinalizarCursoEstudiante(){
-    try {
-
-        ShowPreloader();
-
-        let formData = new FormData();
-
-        formData.append('IdCurso', IdCurso);
-        formData.append('IdUsuario', IdUsuario);
-
-        let response = await axios({
-            url: '/cursos/estudiantefinalizaractualizar',
-            baseURL: BaseURL,
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
-            },
-            data: formData
-        });
-
-        HidePreloader();
-
-        let result = response.data;
-
-        switch (result.code) {
-            case 200:{
-               
-                Swal.fire({
-                    title: 'Finalizar curso estudiante',
-                    text: result.data,
-                    imageUrl: BaseURL.concat("/assets/templates/HappyOwl.png"),
-                    imageWidth: 100,
-                    imageHeight: 123,
-                    imageAlt: 'Ok Image',
-                    background: '#000000',
-                    color: '#FFFFFF'
-                });
-            }
-            break;
-            case 500: {
-                Swal.fire({
-                    title: '¡Error!',
-                    text: result.data,
-                    imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
-                    imageWidth: 100,
-                    imageHeight: 123,
-                    background: '#000000',
-                    color: '#FFFFFF',
-                    imageAlt: 'Error Image'
-                });
-            }
-                break;
-            default: {
-                Swal.fire({
-                    title: '¡Alerta!',
-                    text: result.data,
-                    imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
-                    imageWidth: 100,
-                    imageHeight: 123,
-                    imageAlt: 'Alert Image',
-                    background: '#000000',
-                    color: '#FFFFFF'
-                });
-            }
-                break;
-        }
-    }
-    catch (ex) {
-        HidePreloader();
-        Swal.fire({
-            title: '¡Error!',
-            text: ex,
-            imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
-            imageWidth: 100,
-            imageHeight: 123,
-            background: '#000000',
-            color: '#FFFFFF',
-            imageAlt: 'Error Image'
-        });
-    }
-}
-
-async function RegistrarRespuestaCuestionario(){
-    try {
-
-        ShowPreloader();
-
-        let formData = new FormData();
-
-        let IdPregunta = document.getElementById("id-pregunta").value;
-
-        formData.append('IdCurso', IdCurso);
-        formData.append('IdUsuario', IdUsuario);
-        formData.append('IdPregunta', IdPregunta);
-        formData.append('Puntaje', document.getElementById("puntaje-curso").value);
-
-        let response = await axios({
-            url: '/cursos/cuestionariorespuestaregistrar',
-            baseURL: BaseURL,
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
-            },
-            data: formData
-        });
-
-        HidePreloader();
-
-        let result = response.data;
-
-        switch (result.code) {
-            case 200:{
-               
-                Swal.fire({
-                    title: 'Registrar respuesta cuestionario',
-                    text: result.data,
-                    imageUrl: BaseURL.concat("/assets/templates/HappyOwl.png"),
-                    imageWidth: 100,
-                    imageHeight: 123,
-                    imageAlt: 'Ok Image',
-                    background: '#000000',
-                    color: '#FFFFFF'
-                });
-            }
-            break;
-            case 500: {
-                Swal.fire({
-                    title: '¡Error!',
-                    text: result.data,
-                    imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
-                    imageWidth: 100,
-                    imageHeight: 123,
-                    background: '#000000',
-                    color: '#FFFFFF',
-                    imageAlt: 'Error Image'
-                });
-            }
-                break;
-            default: {
-                Swal.fire({
-                    title: '¡Alerta!',
-                    text: result.data,
-                    imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
-                    imageWidth: 100,
-                    imageHeight: 123,
-                    imageAlt: 'Alert Image',
-                    background: '#000000',
-                    color: '#FFFFFF'
-                });
-            }
-                break;
-        }
-    }
-    catch (ex) {
-        HidePreloader();
-        Swal.fire({
-            title: '¡Error!',
-            text: ex,
-            imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
-            imageWidth: 100,
-            imageHeight: 123,
-            background: '#000000',
-            color: '#FFFFFF',
-            imageAlt: 'Error Image'
-        });
-    }
-}
-
 async function RegistrarMaterialCurso(){
     try {
 
@@ -1353,6 +1185,193 @@ $("#subir-material").addEventListener('click', async () => {
             imageAlt: 'Error Image'
         });
     }
+});
+
+$("#form-cuestionario").on('submit', async (e) => {
+    
+    e.preventDefault();
+
+    try {
+
+        ShowPreloader();
+
+        let error = false;
+
+        for(let i = 1; i < 21; i++){
+
+            let formData = new FormData();
+            formData.append('IdCurso', IdCurso);
+            formData.append('IdUsuario', IdUsuario);
+            formData.append('IdPregunta', i);
+            formData.append('Puntaje', $("#pregunta-".concat(i)).val());
+
+            let response = await axios({
+                url: '/cursos/cuestionariorespuestaregistrar',
+                baseURL: BaseURL,
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
+                },
+                data: formData
+            });
+    
+            let result = response.data;
+    
+            switch (result.code) {
+                case 500: {
+                    HidePreloader();
+                    error = true;
+                    Swal.fire({
+                        title: '¡Error!',
+                        text: result.data,
+                        imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+                        imageWidth: 100,
+                        imageHeight: 123,
+                        background: '#000000',
+                        color: '#FFFFFF',
+                        imageAlt: 'Error Image'
+                    });
+                }
+                    break;
+                default: {
+                    HidePreloader();
+                    error = true;
+                    Swal.fire({
+                        title: '¡Alerta!',
+                        text: result.data,
+                        imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
+                        imageWidth: 100,
+                        imageHeight: 123,
+                        imageAlt: 'Alert Image',
+                        background: '#000000',
+                        color: '#FFFFFF'
+                    });
+                }
+                    break;
+            }
+        }
+       
+        HidePreloader();
+
+        Swal.fire({
+            title: 'Contestar cuestionario',
+            text: "Se ha contestado el cuestionario correctamente. Se procederá ahora con la finalización del mismo.",
+            imageUrl: BaseURL.concat("/assets/templates/HappyOwl.png"),
+            imageWidth: 100,
+            imageHeight: 123,
+            imageAlt: 'Ok Image',
+            background: '#000000',
+            color: '#FFFFFF'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+
+                // Finalizar curso estudiante:
+
+                try {
+
+                    ShowPreloader();
+            
+                    let formData = new FormData();
+            
+                    formData.append('IdCurso', IdCurso);
+                    formData.append('IdUsuario', IdUsuario);
+            
+                    let response = await axios({
+                        url: '/cursos/estudiantefinalizaractualizar',
+                        baseURL: BaseURL,
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
+                        },
+                        data: formData
+                    });
+            
+                    HidePreloader();
+            
+                    let result = response.data;
+            
+                    switch (result.code) {
+                        case 200:{
+                           
+                            Swal.fire({
+                                title: 'Finalizar curso',
+                                text: result.data,
+                                imageUrl: BaseURL.concat("/assets/templates/HappyOwl.png"),
+                                imageWidth: 100,
+                                imageHeight: 123,
+                                imageAlt: 'Ok Image',
+                                background: '#000000',
+                                color: '#FFFFFF'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = "/mis-cursos";
+                                }
+                            });
+                        }
+                        break;
+                        case 500: {
+                            Swal.fire({
+                                title: '¡Error!',
+                                text: result.data,
+                                imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+                                imageWidth: 100,
+                                imageHeight: 123,
+                                background: '#000000',
+                                color: '#FFFFFF',
+                                imageAlt: 'Error Image'
+                            });
+                        }
+                            break;
+                        default: {
+                            Swal.fire({
+                                title: '¡Alerta!',
+                                text: result.data,
+                                imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
+                                imageWidth: 100,
+                                imageHeight: 123,
+                                imageAlt: 'Alert Image',
+                                background: '#000000',
+                                color: '#FFFFFF'
+                            });
+                        }
+                            break;
+                    }
+                }
+                catch (ex) {
+                    HidePreloader();
+                    Swal.fire({
+                        title: '¡Error!',
+                        text: ex,
+                        imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+                        imageWidth: 100,
+                        imageHeight: 123,
+                        background: '#000000',
+                        color: '#FFFFFF',
+                        imageAlt: 'Error Image'
+                    });
+                }
+
+                window.location.href = "/mis-cursos";
+            }
+        });
+
+    }
+    catch (ex) {
+        HidePreloader();
+        Swal.fire({
+            title: '¡Error!',
+            text: ex,
+            imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+            imageWidth: 100,
+            imageHeight: 123,
+            background: '#000000',
+            color: '#FFFFFF',
+            imageAlt: 'Error Image'
+        });
+    }
+
+
+
 });
 
 //#endregion
