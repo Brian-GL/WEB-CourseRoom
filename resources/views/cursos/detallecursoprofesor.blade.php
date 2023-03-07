@@ -1,5 +1,7 @@
 @php
 use Carbon\Carbon;
+$max_date = Carbon::now()->addMonths(6)->toDateTimeString();
+$min_date = Carbon::now()->addHours(8)->toDateTimeString();
 @endphp
 
 @extends('layouts.home')
@@ -122,6 +124,18 @@ use Carbon\Carbon;
                         <div class="tab-pane fade" id="tareas" role="tabpanel" aria-labelledby="tareas-tab">
                             <div class="row">
                                 <div class="col-md-12">
+                                    <div class="row">
+                                        @if (!is_null($DatosCurso) && !$DatosCurso->finalizado)
+                                            <div class="col-md-10"></div>
+                                            <div class="col-md-2 d-flex justify-content-center">
+                                                <button type="submit" class="w-100 btn tercer-color-letra tercer-color-fondo" id="crear-tarea">
+                                                    <i class="fa-solid fa-briefcase"></i>&nbsp;Crear tarea
+                                                </button>
+                                            </div>
+                                        @else
+                                            <div class="col-md-12"></div>
+                                        @endif
+                                    </div>
                                     <div class="table-responsive mt-3">
                                         <table class="table table-striped display order-column hover nowrap" id="table-tareas-profesor-curso"> </table>
                                     </div>
@@ -274,14 +288,14 @@ use Carbon\Carbon;
                         <div class="row mt-2">
                             <div class="col-md-12 form-group">
                                 <label for="nombre-grupo" class="form-label">Nombre*</label>
-                                <input type="text" class="form-control fuenteNormal tercer-color-fondo tercer-color-letra" name="nombre-grupo" id="nombre-grupo" placeholder="Ingrese el nombre de la tarea pendiente" maxlength="150" minlength="3" required>
+                                <input type="text" class="form-control fuenteNormal tercer-color-fondo tercer-color-letra" name="nombre-grupo" id="nombre-grupo" placeholder="Ingrese el nombre del grupo" maxlength="150" minlength="3" required>
                             </div>
                         </div>
 
                         <div class="row mt-4">
                             <div class="col-md-12 form-group">
                                 <label for="descripcion-grupo" class="form-label">Descripción*</label>
-                                <textarea class="form-control fuenteNormal primer-color-fondo primer-color-letra" name="descripcion-grupo" cols="30" rows="10" id="descripcion-grupo" placeholder="Ingrese la descripción de la tarea pendiente" maxlength="4000" required></textarea>
+                                <textarea class="form-control fuenteNormal primer-color-fondo primer-color-letra" name="descripcion-grupo" cols="30" rows="10" id="descripcion-grupo" placeholder="Ingrese la descripción del grupo" maxlength="4000" required></textarea>
                             </div>
                         </div>
                     </div>
@@ -289,6 +303,89 @@ use Carbon\Carbon;
                 <div class="modal-footer">
                     <button type="button" class="btn segundo-color-letra segundo-color-fondo" data-bs-dismiss="modal">❌ Cancelar</button>
                     <button type="submit" class="btn tercer-color-letra tercer-color-fondo" id="crear-grupo">✅ Crear grupo</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Crear Tarea -->
+<div class="modal fade text-center" id="agregar-tarea-modal" tabindex="-1" role="dialog" aria-labelledby="titulo-modal-agregar-tarea" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content primer-color-letra primer-color-fondo">
+            <div class="modal-header">
+                <h5 class="modal-title" id="titulo-modal-agregar-tarea">Agregar tarea</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="HEAD" id="form-agregar-tarea">
+                <div class="modal-body">
+                    <div class="container-fluid g-5">
+                    
+                        <div class="row mt-2">
+                            <div class="col-md-12 form-group">
+                                <label for="nombre-tarea" class="form-label">Nombre*</label>
+                                <input type="text" class="form-control fuenteNormal tercer-color-fondo tercer-color-letra" name="nombre-tarea" id="nombre-tarea" placeholder="Ingrese el nombre de la tarea" maxlength="150" minlength="3" required>
+                            </div>
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col-md-12 form-group">
+                                <label for="descripcion-tarea" class="form-label">Descripción*</label>
+                                <textarea class="form-control fuenteNormal primer-color-fondo primer-color-letra" name="descripcion-tarea" cols="30" rows="10" id="descripcion-tarea" placeholder="Ingrese la descripción de la tarea" maxlength="4000" required></textarea>
+                            </div>
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col-md-12 form-group">
+                                <label for="fecha-entrega-tarea" class="form-label">Fecha de entrega</label>
+                                <input class="fuenteNormal form-control tercer-color-fondo tercer-color-letra" type="datetime" name="fecha-entrega-tarea" id="fecha-entrega-tarea" min="{{$min_date}}" max="{{$max_date}}" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn segundo-color-letra segundo-color-fondo" data-bs-dismiss="modal">❌ Cancelar</button>
+                    <button type="submit" class="btn tercer-color-letra tercer-color-fondo" id="crear-tarea">✅ Crear tarea</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Asignar Usuario Grupo -->
+<div class="modal fade text-center" id="agregar-usuario-grupo-modal" tabindex="-1" role="dialog" aria-labelledby="titulo-modal-agregar-usuario-grupo" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content primer-color-letra primer-color-fondo">
+            <div class="modal-header">
+                <h5 class="modal-title" id="titulo-modal-agregar-grupo">Agregar usuario a grupo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="HEAD" id="form-agregar-usuario-grupo">
+                <div class="modal-body">
+                    <div class="container-fluid g-5">
+                    
+                        <input type="hidden" id="id-grupo" value="">
+
+                        <div class="row mt-2">
+                            <div class="col-md-12 form-group">
+                                <label for="nombre-grupo-agregar-usuario" class="form-label">Grupo</label>
+                                <input type="text" class="form-control fuenteNormal tercer-color-fondo tercer-color-letra" name="nombre-grupo-agregar-usuario" id="nombre-grupo-agregar-usuario" placeholder="Nombre del grupo" maxlength="150" minlength="3" readonly>
+                            </div>
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col-md-12 form-group">
+                                <label for="descripcion-grupo" class="form-label">Estudiante*</label>
+                                <select id="select-usuario-agregar" class="form-control segundo-color-letra segundo-color-fondo" required>
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn segundo-color-letra segundo-color-fondo" data-bs-dismiss="modal">❌ Cancelar</button>
+                    <button type="submit" class="btn tercer-color-letra tercer-color-fondo" id="agregar-usuario-grupo">✅ Enrolar usuario</button>
                 </div>
             </form>
         </div>

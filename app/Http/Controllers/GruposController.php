@@ -524,7 +524,7 @@ class GruposController extends Controller
 
             $validator = Validator::make($request->all(), $rules = [
                 'IdGrupo' => ['required'],
-                'IdProfesor' => ['required'],
+                'IdUsuario' => ['required'],
                 'IdCurso' => ['required']
             ], $messages = [
                 'required' => 'El campo :attribute es requerido'
@@ -537,9 +537,9 @@ class GruposController extends Controller
                 $url = env('COURSEROOM_API');
 
                 $idGrupo = $request->integer('IdGrupo');
-                $idProfesor = $request->integer('IdProfesor');
+                $idProfesor = session('IdUsuario');
                 $idCurso = $request->integer('IdCurso');
-                $IdUsuario = (int)$request->session()->get('IdUsuario', 0);
+                $IdUsuario = $request->integer('IdUsuario');
 
                 if($url != ''){
 

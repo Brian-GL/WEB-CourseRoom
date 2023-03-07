@@ -8,7 +8,7 @@ let PrimerColor = localStorage.getItem("PrimerColor");
 let PrimerColorLetra = localStorage.getItem("PrimerColorLetra");
 let BaseURL = window.location.origin;
 
-let assestRouteCursos = document.getElementById("assets-cursos").value;
+let assetsRouteCursos = document.getElementById("assets-cursos").value;
 let assetsRouteUsuarios = document.getElementById("assets-usuarios").value;
 
 let IdCurso = document.getElementById("id-curso").value;
@@ -114,6 +114,7 @@ dataTableGruposCurso = $("#table-grupos-curso").DataTable({
         { title: "Imagen"},
         { title: "Numero de integrantes"},
         { title: "Fecha de registro"},
+        { title: "Enrolar estudiante"}
     ],
     columnDefs:[
         {className: "text-center fuenteNormal segundo-color-letra", targets: "_all"},
@@ -241,6 +242,7 @@ dataTableTareasProfesorCurso = $("#table-tareas-profesor-curso").DataTable({
         { title: "Fecha de registro"},
         { title: "Fecha de entrega"},
         { title: "Estatus para entrega"},
+        { title: "Detalle"}
     ],
     columnDefs:[
         {className: "text-center fuenteNormal segundo-color-letra", targets: "_all"},
@@ -438,18 +440,15 @@ async function ObtenerMiembros(){
                         { data: "fechaRegistro", title: "Fecha de incorporación"},
                         { data: "fechaActualizacion", title: "Fecha de actualización"},
                         { data: "estatus", title: "Estatus"},
-                        { data: "", title: "Expulsar ❌"},
                     ],
                     columnDefs:[
                         {className: "text-center fuenteNormal segundo-color-letra", defaultContent: "-", targets: "_all"},
                         {className: "fechaRegistro", target: 3},
                         {className: "info-usuario", target: 1},
-                        {className: "span-detalle", target: 6},
                     ],
                     data: filas,
                     createdRow: (row, data) => {
                         $('.segundo-color-letra',row).css('color', SegundoColorLetra);
-                        $('.span-detalle', row).html('<span class="fuenteNormal span-detalle text-center text-decoration-underline" onclick="ExpulsarEstudiante('.concat(data.idUsuario,')">Expulsar💔</span>'));
                         $('.info-usuario', row).html('<div class="container"><div class="row"><div class="col-5"><img class="img-fluid" alt="Imagen del usuario" src="'.concat(assetsRouteUsuarios,'/',data.imagen,'"/></div><div class="col-7 p-0"><p class="fuenteNormal">',data.nombreCompleto,'</p></div></div></div>'));
                         let fechaRegistro = data.fechaRegistro.substring(0, data.fechaRegistro.length -1 );
                         $('.fechaRegistro', row).text(dayjs(fechaRegistro).format('dddd DD MMM YYYY h:mm A'));
@@ -554,7 +553,8 @@ async function ObtenerTareas(){
                         { data: "tarea", title: "Tarea"},
                         { data: "fechaRegistro", title: "Fecha de registro"},
                         { data: "fechaEntrega", title: "Fecha de entrega"},
-                        { data: "estatusEntrega", title: "Estatus para entrega"}
+                        { data: "estatusEntrega", title: "Estatus para entrega"},
+                        { data: "", title: "Detalle"}
                     ],
                     columnDefs:[
                         {className: "text-center fuenteNormal segundo-color-letra", defaultContent: "-", targets: "_all"},
@@ -565,6 +565,8 @@ async function ObtenerTareas(){
                     data: filas,
                     createdRow: (row, data) => {
                         $('.segundo-color-letra',row).css('color', SegundoColorLetra);
+                        $('.span-detalle', row).html('<span class="fuenteNormal span-detalle text-center text-decoration-underline" onclick="DetalleTareaCreada('.concat(data.idTarea,')">Ver detalle</span>'));
+
                         let fechaRegistro = data.fechaRegistro.substring(0, data.fechaRegistro.length -1 );
                         $('.fechaRegistro', row).text(dayjs(fechaRegistro).format('dddd DD MMM YYYY h:mm A'));
                         let fechaEntrega = data.fechaEntrega.substring(0, data.fechaEntrega.length -1 );
@@ -791,15 +793,18 @@ async function ObtenerGrupos(){
                         { data: "imagen", title: "Imagen"},
                         { data: "numeroIntegrantes", title: "Numero de integrantes"},
                         { data: "fechaRegistro", title: "Fecha de registro"},
+                        { data: "", title: "Enrolar estudiante"}
                     ],
                     columnDefs:[
                         {className: "text-center fuenteNormal segundo-color-letra", defaultContent: "-", targets: "_all"},
                         {className: "fechaRegistro", target: 4},
                         {className: "info-grupo", target: 1},
+                        {className: "enrolar-estudiante", target: 5},
                     ],
                     data: filas,
                     createdRow: (row, data) => {
                         $('.segundo-color-letra',row).css('color', SegundoColorLetra);
+                        $('.enrolar-estudiante', row).html('<span class="fuenteNormal span-detalle text-center text-decoration-underline" onclick="EnrolarEstudiante('.concat(data.idGrupo,')">👩🏽‍🎓 Enrolar</span>'));
                         $('.info-grupo', row).html('<div class="container"><div class="row"><div class="col-5"><img class="img-fluid" alt="Imagen del usuario" src="'.concat(assetsRouteCursos,'/',data.imagen,'"/></div><div class="col-7 p-0"><p class="fuenteNormal">',data.nombre,'</p></div></div></div>'));        
                         let fechaRegistro = data.fechaRegistro.substring(0, data.fechaRegistro.length -1 );
                         $('.fechaRegistro', row).text(dayjs(fechaRegistro).format('dddd DD MMM YYYY h:mm A'));
@@ -1023,10 +1028,6 @@ async function RegistrarMiembroGrupo(){
     }
 }
 
-document.ExpulsarEstudiante = async function(IdUsuario){
-
-}
-
 async function EnviarMensaje(mensaje, archivo, base64Archivo) {
 
     try {
@@ -1201,6 +1202,121 @@ async function EnviarMaterial(filename, base64, file) {
             imageAlt: 'Error Image'
         });
     }
+}
+
+document.DetalleTareaCreada = async function(IdTarea){
+    try{
+
+        ShowPreloader();
+
+        $('<form/>', { action: '/tareas/detalle', method: 'POST' }).append(
+            $('<input>', {type: 'hidden', id: '_token', name: '_token', value: document.head.querySelector("[name~=csrf-token][content]").content}),
+            $('<input>', {type: 'hidden', id: 'IdTarea', name: 'IdTarea', value: IdTarea})
+        ).appendTo('body').submit();
+            
+        HidePreloader();
+    }
+    catch(ex){
+
+        HidePreloader();
+        Swal.fire({
+            title: '¡Error!',
+            text: ex,
+            imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+            imageWidth: 100,
+            imageHeight: 123,
+            background: '#000000',
+            color: '#FFFFFF',
+            imageAlt: 'Error Image'
+        });
+    }
+}
+
+document.EnrolarEstudiante = async function(IdGrupo){
+    try {
+
+        ShowPreloader();
+
+        $("#agregar-usuario-grupo-modal").show();
+
+        document.getElementById("id-grupo").value = IdGrupo;
+
+        let formData = new FormData();
+
+        formData.append('IdCurso', IdCurso);
+
+        let response = await axios({
+            url: '/cursos/estudiantessingrupoobtener',
+            baseURL: BaseURL,
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
+            },
+            data: formData
+        });
+
+        HidePreloader();
+
+        let resultado = response.data;
+
+        switch (resultado.code) {
+            case 200:{
+               
+                let data = resultado.data;
+
+                let select = $("#select-usuario-agregar");
+                select.empty();
+
+                for(let value of data){
+                    select.append($('<option>', {
+                        value: value.idUsuario,
+                        text: value.estudiante
+                    }));
+                }
+            }
+            break;
+            case 500: {
+                Swal.fire({
+                    title: '¡Error!',
+                    text: resultado.data,
+                    imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    background: '#000000',
+                    color: '#FFFFFF',
+                    imageAlt: 'Error Image'
+                });
+            }
+                break;
+            default: {
+                Swal.fire({
+                    title: '¡Alerta!',
+                    text: resultado.data,
+                    imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    imageAlt: 'Alert Image',
+                    background: '#000000',
+                    color: '#FFFFFF'
+                });
+            }
+                break;
+        }
+    }
+    catch (ex) {
+        HidePreloader();
+        Swal.fire({
+            title: '¡Error!',
+            text: ex,
+            imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+            imageWidth: 100,
+            imageHeight: 123,
+            background: '#000000',
+            color: '#FFFFFF',
+            imageAlt: 'Error Image'
+        });
+    }
+
 }
 
 //#endregion
@@ -1385,7 +1501,8 @@ $("#crear-grupo").on("click", () => {
     $("#agregar-grupo-modal").show();
 });
 
-document.getElementById("form-agregar-grupo").addEventListener("submit", async () => {
+document.getElementById("form-agregar-grupo").addEventListener("submit", async (e) => {
+    
     e.preventDefault();
 
     try {
@@ -1410,27 +1527,31 @@ document.getElementById("form-agregar-grupo").addEventListener("submit", async (
 
         HidePreloader();
 
-        let result = response.data;
+        let resultado = response.data;
 
-        switch (result.code) {
+        switch (resultado.code) {
             case 200:{
                
                 Swal.fire({
-                    title: 'Registrar grupos',
-                    text: result.data,
+                    title: 'Registrar grupo',
+                    text: resultado.data,
                     imageUrl: BaseURL.concat("/assets/templates/HappyOwl.png"),
                     imageWidth: 100,
                     imageHeight: 123,
                     imageAlt: 'Ok Image',
                     background: '#000000',
                     color: '#FFFFFF'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                       ObtenerGrupos();
+                    }
                 });
             }
             break;
             case 500: {
                 Swal.fire({
                     title: '¡Error!',
-                    text: result.data,
+                    text: resultado.data,
                     imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
                     imageWidth: 100,
                     imageHeight: 123,
@@ -1443,7 +1564,7 @@ document.getElementById("form-agregar-grupo").addEventListener("submit", async (
             default: {
                 Swal.fire({
                     title: '¡Alerta!',
-                    text: result.data,
+                    text: resultado.data,
                     imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
                     imageWidth: 100,
                     imageHeight: 123,
@@ -1468,6 +1589,191 @@ document.getElementById("form-agregar-grupo").addEventListener("submit", async (
             imageAlt: 'Error Image'
         });
     }
+
+});
+
+$("#crear-tarea").on("click", async () => {
+    $("#agregar-tarea-modal").show();
+});
+
+$("#form-agregar-tarea").on("submit", async (e) => {
+    e.preventDefault();
+
+    try {
+
+        ShowPreloader();
+
+        let formData = new FormData();
+
+        formData.append('IdCurso', IdCurso);
+        formData.append('Nombre', document.getElementById("nombre-tarea").value);
+        formData.append('Descripcion', document.getElementById("descripcion-tarea").value);
+        formData.append('FechaEntrega', document.getElementById("fecha-entrega-tarea").value);
+
+        let response = await axios({
+            url: '/tareas/registrar',
+            baseURL: BaseURL,
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
+            },
+            data: formData
+        });
+
+        HidePreloader();
+
+        let resultado = response.data;
+
+        switch (resultado.code) {
+            case 200:{
+               
+                Swal.fire({
+                    title: 'Registrar tarea',
+                    text: resultado.data,
+                    imageUrl: BaseURL.concat("/assets/templates/HappyOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    imageAlt: 'Ok Image',
+                    background: '#000000',
+                    color: '#FFFFFF'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                       ObtenerTareas();
+                    }
+                });
+            }
+            break;
+            case 500: {
+                Swal.fire({
+                    title: '¡Error!',
+                    text: resultado.data,
+                    imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    background: '#000000',
+                    color: '#FFFFFF',
+                    imageAlt: 'Error Image'
+                });
+            }
+                break;
+            default: {
+                Swal.fire({
+                    title: '¡Alerta!',
+                    text: resultado.data,
+                    imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    imageAlt: 'Alert Image',
+                    background: '#000000',
+                    color: '#FFFFFF'
+                });
+            }
+                break;
+        }
+    }
+    catch (ex) {
+        HidePreloader();
+        Swal.fire({
+            title: '¡Error!',
+            text: ex,
+            imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+            imageWidth: 100,
+            imageHeight: 123,
+            background: '#000000',
+            color: '#FFFFFF',
+            imageAlt: 'Error Image'
+        });
+    }
+});
+
+$("#form-agregar-usuario-grupo").on("submit", async (e) => {
+    e.preventDefault();
+
+    try {
+
+        ShowPreloader();
+
+        let formData = new FormData();
+
+        formData.append('IdCurso', IdCurso);
+        formData.append('IdGrupo', document.getElementById("id-grupo").value);
+        formData.append('IdUsuario', $("#select-usuario-agregar").val());
+
+        let response = await axios({
+            url: '/grupos/miembroregistrar',
+            baseURL: BaseURL,
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
+            },
+            data: formData
+        });
+
+        HidePreloader();
+
+        let resultado = response.data;
+
+        switch (resultado.code) {
+            case 200:{
+               
+                Swal.fire({
+                    title: 'Enrolar usuario a grupo',
+                    text: resultado.data,
+                    imageUrl: BaseURL.concat("/assets/templates/HappyOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    imageAlt: 'Ok Image',
+                    background: '#000000',
+                    color: '#FFFFFF'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                       ObtenerGrupos();
+                    }
+                });
+            }
+            break;
+            case 500: {
+                Swal.fire({
+                    title: '¡Error!',
+                    text: resultado.data,
+                    imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    background: '#000000',
+                    color: '#FFFFFF',
+                    imageAlt: 'Error Image'
+                });
+            }
+                break;
+            default: {
+                Swal.fire({
+                    title: '¡Alerta!',
+                    text: resultado.data,
+                    imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    imageAlt: 'Alert Image',
+                    background: '#000000',
+                    color: '#FFFFFF'
+                });
+            }
+                break;
+        }
+    }
+    catch (ex) {
+        HidePreloader();
+        Swal.fire({
+            title: '¡Error!',
+            text: ex,
+            imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+            imageWidth: 100,
+            imageHeight: 123,
+            background: '#000000',
+            color: '#FFFFFF',
+            imageAlt: 'Error Image'
+        });
+    }
+
 
 });
 

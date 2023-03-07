@@ -1693,9 +1693,6 @@ class CursosController extends Controller
                 $url = env('COURSEROOM_API');
                 
                 $idCurso = $request->integer('IdCurso');
-                $idUsuario = $request->integer('IdUsuario');
-                $estudiante = $request->string('Estudiante');
-                $fechaIngreso = $request->integer('FechaIngreso');
                
                 if($url != ''){
 
@@ -1703,9 +1700,6 @@ class CursosController extends Controller
                         'Authorization' => env('COURSEROOM_API_KEY'),
                     ])->post($url.'/api/cursos/estudiantessingrupoobtener', [
                         'IdCurso' => $idCurso,
-                        'IdUsuario' => $idUsuario,
-                        'Estudiante' => $estudiante,
-                        'FechaIngreso' => $fechaIngreso,
                     ]);
 
                     if ($response->ok()){

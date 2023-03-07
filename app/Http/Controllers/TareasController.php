@@ -83,6 +83,35 @@ class TareasController extends Controller
         return view('tareas.detalletareaprofesor', compact('DatosUsuario', 'DatosCuenta','IdTipoUsuario', 'DatosTarea', 'IdTarea', 'IdUsuario'));
     }
 
+    public function tareadetalle_obtener(Request $request){
+       
+        $DatosUsuario = session('DatosUsuario');
+        $DatosCuenta = session('DatosCuenta');
+        $IdTipoUsuario = session('IdTipoUsuario');
+        
+        $DatosTarea = null;
+
+        $url = env('COURSEROOM_API');
+
+        $IdTarea = $request->integer('IdTarea');
+
+        if($url != ''){
+
+            $response = Http::withHeaders([
+                'Authorization' => env('COURSEROOM_API_KEY'),
+            ])->post($url.'/api/tareas/detalle', [
+                'IdTarea' => $IdTarea
+            ]);
+
+            if ($response->ok()){
+                $DatosTarea = json_decode($response->body());
+            } 
+        } 
+        
+        return view('tareas.detalletarea', compact('DatosUsuario', 'DatosCuenta','IdTipoUsuario', 'DatosTarea', 'IdTarea'));
+    }
+
+
     #endregion
 
     #region AJAX
@@ -504,7 +533,6 @@ class TareasController extends Controller
 
             $validator = Validator::make($request->all(), $rules = [
                 'IdCurso' => ['required'],
-                'IdProfesor' => ['required'],
                 'Nombre' => ['required'],
                 'Descripcion' => ['required'],
                 'FechaEntrega' => ['required']
@@ -519,7 +547,7 @@ class TareasController extends Controller
                 $url = env('COURSEROOM_API');
 
                 $idCurso = $request->integer('IdCurso');
-                $idProfesor = $request->integer('IdProfesor');
+                $idProfesor = session('IdProfesor');
                 $nombre = $request->string('Nombre')->trim();
                 $descripcion = $request->string('Descripcion')->trim();
                 $fechaEntrega = $request->date('FechaEntrega');

@@ -123,9 +123,13 @@ Route::delete('/grupos/mensajeremover',  [GruposController::class, 'gruposmensaj
 
 Route::get('/mis-tareas',  [TareasController::class, 'tareas'])->name('tareas.inicio')->middleware('session.token');
 
-Route::post('/tareas/archivosadjuntos',  [TareasController::class, 'tareaarchivosadjuntos_obtener'])->middleware('session.token');
+
 Route::post('/tareas/estudiantedetalle',  [TareasController::class, 'tareaestudiantedetalle_obtener'])->middleware('session.token');
 Route::post('/tareas/profesordetalle',  [TareasController::class, 'tareaprofesordetalle_obtener'])->middleware('session.token');
+Route::post('/tareas/detalle',  [TareasController::class, 'tareadetalle_obtener'])->middleware('session.token');
+
+
+Route::post('/tareas/archivosadjuntos',  [TareasController::class, 'tareaarchivosadjuntos_obtener'])->middleware('session.token');
 Route::post('/tareas/mes',  [TareasController::class, 'tareasmes_obtener'])->middleware('session.token');
 Route::post('/tareas/imagenesentregadas',  [TareasController::class, 'tareaimagenesentregadas_obtener'])->middleware('session.token');
 Route::post('/tareas/retroalimentaciondetalle',  [TareasController::class, 'tarearetroalimentaciondetalle_obtener'])->middleware('session.token');

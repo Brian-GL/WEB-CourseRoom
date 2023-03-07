@@ -721,7 +721,7 @@ if(idTipoUsuario == 1){
                         data: filas,
                         createdRow: (row, data) => {
                             $('.segundo-color-letra',row).css('color', SegundoColorLetra);
-                            $('.span-detalle', row).html('<span class="fuenteNormal span-detalle text-center text-decoration-underline" onclick="DetalleTareaProfesor('.concat(data.idTarea,')">Ver detalle</span>'));
+                            $('.span-detalle', row).html('<span class="fuenteNormal span-detalle text-center text-decoration-underline" onclick="DetalleTareaCreadaProfesor('.concat(data.idTarea,')">Ver detalle</span>'));
                             $('.info-curso', row).html('<div class="container"><div class="row"><div class="col-5"><img class="img-fluid" alt="Imagen del curso" src="'.concat(assetsRoute,'/',data.imagenCurso,'"/></div><div class="col-7 p-0"><p class="fuenteNormal">',data.nombreCurso,'</p></div></div></div>'));
                            
 
@@ -797,6 +797,34 @@ if(idTipoUsuario == 1){
                 $('<input>', {type: 'hidden', id: '_token', name: '_token', value: document.head.querySelector("[name~=csrf-token][content]").content}),
                 $('<input>', {type: 'hidden', id: 'IdTarea', name: 'IdTarea', value: IdTarea}),
                 $('<input>', {type: 'hidden', id: 'IdUsuario', name: 'IdUsuario', value: IdUsuario})
+            ).appendTo('body').submit();
+                
+            HidePreloader();
+        }
+        catch(ex){
+
+            HidePreloader();
+            Swal.fire({
+                title: '¡Error!',
+                text: ex,
+                imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+                imageWidth: 100,
+                imageHeight: 123,
+                background: '#000000',
+                color: '#FFFFFF',
+                imageAlt: 'Error Image'
+            });
+        }
+    }
+
+    document.DetalleTareaCreadaProfesor = async function(IdTarea){
+        try{
+
+            ShowPreloader();
+
+            $('<form/>', { action: '/tareas/detalle', method: 'POST' }).append(
+                $('<input>', {type: 'hidden', id: '_token', name: '_token', value: document.head.querySelector("[name~=csrf-token][content]").content}),
+                $('<input>', {type: 'hidden', id: 'IdTarea', name: 'IdTarea', value: IdTarea})
             ).appendTo('body').submit();
                 
             HidePreloader();
