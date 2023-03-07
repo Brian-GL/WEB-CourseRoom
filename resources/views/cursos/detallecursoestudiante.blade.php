@@ -40,7 +40,6 @@ use Carbon\Carbon;
                         <h2 class="d-inline my-3 display-6 text-start fw-bolder primer-color-letra">Detalle del curso</h2>
                     </div>
                 </div>
-                
 
                 <div class="row">
                     <div class="col-md-12">
@@ -63,6 +62,11 @@ use Carbon\Carbon;
                             <li class="nav-item btn" role="presentation">
                                 <button class="nav-link fuenteNormal tercer-color-letra tercer-color-fondo" id="mensajes-tab" data-bs-toggle="tab" data-bs-target="#mensajes" type="button" role="tab" aria-controls="mensajes" aria-selected="false">Mensajes</button>
                             </li>
+                            @if (!is_null($DatosCurso) && !$DatosCurso->finalizado)
+                                <li class="nav-item btn" role="presentation">
+                                    <button class="nav-link fuenteNormal tercer-color-letra tercer-color-fondo" id="cuestionario-tab" data-bs-toggle="tab" data-bs-target="#cuestionario" type="button" role="tab" aria-controls="cuestionario" aria-selected="false">Cuestionario</button>
+                                </li>
+                            @endif
                         </ul>
                     </div>
                 </div>
@@ -233,6 +237,25 @@ use Carbon\Carbon;
                             </div>
                            
                         </div>
+
+                        @if (!is_null($DatosCurso) && !$DatosCurso->finalizado)
+                            <div class="tab-pane fade" id="cuestionario" role="tabpanel" aria-labelledby="cuestionario-tab">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        
+                                        <form method="HEAD" id="form-cuestionario">
+
+                                            <div class="row g-3 mt-2">
+                                                
+                                            </div>
+
+                                        </form>
+                                    
+                                    </div>
+                                </div>
+                            </div>
+
+                        @endif
 
                     </div>
                 </div>
