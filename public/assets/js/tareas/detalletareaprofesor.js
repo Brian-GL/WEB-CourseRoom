@@ -571,17 +571,15 @@ async function SubirArchivoAdjunto(filename, base64, file) {
             case 200:{
                 Swal.fire({
                     title: 'Subir archivo adjunto',
-                    text: resultado.data,
+                    text: resultado.data.mensaje,
                     imageUrl: BaseURL.concat("/assets/templates/HappyOwl.png"),
                     imageWidth: 100,
                     imageHeight: 123,
                     imageAlt: 'Ok Image',
                     background: '#000000',
                     color: '#FFFFFF'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                       ObtenerArchivosAdjuntos();
-                    }
+                }).then(() => {
+                    ObtenerArchivosAdjuntos();
                 });
             }
             break;
@@ -955,10 +953,8 @@ $("#calificar-tarea").on("click", async () => {
                                 imageAlt: 'Ok Image',
                                 background: '#000000',
                                 color: '#FFFFFF'
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    window.location.href = "/mis-tareas";
-                                }
+                            }).then(() => {
+                                window.location.href = "/mis-tareas";
                             });
                         }
                         break;
@@ -1081,17 +1077,15 @@ document.getElementById("form-agregar-retroalimentacion").addEventListener("subm
             case 200:{
                 Swal.fire({
                     title: 'Agregar retroalimentación',
-                    text: resultado.data,
+                    text: resultado.data.mensaje,
                     imageUrl: BaseURL.concat("/assets/templates/HappyOwl.png"),
                     imageWidth: 100,
                     imageHeight: 123,
                     imageAlt: 'Ok Image',
                     background: '#000000',
                     color: '#FFFFFF'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                       ObtenerRetroalimentaciones();
-                    }
+                }).then(() => {
+                    ObtenerRetroalimentaciones();
                     $("#agregar-retroalimentacion-modal").hide();
                 });
             }

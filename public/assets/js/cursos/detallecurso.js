@@ -54,7 +54,7 @@ $("#enrolar-curso").on("click", async () => {
                     case 200:{
                         Swal.fire({
                             title: 'Enrolarse a curso',
-                            text: resultado.data,
+                            text: resultado.data.mensaje,
                             imageUrl: BaseURL.concat("/assets/templates/HappyOwl.png"),
                             imageWidth: 100,
                             imageHeight: 123,

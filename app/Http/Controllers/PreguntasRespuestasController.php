@@ -353,7 +353,8 @@ class PreguntasRespuestasController extends Controller
                                 Storage::putFileAs('preguntas', $file, $filename);
                             }
                         }
-                        return response()->json(['code' => 200 , 'data' => $result, 
+                        return response()->json(['code' => 200 , 
+                        'data' => $result, 
                         'fecha' => $fechaRegistro, 
                         'nombreArchivo' => $filename,
                         'imagenEmisor' => session('DatosCuenta')->imagen], 200);

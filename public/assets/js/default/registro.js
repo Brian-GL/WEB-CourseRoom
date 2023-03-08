@@ -80,10 +80,8 @@ async function Registrar(base64Image, file){
                     imageAlt: 'Alert Image',
                     background: '#000000',
                     color: '#FFFFFF'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.href = "/inicio";
-                    }
+                }).then(() => {
+                    window.location.href = "/inicio";
                 });
             }
             break;

@@ -75,10 +75,8 @@ async function Actualizar(base64Image, file){
                     imageAlt: 'Ok Image',
                     background: '#000000',
                     color: '#FFFFFF'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.href = "/inicio";
-                    }
+                }).then(() => {
+                    window.location.href = "/inicio";
                 });
             }
             break;

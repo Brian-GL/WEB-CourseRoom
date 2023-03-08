@@ -1,6 +1,6 @@
 'use strict';
 
-let dataTableMisgrupos, dataTableBuscarUsuarios;
+let dataTableMisGrupos, dataTableBuscarUsuarios;
 let SegundoColor = localStorage.getItem("SegundoColor");
 let SegundoColorLetra = localStorage.getItem("SegundoColorLetra");
 let TercerColor = localStorage.getItem("TercerColor");
@@ -12,7 +12,7 @@ let BaseURL = window.location.origin;
 let assetsRouteGrupos = document.getElementById("assets-grupos").value;
 let assetsRouteCursos = document.getElementById("assets-cursos").value;
 
-dataTableMisgrupos = $("#table-mis-grupos").DataTable({
+dataTableMisGrupos = $("#table-mis-grupos").DataTable({
     pagingType: 'full_numbers',
     dom: 'frtp',
     search: {
@@ -52,10 +52,10 @@ dataTableMisgrupos = $("#table-mis-grupos").DataTable({
     }
 });
 
-dataTableMisgrupos.column(0).visible(false);
-dataTableMisgrupos.column(2).visible(false);
-dataTableMisgrupos.column(3).visible(false);
-dataTableMisgrupos.column(5).visible(false);
+dataTableMisGrupos.column(0).visible(false);
+dataTableMisGrupos.column(2).visible(false);
+dataTableMisGrupos.column(3).visible(false);
+dataTableMisGrupos.column(5).visible(false);
 
 let elementos = document.querySelectorAll('input[type="search"]');
 for(let elemento of elementos){
@@ -97,9 +97,9 @@ async function ObtenerMisGrupos(){
             case 200:{
                 let filas = result.data;
 
-                dataTableMisgrupos.destroy();
+                dataTableMisGrupos.destroy();
 
-                dataTableMisgrupos = $("#table-mis-grupos").DataTable({
+                dataTableMisGrupos = $("#table-mis-grupos").DataTable({
                     pagingType: 'full_numbers',
                     dom: 'frtp',
                     search: {
@@ -148,14 +148,14 @@ async function ObtenerMisGrupos(){
                     }
                 });
 
-                dataTableMisgrupos.column(0).visible(false);
-                dataTableMisgrupos.column(1).visible(false);
-                dataTableMisgrupos.column(3).visible(false);
+                dataTableMisGrupos.column(0).visible(false);
+                dataTableMisGrupos.column(1).visible(false);
+                dataTableMisGrupos.column(3).visible(false);
 
             }
             break;
             case 500:{
-                dataTableMisgrupos.clear().draw();
+                dataTableMisGrupos.clear().draw();
                 Swal.fire({
                     title: '¡Error!',
                     text: result.data,
@@ -169,7 +169,7 @@ async function ObtenerMisGrupos(){
             }
             break;
             default:{
-                dataTableMisgrupos.clear().draw();
+                dataTableMisGrupos.clear().draw();
                 Swal.fire({
                     title: '¡Alerta!',
                     text: result.data,
@@ -187,7 +187,7 @@ async function ObtenerMisGrupos(){
     catch(ex){
 
         HidePreloader();
-        dataTableMisgrupos.clear().draw();
+        dataTableMisGrupos.clear().draw();
         Swal.fire({
             title: '¡Error!',
             text: ex,

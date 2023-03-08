@@ -177,6 +177,7 @@ class UsuariosController extends Controller
                             $result = json_decode($response->body());
 
                             return response()->json(['code' => 200 , 'data' => $result], 200);
+                            
                         } else{
                             return response()->json(['code' => 400 , 'data' => $response->body()], 200);
                         }
@@ -815,54 +816,6 @@ class UsuariosController extends Controller
 
             } else{
                 return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
-            }
-
-        } catch (\Throwable $th) {
-            return response()->json(['code' => 500 , 'data' => $th->getMessage()], 200);
-        }
-    }
-
-    public function usuariosesion_validar(Request $request)
-    {
-        try {
-
-            $validator = Validator::make($request->all(), $rules = [
-                'IdSesion' => ['required']
-            ], $messages = [
-                'required' => 'El campo :attribute es requerido'
-            ]);
-
-            if ($validator->fails()) {
-                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
-            } else {
-
-                $url = env('COURSEROOM_API');
-
-                $IdUsuario = session('IdUsuario');
-                $idSesion = $request->integer('IdSesion');
-
-                if($url != ''){
-
-                    $response = Http::withHeaders([
-                        'Authorization' => env('COURSEROOM_API_KEY'),
-                    ])->post($url.'/api/usuarios/sesionvalidar', [
-                        'IdUsuario' => $idUsuario,
-                        'IdSesion' => $idSesion
-                    ]);
-
-                    if ($response->ok()){
-
-                        $result = json_decode($response->body());
-
-                        return response()->json(['code' => 200 , 'data' => $result], 200);
-
-                    } else{
-                        return response()->json(['code' => 400 , 'data' => $response->body()], 200);
-                    }
-
-                } else{
-                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
-                }
             }
 
         } catch (\Throwable $th) {

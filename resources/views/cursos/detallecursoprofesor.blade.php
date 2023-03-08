@@ -106,6 +106,16 @@ $min_date = Carbon::now()->addHours(8)->toDateTimeString();
                                         @endif
                                         <p class="titulado fuenteNormal segundo-color-letra">Creada por {{$DatosCurso->nombreProfesor}}</p>
                                         <hr>
+
+                                        @php
+                                            $fechaRegistro = new Carbon($DatosCurso->fechaRegistro);
+                                        @endphp
+
+                                        @if ($fechaRegistro->floatDiffInMonths(Carbon::now()) > 3)
+                                            <div class="d-block mt-1 mx-2">
+                                                <button id="finalizar-curso" type="button" onclick="ActualizarGrupo()" class="btn btn-lg segundo-color-letra segundo-color-fondo">Finalizar curso</button>
+                                            </div>
+                                        @endif
                                     @endif
                                 </div>
                             </div>

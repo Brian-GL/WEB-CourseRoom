@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Http;
 use App\Models\GruposArchivosMensajes;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 class GruposController extends Controller
 {
@@ -1053,7 +1055,7 @@ class GruposController extends Controller
                     ]);
 
                     if ($response->ok()){
-
+                        $fechaRegistro = Carbon::now()->addHours(-5);
                         $result = json_decode($response->body());
 
                         if($result->codigo > 0){
@@ -1078,7 +1080,11 @@ class GruposController extends Controller
                             }
                         }
 
-                        return response()->json(['code' => 200 , 'data' => $result], 200);
+                        return response()->json(['code' => 200 , 
+                        'data' => $result, 
+                        'fecha' => $fechaRegistro, 
+                        'nombreArchivo' => $filename,
+                        'imagenEmisor' => session('DatosCuenta')->imagen], 200);
 
                     } else{
                         return response()->json(['code' => 400 , 'data' => $response->body()], 200);

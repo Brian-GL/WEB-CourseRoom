@@ -221,60 +221,6 @@ class AvisosController extends Controller
         }
     }
 
-    public function avisoplagioprofesor_registrar(Request $request)
-    {
-        try {
-
-            $validator = Validator::make($request->all(), $rules = [
-                'IdProfesor' => ['required'],
-                'IdTarea' => ['required'],
-                'NombreArchivo' => ['required']
-            ], $messages = [
-                'required' => 'El campo :attribute es requerido'
-            ]);
-
-            if ($validator->fails()) {
-                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
-            } else {
-
-                $url = env('COURSEROOM_API');
-
-                $idProfesor = $request->integer('IdProfesor');
-                $IdUsuario = session('IdUsuario');
-                $idTarea = $request->integer('IdTarea');
-                $nombreArchivo = $request->string('NombreArchivo')->trim();
-
-                if($url != ''){
-
-                    $response = Http::withHeaders([
-                        'Authorization' => env('COURSEROOM_API_KEY'),
-                    ])->post($url.'/api/avisos/plagioprofesor', [
-                        'IdProfesor' => $idProfesor,
-                        'IdUsuario' => $idUsuario,
-                        'IdTarea' => $idTarea,
-                        'NombreArchivo' => $nombreArchivo
-                    ]);
-
-                    if ($response->ok()){
-
-                        $result = json_decode($response->body());
-
-                        return response()->json(['code' => 200 , 'data' => $result], 200);
-
-                    } else{
-                        return response()->json(['code' => 400 , 'data' => $response->body()], 200);
-                    }
-
-                } else{
-                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
-                }
-            }
-
-        } catch (\Throwable $th) {
-            return response()->json(['code' => 500 , 'data' => $th->getMessage()], 200);
-        }
-    }
-
     public function avisos_obtener(Request $request)
     {
         try {

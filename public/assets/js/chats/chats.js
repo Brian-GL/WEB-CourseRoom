@@ -323,10 +323,8 @@ document.Chatear = async function(IdUsuario){
                             showCloseButton: false,
                             showDenyButton: false,
                             showCancelButton: false,
-                        }).then((res) => {
-                            if (res.isConfirmed) {
-                                DetalleChat(result.data.codigo);
-                            }
+                        }).then(() => {
+                            DetalleChat(result.data.codigo);
                         });
                     }
                     break;

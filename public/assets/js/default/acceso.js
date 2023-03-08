@@ -34,7 +34,7 @@ document.getElementById("form-acceso").addEventListener("submit", async (e) => {
 
         switch (result.code) {
             case 200:{
-                window.location.href = BaseURL.concat('/inicio');
+                window.location.href = '/inicio';
             }
             break;
             case 500:{

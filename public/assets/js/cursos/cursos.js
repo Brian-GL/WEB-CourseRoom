@@ -628,9 +628,9 @@ if(idTipoUsuario == 1){
 
     document.DetalleCurso = async function(IdCurso, NuevoCurso){
        
-        if(NuevoCurso){
+        ShowPreloader();
 
-            ShowPreloader();
+        if(NuevoCurso){
 
             $('<form/>', { action: '/cursos/detalle', method: 'POST' }).append(
                 $('<input>', {type: 'hidden', id: '_token', name: '_token', value: document.head.querySelector("[name~=csrf-token][content]").content}),
@@ -1020,63 +1020,17 @@ if(idTipoUsuario == 1){
 
             ShowPreloader();
 
-            let formData = new FormData();
-
-            formData.append('IdCurso', IdCurso);
-
-            let response = await axios({
-                url: '/tareas/detalle',
-                baseURL: BaseURL,
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
-                },
-                data: formData
-            });
-
+            $('<form/>', { action: '/cursos/detalleprofesor', method: 'POST' }).append(
+                $('<input>', {type: 'hidden', id: '_token', name: '_token', value: document.head.querySelector("[name~=csrf-token][content]").content}),
+                $('<input>', {type: 'hidden', id: 'IdCurso', name: 'IdCurso', value: IdCurso})
+            ).appendTo('body').submit();
+            
             HidePreloader();
 
-            let result = response.data;
-
-            switch (result.code) {
-                case 200:{
-                
-                }
-                break;
-                case 500:{
-                    dataTableCursosActualesEstudiante.clear().draw();
-                    Swal.fire({
-                        title: '¡Error!',
-                        text: result.data,
-                        imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
-                        imageWidth: 100,
-                        imageHeight: 123,
-                        background: '#000000',
-                        color: '#FFFFFF',
-                        imageAlt: 'Error Image'
-                    });
-                }
-                break;
-                default:{
-                    dataTableCursosActualesEstudiante.clear().draw();
-                    Swal.fire({
-                        title: '¡Alerta!',
-                        text: result.data,
-                        imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
-                        imageWidth: 100,
-                        imageHeight: 123,
-                        imageAlt: 'Alert Image',
-                        background: '#000000',
-                        color: '#FFFFFF'
-                    });
-                }
-                break;
-            }
         }
         catch(ex){
 
             HidePreloader();
-            dataTableCursosActualesEstudiante.clear().draw();
             Swal.fire({
                 title: '¡Error!',
                 text: ex,
@@ -1128,10 +1082,8 @@ if(idTipoUsuario == 1){
                         imageAlt: 'Ok Image',
                         background: '#000000',
                         color: '#FFFFFF'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            DetalleCursoProfesor(resultado.data.codigo);
-                        }
+                    }).then(() => {
+                        DetalleCursoProfesor(resultado.data.codigo);
                     });
                 }
                 break;

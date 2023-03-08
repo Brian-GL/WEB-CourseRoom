@@ -338,10 +338,8 @@ document.SolucionarPregunta = async function (){
                     imageAlt: 'Ok Image',
                     background: '#000000',
                     color: '#FFFFFF'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.href = "/preguntas-y-respuestas";
-                    }
+                }).then(() => {
+                    window.location.href = "/preguntas-y-respuestas";
                 });
                 
             }

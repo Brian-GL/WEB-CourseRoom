@@ -1,0 +1,230 @@
+.titulado{
+    margin-bottom: 0 !important;
+}
+
+#mensajes{
+    max-height: 71vh;
+    height: 71vh;
+}
+
+#mensajear-curso{
+    overflow: hidden;
+}
+
+#contenido-curso{
+    max-height: 90%;
+    height: 87%;
+    overflow-y: scroll !important;
+}
+
+.mask-custom {
+    background: rgba(24, 24, 16, 0.2) !important;
+    border-radius: 2em;
+    backdrop-filter: blur(15px);
+    border: 2px solid rgba(255, 255, 255, 0.05) !important;
+    background-clip: padding-box;
+    box-shadow: 10px 10px 10px rgba(46, 54, 68, 0.03) !important;
+    color: white !important;
+}
+
+#contenedor {
+    --padding: 1.25rem;
+    padding-left: var(--padding);
+    padding-right: var(--padding);
+}
+
+table {
+    width: 100% !important;
+}
+
+#table-miembros-profesor_filter {
+    display: grid !important;
+    place-content: end !important;
+    padding-bottom: 1rem !important;
+}
+
+#table-miembros-profesor_filter input {
+    width: 560px !important;
+    height: 2rem !important;
+}
+
+#table-miembros-profesor_paginate {
+    display: grid !important;
+    place-content: center !important;
+}
+
+#table-materiales_filter {
+    display: grid !important;
+    place-content: end !important;
+    padding-bottom: 1rem !important;
+}
+
+#table-materiales_filter input {
+    width: 560px !important;
+    height: 2rem !important;
+}
+
+#table-materiales_paginate {
+    display: grid !important;
+    place-content: center !important;
+}
+
+#table-tareas-profesor-curso_filter {
+    display: grid !important;
+    place-content: end !important;
+    padding-bottom: 1rem !important;
+}
+
+#table-tareas-profesor-curso_filter input {
+    width: 560px !important;
+    height: 2rem !important;
+}
+
+#table-tareas-profesor-curso_paginate {
+    display: grid !important;
+    place-content: center !important;
+}
+
+#table-curso-desempeno_filter {
+    display: grid !important;
+    place-content: end !important;
+    padding-bottom: 1rem !important;
+}
+
+#table-curso-desempeno input {
+    width: 560px !important;
+    height: 2rem !important;
+}
+
+#table-curso-desempeno_paginate {
+    display: grid !important;
+    place-content: center !important;
+}
+
+#ttable-grupos-curso_filter {
+    display: grid !important;
+    place-content: end !important;
+    padding-bottom: 1rem !important;
+}
+
+#table-grupos-curso input {
+    width: 560px !important;
+    height: 2rem !important;
+}
+
+#table-grupos-curso_paginate {
+    display: grid !important;
+    place-content: center !important;
+}
+
+.span-detalle {
+    cursor: pointer;
+}
+
+@media (max-width:660px) {
+    #table-miembros-profesor_filter input {
+        width: 500px !important;
+        height: 2rem !important;
+    }
+
+    #table-materiales_filter input {
+        width: 500px !important;
+        height: 2rem !important;
+    }
+
+    #table-tareas-profesor-curso_filter input {
+        width: 500px !important;
+        height: 2rem !important;
+    }
+
+    #table-curso-desempeno_filter input {
+        width: 500px !important;
+        height: 2rem !important;
+    }
+
+    #table-grupos-curso_filter input {
+        width: 500px !important;
+        height: 2rem !important;
+    }
+}
+
+@media (max-width:560px) {
+    #table-miembros-profesor_filter input {
+        width: 400px !important;
+        height: 2rem !important;
+    }
+
+    #table-materiales_filter input {
+        width: 400px !important;
+        height: 2rem !important;
+    }
+
+    #table-tareas-profesor-curso_filter input {
+        width: 400px !important;
+        height: 2rem !important;
+    }
+
+    #table-curso-desempeno_filter input {
+        width: 400px !important;
+        height: 2rem !important;
+    }
+
+    #table-grupos-curso_filter input {
+        width: 400px !important;
+        height: 2rem !important;
+    }
+}
+
+@media (max-width:460px) {
+    #table-miembros-profesor_filter input {
+        width: 300px !important;
+        height: 2rem !important;
+    }
+
+    #table-materiales_filter input {
+        width: 300px !important;
+        height: 2rem !important;
+    }
+
+    #table-tareas-profesor-curso_filter input {
+        width: 300px !important;
+        height: 2rem !important;
+    }
+
+    #table-curso-desempeno_filter input {
+        width: 300px !important;
+        height: 2rem !important;
+    }
+
+    #table-grupos-curso_filter input {
+        width: 300px !important;
+        height: 2rem !important;
+    }
+}
+
+@media (max-width:360px) {
+    #table-miembros-profesor_filter input {
+        width: 200px !important;
+        height: 2rem !important;
+    }
+
+    #table-materiales_filter input {
+        width: 200px !important;
+        height: 2rem !important;
+    }
+
+    #table-tareas-profesor-curso_filter input {
+        width: 200px !important;
+        height: 2rem !important;
+    }
+
+    #table-curso-desempeno_filter input {
+        width: 200px !important;
+        height: 2rem !important;
+    }
+
+    #table-grupos-curso_filter input {
+        width: 200px !important;
+        height: 2rem !important;
+    }
+}

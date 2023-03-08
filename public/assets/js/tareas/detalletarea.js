@@ -246,17 +246,15 @@ async function SubirArchivoAdjunto(filename, base64, file) {
             case 200:{
                 Swal.fire({
                     title: 'Subir archivo adjunto',
-                    text: resultado.data,
+                    text: resultado.data.mensaje,
                     imageUrl: BaseURL.concat("/assets/templates/HappyOwl.png"),
                     imageWidth: 100,
                     imageHeight: 123,
                     imageAlt: 'Ok Image',
                     background: '#000000',
                     color: '#FFFFFF'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                       ObtenerArchivosAdjuntos();
-                    }
+                }).then(() => {
+                    ObtenerArchivosAdjuntos();
                 });
             }
             break;

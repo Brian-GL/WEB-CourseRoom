@@ -316,17 +316,28 @@ document.getElementById("agregar-pregunta").addEventListener("click", function()
                     HidePreloader();
 
                     let resultado = response.data;
-
+                    let data = resultado.data;
                     switch (resultado.code) {
                         case 200:{
-                            let data = resultado.data;
-                            document.DetallePregunta(data.codigo);
+                           
+                            Swal.fire({
+                                title: 'Registrar pregunta',
+                                text: data.mensaje,
+                                imageUrl: BaseURL.concat("/assets/templates/HappyOwl.png"),
+                                imageWidth: 100,
+                                imageHeight: 123,
+                                imageAlt: 'Ok Image',
+                                background: '#000000',
+                                color: '#FFFFFF'
+                            }).then(() => {
+                                document.DetallePregunta(data.codigo);
+                            });
                         }
                         break;
                         case 500:{
                             Swal.fire({
                                 title: '¡Error!',
-                                text: resultado.data,
+                                text: data.mensaje,
                                 imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
                                 imageWidth: 100,
                                 imageHeight: 123,
@@ -339,7 +350,7 @@ document.getElementById("agregar-pregunta").addEventListener("click", function()
                         default:{
                             Swal.fire({
                                 title: '¡Alerta!',
-                                text: resultado.data,
+                                text: data.mensaje,
                                 imageUrl: BaseURL.concat("/assets/templates/IndiferentOwl.png"),
                                 imageWidth: 100,
                                 imageHeight: 123,

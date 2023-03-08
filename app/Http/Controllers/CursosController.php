@@ -59,6 +59,8 @@ class CursosController extends Controller
         $IdTipoUsuario = session('IdTipoUsuario');
         $IdUsuario = session('IdUsuario');
 
+        $Mensajes = array();
+
         $DatosCurso = null;
 
         $url = env('COURSEROOM_API');
@@ -69,8 +71,8 @@ class CursosController extends Controller
 
             $response = Http::withHeaders([
                 'Authorization' => env('COURSEROOM_API_KEY'),
-            ])->post($url.'/api/cursos/detalleobtenere', [
-                'IdCurso' => $IdTarea
+            ])->post($url.'/api/cursos/detalleobtener', [
+                'IdCurso' => $IdCurso
             ]);
 
             if ($response->ok()){
@@ -91,6 +93,47 @@ class CursosController extends Controller
         } 
 
         return view('cursos.detallecursoestudiante', compact('DatosUsuario', 'DatosCuenta','IdTipoUsuario', 'DatosCurso', 'Mensajes', 'IdUsuario'));
+    }
+
+    public function detallecursoprofesor(Request $request){
+
+        $DatosUsuario = session('DatosUsuario');
+        $DatosCuenta = session('DatosCuenta');
+        $IdTipoUsuario = session('IdTipoUsuario');
+
+        $DatosCurso = null;
+        $Mensajes = array();
+
+        $url = env('COURSEROOM_API');
+
+        $IdCurso = $request->integer('IdCurso');
+
+        if($url != ''){
+
+            $response = Http::withHeaders([
+                'Authorization' => env('COURSEROOM_API_KEY'),
+            ])->post($url.'/api/cursos/profesordetalleobtener', [
+                'IdCurso' => $IdCurso
+            ]);
+
+            if ($response->ok()){
+                $DatosCurso = json_decode($response->body());
+            } 
+
+            //Obtener mensajes curso:
+            $response = Http::withHeaders([
+                'Authorization' => env('COURSEROOM_API_KEY'),
+            ])->post($url.'/api/cursos/mensajesobtener', [
+                'IdCurso' => $IdCurso
+            ]);
+
+            if ($response->ok()){
+
+                $Mensajes = json_decode($response->body());
+            } 
+        } 
+
+        return view('cursos.detallecursoprofesor', compact('DatosUsuario', 'DatosCuenta','IdTipoUsuario', 'DatosCurso', 'Mensajes'));
     }
 
     #endregion
@@ -617,7 +660,6 @@ class CursosController extends Controller
 
             $validator = Validator::make($request->all(), $rules = [
                 'IdCurso' => ['required'],  
-                'IdProfesor'   => ['required']
             ], $messages = [
                 'required' => 'El campo :attribute es requerido'
             ]);
@@ -629,7 +671,7 @@ class CursosController extends Controller
                 $url = env('COURSEROOM_API');
 
                 $idCurso = $request->integer('IdCurso');
-                $idProfesor = $request->integer('IdProfesor');
+                $idProfesor = session('IdUsuario');
 
                 if($url != ''){
 
@@ -846,7 +888,7 @@ class CursosController extends Controller
                     ]);
 
                     if ($response->ok()){
-
+                        $fechaRegistro = Carbon::now()->addHours(-5);
                         $result = json_decode($response->body());
 
                         if($result->codigo > 0){
@@ -871,7 +913,11 @@ class CursosController extends Controller
                             }
                         }
 
-                        return response()->json(['code' => 200 , 'data' => $result], 200);
+                        return response()->json(['code' => 200 , 
+                        'data' => $result, 
+                        'fecha' => $fechaRegistro, 
+                        'nombreArchivo' => $filename,
+                        'imagenEmisor' => session('DatosCuenta')->imagen], 200);
 
                     } else{
                         return response()->json(['code' => 400 , 'data' => $response->body()], 200);
@@ -1050,69 +1096,6 @@ class CursosController extends Controller
         }
     }
 
-    public function curso_profesordetalleobtener(Request $request)
-    {
-        try {
-
-            $validator = Validator::make($request->all(), $rules = [
-                'IdCurso' => ['required']                
-            ], $messages = [
-                'required' => 'El campo :attribute es requerido'
-            ]);
-
-            if ($validator->fails()) {
-                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
-            } else {
-
-                $url = env('COURSEROOM_API');
-
-                $idCurso = $request->integer('IdCurso');
-                $nombre = $request->string('Nombre');
-                $descripcion = $request->string('Descripcion');
-                $idProfesor = $request->integer('IdProfesor');
-                $nombreProfesor = $request->string('NombreProfesor');
-                $fechaRegistro  = $request->integer('FechaRegistro');
-                $fechaActualizacion = $request->integer('FechaActualizacion');
-                $puntaje    = $request->integer('Puntaje');
-                $finalizado = $request->integer('Finalizado');
-                if($url != ''){
-
-                    $response = Http::withHeaders([
-                        'Authorization' => env('COURSEROOM_API_KEY'),
-                    ])->post($url.'/api/cursos/profesordetalleobtener', [
-                        'IdCurso' => $idCurso,
-                        'Nombre' => $nombre,
-                        'Descripcion' => $descripcion,
-                        'Imagen' => $imagen,
-                        'IdProfesor' => $idProfesor,
-                        'NombreProfesor' => $nombreProfesor,
-                        'ImagenProfesor' => $imagenProfesor,
-                        'FechaRegistro' => $fechaRegistro,
-                        'FechaActualizacion' => $fechaActualizacion,
-                        'Puntaje' => $puntaje,
-                        'Finalizado' => $finalizado,
-                    ]);
-
-                    if ($response->ok()){
-
-                        $result = json_decode($response->body());
-
-                        return response()->json(['code' => 200 , 'data' => $result], 200);
-
-                    } else{
-                        return response()->json(['code' => 400 , 'data' => $response->body()], 200);
-                    }
-
-                } else{
-                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
-                }
-            }
-
-        } catch (\Throwable $th) {
-            return response()->json(['code' => 500 , 'data' => $th->getMessage()], 200);
-        }
-    }
-
     public function curso_profesortareasobtener(Request $request)
     {
         try {
@@ -1131,6 +1114,7 @@ class CursosController extends Controller
 
                 $idCurso = $request->integer('IdCurso');
                 $idProfesor = session('IdUsuario');
+
                 if($url != ''){
 
                     $response = Http::withHeaders([
@@ -1160,55 +1144,7 @@ class CursosController extends Controller
         }
     }
 
-    public function curso_promedioobtener(Request $request)
-    {
-        try {
-
-            $validator = Validator::make($request->all(), $rules = [
-                'IdCurso' => ['required']                
-            ], $messages = [
-                'required' => 'El campo :attribute es requerido'
-            ]);
-
-            if ($validator->fails()) {
-                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
-            } else {
-
-                $url = env('COURSEROOM_API');
-
-                $idCurso = $request->integer('IdCurso');
-                $promedioCurso = $request->float('PromedioCurso');
-                if($url != ''){
-
-                    $response = Http::withHeaders([
-                        'Authorization' => env('COURSEROOM_API_KEY'),
-                    ])->post($url.'/api/cursos/promedioobtener', [
-                        'IdCurso' => $idCurso,
-                        'PromedioCurso' => $promedioCurso,
-                        
-                    ]);
-
-                    if ($response->ok()){
-
-                        $result = json_decode($response->body());
-
-                        return response()->json(['code' => 200 , 'data' => $result], 200);
-
-                    } else{
-                        return response()->json(['code' => 400 , 'data' => $response->body()], 200);
-                    }
-
-                } else{
-                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
-                }
-            }
-
-        } catch (\Throwable $th) {
-            return response()->json(['code' => 500 , 'data' => $th->getMessage()], 200);
-        }
-    }
-
-    public function curso_buscarObtener(Request $request)
+    public function cursoestudiante_buscar(Request $request)
     {
         try {
 
@@ -1225,36 +1161,16 @@ class CursosController extends Controller
 
                 $url = env('COURSEROOM_API');
 
-                $busqueda = $request->integer('Busqueda');
+                $Busqueda = $request->string('Busqueda')->trim();
                 $idUsuario = $request->integer('IdUsuario');
-                $idCurso = $request->integer('IdCurso');
-                $curso = $request->string('Curso');
-                $idProfesor = $request->integer('IdProfesor');
-                $profesor = $request->string('Profesor');
-                $listaTematicas = $request->string('ListaTematicas');
-                $fechaRegistro = $request->integer('FechaRegistro');
-                $puntaje = $request->float('Puntaje');
-                $fechaIngreso = $request->integer('FechaIngreso');
-                $estatus = $request->string('Estatus');
+                
                 if($url != ''){
 
                     $response = Http::withHeaders([
                         'Authorization' => env('COURSEROOM_API_KEY'),
                     ])->post($url.'/api/cursos/buscarobtener', [
-                        'IdCurso' => $idCurso,
-                        'Busqueda' => $busqueda,
+                        'Busqueda' => $Busqueda,
                         'IdUsuario' => $idUsuario,
-                        'IdCurso' => $idCurso,
-                        'Curso' => $curso,
-                        'ImagenCurso' => $imagenCurso,
-                        'IdProfesor' => $idProfesor,
-                        'Profesor' => $profesor,
-                        'ImagenProfesor,' => $imagenProfesor,
-                        'ListaTematicas' => $listaTematicas,
-                        'FechaRegistro' => $fechaRegistro,
-                        'Puntaje' => $puntaje,
-                        'FechaIngreso' => $fechaIngreso,
-                        'Estatus' => $estatus,
                     ]);
 
                     if ($response->ok()){
@@ -1491,7 +1407,6 @@ class CursosController extends Controller
                 $idCurso = $request->integer('IdCurso');
                 $idTematica = $request->integer('IdTematica');
                 
-                
                 if($url != ''){
 
                     $response = Http::withHeaders([
@@ -1499,8 +1414,6 @@ class CursosController extends Controller
                     ])->post($url.'/api/cursos/tematicaregistrar', [
                         'IdCurso' => $idCurso,
                         'IdTematica' => $idTematica,
-                        'Mensaje' => $mensaje,
-                        'Codigo' => $codigo,
                     ]);
 
                     if ($response->ok()){
@@ -1552,8 +1465,6 @@ class CursosController extends Controller
                     ])->delete($url.'/api/cursos/tematicaremover', [
                         'IdTematica' => $idTematica,
                         'IdCurso' => $idCurso,
-                        'Codigo' => $codigo,
-                        'Mensaje' => $mensaje,
                     ]);
 
                     if ($response->ok()){
@@ -1593,18 +1504,13 @@ class CursosController extends Controller
                 $url = env('COURSEROOM_API');
                 
                 $idCurso = $request->integer('IdCurso');
-                $idTematica = $request->integer('IdTematica');
-                $tematica = $request->string('Tematica');
-                
                 
                 if($url != ''){
 
                     $response = Http::withHeaders([
                         'Authorization' => env('COURSEROOM_API_KEY'),
                     ])->post($url.'/api/cursos/tematicaobtener', [
-                        'IdCurso' => $idCurso,
-                        'IdTematica' => $idTematica,
-                        'Tematica' => $tematica,                       
+                        'IdCurso' => $idCurso                     
                     ]);
 
                     if ($response->ok()){

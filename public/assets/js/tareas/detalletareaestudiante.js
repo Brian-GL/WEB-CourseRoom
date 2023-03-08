@@ -581,17 +581,15 @@ async function EnviarArchivoEntregado(filename, base64, file) {
             case 200:{
                 Swal.fire({
                     title: 'Entregar archivo',
-                    text: resultado.data,
+                    text: resultado.data.mensaje,
                     imageUrl: BaseURL.concat("/assets/templates/HappyOwl.png"),
                     imageWidth: 100,
                     imageHeight: 123,
                     imageAlt: 'Ok Image',
                     background: '#000000',
                     color: '#FFFFFF'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                       ObtenerArchivosEntregados();
-                    }
+                }).then(() => {
+                    ObtenerArchivosEntregados();
                 });
             }
             break;
@@ -673,10 +671,8 @@ document.RemoverArchivoEntregado = async function(IdArchivoEntregado){
                     imageAlt: 'Ok Image',
                     background: '#000000',
                     color: '#FFFFFF'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                       ObtenerArchivosEntregados();
-                    }
+                }).then(() => {
+                    ObtenerArchivosEntregados();
                 });
             }
             break;
@@ -953,10 +949,8 @@ $("#entregar-tarea").on('click', async () => {
                             imageAlt: 'Ok Image',
                             background: '#000000',
                             color: '#FFFFFF'
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.href = "/mis-tareas";
-                            }
+                        }).then(() => {
+                            window.location.href = "/mis-tareas";
                         });
                     }
                     break;

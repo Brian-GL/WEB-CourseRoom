@@ -607,10 +607,8 @@ document.ActualizarGrupo = async function (){
                     imageAlt: 'Ok Image',
                     background: '#000000',
                     color: '#FFFFFF'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.href = "/mis-grupos";
-                    }
+                }).then(() => {
+                    window.location.href = "/mis-grupos";
                 });
             }
             break;
@@ -779,17 +777,15 @@ async function EnviarArchivoCompartido(filename, base64, file) {
             case 200:{
                 Swal.fire({
                     title: 'Compartir archivo',
-                    text: resultado.data,
+                    text: resultado.data.mensaje,
                     imageUrl: BaseURL.concat("/assets/templates/HappyOwl.png"),
                     imageWidth: 100,
                     imageHeight: 123,
                     imageAlt: 'Ok Image',
                     background: '#000000',
                     color: '#FFFFFF'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                       ObtenerArchivosCompartidos();
-                    }
+                }).then(() => {
+                    ObtenerArchivosCompartidos();
                 });
             }
             break;
@@ -1251,17 +1247,15 @@ document.getElementById("form-agregar-tarea-pendiente").addEventListener("submit
             case 200:{
                 Swal.fire({
                     title: 'Crear tarea pendiente',
-                    text: resultado.data,
+                    text: resultado.data.mensaje,
                     imageUrl: BaseURL.concat("/assets/templates/HappyOwl.png"),
                     imageWidth: 100,
                     imageHeight: 123,
                     imageAlt: 'Ok Image',
                     background: '#000000',
                     color: '#FFFFFF'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                       ObtenerTareasPendientes();
-                    }
+                }).then(() => {
+                    ObtenerTareasPendientes();
                     $("#agregar-tarea-pendiente-modal").hide();
                 });
             }
@@ -1348,10 +1342,8 @@ document.getElementById("form-detalle-tarea-pendiente").addEventListener("submit
                     imageAlt: 'Ok Image',
                     background: '#000000',
                     color: '#FFFFFF'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                       ObtenerTareasPendientes();
-                    }
+                }).then(() => {
+                    ObtenerTareasPendientes();
                 });
             }
             break;

@@ -81,6 +81,7 @@ async function EnviarMensaje(mensaje, archivo, base64Archivo) {
             },
             data: formData
         });
+        
         let result = response.data;
 
         switch (result.code) {
