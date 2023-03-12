@@ -7,7 +7,7 @@ use Carbon\Carbon;
 @section('title', 'Detalle Curso')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset ('assets/css/cursos/detallecursoestudiante.css')}}">
+<link rel="stylesheet" href="{{ asset ('build/assets/detallecursoestudiante.ec9fe6e4.css')}}">
 @endpush
 
 @section('content')
@@ -528,5 +528,5 @@ use Carbon\Carbon;
 @stop
 
 @push('scripts')
-<script type="module" src=" {{asset('assets/js/cursos/detallecursoestudiante.js')}}"></script>
+<script type="module" src=" {{asset('build/assets/detallecursoestudiante.3627b966.js')}}"></script>
 @endpush

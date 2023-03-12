@@ -3,7 +3,7 @@
 @section('title', 'Reproductor de música')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset ('assets/css/herramientas/musica.min.css')}}">
+<link rel="stylesheet" href="{{ asset ('build/assets/musica.min.0b29d228.css')}}">
 @endpush
 
 @section('content')
@@ -83,7 +83,7 @@
                     <div class="col-2 text-center">
                         <div class="form-group">
                             <a href="https://www.deezer.com" target="_blank" id="deezer" title="Escuchar en deezer">
-                                <img src="{{asset('assets/templates/deezer_22419.png')}}" alt="deezer icon" />
+                                <img src="{{asset('build/assets/deezer_22419.e214c2c0.png')}}" alt="deezer icon" />
                             </a>
                         </div>
                     </div>
@@ -104,5 +104,5 @@
 @stop
 
 @push('scripts')
-<script type="module" src=" {{asset('assets/js/herramientas/musica.min.js')}}"></script>
+<script type="module" src=" {{asset('build/assets/musica.min.e53759b3.js')}}"></script>
 @endpush

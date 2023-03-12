@@ -28,7 +28,7 @@
 @section('title', 'Perfil')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset ('assets/css/usuarios/perfil.min.css')}}">
+<link rel="stylesheet" href="{{ asset ('build/assets/perfil.min.f58ea1e3.css')}}">
 @endpush
 
 @section('content')
@@ -228,5 +228,5 @@
 @stop
 
 @push('scripts')
-<script type="module" src="{{ asset ('assets/js/usuarios/perfil.js')}}"></script>
+<script type="module" src="{{ asset ('build/assets/perfil.1ab441a7.js')}}"></script>
 @endpush

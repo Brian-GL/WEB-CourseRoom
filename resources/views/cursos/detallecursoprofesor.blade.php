@@ -9,7 +9,7 @@ $min_date = Carbon::now()->addHours(8)->toDateTimeString();
 @section('title', 'Detalle Curso')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset ('assets/css/cursos/detallecursoprofesor.css')}}">
+<link rel="stylesheet" href="{{ asset ('build/assets/detallecursoprofesor.88e9b477.css')}}">
 @endpush
 
 @section('content')
@@ -405,5 +405,5 @@ $min_date = Carbon::now()->addHours(8)->toDateTimeString();
 @stop
 
 @push('scripts')
-<script type="module" src=" {{asset('assets/js/cursos/detallecursoprofesor.js')}}"></script>
+<script type="module" src=" {{asset('build/assets/detallecursoprofesor.44b3b530.js')}}"></script>
 @endpush

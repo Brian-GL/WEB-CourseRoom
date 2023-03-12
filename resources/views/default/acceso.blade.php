@@ -3,7 +3,7 @@
 @section('title', 'Acceso')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset ('assets/css/default/acceso.min.css')}}">
+<link rel="stylesheet" href="{{ asset ('build/assets/acceso.min.51b06d55.css')}}">
 @endpush
 
 @section('content')
@@ -13,7 +13,7 @@
         <div class="row">
             <div class="col-md-7 p-5" id="login">
                 <div class="row justify-content-center px-3 mb-3">
-                    <img id="logo" class="img-fluid" src="{{ asset("assets/templates/Course_Room_Brand.png")}}">
+                    <img id="logo" class="img-fluid" src="{{ asset ('build/assets/Course_Room_Brand.9000409b.png')}}">
                 </div>
 
                 <form id="form-acceso" method="HEAD">
@@ -59,5 +59,5 @@
 
 
 @push('scripts')
-<script type="module" src="{{ asset ('assets/js/default/acceso.js')}}"></script>
+<script type="module" src="{{ asset ('build/assets/acceso.55fd6fa2.js')}}"></script>
 @endpush

@@ -3,7 +3,7 @@
 @section('title', 'Cursos')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset ('assets/css/cursos/cursos.css')}}">
+<link rel="stylesheet" href="{{ asset ('build/assets/cursos.9aba15cb.css')}}">
 @endpush
 
 @section('content')
@@ -148,7 +148,7 @@
                         <div class="row mt-4">
                             <div class="col-md-12 form-group">
                                 <div class="d-flex justify-content-center mb-4" id="seleccionar-imagen">
-                                    <img id="imagen-seleccionada" class="img-fluid shadow-lg" src="https://storage.needpix.com/thumbs/blank-profile-picture-973460_1280.png" class="rounded img-fluid" alt="Imagen de curso"/>
+                                    <img id="imagen-seleccionada" class="img-fluid shadow-lg" src="https://static.vecteezy.com/system/resources/thumbnails/002/534/006/small/social-media-chatting-online-blank-profile-picture-head-and-body-icon-people-standing-icon-grey-background-free-vector.jpg" class="rounded img-fluid" alt="Imagen de curso"/>
                                 </div>
                                 <div class="d-flex justify-content-center">
                                     <div class="btn btn-rounded tercer-color-letra tercer-color-fondo">
@@ -174,6 +174,6 @@
 
 
 @push('scripts')
-<script type="module" src=" {{asset('assets/js/cursos/cursos.js')}}"></script>
+<script type="module" src="{{asset('build/assets/cursos.5a639861.js')}}"></script>
 
 @endpush

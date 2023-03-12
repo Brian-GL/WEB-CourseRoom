@@ -3,12 +3,10 @@
 @section('title', 'Tareas')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset ('assets/css/tareas/tareas.css')}}">
+<link rel="stylesheet" href="{{ asset ('build/assets/tareas.ae5b025b.css')}}">
 @if($IdTipoUsuario == 1)
-<link rel="stylesheet" href="{{ asset ('assets/css/layout/evo-calendar.midnight-blue.min.css')}}">
-<link rel="stylesheet" href="{{ asset ('assets/css/layout/evo-calendar.min.css')}}">
-<link rel="stylesheet" href="{{ asset ('assets/css/layout/evo-calendar.orange-coral.min.css')}}">
-<link rel="stylesheet" href="{{ asset ('assets/css/layout/evo-calendar.royal-navy.min.css')}}">
+<!-- Add the evo-calendar.css for styling -->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/evo-calendar@1.1.2/evo-calendar/css/evo-calendar.min.css"/>
 @endif
 @endpush
 
@@ -103,9 +101,10 @@
 
 
 @push('scripts')
-@if($IdTipoUsuario == 1)
-<script type="module" src="{{asset('assets/js/layout/evo-calendar.min.js')}}"></script>
+@if ($IdTipoUsuario == 1)
+<!-- Add the evo-calendar.js for.. obviously, functionality! -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/evo-calendar@1.1.2/evo-calendar/js/evo-calendar.min.js"></script>
 @endif
-<script type="module" src=" {{asset('assets/js/tareas/tareas.js')}}"></script>
-
+<script type="module" src=" {{asset('build/assets/tareas.a0900549.js')}}"></script>
 @endpush

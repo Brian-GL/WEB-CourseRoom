@@ -9,7 +9,7 @@ $min_date = Carbon::now()->toDateTimeString();
 @section('title', 'Grupo')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset ('assets/css/grupos/detallegrupo.css')}}">
+<link rel="stylesheet" href="{{ asset ('build/assets/detallegrupo.89d1a034.css')}}">
 @endpush
 
 @section('content')
@@ -370,5 +370,5 @@ $min_date = Carbon::now()->toDateTimeString();
 
 
 @push('scripts')
-<script type="module" src=" {{asset('assets/js/grupos/detallegrupo.js')}}"></script>
+<script type="module" src=" {{asset('build/assets/detallegrupo.ba8ff3ad.js')}}"></script>
 @endpush

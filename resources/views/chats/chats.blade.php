@@ -3,7 +3,7 @@
 @section('title', 'Chats')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset ('assets/css/chats/chats.css')}}">
+<link rel="stylesheet" href="{{ asset ('build/assets/chats.f35a67cb.css')}}">
 @endpush
 
 @section('content')
@@ -81,10 +81,8 @@
     </div>
 </div>
 
-
 @stop
 
-
 @push('scripts')
-<script type="module" src=" {{asset('assets/js/chats/chats.js')}}"></script>
+<script type="module" src=" {{asset('build/assets/chats.3c45c41f.js')}}"></script>
 @endpush

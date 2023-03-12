@@ -3,7 +3,7 @@
 @section('title', 'Resolvedor matemático')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset ('assets/css/herramientas/matematicas.min.css')}}">
+<link rel="stylesheet" href="{{ asset ('build/assets/matematicas.min.7616561b.css')}}">
 @endpush
 
 @section('content')
@@ -74,5 +74,5 @@
 
 
 @push('scripts')
-<script type="module" src=" {{asset('assets/js/herramientas/matematicas.min.js')}}"></script>
+<script type="module" src=" {{asset('build/assets/matematicas.min.ad9204cf.js')}}"></script>
 @endpush

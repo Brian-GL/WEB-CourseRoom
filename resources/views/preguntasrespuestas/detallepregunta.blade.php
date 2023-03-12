@@ -9,7 +9,7 @@ use Carbon\Carbon;
 @section('title', 'Pregunta')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset ('assets/css/preguntasrespuestas/detallepregunta.css')}}">
+<link rel="stylesheet" href="{{ asset ('build/assets/detallepregunta.6ac96433.css')}}">
 @endpush
 
 @section('content')
@@ -194,11 +194,8 @@ use Carbon\Carbon;
     </div>
 </div>
 
-
-
 @stop
 
-
 @push('scripts')
-<script type="module" src=" {{asset('assets/js/preguntasrespuestas/detallepregunta.js')}}"></script>
+<script type="module" src=" {{asset('build/assets/detallepregunta.4188193e.js')}}"></script>
 @endpush

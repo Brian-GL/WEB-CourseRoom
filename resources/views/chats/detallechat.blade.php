@@ -9,7 +9,7 @@ use Carbon\Carbon;
 @section('title', 'Conversacion')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset ('assets/css/chats/detallechat.css')}}">
+<link rel="stylesheet" href="{{ asset ('build/assets/detallechat.e0f56565.css')}}">
 @endpush
 
 @section('content')
@@ -167,10 +167,8 @@ use Carbon\Carbon;
     </div>
 </div>
 
-
 @stop
 
-
 @push('scripts')
-<script type="module" src=" {{asset('assets/js/chats/detallechat.js')}}"></script>
+<script type="module" src=" {{asset('build/assets/detallechat.21255121.js')}}"></script>
 @endpush

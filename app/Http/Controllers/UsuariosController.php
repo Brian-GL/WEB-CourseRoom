@@ -994,7 +994,7 @@ class UsuariosController extends Controller
     {
         try {
 
-            $url = env('COURSEROOM_API');
+            $url = env('COURSEROOM_CALCULATOR');
 
             $IdUsuario = session('IdUsuario');
 
@@ -1002,18 +1002,22 @@ class UsuariosController extends Controller
 
                 $response = Http::withHeaders([
                     'Authorization' => env('COURSEROOM_API_KEY'),
-                ])->post($url.'/api/usuarios/informacioncalculator', [
-                    'IdUsuario' => $IdUsuario
+                ])->post($url, [
+                   'method' => 'RpcServer.InformacionDesempeno',
+                   'params' => [
+                    [
+                        'IdUsuario' => $IdUsuario
+                    ]
+                   ],
+                   'id' => 0
                 ]);
 
-                if ($response->ok()){
+                $result = json_decode($response->body());
 
-                    $result = json_decode($response->body());
-
-                    return response()->json(['code' => 200 , 'data' => $result], 200);
-
+                if ($response->ok() && $result->error == null){
+                    return response()->json(['code' => $result->result->status , 'data' => $result->result->data], 200);
                 } else{
-                    return response()->json(['code' => 400 , 'data' => $response->body()], 200);
+                    return response()->json(['code' => 400 , 'data' => $result->error], 200);
                 }
 
             } else{

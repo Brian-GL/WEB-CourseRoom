@@ -3,9 +3,8 @@
 @section('title', 'Recuperación de credenciales')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset ('assets/css/default/recuperacion.min.css')}}">
+<link rel="stylesheet" href="{{ asset ('build/assets/recuperacion.min.3a775cde.css')}}">
 @endpush
-
 
 @section('content')
 
@@ -19,7 +18,7 @@
                 </a>
 
                 <div class="row justify-content-center px-3 mb-3">
-                    <img id="logo" class="img-fluid" src="{{asset('assets/templates/Course_Room_Brand.png')}}">
+                    <img id="logo" class="img-fluid" src="{{asset('build/assets/Course_Room_Brand.9000409b.png')}}">
                 </div>
 
                 <h3 class="mb-1 text-center heading display-6">¡Recupera Tu Credenciales!</h3>
@@ -46,10 +45,8 @@
     </div>
 </div>
 
-
-
 @stop
 
 @push('scripts')
-<script type="module" src="{{ asset ('assets/js/default/recuperacion.js')}}"></script>
+<script type="module" src="{{ asset ( 'build/assets/recuperacion.1fe9c643.js')}}"></script>
 @endpush

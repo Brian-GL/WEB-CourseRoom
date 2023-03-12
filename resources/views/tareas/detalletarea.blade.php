@@ -7,7 +7,7 @@ use Carbon\Carbon;
 @section('title', 'Detalle Tarea')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset ('assets/css/tareas/detalletarea.css')}}">
+<link rel="stylesheet" href="{{ asset ('build/assets/detalletarea.95be0adc.css')}}">
 @endpush
 
 @section('content')
@@ -133,5 +133,5 @@ use Carbon\Carbon;
 @stop
 
 @push('scripts')
-<script type="module" src=" {{asset('assets/js/tareas/detalletarea.js')}}"></script>
+<script type="module" src=" {{asset('build/assets/detalletarea.1cacbe04.js')}}"></script>
 @endpush
