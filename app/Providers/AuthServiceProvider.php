@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+
 // use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -16,15 +17,15 @@ class AuthServiceProvider extends ServiceProvider
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
     ];
 
-    /**
+   /**
      * Register any authentication / authorization services.
      *
      * @return void
      */
     public function boot()
     {
-        if($this->app->environment('production')) {
-            URL::forceScheme('https');
-        }
+        $this->registerPolicies();
+
+        //
     }
 }
