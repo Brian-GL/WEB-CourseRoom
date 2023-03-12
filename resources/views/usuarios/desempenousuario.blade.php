@@ -61,9 +61,7 @@
     </div>
 </div>
 
-
 @stop
-
 
 @push('scripts')
 <script type="module" src=" {{asset('build/assets/desempeno.d574cda3.js')}}"></script>

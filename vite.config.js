@@ -52,7 +52,6 @@ export default defineConfig({
                 'resources/js/herramientas/musica.min.js',
                 'resources/js/inicio/inicio.min.js',
                 'resources/js/layout/core.js',
-                'resources/js/layout/evo-calendar.min.js',
                 'resources/js/layout/home.js',
                 'resources/js/preguntasrespuestas/detallepregunta.js',
                 'resources/js/preguntasrespuestas/preguntas.js',

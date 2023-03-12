@@ -189,7 +189,7 @@
         </div>
     </div>
 
-    <script type="module" src="{{ asset('build/assets/home.91311917.js')}}"></script>
+    <script type="module" src="{{ asset('build/assets/home.8d937027.js')}}"></script>
     @stack('scripts')
 
 </body>

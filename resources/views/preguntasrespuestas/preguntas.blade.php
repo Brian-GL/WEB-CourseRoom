@@ -84,7 +84,6 @@
 
 @stop
 
-
 @push('scripts')
 <script type="module" src=" {{asset('build/assets/preguntas.1d9c3e0b.js')}}"></script>
 @endpush

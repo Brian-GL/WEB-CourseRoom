@@ -96,9 +96,7 @@
     </div>
 </div>
 
-
 @stop
-
 
 @push('scripts')
 @if ($IdTipoUsuario == 1)
