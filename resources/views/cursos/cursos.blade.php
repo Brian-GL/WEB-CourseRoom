@@ -170,6 +170,6 @@
 
 
 @push('scripts')
-<script type="module" src="{{asset('build/assets/cursos.5a639861.js')}}"></script>
+<script type="module" src="{{asset('build/assets/cursos.c5c8792b.js')}}"></script>
 
 @endpush
