@@ -239,5 +239,5 @@ use Carbon\Carbon;
 @stop
 
 @push('scripts')
-<script type="module" src=" {{asset('build/assets/detalletareaestudiante.dcb945af.js')}}"></script>
+<script type="module" src=" {{asset('build/assets/detalletareaestudiante.2af12ffa.js')}}"></script>
 @endpush

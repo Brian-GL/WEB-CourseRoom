@@ -102,5 +102,5 @@
 <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/evo-calendar@1.1.2/evo-calendar/js/evo-calendar.min.js"></script>
 @endif
-<script type="module" src=" {{asset('build/assets/tareas.a0900549.js')}}"></script>
+<script type="module" src=" {{asset('build/assets/tareas.c17c6967.js')}}"></script>
 @endpush

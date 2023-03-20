@@ -130,5 +130,5 @@ use Carbon\Carbon;
 @stop
 
 @push('scripts')
-<script type="module" src=" {{asset('build/assets/detalletarea.1cacbe04.js')}}"></script>
+<script type="module" src=" {{asset('build/assets/detalletarea.4a31c423.js')}}"></script>
 @endpush
