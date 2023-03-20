@@ -48,5 +48,5 @@
 @stop
 
 @push('scripts')
-<script type="module" src="{{ asset ( 'build/assets/recuperacion.1fe9c643.js')}}"></script>
+<script type="module" src="{{ asset ( 'build/assets/recuperacion.0e8e6b33.js')}}"></script>
 @endpush
