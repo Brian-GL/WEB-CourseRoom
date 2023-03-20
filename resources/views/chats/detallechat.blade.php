@@ -23,10 +23,6 @@ use Carbon\Carbon;
     <input type="hidden" value="0" id="id-usuario-emisor"/>
 @endif
 
-<input type="hidden" value="{{ asset('chats/').'/'}}" id="assets-chats"/>
-<input type="hidden" value="{{ asset('usuarios/').'/'}}" id="assets-usuarios"/>
-
-
 <div class="col-md-12">
     <div class="container" id="contenedor">
 
@@ -57,7 +53,7 @@ use Carbon\Carbon;
 
                     <div class="col-md-2 text-center h-75">
                         @if(!is_null($DatosCuenta) && !is_null($DatosCuenta->imagen))
-                            <img id="imagen-receptor" class="img-fluid rounded-circle shadow-lg h-75" alt="Imagen del usuario receptor" src="{{ asset('usuarios/'.$DatosChat->ImagenReceptor)}}" />
+                            <img id="imagen-receptor" class="img-fluid rounded-circle shadow-lg h-75" alt="Imagen del usuario receptor" src="{{ asset($DatosChat->ImagenReceptor)}}" />
                         @else
                             <img id="imagen-receptor" class="img-fluid rounded-circle shadow-lg h-75" alt="Imagen del usuario receptor" src="https://raw.githubusercontent.com/Brian-GL/CourseRoom/main/src/recursos/imagenes/Course_Room_Brand_Readme.png"/>
                         @endif
@@ -98,12 +94,12 @@ use Carbon\Carbon;
                                             @if (is_null($mensaje->archivo))
                                                 <p class="mb-0">{{$mensaje->mensaje}}</p>
                                             @else
-                                                <a href="{{ asset('chats/'.$mensaje->archivo)}}" target="_blank"><i class="fa-solid fa-file-lines"></i>&nbsp;{{$mensaje->mensaje}}</a>
+                                                <a href="{{ asset($mensaje->archivo)}}" target="_blank"><i class="fa-solid fa-file-lines"></i>&nbsp;{{$mensaje->mensaje}}</a>
                                             @endif
                                         
                                         </div>
                                     </div>
-                                    <img src="{{ asset('usuarios/'.$mensaje->imagenEmisor)}}" alt="avatar" class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60">
+                                    <img src="{{ asset($mensaje->imagenEmisor)}}" alt="avatar" class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60">
                                 </div>
                             </div>
                         </div>  
@@ -112,7 +108,7 @@ use Carbon\Carbon;
                         <div class="col-md-12 d-flex justify-content-start">
                             <div class="w-50">
                                 <div class="d-flex justify-content-start mb-4">
-                                    <img src="{{ asset('usuarios/'.$mensaje->imagenEmisor)}}" alt="avatar" class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60">
+                                    <img src="{{ asset($mensaje->imagenEmisor)}}" alt="avatar" class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60">
                                     <div class="card mask-custom">
                                         <div class="card-header d-flex justify-content-between p-3" style="border-bottom: 1px solid rgba(255,255,255,.3);">
                                             <div class="col-md-6 text-center text-wrap">
@@ -131,7 +127,7 @@ use Carbon\Carbon;
                                             @if (is_null($mensaje->archivo))
                                                 <p class="mb-0">{{$mensaje->mensaje}}</p>
                                             @else
-                                                <a href="{{ asset('chats/'.$mensaje->archivo)}}" target="_blank"><i class="fa-solid fa-file-lines"></i>&nbsp;{{$mensaje->mensaje}}</a>
+                                                <a href="{{ asset($mensaje->archivo)}}" target="_blank"><i class="fa-solid fa-file-lines"></i>&nbsp;{{$mensaje->mensaje}}</a>
                                             @endif
                                         
                                         </div>
@@ -170,5 +166,5 @@ use Carbon\Carbon;
 @stop
 
 @push('scripts')
-<script type="module" src=" {{asset('build/assets/detallechat.21255121.js')}}"></script>
+<script type="module" src=" {{asset('build/assets/detallechat.0647286e.js')}}"></script>
 @endpush

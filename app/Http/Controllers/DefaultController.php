@@ -125,6 +125,14 @@ class DefaultController extends Controller
                                 }
                             }
 
+                            //Obtener información imagen desde mongo:
+                            $element = UsuariosImagenes::where('idUsuario', '=', $IdUsuario)->first();
+
+                            $Imagen = '';
+                            if(!is_null($element)){
+                                $Imagen = $element->imagen;
+                            }
+
                             //Session middleware:
                             $session = session('AUTH_TOKEN');
                             if(is_null($session)){
@@ -132,6 +140,7 @@ class DefaultController extends Controller
                                 session(['IdUsuario' => $IdUsuario]);
                                 session(['IdSesion' => $IdSesion]);
                                 session(['IdTipoUsuario' => $IdTipoUsuario]);
+                                session(['Imagen' => $Imagen]);
                             }
 
                             return response()->json(['code' => 200 , 'data' => $result], 200);
@@ -270,6 +279,7 @@ class DefaultController extends Controller
                         if($result->codigo > 0){
 
                             $IdUsuario = $result->codigo;
+                            $Imagen = '';
 
                             if($filename != null){
 
@@ -286,6 +296,13 @@ class DefaultController extends Controller
                                 $mongoUsuariosImagenes->extension = $extension;
 
                                 $mongoUsuariosImagenes->save();
+
+                                //Obtener información imagen desde mongo:
+                                $element = UsuariosImagenes::where('idUsuario', '=', $IdUsuario)->first();
+
+                                if(!is_null($element)){
+                                    $Imagen = $element->imagen;
+                                }
 
                                 //Guardar imagen en storage:
                                 Storage::putFileAs('usuarios', $file, $filename);
@@ -326,6 +343,7 @@ class DefaultController extends Controller
                                 session(['IdUsuario' => $IdUsuario]);
                                 session(['IdSesion' => $IdSesion]);
                                 session(['IdTipoUsuario' => $IdTipoUsuario]);
+                                session(['Imagen' => $Imagen]);
                             }
 
                             return response()->json(['code' => 200 , 'data' => '¡El usuario ha sido registrado correctamente!'], 200);

@@ -9,8 +9,6 @@ let PrimerColor = localStorage.getItem("PrimerColor");
 let PrimerColorLetra = localStorage.getItem("PrimerColorLetra");
 let BaseURL = window.location.origin;
 
-let assetsRoute = document.getElementById("assets").value;
-
 dataTableMisChats = $("#table-mis-chats").DataTable({
     pagingType: 'full_numbers',
     dom: 'frtp',
@@ -173,7 +171,7 @@ async function ObtenerMisChats(){
                     createdRow: (row, data) => {
                         $('.segundo-color-letra',row).css('color', SegundoColorLetra);
                         $('.span-detalle', row).html('<span class="fuenteNormal span-detalle text-center text-decoration-underline" onclick="DetalleChat('.concat(data.idChat,',',data.idUsuarioReceptor,')">Ver detalle</span>'));
-                        $('.info-usuario', row).html('<div class="container"><div class="row"><div class="col-5"><img class="img-fluid" alt="Imagen del usuario" src="'.concat(assetsRoute,'/',data.imagenReceptor,'"/></div><div class="col-7 p-0"><p class="fuenteNormal">',data.receptor,'</p></div></div></div>'));
+                        $('.info-usuario', row).html('<div class="container"><div class="row"><div class="col-5"><img class="img-fluid" alt="Imagen del usuario" src="'.concat(data.imagenReceptor,'"/></div><div class="col-7 p-0"><p class="fuenteNormal">',data.receptor,'</p></div></div></div>'));
                         let fechaRegistro = data.fechaRegistro.substring(0, data.fechaRegistro.length -1 );
                         $('.fechaRegistro', row).text(dayjs(fechaRegistro).format('dddd DD MMM YYYY h:mm A'));
                         let fechaEnvio = dayjs(data.fechaEnvio?.substring(0,data.fechaEnvio?.length-1));
@@ -456,7 +454,7 @@ document.getElementById("button-buscar-usuarios").addEventListener('click', asyn
                     ],
                     createdRow: (row, data) => {
                         $('.segundo-color-letra',row).css('color', SegundoColorLetra);
-                        $('.info-usuario', row).html('<div class="container"><div class="row"><div class="col-5"><img class="img-fluid" alt="Imagen del usuario" src="'.concat(assetsRoute,'/',data.imagen,'"/></div><div class="col-7 p-0"><p class="fuenteNormal">',data.nombreCompleto,'</p></div></div></div>'));
+                        $('.info-usuario', row).html('<div class="container"><div class="row"><div class="col-5"><img class="img-fluid" alt="Imagen del usuario" src="'.concat(data.imagen,'"/></div><div class="col-7 p-0"><p class="fuenteNormal">',data.nombreCompleto,'</p></div></div></div>'));
                         $('.span-detalle', row).html('<span class="fuenteNormal fw-bolder text-decoration-underline" onclick="Chatear('.concat(data.idUsuario,')">¿Chatear?</span>'));
                     },
                     data: filas

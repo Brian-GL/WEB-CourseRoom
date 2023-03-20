@@ -8,8 +8,6 @@
 
 @section('content')
 
-<input type="hidden" value="{{ asset('usuarios/')}}" id="assets"/>
-
 <div class="col-md-12">
     <div class="container">
         <div class="row">
@@ -84,5 +82,5 @@
 @stop
 
 @push('scripts')
-<script type="module" src=" {{asset('build/assets/chats.3c45c41f.js')}}"></script>
+<script type="module" src=" {{asset('build/assets/chats.22e9a2d5.js')}}"></script>
 @endpush

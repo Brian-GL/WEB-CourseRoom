@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\ChatsArchivosMensajes;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
+use App\Models\UsuariosImagenes;
 
 class ChatsController extends Controller
 {
@@ -17,8 +18,9 @@ class ChatsController extends Controller
         $DatosUsuario = session('DatosUsuario');
         $DatosCuenta = session('DatosCuenta');
         $IdTipoUsuario = session('IdTipoUsuario');
+        $Imagen = session('Imagen');
 
-        return view('chats.chats', compact('DatosUsuario', 'DatosCuenta','IdTipoUsuario'));
+        return view('chats.chats', compact('DatosUsuario', 'DatosCuenta','IdTipoUsuario', 'Imagen'));
     }
 
     #endregion
@@ -33,6 +35,7 @@ class ChatsController extends Controller
         $IdUsuario = session('IdUsuario');
         $DatosUsuario = session('DatosUsuario');
         $DatosCuenta = session('DatosCuenta');
+        $Imagen = session('Imagen');
 
         $validator = Validator::make($request->all(), $rules = [
             'IdChat' => ['required'],
@@ -70,12 +73,21 @@ class ChatsController extends Controller
                     if ($response->ok()){
                         
                         $DatosCuentaReceptor = json_decode($response->body());
+
+                         //Obtener información imagen desde mongo:
+                        $element = UsuariosImagenes::where('idUsuario', '=', $idUsuarioReceptor)->first();
+
+                        $ImagenReceptor = '';
+                        if(!is_null($element)){
+                            $ImagenReceptor= $element->imagen;
+                        }
+
                         $DatosChat =  (object) [
                             'IdChat' => $idChat,
                             'IdUsuarioEmisor'=> $IdUsuario,
                             'IdUsuarioReceptor'=> $idUsuarioReceptor,
                             'NombreReceptor' => $DatosUsuarioReceptor->nombre.' '.$DatosUsuarioReceptor->paterno.' '.$DatosUsuarioReceptor->materno,
-                            'ImagenReceptor' => $DatosCuentaReceptor->imagen,
+                            'ImagenReceptor' => $ImagenReceptor,
                             'CorreoReceptor' => $DatosCuentaReceptor->correoElectronico,
                             'TipoUsuarioReceptor' => $DatosUsuarioReceptor->tipoUsuario,
                         ];
@@ -91,13 +103,31 @@ class ChatsController extends Controller
 
                         if($response->ok()){
                             $Mensajes = json_decode($response->body());
+                            foreach($Mensajes as &$mensaje){
+
+                                //Obtener información imagen desde mongo:
+                                $element = UsuariosImagenes::where('idUsuario', '=', $mensaje->idUsuarioEmisor)->first();
+        
+                                if(!is_null($element)){
+                                    $mensaje->imagenEmisor = $element->imagen;
+    
+                                    if(!is_null($element->archivo)){
+                                        $element = ChatsArchivosMensajes::where('idMensaje', '=', $mensaje->idMensaje)->first();
+    
+                                        if(!is_null($element)){
+                                            $mensaje->archivo = $element->archivo;
+                                        }
+                                    }
+                                }
+                            }
+                            
                         }
                     } 
                 }  
             } 
         }
 
-        return view('chats.detallechat', compact('DatosChat', 'DatosUsuario', 'DatosCuenta', 'Mensajes', 'IdTipoUsuario')); 
+        return view('chats.detallechat', compact('DatosChat', 'DatosUsuario', 'DatosCuenta', 'Mensajes', 'IdTipoUsuario', 'Imagen')); 
     }
 
     public function chat_registrar(Request $request)
@@ -366,6 +396,24 @@ class ChatsController extends Controller
 
                         $result = json_decode($response->body());
 
+                        foreach($result as &$mensaje){
+
+                            //Obtener información imagen desde mongo:
+                            $element = UsuariosImagenes::where('idUsuario', '=', $mensaje->idUsuarioEmisor)->first();
+    
+                            if(!is_null($element)){
+                                $mensaje->imagenEmisor = $element->imagen;
+
+                                if(!is_null($element->archivo)){
+                                    $element = ChatsArchivosMensajes::where('idMensaje', '=', $mensaje->idMensaje)->first();
+
+                                    if(!is_null($element)){
+                                        $mensaje->archivo = $element->archivo;
+                                    }
+                                }
+                            }
+                        }
+
                         return response()->json(['code' => 200 , 'data' => $result], 200);
 
                     } else{
@@ -455,6 +503,15 @@ class ChatsController extends Controller
                 if ($response->ok()){
 
                     $result = json_decode($response->body());
+
+                    foreach($result as &$chat){
+                        //Obtener información imagen desde mongo:
+                        $element = UsuariosImagenes::where('idUsuario', '=', $chat->idUsuarioReceptor)->first();
+
+                        if(!is_null($element)){
+                            $chat->imagenReceptor = $element->imagen;
+                        }
+                    }
 
                     return response()->json(['code' => 200 , 'data' => $result], 200);
 

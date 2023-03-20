@@ -89,7 +89,7 @@ document.getElementById("cerrar-sesion").addEventListener("click", async () => {
         Swal.fire({
             title: 'Cerrar Sesión',
             text: '¿Está segur@ de cerrar la sesión?',
-            imageUrl: BaseURL.concat("/assets/templates/SadOwl.png"),
+            imageUrl: window.SadOwl,
             imageWidth: 100,
             imageHeight: 123,
             background: '#000000',

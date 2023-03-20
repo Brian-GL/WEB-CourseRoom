@@ -51,11 +51,7 @@
             <div class="row mb-3">
                 <div class="col centrado">
                     <!--Imagen del usuario-->
-                    @if(!is_null($DatosCuenta) && !is_null($DatosCuenta->imagen))
-                        <img id="imagen-usuario" class="img-fluid rounded-circle mb-4 shadow-lg" alt="Imagen del usuario" src="{{ asset('usuarios/'.$DatosCuenta->imagen)}}" crossorigin="anonymous"/>
-                    @else
-                        <img id="imagen-usuario" class="img-fluid rounded-circle mb-4 shadow-lg" alt="Imagen del usuario" crossorigin="anonymous"/>
-                    @endif
+                    <img id="imagen-usuario" class="img-fluid rounded-circle mb-4 shadow-lg" alt="Imagen del usuario" src="{{$Imagen}}" crossorigin="anonymous"/>
                     <!--Nombre del usuario-->
                     @if(!is_null($DatosUsuario))
                         <h5 id="nombre-usuario" class="text-center text-truncated h5 segundo-color-letra">{{$DatosUsuario->nombre.' '.$DatosUsuario->paterno.' '.$DatosUsuario->materno}}</h5>
@@ -189,7 +185,7 @@
         </div>
     </div>
 
-    <script type="module" src="{{ asset('build/assets/home.8d937027.js')}}"></script>
+    <script type="module" src="{{ asset('build/assets/home.a5214574.js')}}"></script>
     @stack('scripts')
 
 </body>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
+use App\Models\UsuariosImagenes;
 
 class InicioController extends Controller
 {
@@ -58,7 +59,9 @@ class InicioController extends Controller
             } 
         } 
 
-        return view('inicio.inicio',compact('DatosUsuario', 'DatosCuenta', 'IdTipoUsuario')); 
+        $Imagen = session('Imagen');
+
+        return view('inicio.inicio',compact('DatosUsuario', 'DatosCuenta', 'IdTipoUsuario', 'Imagen')); 
     }
     
     public function acerca(){ 
@@ -66,15 +69,10 @@ class InicioController extends Controller
         $DatosUsuario = session('DatosUsuario');
         $DatosCuenta = session('DatosCuenta');
         $IdTipoUsuario = session('IdTipoUsuario');
+        $Imagen = session('Imagen');
 
-        return view('inicio.acerca', compact('DatosUsuario', 'DatosCuenta', 'IdTipoUsuario')); 
+        return view('inicio.acerca', compact('DatosUsuario', 'DatosCuenta', 'IdTipoUsuario', 'Imagen')); 
     }
     
-    #endregion
-
-    #region Ajax
-
-
-
     #endregion
 }
