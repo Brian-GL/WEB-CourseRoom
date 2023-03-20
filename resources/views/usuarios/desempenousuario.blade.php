@@ -53,8 +53,6 @@
                 </div>
 
             </div>
-
-
         </div>
     </div>
 </div>
@@ -62,5 +60,5 @@
 @stop
 
 @push('scripts')
-<script type="module" src=" {{asset('build/assets/desempeno.d574cda3.js')}}"></script>
+<script type="module" src=" {{asset('build/assets/desempeno.bed4f270.js')}}"></script>
 @endpush

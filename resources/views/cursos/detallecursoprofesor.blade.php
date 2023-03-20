@@ -402,5 +402,5 @@ $min_date = Carbon::now()->addHours(8)->toDateTimeString();
 @stop
 
 @push('scripts')
-<script type="module" src=" {{asset('build/assets/detallecursoprofesor.44b3b530.js')}}"></script>
+<script type="module" src=" {{asset('build/assets/detallecursoprofesor.2dea0064.js')}}"></script>
 @endpush

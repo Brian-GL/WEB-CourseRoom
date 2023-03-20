@@ -31,5 +31,5 @@
 @stop
 
 @push('scripts')
-<script type="module" src=" {{asset('build/assets/grupos.92e5b2a7.js')}}"></script>
+<script type="module" src=" {{asset('build/assets/grupos.a4a23f48.js')}}"></script>
 @endpush

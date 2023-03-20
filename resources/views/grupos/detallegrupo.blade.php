@@ -367,5 +367,5 @@ $min_date = Carbon::now()->toDateTimeString();
 
 
 @push('scripts')
-<script type="module" src=" {{asset('build/assets/detallegrupo.ba8ff3ad.js')}}"></script>
+<script type="module" src=" {{asset('build/assets/detallegrupo.67ebf81d.js')}}"></script>
 @endpush
