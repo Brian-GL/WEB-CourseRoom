@@ -8,8 +8,6 @@ let PrimerColor = localStorage.getItem("PrimerColor");
 let PrimerColorLetra = localStorage.getItem("PrimerColorLetra");
 let BaseURL = window.location.origin;
 
-let assetsRouteCursos = document.getElementById("assets-cursos").value;
-
 let elementos = document.querySelectorAll('input[type="search"]');
 for(let elemento of elementos){
     elemento.style.setProperty('color',PrimerColorLetra,'important');
@@ -166,7 +164,7 @@ async function ObtenerDesempeno(){
                     createdRow: (row, data) => {
                         $('.segundo-color-letra',row).css('color', SegundoColorLetra);
                         
-                        $('.info-curso', row).html('<div class="container"><div class="row"><div class="col-5"><img class="img-fluid" alt="Imagen del curso" src="'.concat(assetsRouteCursos,'/',data.imagenCurso,'"/></div><div class="col-7 p-0"><p class="fuenteNormal">',data.curso,'</p></div></div></div>'));
+                        $('.info-curso', row).html('<div class="container"><div class="row"><div class="col-5"><img class="img-fluid" alt="Imagen del curso" src="'.concat(data.imagenCurso,'"/></div><div class="col-7 p-0"><p class="fuenteNormal">',data.curso,'</p></div></div></div>'));
 
                         let fechaRegistro = data.fechaRegistro.substring(0, data.fechaRegistro.length -1 );
                         $('.fechaRegistro', row).text(dayjs(fechaRegistro).format('dddd DD MMM YYYY h:mm A'));

@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\TareaArchivosEntregados;
 use App\Models\TareaArchivosRetroalimentaciones;
 use App\Models\TareaArchivosAdjuntos;
+use App\Models\UsuariosImagenes;
+use App\Models\CursosImagenes;
 
 class TareasController extends Controller
 {
@@ -20,8 +22,9 @@ class TareasController extends Controller
         $DatosUsuario = session('DatosUsuario');
         $DatosCuenta = session('DatosCuenta');
         $IdTipoUsuario = session('IdTipoUsuario');
+        $Imagen = session('Imagen');
 
-        return view('tareas.tareas', compact('DatosUsuario', 'DatosCuenta','IdTipoUsuario'));
+        return view('tareas.tareas', compact('DatosUsuario', 'DatosCuenta','IdTipoUsuario', 'Imagen'));
     }
 
     public function tareaestudiantedetalle_obtener(Request $request){
@@ -30,6 +33,7 @@ class TareasController extends Controller
         $DatosCuenta = session('DatosCuenta');
         $IdTipoUsuario = session('IdTipoUsuario');
         $IdUsuario = session('IdUsuario');
+        $Imagen = session('Imagen');
         $DatosTarea = null;
 
         $url = env('COURSEROOM_API');
@@ -47,10 +51,23 @@ class TareasController extends Controller
 
             if ($response->ok()){
                 $DatosTarea = json_decode($response->body());
+
+                //Obtener información imagen desde mongo:
+                $element = UsuariosImagenes::where('idUsuario', '=', $DatosTarea->idProfesor)->first();
+
+                if(!is_null($element)){
+                    $DatosTarea->imagenProfesor = $element->imagen;
+                }
+
+                $element = CursosImagenes::where('idCurso', '=', $DatosTarea->idCurso)->first();
+
+                if(!is_null($element)){
+                    $DatosTarea->imagenCurso = $element->imagen;
+                }
             } 
         } 
         
-        return view('tareas.detalletareaestudiante', compact('DatosUsuario', 'DatosCuenta','IdTipoUsuario', 'DatosTarea', 'IdTarea', 'IdUsuario'));
+        return view('tareas.detalletareaestudiante', compact('DatosUsuario', 'DatosCuenta','IdTipoUsuario', 'DatosTarea', 'IdTarea', 'IdUsuario', 'Imagen'));
     }
 
     public function tareaprofesordetalle_obtener(Request $request){
@@ -58,6 +75,7 @@ class TareasController extends Controller
         $DatosUsuario = session('DatosUsuario');
         $DatosCuenta = session('DatosCuenta');
         $IdTipoUsuario = session('IdTipoUsuario');
+        $Imagen = session('Imagen');
         
         $DatosTarea = null;
 
@@ -77,10 +95,17 @@ class TareasController extends Controller
 
             if ($response->ok()){
                 $DatosTarea = json_decode($response->body());
+
+                //Obtener información imagen desde mongo:
+                $element = CursosImagenes::where('idCurso', '=', $DatosTarea->idCurso)->first();
+
+                if(!is_null($element)){
+                    $DatosTarea->imagenCurso = $element->imagen;
+                }
             } 
         } 
         
-        return view('tareas.detalletareaprofesor', compact('DatosUsuario', 'DatosCuenta','IdTipoUsuario', 'DatosTarea', 'IdTarea', 'IdUsuario'));
+        return view('tareas.detalletareaprofesor', compact('DatosUsuario', 'DatosCuenta','IdTipoUsuario', 'DatosTarea', 'IdTarea', 'IdUsuario', 'Imagen'));
     }
 
     public function tareadetalle_obtener(Request $request){
@@ -88,6 +113,7 @@ class TareasController extends Controller
         $DatosUsuario = session('DatosUsuario');
         $DatosCuenta = session('DatosCuenta');
         $IdTipoUsuario = session('IdTipoUsuario');
+        $Imagen = session('Imagen');
         
         $DatosTarea = null;
 
@@ -105,10 +131,18 @@ class TareasController extends Controller
 
             if ($response->ok()){
                 $DatosTarea = json_decode($response->body());
+
+                 //Obtener información imagen desde mongo:
+                   
+                $element = CursosImagenes::where('idCurso', '=', $DatosTarea->idCurso)->first();
+
+                if(!is_null($element)){
+                    $DatosTarea->imagenCurso = $element->imagen;
+                }
             } 
         } 
         
-        return view('tareas.detalletarea', compact('DatosUsuario', 'DatosCuenta','IdTipoUsuario', 'DatosTarea', 'IdTarea'));
+        return view('tareas.detalletarea', compact('DatosUsuario', 'DatosCuenta','IdTipoUsuario', 'DatosTarea', 'IdTarea', 'Imagen'));
     }
 
 
@@ -144,6 +178,14 @@ class TareasController extends Controller
                     if ($response->ok()){
 
                         $result = json_decode($response->body());
+
+                        foreach($result as &$material){
+                            $element = TareaArchivosAdjuntos::where('idArchivoAdjunto', '=', $material->idArchivoAdjunto)->first();
+
+                            if(!is_null($element)){
+                                $material->archivo = $element->archivo;
+                            }
+                        }
 
                         return response()->json(['code' => 200 , 'data' => $result], 200);
 
@@ -225,6 +267,12 @@ class TareasController extends Controller
                     if ($response->ok()){
 
                         $result = json_decode($response->body());
+
+                        $element = TareaArchivosRetroalimentaciones::where('idRetroalimentacion', '=', $idRetroalimentacion)->first();
+
+                        if(!is_null($element)){
+                            $result->archivo = $element->archivo;
+                        }
 
                         return response()->json(['code' => 200 , 'data' => $result], 200);
 
@@ -661,6 +709,14 @@ class TareasController extends Controller
 
                         $result = json_decode($response->body());
 
+                        foreach($result as &$material){
+                            $element = TareaArchivosEntregados::where('idArchivoEntregado', '=', $material->idArchivoEntregado)->first();
+
+                            if(!is_null($element)){
+                                $material->archivo = $element->archivo;
+                            }
+                        }
+
                         return response()->json(['code' => 200 , 'data' => $result], 200);
 
                     } else{
@@ -697,6 +753,15 @@ class TareasController extends Controller
 
                     $result = json_decode($response->body());
 
+                    foreach($result as &$tarea){
+                       
+                        $element = CursosImagenes::where('idCurso', '=', $tarea->idCurso)->first();
+
+                        if(!is_null($element)){
+                            $tarea->imagenCurso = $element->imagen;
+                        }
+                    }
+
                     return response()->json(['code' => 200 , 'data' => $result], 200);
 
                 } else{
@@ -732,6 +797,15 @@ class TareasController extends Controller
                 if ($response->ok()){
 
                     $result = json_decode($response->body());
+
+                    foreach($result as &$tarea){
+                       
+                        $element = CursosImagenes::where('idCurso', '=', $tarea->idCurso)->first();
+
+                        if(!is_null($element)){
+                            $tarea->imagenCurso = $element->imagen;
+                        }
+                    }
 
                     return response()->json(['code' => 200 , 'data' => $result], 200);
 
@@ -817,6 +891,22 @@ class TareasController extends Controller
                 if ($response->ok()){
 
                     $result = json_decode($response->body());
+
+
+                    foreach($result as &$curso){
+                        //Obtener información imagen desde mongo:
+                        $element = UsuariosImagenes::where('idUsuario', '=', $curso->idUsuario)->first();
+
+                        if(!is_null($element)){
+                            $curso->imagenEstudiante = $element->imagen;
+                        }
+
+                        $element = CursosImagenes::where('idCurso', '=', $curso->idCurso)->first();
+
+                        if(!is_null($element)){
+                            $curso->imagenCurso = $element->imagen;
+                        }
+                    }
 
                     return response()->json(['code' => 200 , 'data' => $result], 200);
 

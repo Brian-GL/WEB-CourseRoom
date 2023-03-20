@@ -8,9 +8,6 @@
 
 @section('content')
 
-<input type="hidden" value="{{ asset('grupos/')}}" id="assets-grupos"/>
-<input type="hidden" value="{{ asset('cursos/')}}" id="assets-cursos"/>
-
 <div class="col-md-12">
     <div class="container">
         <div class="row">

@@ -7,11 +7,7 @@
 @endpush
 
 @section('content')
-
-<input type="hidden" value="{{ asset('cursos/')}}" id="assets-cursos"/>
-<input type="hidden" value="{{ asset('usuarios/')}}" id="assets-usuarios"/>
 <input type="hidden" value="{{$IdTipoUsuario}}" id="id-tipo-usuario"/>
-
 
 <div class="col-md-12">
     <div class="container">

@@ -74,7 +74,7 @@ class ChatsController extends Controller
                         
                         $DatosCuentaReceptor = json_decode($response->body());
 
-                         //Obtener información imagen desde mongo:
+                        //Obtener información imagen desde mongo:
                         $element = UsuariosImagenes::where('idUsuario', '=', $idUsuarioReceptor)->first();
 
                         $ImagenReceptor = '';

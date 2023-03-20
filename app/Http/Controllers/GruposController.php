@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Http;
 use App\Models\GruposArchivosMensajes;
+use App\Models\GrupoArchivosCompartidos;
+use App\Models\GruposImagenes;
+use App\Models\CursosImagenes;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 
@@ -18,8 +21,9 @@ class GruposController extends Controller
         $DatosUsuario = session('DatosUsuario');
         $DatosCuenta = session('DatosCuenta');
         $IdTipoUsuario = session('IdTipoUsuario');
+        $Imagen = session('Imagen');
 
-        return view('grupos.grupos', compact('DatosUsuario', 'DatosCuenta', 'IdTipoUsuario'));
+        return view('grupos.grupos', compact('DatosUsuario', 'DatosCuenta', 'IdTipoUsuario', 'Imagen'));
     }
 
     public function gruposdetalle_obtener(Request $request)
@@ -30,6 +34,7 @@ class GruposController extends Controller
         $DatosUsuario = session('DatosUsuario');
         $DatosCuenta = session('DatosCuenta');
         $IdTipoUsuario = session('IdTipoUsuario');
+        $Imagen = session('Imagen');
 
         $validator = Validator::make($request->all(), $rules = [
             'IdGrupo' => ['required']
@@ -53,6 +58,20 @@ class GruposController extends Controller
 
                 if ($response->ok()){
                     $DatosGrupo = json_decode($response->body());
+
+                    //Obtener información imagen desde mongo:
+                    $element = GruposImagenes::where('idGrupo', '=', $idGrupo)->first();
+
+                    if(!is_null($element)){
+                        $DatosGrupo->imagen = $element->imagen;
+                    }
+
+                    $element = CursosImagenes::where('idCurso', '=', $DatosGrupo->idCurso)->first();
+
+                    if(!is_null($element)){
+                        $DatosGrupo->imagenCurso = $element->imagen;
+                    }
+
                 } 
 
                 //Obtener mensajes grupo:
@@ -65,11 +84,29 @@ class GruposController extends Controller
                 if ($response->ok()){
 
                     $Mensajes = json_decode($response->body());
+
+                    foreach($Mensajes as &$mensaje){
+
+                        //Obtener información imagen desde mongo:
+                        $element = UsuariosImagenes::where('idUsuario', '=', $mensaje->idUsuarioEmisor)->first();
+            
+                        if(!is_null($element)){
+                            $mensaje->imagenEmisor = $element->imagen;
+    
+                            if(!is_null($element->archivo)){
+                                $element = GrupoArchivosMensajes::where('idMensaje', '=', $mensaje->idMensaje)->first();
+    
+                                if(!is_null($element)){
+                                    $mensaje->archivo = $element->archivo;
+                                }
+                            }
+                        }
+                    }
                 } 
             } 
         }
             
-        return view('grupos.detallegrupo', compact('DatosUsuario', 'DatosCuenta', 'IdTipoUsuario', 'DatosGrupo','idGrupo', 'Mensajes'));
+        return view('grupos.detallegrupo', compact('DatosUsuario', 'DatosCuenta', 'IdTipoUsuario', 'DatosGrupo','idGrupo', 'Mensajes', 'Imagen'));
     }
 
     #endregion
@@ -158,51 +195,6 @@ class GruposController extends Controller
         }
     }
 
-    public function gruposmensajes_obtener(Request $request){
-        try {
-
-            $validator = Validator::make($request->all(), $rules = [
-                'IdGrupo' => ['required']
-            ], $messages = [
-                'required' => 'El campo :attribute es requerido'
-            ]);
-
-            if ($validator->fails()) {
-                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
-            } else {
-
-                $url = env('COURSEROOM_API');
-
-                $idGrupo = $request->integer('IdGrupo');
-
-                if($url != ''){
-
-                    $response = Http::withHeaders([
-                        'Authorization' => env('COURSEROOM_API_KEY'),
-                    ])->post($url.'/api/grupos/mensajes', [
-                        'IdGrupo' => $idGrupo
-                    ]);
-
-                    if ($response->ok()){
-
-                        $result = json_decode($response->body());
-
-                        return response()->json(['code' => 200 , 'data' => $result], 200);
-
-                    } else{
-                        return response()->json(['code' => 400 , 'data' => $response->body()], 200);
-                    }
-
-                } else{
-                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
-                }
-            }
-
-        } catch (\Throwable $th) {
-            return response()->json(['code' => 500 , 'data' => $th->getMessage()], 200);
-        }
-    }
-
     public function grupos_obtener(Request $request){
         try {
 
@@ -220,6 +212,21 @@ class GruposController extends Controller
                 if ($response->ok()){
 
                     $result = json_decode($response->body());
+
+                    foreach($result as &$grupo){
+                        //Obtener información imagen desde mongo:
+                        $element = GruposImagenes::where('idGrupo', '=', $grupo->idGrupo)->first();
+
+                        if(!is_null($element)){
+                            $grupo->imagenGrupo = $element->imagen;
+                        }
+
+                        $element = CursosImagenes::where('idCurso', '=', $grupo->idCurso)->first();
+
+                        if(!is_null($element)){
+                            $grupo->imagenCurso = $element->imagen;
+                        }
+                    }
 
                     return response()->json(['code' => 200 , 'data' => $result], 200);
 
@@ -266,6 +273,15 @@ class GruposController extends Controller
 
                         $result = json_decode($response->body());
 
+                        foreach($result as &$miembro){
+                            //Obtener información imagen desde mongo:
+                            $element = UsuariosImagenes::where('idUsuario', '=', $miembro->idUsuario)->first();
+    
+                            if(!is_null($element)){
+                                $miembro->imagen = $element->imagen;
+                            }
+                        }
+
                         return response()->json(['code' => 200 , 'data' => $result], 200);
 
                     } else{
@@ -310,6 +326,16 @@ class GruposController extends Controller
                     if ($response->ok()){
 
                         $result = json_decode($response->body());
+
+                        foreach($result as &$value){
+                            
+                            //Obtener información imagen desde mongo:
+                            $element = GrupoArchivosCompartidos::where('idArchivoCompartido', '=', $value->idArchivoCompartido)->first();
+    
+                            if(!is_null($element)){
+                                $value->archivo = $element->archivo;
+                            }
+                        }
 
                         return response()->json(['code' => 200 , 'data' => $result], 200);
 
@@ -356,6 +382,22 @@ class GruposController extends Controller
 
                         $result = json_decode($response->body());
 
+                        foreach($result as &$value){
+                            
+                            //Obtener información imagen desde mongo:
+                            $element = UsuariosImagenes::where('idUsuario', '=', $value->idUsuarioCreador)->first();
+    
+                            if(!is_null($element)){
+                                $value->imagenUsuarioCreador = $element->imagen;
+                            }
+
+                            $element = UsuariosImagenes::where('idUsuario', '=', $value->idUsuarioResponsable)->first();
+    
+                            if(!is_null($element)){
+                                $value->imagenUsuarioResponsable = $element->imagen;
+                            }
+                        }
+
                         return response()->json(['code' => 200 , 'data' => $result], 200);
 
                     } else{
@@ -400,6 +442,19 @@ class GruposController extends Controller
                     if ($response->ok()){
 
                         $result = json_decode($response->body());
+
+                        //Obtener información imagen desde mongo:
+                        $element = UsuariosImagenes::where('idUsuario', '=', $result->idUsuarioCreador)->first();
+
+                        if(!is_null($element)){
+                            $result->imagenUsuarioCreador = $element->imagen;
+                        }
+
+                        $element = UsuariosImagenes::where('idUsuario', '=', $result->idUsuarioResponsable)->first();
+
+                        if(!is_null($element)){
+                            $result->imagenUsuarioResponsable = $element->imagen;
+                        }
 
                         return response()->json(['code' => 200 , 'data' => $result], 200);
 
@@ -1083,7 +1138,7 @@ class GruposController extends Controller
                         return response()->json(['code' => 200 , 
                         'data' => $result, 
                         'fecha' => $fechaRegistro, 
-                        'nombreArchivo' => $filename,
+                        'nombreArchivo' => $Base64Archivo,
                         'imagenEmisor' => session('DatosCuenta')->imagen], 200);
 
                     } else{

@@ -8,10 +8,6 @@ use Illuminate\Support\Facades\Http;
 
 class CatalogosController extends Controller
 {
-    #region Views
-
-    #endregion
-
     #region AJAX
 
     public function catalogocursoestatus_obtener(Request $request)

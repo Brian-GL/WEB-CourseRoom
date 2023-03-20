@@ -9,9 +9,6 @@ let PrimerColor = localStorage.getItem("PrimerColor");
 let PrimerColorLetra = localStorage.getItem("PrimerColorLetra");
 let BaseURL = window.location.origin;
 
-let assetsRouteGrupos = document.getElementById("assets-grupos").value;
-let assetsRouteCursos = document.getElementById("assets-cursos").value;
-
 dataTableMisGrupos = $("#table-mis-grupos").DataTable({
     pagingType: 'full_numbers',
     dom: 'frtp',
@@ -141,8 +138,8 @@ async function ObtenerMisGrupos(){
                     createdRow: (row, data) => {
                         $('.segundo-color-letra',row).css('color', SegundoColorLetra);
                         $('.span-detalle', row).html('<span class="fuenteNormal span-detalle text-center text-decoration-underline" onclick="DetalleGrupo('.concat(data.idGrupo,')">Ver detalle</span>'));
-                        $('.info-grupo', row).html('<div class="container"><div class="row"><div class="col-5"><img class="img-fluid" alt="Imagen del grupo" src="'.concat(assetsRouteGrupos,'/',data.imagenGrupo,'"/></div><div class="col-7 p-0"><p class="fuenteNormal">',data.nombre,'</p></div></div></div>'));
-                        $('.info-curso', row).html('<div class="container"><div class="row"><div class="col-5"><img class="img-fluid" alt="Imagen del curso" src="'.concat(assetsRouteCursos,'/',data.imagenCurso,'"/></div><div class="col-7 p-0"><p class="fuenteNormal">',data.nombreCurso,'</p></div></div></div>'));
+                        $('.info-grupo', row).html('<div class="container"><div class="row"><div class="col-5"><img class="img-fluid" alt="Imagen del grupo" src="'.concat(data.imagenGrupo,'"/></div><div class="col-7 p-0"><p class="fuenteNormal">',data.nombre,'</p></div></div></div>'));
+                        $('.info-curso', row).html('<div class="container"><div class="row"><div class="col-5"><img class="img-fluid" alt="Imagen del curso" src="'.concat(data.imagenCurso,'"/></div><div class="col-7 p-0"><p class="fuenteNormal">',data.nombreCurso,'</p></div></div></div>'));
                         let fechaRegistro = data.fechaRegistro.substring(0, data.fechaRegistro.length -1 );
                         $('.fechaRegistro', row).text(dayjs(fechaRegistro).format('dddd DD MMM YYYY h:mm A'));
                     }

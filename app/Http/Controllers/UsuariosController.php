@@ -17,6 +17,7 @@ class UsuariosController extends Controller
         $DatosUsuario = session('DatosUsuario');
         $DatosCuenta = session('DatosCuenta');
         $IdTipoUsuario = session('IdTipoUsuario');
+        $Imagen = session('Imagen');
 
         //Localidades:
         $localidades = array();
@@ -51,23 +52,25 @@ class UsuariosController extends Controller
             $tipos_usuario = json_decode($response->body());
         }
 
-        return view('usuarios.perfil', compact('localidades','tipos_usuario', 'DatosUsuario', 'DatosCuenta', 'IdTipoUsuario'));
+        return view('usuarios.perfil', compact('localidades','tipos_usuario', 'DatosUsuario', 'DatosCuenta', 'IdTipoUsuario', 'Imagen'));
     }
 
     public function sesiones(){
         $DatosUsuario = session('DatosUsuario');
         $DatosCuenta = session('DatosCuenta');
         $IdTipoUsuario = session('IdTipoUsuario');
+        $Imagen = session('Imagen');
         
-        return view('usuarios.sesiones', compact('DatosUsuario', 'DatosCuenta', 'IdTipoUsuario'));
+        return view('usuarios.sesiones', compact('DatosUsuario', 'DatosCuenta', 'IdTipoUsuario', 'Imagen'));
     }
 
     public function mi_desempeno(){
         $DatosUsuario = session('DatosUsuario');
         $DatosCuenta = session('DatosCuenta');
         $IdTipoUsuario = session('IdTipoUsuario');
+        $Imagen = session('Imagen');
         
-        return view('usuarios.desempenousuario', compact('DatosUsuario', 'DatosCuenta', 'IdTipoUsuario'));
+        return view('usuarios.desempenousuario', compact('DatosUsuario', 'DatosCuenta', 'IdTipoUsuario', 'Imagen'));
     }
 
     #endregion
@@ -165,6 +168,8 @@ class UsuariosController extends Controller
                                     $mongoUsuariosImagenes->update(
                                         ['imagen' => $Base64Image,
                                         'extension' => $extension]);
+
+                                    session(['Imagen' => $Base64Image]);
                                 }
 
                                 Storage::delete('usuarios/'.$ImagenAnterior);

@@ -42,10 +42,10 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <div class="d-flex justify-content-center mb-4" id="seleccionar-imagen">
-                        @if(!is_null($DatosCuenta) && !is_null($DatosCuenta->imagen))
-                        <img id="imagen-seleccionada" class="img-fluid shadow-lg" src="{{ asset('usuarios/'.$DatosCuenta->imagen)}}" class="rounded img-fluid" alt="Imagen de perfil"/>
+                        @if(!is_null($Imagen) && &Imagen != '')
+                            <img id="imagen-seleccionada" class="img-fluid shadow-lg" src="{{ $Imagen}}" class="rounded img-fluid" alt="Imagen de perfil"/>
                         @else
-                        <img id="imagen-seleccionada" class="img-fluid shadow-lg" src="https://storage.needpix.com/thumbs/blank-profile-picture-973460_1280.png" class="rounded img-fluid" alt="Imagen de perfil"/>
+                            <img id="imagen-seleccionada" class="img-fluid shadow-lg" src="https://storage.needpix.com/thumbs/blank-profile-picture-973460_1280.png" class="rounded img-fluid" alt="Imagen de perfil"/>
                         @endif
                     </div>
                     <div class="d-flex justify-content-center">

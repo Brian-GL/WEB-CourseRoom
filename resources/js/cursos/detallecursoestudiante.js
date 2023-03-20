@@ -8,9 +8,6 @@ let PrimerColor = localStorage.getItem("PrimerColor");
 let PrimerColorLetra = localStorage.getItem("PrimerColorLetra");
 let BaseURL = window.location.origin;
 
-let assestRouteCursos = document.getElementById("assets-cursos").value;
-let assetsRouteUsuarios = document.getElementById("assets-usuarios").value;
-
 let IdCurso = document.getElementById("id-curso").value;
 let IdUsuario = document.getElementById("id-usuario").value;
 let Finalizado = document.getElementById("estatus-curso").value;
@@ -291,7 +288,7 @@ async function ObtenerMateriales(){
                     data: filas,
                     createdRow: (row, data) => {
                         $('.segundo-color-letra',row).css('color', SegundoColorLetra);
-                        $('.span-detalle', row).html('<a class="fuenteNormal span-detalle text-center text-decoration-underline" href="'.concat(assetsRouteCursos,'/',data.archivo,'">Descargar archivo</a>'));
+                        $('.span-detalle', row).html('<a class="fuenteNormal span-detalle text-center text-decoration-underline" href="'.concat(data.archivo,'">Descargar archivo</a>'));
                         let fechaRegistro = data.fechaRegistro.substring(0, data.fechaRegistro.length -1 );
                         $('.fechaRegistro', row).text(dayjs(fechaRegistro).format('dddd DD MMM YYYY h:mm A'));
                     }
@@ -411,7 +408,7 @@ async function ObtenerMiembros(){
                     data: filas,
                     createdRow: (row, data) => {
                         $('.segundo-color-letra',row).css('color', SegundoColorLetra);
-                        $('.info-usuario', row).html('<div class="container"><div class="row"><div class="col-5"><img class="img-fluid" alt="Imagen del usuario" src="'.concat(assetsRouteUsuarios,'/',data.imagen,'"/></div><div class="col-7 p-0"><p class="fuenteNormal">',data.nombreCompleto,'</p></div></div></div>'));
+                        $('.info-usuario', row).html('<div class="container"><div class="row"><div class="col-5"><img class="img-fluid" alt="Imagen del usuario" src="'.concat(data.imagen,'"/></div><div class="col-7 p-0"><p class="fuenteNormal">',data.nombreCompleto,'</p></div></div></div>'));
                         let fechaRegistro = data.fechaRegistro.substring(0, data.fechaRegistro.length -1 );
                         $('.fechaRegistro', row).text(dayjs(fechaRegistro).format('dddd DD MMM YYYY h:mm A'));
                     }
@@ -830,10 +827,10 @@ function GenerarMensaje(fechaRegistro, mensaje, nombreArchivo, nombreUsuarioEmis
 
     if (nombreArchivo === undefined || nombreArchivo === null || nombreArchivo === '') {
         elemento =
-            `<div class="col-md-12 d-flex justify-content-start"><div class="d-flex justify-content-start mb-4"><img src="${assetsUsuariosRoute}${imagenEmisor}" alt="avatar" class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60"><div class="card mask-custom"><div class="card-header d-flex justify-content-between p-3"style="border-bottom: 1px solid rgba(255,255,255,.3);"><div class="row"><div class="col-md-6 text-center text-wrap"><p class="fw-bold mb-0">${nombreUsuarioEmisor}</p></div><div class="col-md-6 text-center text-wrap"><p class="text-light small mb-0"><i class="far fa-clock"></i> ${fechaRegistro}</p></div></div></div><div class="card-body"><p class="mb-0">${mensaje}</p></div></div></div></div>`;
+            `<div class="col-md-12 d-flex justify-content-start"><div class="d-flex justify-content-start mb-4"><img src="${imagenEmisor}" alt="avatar" class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60"><div class="card mask-custom"><div class="card-header d-flex justify-content-between p-3"style="border-bottom: 1px solid rgba(255,255,255,.3);"><div class="row"><div class="col-md-6 text-center text-wrap"><p class="fw-bold mb-0">${nombreUsuarioEmisor}</p></div><div class="col-md-6 text-center text-wrap"><p class="text-light small mb-0"><i class="far fa-clock"></i> ${fechaRegistro}</p></div></div></div><div class="card-body"><p class="mb-0">${mensaje}</p></div></div></div></div>`;
     } else {
         elemento =
-            `<div class="col-md-12 d-flex justify-content-start"><div class="d-flex justify-content-start mb-4"><img src="${assetsUsuariosRoute}${imagenEmisor}" alt="avatar" class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60"><div class="card mask-custom"><div class="card-header d-flex justify-content-between p-3"style="border-bottom: 1px solid rgba(255,255,255,.3);"><div class="row"><div class="col-md-6 text-center text-wrap"><p class="fw-bold mb-0">${nombreUsuarioEmisor}</p></div><div class="col-md-6 text-center text-wrap"><p class="text-light small mb-0"><i class="far fa-clock"></i> ${fechaRegistro}</p></div></div></div><div class="card-body"><a href="${assestRouteCursos}${nombreArchivo}" target="_blank"><i class="fa-solid fa-file-lines"></i>&nbsp;${mensaje}'</a></div></div></div></div>`;
+            `<div class="col-md-12 d-flex justify-content-start"><div class="d-flex justify-content-start mb-4"><img src="${imagenEmisor}" alt="avatar" class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60"><div class="card mask-custom"><div class="card-header d-flex justify-content-between p-3"style="border-bottom: 1px solid rgba(255,255,255,.3);"><div class="row"><div class="col-md-6 text-center text-wrap"><p class="fw-bold mb-0">${nombreUsuarioEmisor}</p></div><div class="col-md-6 text-center text-wrap"><p class="text-light small mb-0"><i class="far fa-clock"></i> ${fechaRegistro}</p></div></div></div><div class="card-body"><a href="${assestRouteCursos}${nombreArchivo}" target="_blank"><i class="fa-solid fa-file-lines"></i>&nbsp;${mensaje}'</a></div></div></div></div>`;
     }
 
     $("#mensajes").append(elemento);

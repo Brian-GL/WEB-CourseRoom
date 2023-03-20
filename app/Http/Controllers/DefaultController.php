@@ -297,13 +297,6 @@ class DefaultController extends Controller
 
                                 $mongoUsuariosImagenes->save();
 
-                                //Obtener información imagen desde mongo:
-                                $element = UsuariosImagenes::where('idUsuario', '=', $IdUsuario)->first();
-
-                                if(!is_null($element)){
-                                    $Imagen = $element->imagen;
-                                }
-
                                 //Guardar imagen en storage:
                                 Storage::putFileAs('usuarios', $file, $filename);
                             }
@@ -343,7 +336,7 @@ class DefaultController extends Controller
                                 session(['IdUsuario' => $IdUsuario]);
                                 session(['IdSesion' => $IdSesion]);
                                 session(['IdTipoUsuario' => $IdTipoUsuario]);
-                                session(['Imagen' => $Imagen]);
+                                session(['Imagen' => $Base64Imagen]);
                             }
 
                             return response()->json(['code' => 200 , 'data' => '¡El usuario ha sido registrado correctamente!'], 200);

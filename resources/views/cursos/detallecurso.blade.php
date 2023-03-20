@@ -69,7 +69,7 @@ use Carbon\Carbon;
                 <div class="col-md-6 text-center">
                     @if(!is_null($DatosCurso))
                         @if( !is_null($DatosCurso->imagenProfesor))
-                            <img id="imagen-profesor" class="img-fluid rounded-circle shadow-lg h-75 mb-1" alt="Imagen del profesor" src="{{ asset('usuarios/'.$DatosCurso->imagenProfesor)}}" />
+                            <img id="imagen-profesor" class="img-fluid rounded-circle shadow-lg h-75 mb-1" alt="Imagen del profesor" src="{{ $DatosCurso->imagenProfesor}}" />
                         @endif
                         <p class="titulado fuenteNormal segundo-color-letra">Creada por {{$DatosCurso->nombreProfesor}}</p>
                     @endif

@@ -8,8 +8,10 @@ use Illuminate\Support\Facades\Http;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use App\Models\CursosImagenes;
+use App\Models\UsuariosImagenes;
 use App\Models\CursoArchivosMensajes;
-use App\Models\CursoArchivoMaterialRegistrar;
+use App\Models\CursoArchivosCompartidos;
+use App\Models\GruposImagenes;
 
 class CursosController extends Controller
 {
@@ -20,8 +22,9 @@ class CursosController extends Controller
         $DatosUsuario = session('DatosUsuario');
         $DatosCuenta = session('DatosCuenta');
         $IdTipoUsuario = session('IdTipoUsuario');
+        $Imagen = session('Imagen');
 
-        return view('cursos.cursos', compact('DatosUsuario', 'DatosCuenta','IdTipoUsuario'));
+        return view('cursos.cursos', compact('DatosUsuario', 'DatosCuenta','IdTipoUsuario', 'Imagen'));
     }
 
     public function detallecurso(Request $request){
@@ -29,6 +32,7 @@ class CursosController extends Controller
         $DatosUsuario = session('DatosUsuario');
         $DatosCuenta = session('DatosCuenta');
         $IdTipoUsuario = session('IdTipoUsuario');
+        $Imagen = session('Imagen');
 
         $DatosCurso = null;
 
@@ -46,10 +50,23 @@ class CursosController extends Controller
 
             if ($response->ok()){
                 $DatosCurso = json_decode($response->body());
+
+                //Obtener información imagen desde mongo:
+                $element = UsuariosImagenes::where('idUsuario', '=', $DatosCurso->idProfesor)->first();
+
+                if(!is_null($element)){
+                    $DatosCurso->imagenProfesor = $element->imagen;
+                }
+
+                $element = CursosImagenes::where('idCurso', '=', $IdCurso)->first();
+
+                if(!is_null($element)){
+                    $DatosCurso->imagen = $element->imagen;
+                }
             } 
         } 
 
-        return view('cursos.detallecurso', compact('DatosUsuario', 'DatosCuenta','IdTipoUsuario', 'DatosCurso'));
+        return view('cursos.detallecurso', compact('DatosUsuario', 'DatosCuenta','IdTipoUsuario', 'DatosCurso'. 'Imagen'));
     }
 
     public function detallecursoestudiante(Request $request){
@@ -58,6 +75,7 @@ class CursosController extends Controller
         $DatosCuenta = session('DatosCuenta');
         $IdTipoUsuario = session('IdTipoUsuario');
         $IdUsuario = session('IdUsuario');
+        $Imagen = session('Imagen');
 
         $Mensajes = array();
 
@@ -71,12 +89,26 @@ class CursosController extends Controller
 
             $response = Http::withHeaders([
                 'Authorization' => env('COURSEROOM_API_KEY'),
-            ])->post($url.'/api/cursos/detalleobtener', [
-                'IdCurso' => $IdCurso
+            ])->post($url.'/api/cursos/estudiantedetalleobtener', [
+                'IdCurso' => $IdCurso,
+                'IdUsuario' => $IdUsuario
             ]);
 
             if ($response->ok()){
                 $DatosCurso = json_decode($response->body());
+
+                //Obtener información imagen desde mongo:
+                $element = UsuariosImagenes::where('idUsuario', '=', $DatosCurso->idProfesor)->first();
+
+                if(!is_null($element)){
+                    $DatosCurso->imagenProfesor = $element->imagen;
+                }
+
+                $element = CursosImagenes::where('idCurso', '=', $IdCurso)->first();
+
+                if(!is_null($element)){
+                    $DatosCurso->imagen = $element->imagen;
+                }
             } 
 
             //Obtener mensajes curso:
@@ -89,10 +121,28 @@ class CursosController extends Controller
             if ($response->ok()){
 
                 $Mensajes = json_decode($response->body());
+
+                foreach($Mensajes as &$mensaje){
+
+                    //Obtener información imagen desde mongo:
+                    $element = UsuariosImagenes::where('idUsuario', '=', $mensaje->idUsuarioEmisor)->first();
+        
+                    if(!is_null($element)){
+                        $mensaje->imagenEmisor = $element->imagen;
+
+                        if(!is_null($element->archivo)){
+                            $element = CursoArchivosMensajes::where('idMensaje', '=', $mensaje->idMensaje)->first();
+
+                            if(!is_null($element)){
+                                $mensaje->archivo = $element->archivo;
+                            }
+                        }
+                    }
+                }
             } 
         } 
 
-        return view('cursos.detallecursoestudiante', compact('DatosUsuario', 'DatosCuenta','IdTipoUsuario', 'DatosCurso', 'Mensajes', 'IdUsuario'));
+        return view('cursos.detallecursoestudiante', compact('DatosUsuario', 'DatosCuenta','IdTipoUsuario', 'DatosCurso', 'Mensajes', 'IdUsuario', 'Imagen'));
     }
 
     public function detallecursoprofesor(Request $request){
@@ -100,6 +150,7 @@ class CursosController extends Controller
         $DatosUsuario = session('DatosUsuario');
         $DatosCuenta = session('DatosCuenta');
         $IdTipoUsuario = session('IdTipoUsuario');
+        $Imagen = session('Imagen');
 
         $DatosCurso = null;
         $Mensajes = array();
@@ -118,6 +169,19 @@ class CursosController extends Controller
 
             if ($response->ok()){
                 $DatosCurso = json_decode($response->body());
+
+                //Obtener información imagen desde mongo:
+                $element = UsuariosImagenes::where('idUsuario', '=', $DatosCurso->idProfesor)->first();
+
+                if(!is_null($element)){
+                    $DatosCurso->imagenProfesor = $element->imagen;
+                }
+
+                $element = CursosImagenes::where('idCurso', '=', $IdCurso)->first();
+
+                if(!is_null($element)){
+                    $DatosCurso->imagen = $element->imagen;
+                }
             } 
 
             //Obtener mensajes curso:
@@ -130,10 +194,28 @@ class CursosController extends Controller
             if ($response->ok()){
 
                 $Mensajes = json_decode($response->body());
+
+                foreach($Mensajes as &$mensaje){
+
+                    //Obtener información imagen desde mongo:
+                    $element = UsuariosImagenes::where('idUsuario', '=', $mensaje->idUsuarioEmisor)->first();
+
+                    if(!is_null($element)){
+                        $mensaje->imagenEmisor = $element->imagen;
+
+                        if(!is_null($element->archivo)){
+                            $element = CursoArchivosMensajes::where('idMensaje', '=', $mensaje->idMensaje)->first();
+
+                            if(!is_null($element)){
+                                $mensaje->archivo = $element->archivo;
+                            }
+                        }
+                    }
+                }
             } 
         } 
 
-        return view('cursos.detallecursoprofesor', compact('DatosUsuario', 'DatosCuenta','IdTipoUsuario', 'DatosCurso', 'Mensajes'));
+        return view('cursos.detallecursoprofesor', compact('DatosUsuario', 'DatosCuenta','IdTipoUsuario', 'DatosCurso', 'Mensajes', 'Imagen'));
     }
 
     #endregion
@@ -169,6 +251,14 @@ class CursosController extends Controller
                     if ($response->ok()){
 
                         $result = json_decode($response->body());
+
+                        foreach($result as &$material){
+                            $element = CursoArchivosCompartidos::where('idMaterial', '=', $material->idMaterialSubido)->first();
+
+                            if(!is_null($element)){
+                                $material->archivo = $element->archivo;
+                            }
+                        }
 
                         return response()->json(['code' => 200 , 'data' => $result], 200);
 
@@ -352,6 +442,14 @@ class CursosController extends Controller
                     if ($response->ok()){
 
                         $result = json_decode($response->body());
+
+                        foreach($result as &$grupo){
+                            $element = GruposImagenes::where('idGrupo', '=', $grupo->idGrupo)->first();
+
+                            if(!is_null($element)){
+                                $grupo->imagen = $element->imagen;
+                            }
+                        }
 
                         return response()->json(['code' => 200 , 'data' => $result], 200);
 
@@ -758,7 +856,7 @@ class CursosController extends Controller
                                 $extension = $file->getClientOriginalExtension();
 
                                 //Guardar imagen en mongo si no esta vácia:
-                                $mongoCollection = new CursoArchivoMaterialRegistrar;
+                                $mongoCollection = new CursoArchivosCompartidos;
 
                                 $mongoCollection->idMaterial = $result->codigo;
                                 $mongoCollection->archivo = $Base64Archivo;
@@ -916,8 +1014,8 @@ class CursosController extends Controller
                         return response()->json(['code' => 200 , 
                         'data' => $result, 
                         'fecha' => $fechaRegistro, 
-                        'nombreArchivo' => $filename,
-                        'imagenEmisor' => session('DatosCuenta')->imagen], 200);
+                        'nombreArchivo' => $Base64Archivo,
+                        'imagenEmisor' => session('Imagen')], 200);
 
                     } else{
                         return response()->json(['code' => 400 , 'data' => $response->body()], 200);
@@ -989,66 +1087,6 @@ class CursosController extends Controller
         }
     }
 
-    public function curso_mensajesobtener(Request $request) 
-    {
-        try {
-
-            $validator = Validator::make($request->all(), $rules = [
-                'IdCurso' => ['required'],
-                'UltimoMensaje' => ['required']
-            ], $messages = [
-                'required' => 'El campo :attribute es requerido'
-            ]);
-
-            if ($validator->fails()) {
-                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
-            } else {
-
-                $url = env('COURSEROOM_API');
-
-                $idCurso = $request ->integer('IdCurso');
-                $ultimoMensaje = $request ->string('UltimoMensaje');
-                $idMensaje = $request ->integer('IdMensaje');
-                $mensaje = $request ->string('Mensaje');
-                $archivo = $request ->string('Archivo');
-                $idUsuarioEmisor = $request ->integer('IdUsuarioEmisor');
-                $nombreUsuarioEmisor = $request ->string('NombreUsuarioEmisor');
-                $fechaRegistro = $request ->integer('FechaRegistro');
-                
-                if($url != ''){
-
-                    $response = Http::withHeaders([
-                        'Authorization' => env('COURSEROOM_API_KEY'),
-                    ])->post($url.'/api/cursos/mensajesobtener', [
-                        'IdCurso' => $idCurso,
-                        'UltimoMensaje' => $ultimoMensaje,
-                        'IdMensaje' => $idMensaje,
-                        'Mensaje' => $mensaje,
-                        'Archivo' => $archivo,
-                        'IdUsuarioEmisor' => $idUsuarioEmisor,
-                        'NombreUsuarioEmisor' => $nombreUsuarioEmisor,
-                        'FechaRegistro' => $fechaRegistro,
-                    ]);
-
-                    if ($response->ok()){
-
-                        $result = json_decode($response->body());
-
-                        return response()->json(['code' => 200 , 'data' => $result], 200);
-
-                    } else{
-                        return response()->json(['code' => 400 , 'data' => $response->body()], 200);
-                    }
-
-                } else{
-                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
-                }
-            }
-
-        } catch (\Throwable $th) {
-            return response()->json(['code' => 500 , 'data' => $th->getMessage()], 200);
-        }
-    }
 
     public function curso_estudianteobtener(Request $request)
     {
@@ -1177,6 +1215,21 @@ class CursosController extends Controller
 
                         $result = json_decode($response->body());
 
+                        foreach($result as &$curso){
+                            //Obtener información imagen desde mongo:
+                            $element = UsuariosImagenes::where('idUsuario', '=', $curso->idProfesor)->first();
+
+                            if(!is_null($element)){
+                                $curso->imagenProfesor = $element->imagen;
+                            }
+
+                            $element = CursosImagenes::where('idCurso', '=', $curso->idCurso)->first();
+
+                            if(!is_null($element)){
+                                $curso->imagenCurso = $element->imagen;
+                            }
+                        }
+
                         return response()->json(['code' => 200 , 'data' => $result], 200);
 
                     } else{
@@ -1224,6 +1277,21 @@ class CursosController extends Controller
                     if ($response->ok()){
 
                         $result = json_decode($response->body());
+
+                        foreach($result as &$curso){
+                            //Obtener información imagen desde mongo:
+                            $element = UsuariosImagenes::where('idUsuario', '=', $curso->idProfesor)->first();
+
+                            if(!is_null($element)){
+                                $curso->imagenProfesor = $element->imagen;
+                            }
+
+                            $element = CursosImagenes::where('idCurso', '=', $curso->idCurso)->first();
+
+                            if(!is_null($element)){
+                                $curso->imagenCurso = $element->imagen;
+                            }
+                        }
 
                         return response()->json(['code' => 200 , 'data' => $result], 200);
 
@@ -1274,6 +1342,21 @@ class CursosController extends Controller
 
                         $result = json_decode($response->body());
 
+                        foreach($result as &$curso){
+                            //Obtener información imagen desde mongo:
+                            $element = UsuariosImagenes::where('idUsuario', '=', $curso->idProfesor)->first();
+
+                            if(!is_null($element)){
+                                $curso->imagenProfesor = $element->imagen;
+                            }
+
+                            $element = CursosImagenes::where('idCurso', '=', $curso->idCurso)->first();
+
+                            if(!is_null($element)){
+                                $curso->imagenCurso = $element->imagen;
+                            }
+                        }
+
                         return response()->json(['code' => 200 , 'data' => $result], 200);
 
                     } else{
@@ -1321,6 +1404,14 @@ class CursosController extends Controller
                     if ($response->ok()){
 
                         $result = json_decode($response->body());
+
+                        foreach($result as &$curso){
+                            $element = CursosImagenes::where('idCurso', '=', $curso->idCurso)->first();
+
+                            if(!is_null($element)){
+                                $curso->imagen = $element->imagen;
+                            }
+                        }
 
                         return response()->json(['code' => 200 , 'data' => $result], 200);
 

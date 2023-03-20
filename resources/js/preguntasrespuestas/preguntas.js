@@ -8,7 +8,6 @@ let TercerColorLetra = localStorage.getItem("TercerColorLetra");
 let PrimerColor = localStorage.getItem("PrimerColor");
 let PrimerColorLetra = localStorage.getItem("PrimerColorLetra");
 let BaseURL = window.location.origin;
-let assetsRoute = document.getElementById("assets-usuarios").value;
 
 dataTableMisPreguntas = $("#table-mis-preguntas").DataTable({
     pagingType: 'full_numbers',
@@ -447,7 +446,7 @@ document.getElementById("form-buscar-preguntas").addEventListener('submit', asyn
                         $('.span-detalle', row).html('<span class="fuenteNormal span-detalle text-center text-decoration-underline" onclick="DetallePregunta('.concat(data.IdPregunta,')">Ver detalle</span>'));
                         let fechaRegistro = data.fechaRegistro.substring(0, data.fechaRegistro.length -1 );
                         $('.fechaRegistro', row).text(dayjs(fechaRegistro).format('dddd DD MMM YYYY h:mm A'));
-                        $('.info-usuario', row).html('<div class="container"><div class="row"><div class="col-5"><img class="img-fluid" alt="Imagen del usuario" src="'.concat(assetsRoute,'/',data.imagenUsuario,'"/></div><div class="col-7 p-0"><p class="fuenteNormal">',data.nombreUsuario,'</p></div></div></div>'));
+                        $('.info-usuario', row).html('<div class="container"><div class="row"><div class="col-5"><img class="img-fluid" alt="Imagen del usuario" src="'.concat(data.imagenUsuario,'"/></div><div class="col-7 p-0"><p class="fuenteNormal">',data.nombreUsuario,'</p></div></div></div>'));
                     }
                 });
 

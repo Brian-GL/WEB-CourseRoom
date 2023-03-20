@@ -96,7 +96,6 @@ Route::get('/mis-grupos',  [GruposController::class, 'grupos'])->name('grupos.in
 
 Route::post('/grupos/detalle',  [GruposController::class, 'gruposdetalle_obtener'])->middleware('session.token');
 Route::post('/grupos/actualizar',  [GruposController::class, 'grupo_actualizar'])->middleware('session.token');
-Route::post('/grupos/mensajes',  [GruposController::class, 'gruposmensajes_obtener'])->middleware('session.token');
 Route::post('/grupos/obtener',  [GruposController::class, 'grupos_obtener'])->middleware('session.token');
 Route::post('/grupos/miembros',  [GruposController::class, 'grupomiembros_obtener'])->middleware('session.token');
 Route::post('/grupos/archivoscompartidos',  [GruposController::class, 'grupoarchivoscompartidos_obtener'])->middleware('session.token');
@@ -168,7 +167,6 @@ Route::post('/preguntas/detalle',  [PreguntasRespuestasController::class, 'pregu
 Route::post('/preguntas/estatusactualizar',  [PreguntasRespuestasController::class, 'preguntasrespuestaestatus_actualizar'])->middleware('session.token');
 Route::post('/preguntas/mensajeregistrar',  [PreguntasRespuestasController::class, 'preguntasrespuestamensaje_registrar'])->middleware('session.token');
 Route::delete('/preguntas/mensajeremover',  [PreguntasRespuestasController::class, 'preguntasrespuestamensaje_remover'])->middleware('session.token');
-Route::post('/preguntas/mensajeobtener',  [PreguntasRespuestasController::class, 'preguntasrespuestamensajes_obtener'])->middleware('session.token');
 Route::post('/preguntas/buscar',  [PreguntasRespuestasController::class, 'preguntasrespuestas_buscar'])->middleware('session.token');
 Route::post('/preguntas/obtener',  [PreguntasRespuestasController::class, 'preguntasrespuestas_obtener'])->middleware('session.token');
 
@@ -188,10 +186,6 @@ Route::post('/usuarios/cuentaobtener',  [UsuariosController::class, 'usuariocuen
 Route::post('/usuarios/desempeno',  [UsuariosController::class, 'usuariodesempeno_obtener'])->middleware('session.token');
 Route::post('/usuarios/desempenoregistrar',  [UsuariosController::class, 'usuariodesempeno_registrar'])->middleware('session.token');
 Route::post('/usuarios/detalle',  [UsuariosController::class, 'usuariodetalle_obtener'])->middleware('session.token');
-Route::post('/usuarios/nuevapuntualidad',  [UsuariosController::class, 'usuarionuevapuntualidadcurso_obtener'])->middleware('session.token');
-Route::post('/usuarios/nuevapuntualidadgeneral',  [UsuariosController::class, 'usuarionuevapuntualidadgeneral_obtener'])->middleware('session.token');
-Route::post('/usuarios/nuevopromedio',  [UsuariosController::class, 'usuarionuevopromediocurso_obtener'])->middleware('session.token');
-Route::post('/usuarios/nuevopromediogeneral',  [UsuariosController::class, 'usuarionuevopromediogeneral_obtener'])->middleware('session.token');
 Route::post('/usuarios/buscar',  [UsuariosController::class, 'usuarios_buscar'])->middleware('session.token');
 Route::put('/usuarios/sesion',  [UsuariosController::class, 'usuariosesion_actualizar'])->middleware('session.token');
 Route::post('/usuarios/sesiones',  [UsuariosController::class, 'usuariosesiones_obtener'])->middleware('session.token');
@@ -225,7 +219,6 @@ Route::post('/cursos/materialregistrar',  [CursosController::class, 'curso_mater
 Route::post('/cursos/materialremover',  [CursosController::class, 'curso_materialremover'])->middleware('session.token');
 Route::post('/cursos/mensajeregistrar',  [CursosController::class, 'curso_mensajeregistrar'])->middleware('session.token');
 Route::delete('/cursos/mensajeremover',  [CursosController::class, 'curso_mensajeremover'])->middleware('session.token');
-Route::post('/cursos/mensajesobtener',  [CursosController::class, 'curso_mensajesobtener'])->middleware('session.token');
 Route::post('/cursos/estudianteobtener',  [CursosController::class, 'curso_estudianteobtener'])->middleware('session.token');
 Route::post('/cursos/profesortareasobtener',  [CursosController::class, 'curso_profesortareasobtener'])->middleware('session.token');
 Route::post('/cursos/buscarobtener',  [CursosController::class, 'curso_promedioobtener'])->middleware('session.token');

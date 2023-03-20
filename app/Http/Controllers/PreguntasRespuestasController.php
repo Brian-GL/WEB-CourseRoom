@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Http;
 use App\Models\PreguntasRespuestasArchivosMensajes;
+use App\Models\UsuariosImagenes;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 
@@ -18,8 +19,9 @@ class PreguntasRespuestasController extends Controller
         $DatosUsuario = session('DatosUsuario');
         $DatosCuenta = session('DatosCuenta');
         $IdTipoUsuario = session('IdTipoUsuario');
+        $Imagen = session('Imagen');
 
-        return view('preguntasrespuestas.preguntas', compact('DatosUsuario', 'DatosCuenta', 'IdTipoUsuario'));
+        return view('preguntasrespuestas.preguntas', compact('DatosUsuario', 'DatosCuenta', 'IdTipoUsuario', 'Imagen'));
     }
 
     public function preguntasrespuestadetalle_obtener(Request $request)
@@ -32,6 +34,7 @@ class PreguntasRespuestasController extends Controller
         $DatosUsuario = session('DatosUsuario');
         $DatosCuenta = session('DatosCuenta');
         $IdUsuario = session('IdUsuario');
+        $Imagen = session('Imagen');
 
         $validator = Validator::make($request->all(), $rules = [
             'IdPreguntaRespuesta' => ['required']
@@ -57,6 +60,13 @@ class PreguntasRespuestasController extends Controller
 
                 if ($response->ok()){
                     $DatosPregunta = json_decode($response->body());
+
+                    //Obtener información imagen desde mongo:
+                    $element = UsuariosImagenes::where('idUsuario', '=', $DatosPregunta->idUsuario)->first();
+
+                    if(!is_null($element)){
+                        $DatosPregunta->imagenUsuario = $element->imagen;
+                    }
                 } 
                
                 //Obtener respuestas de la pregunta:
@@ -69,11 +79,29 @@ class PreguntasRespuestasController extends Controller
 
                 if($response->ok()){
                     $Respuestas = json_decode($response->body());
+
+                    foreach($Respuestas as &$mensaje){
+
+                        //Obtener información imagen desde mongo:
+                        $element = UsuariosImagenes::where('idUsuario', '=', $mensaje->idUsuarioEmisor)->first();
+            
+                        if(!is_null($element)){
+                            $mensaje->imagenEmisor = $element->imagen;
+    
+                            if(!is_null($element->archivo)){
+                                $element = PreguntasRespuestasArchivosMensajes::where('idMensaje', '=', $mensaje->idMensaje)->first();
+    
+                                if(!is_null($element)){
+                                    $mensaje->archivo = $element->archivo;
+                                }
+                            }
+                        }
+                    }
                 }
             } 
         }
 
-        return view('preguntasrespuestas.detallepregunta', compact('DatosPregunta', 'DatosUsuario', 'DatosCuenta', 'IdTipoUsuario', 'Respuestas', 'idPreguntaRespuesta', 'IdUsuario')); 
+        return view('preguntasrespuestas.detallepregunta', compact('DatosPregunta', 'DatosUsuario', 'DatosCuenta', 'IdTipoUsuario', 'Respuestas', 'idPreguntaRespuesta', 'IdUsuario', 'Imagen')); 
     }
 
 
@@ -356,7 +384,7 @@ class PreguntasRespuestasController extends Controller
                         return response()->json(['code' => 200 , 
                         'data' => $result, 
                         'fecha' => $fechaRegistro, 
-                        'nombreArchivo' => $filename,
+                        'nombreArchivo' => $Base64Archivo,
                         'imagenEmisor' => session('DatosCuenta')->imagen], 200);
 
                     } else{
@@ -425,51 +453,7 @@ class PreguntasRespuestasController extends Controller
         }
     }
 
-    public function preguntasrespuestamensajes_obtener(Request $request)
-    {
-        try {
-
-            $validator = Validator::make($request->all(), $rules = [
-                'IdPreguntaRespuesta' => ['required']
-            ], $messages = [
-                'required' => 'El campo :attribute es requerido'
-            ]);
-
-            if ($validator->fails()) {
-                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
-            } else {
-
-                $url = env('COURSEROOM_API');
-
-                $idPreguntaRespuesta = $request->integer('IdPreguntaRespuesta');
-            
-                if($url != ''){
-
-                    $response = Http::withHeaders([
-                        'Authorization' => env('COURSEROOM_API_KEY'),
-                    ])->post($url.'/api/preguntas/mensajeobtener', [
-                        'IdPreguntaRespuesta' => $idPreguntaRespuesta
-                    ]);
-
-                    if ($response->ok()){
-
-                        $result = json_decode($response->body());
-
-                        return response()->json(['code' => 200 , 'data' => $result], 200);
-
-                    } else{
-                        return response()->json(['code' => 400 , 'data' => $response->body()], 200);
-                    }
-
-                } else{
-                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
-                }
-            }
-
-        } catch (\Throwable $th) {
-            return response()->json(['code' => 500 , 'data' => $th->getMessage()], 200);
-        }
-    }
+   
     public function preguntasrespuestas_buscar(Request $request)
     {
         try {
@@ -493,6 +477,16 @@ class PreguntasRespuestasController extends Controller
                 if ($response->ok()){
 
                     $result = json_decode($response->body());
+
+                    foreach($result as &$value){
+
+                        //Obtener información imagen desde mongo:
+                        $element = UsuariosImagenes::where('idUsuario', '=', $value->idUsuario)->first();
+            
+                        if(!is_null($element)){
+                            $value->imagenUsuario = $element->imagen;
+                        }
+                    }
 
                     return response()->json(['code' => 200 , 'data' => $result], 200);
 

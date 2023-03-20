@@ -22,8 +22,6 @@ use Carbon\Carbon;
     <input type="hidden" value="" id="estatus-tarea"/>
 @endif
 
-<input type="hidden" value="{{ asset('usuarios/').'/'}}" id="assets-usuarios"/>
-<input type="hidden" value="{{ asset('tareas/').'/'}}" id="assets-tareas"/>
 
 <div class="col-md-12">
     <div class="container">
@@ -118,12 +116,12 @@ use Carbon\Carbon;
                                 <div class="col-md-6 text-center">
                                     @if(!is_null($DatosTarea))
                                         @if( !is_null($DatosTarea->imagenProfesor))
-                                            <img id="imagen-profesor" class="img-fluid rounded-circle shadow-lg h-75 mb-1" alt="Imagen del profesor" src="{{ asset('usuarios/'.$DatosTarea->imagenProfesor)}}" />
+                                            <img id="imagen-profesor" class="img-fluid rounded-circle shadow-lg h-75 mb-1" alt="Imagen del profesor" src="{{ $DatosTarea->imagenProfesor}}" />
                                         @endif
                                         <p class="titulado fuenteNormal segundo-color-letra">Creada por {{$DatosTarea->nombreProfesor}}</p>
                                         <hr>
                                         @if(!is_null($DatosTarea->imagenCurso))
-                                            <img id="imagen-curso" class="img-fluid rounded-circle shadow-lg h-75 mb-1" alt="Imagen del curso" src="{{ asset('cursos/'.$DatosTarea->imagenCurso)}}" />
+                                            <img id="imagen-curso" class="img-fluid rounded-circle shadow-lg h-75 mb-1" alt="Imagen del curso" src="{{ $DatosTarea->imagenCurso}}" />
                                         @endif
                                         <p class="titulado fuenteNormal segundo-color-letra text-wrap">Del curso <b>{{$DatosTarea->curso}}</b></p>
                                     @endif

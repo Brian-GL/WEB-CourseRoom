@@ -9,8 +9,6 @@ let PrimerColor = localStorage.getItem("PrimerColor");
 let PrimerColorLetra = localStorage.getItem("PrimerColorLetra");
 let BaseURL = window.location.origin;
 
-let assetsUsuariosRoute = document.getElementById("assets-usuarios").value;
-let assetsPreguntasRoute = document.getElementById("assets-preguntas").value;
 let IdPregunta = document.getElementById("id-pregunta").value;
 
 //#region Methods
@@ -198,18 +196,16 @@ $("#enviar-archivo").on("click", async () => {
 
 //#region Functions
 
-
-
 function GenerarRespuesta(fechaRegistro, mensaje, nombreArchivo, nombreUsuarioEmisor, imagenEmisor) {
 
     let elemento;
 
     if (nombreArchivo === undefined || nombreArchivo === null || nombreArchivo === '') {
         elemento =
-            `<div class="col-md-12 d-flex justify-content-start"><div class="d-flex justify-content-start mb-4"><img src="${assetsUsuariosRoute}${imagenEmisor}" alt="avatar" class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60"><div class="card mask-custom"><div class="card-header d-flex justify-content-between p-3"style="border-bottom: 1px solid rgba(255,255,255,.3);"><div class="row"><div class="col-md-6 text-center text-wrap"><p class="fw-bold mb-0">${nombreUsuarioEmisor}</p></div><div class="col-md-6 text-center text-wrap"><p class="text-light small mb-0"><i class="far fa-clock"></i> ${fechaRegistro}</p></div></div></div><div class="card-body"><p class="mb-0">${mensaje}</p></div></div></div></div>`;
+            `<div class="col-md-12 d-flex justify-content-start"><div class="d-flex justify-content-start mb-4"><img src="${imagenEmisor}" alt="avatar" class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60"><div class="card mask-custom"><div class="card-header d-flex justify-content-between p-3"style="border-bottom: 1px solid rgba(255,255,255,.3);"><div class="row"><div class="col-md-6 text-center text-wrap"><p class="fw-bold mb-0">${nombreUsuarioEmisor}</p></div><div class="col-md-6 text-center text-wrap"><p class="text-light small mb-0"><i class="far fa-clock"></i> ${fechaRegistro}</p></div></div></div><div class="card-body"><p class="mb-0">${mensaje}</p></div></div></div></div>`;
     } else {
         elemento =
-            `<div class="col-md-12 d-flex justify-content-start"><div class="d-flex justify-content-start mb-4"><img src="${assetsUsuariosRoute}${imagenEmisor}" alt="avatar" class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60"><div class="card mask-custom"><div class="card-header d-flex justify-content-between p-3"style="border-bottom: 1px solid rgba(255,255,255,.3);"><div class="row"><div class="col-md-6 text-center text-wrap"><p class="fw-bold mb-0">${nombreUsuarioEmisor}</p></div><div class="col-md-6 text-center text-wrap"><p class="text-light small mb-0"><i class="far fa-clock"></i> ${fechaRegistro}</p></div></div></div><div class="card-body"><a href="${assetsPreguntasRoute}${nombreArchivo}" target="_blank"><i class="fa-solid fa-file-lines"></i>&nbsp;${mensaje}'</a></div></div></div></div>`;
+            `<div class="col-md-12 d-flex justify-content-start"><div class="d-flex justify-content-start mb-4"><img src="${imagenEmisor}" alt="avatar" class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60"><div class="card mask-custom"><div class="card-header d-flex justify-content-between p-3"style="border-bottom: 1px solid rgba(255,255,255,.3);"><div class="row"><div class="col-md-6 text-center text-wrap"><p class="fw-bold mb-0">${nombreUsuarioEmisor}</p></div><div class="col-md-6 text-center text-wrap"><p class="text-light small mb-0"><i class="far fa-clock"></i> ${fechaRegistro}</p></div></div></div><div class="card-body"><a href="${nombreArchivo}" target="_blank"><i class="fa-solid fa-file-lines"></i>&nbsp;${mensaje}'</a></div></div></div></div>`;
     }
 
     $("#mensajes").append(elemento);

@@ -21,9 +21,6 @@ use Carbon\Carbon;
     <input type="hidden" value="0" id="id-pregunta"/>
 @endif
 
-<input type="hidden" value="{{ asset('usuarios/').'/'}}" id="assets-usuarios"/>
-<input type="hidden" value="{{ asset('preguntas/').'/'}}" id="assets-preguntas"/>
-
 <div class="col-md-12">
     <div class="container">
         <div class="row">
@@ -103,7 +100,7 @@ use Carbon\Carbon;
         
                                 <div class="col-md-6 text-center">
                                     @if(!is_null($DatosPregunta) && !is_null($DatosPregunta->imagenUsuario))
-                                        <img id="imagen-receptor" class="img-fluid rounded-circle shadow-lg h-75 mb-1" alt="Imagen del usuario receptor" src="{{ asset('usuarios/'.$DatosPregunta->imagenUsuario)}}" />
+                                        <img id="imagen-receptor" class="img-fluid rounded-circle shadow-lg h-75 mb-1" alt="Imagen del usuario receptor" src="{{ $DatosPregunta->imagenUsuario}}" />
                                     @else
                                         <img id="imagen-receptor" class="img-fluid rounded-circle shadow-lg h-75 mb-1" alt="Imagen del usuario receptor" src="https://raw.githubusercontent.com/Brian-GL/CourseRoom/main/src/recursos/imagenes/Course_Room_Brand_Readme.png"/>
                                     @endif
@@ -127,7 +124,7 @@ use Carbon\Carbon;
                     
                                         <div class="col-md-12 d-flex justify-content-start">
                                             <div class="d-flex justify-content-start mb-4">
-                                                <img src="{{ asset('usuarios/'.$mensaje->imagenEmisor)}}" alt="avatar" class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60">
+                                                <img src="{{ $mensaje->imagenEmisor}}" alt="avatar" class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60">
                                                 <div class="card mask-custom">
                                                     <div class="card-header d-flex justify-content-between p-3" style="border-bottom: 1px solid rgba(255,255,255,.3);">
                                                         <div class="col-md-6 text-center text-wrap">
@@ -146,7 +143,7 @@ use Carbon\Carbon;
                                                         @if (is_null($mensaje->archivo))
                                                             <p class="mb-0">{{$mensaje->mensaje}}</p>
                                                         @else
-                                                            <a href="{{ asset('preguntas/'.$mensaje->archivo)}}" target="_blank"><i class="fa-solid fa-file-lines"></i>&nbsp;{{$mensaje->mensaje}}</a>
+                                                            <a href="{{ $mensaje->archivo}}" target="_blank"><i class="fa-solid fa-file-lines"></i>&nbsp;{{$mensaje->mensaje}}</a>
                                                         @endif
                                                     
                                                     </div>

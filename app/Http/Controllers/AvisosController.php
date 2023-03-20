@@ -15,8 +15,9 @@ class AvisosController extends Controller
         $DatosUsuario = session('DatosUsuario');
         $DatosCuenta = session('DatosCuenta');
         $IdTipoUsuario = session('IdTipoUsuario');
+        $Imagen = session('Imagen');
 
-        return view('avisos.avisos', compact('DatosUsuario', 'DatosCuenta', 'IdTipoUsuario'));
+        return view('avisos.avisos', compact('DatosUsuario', 'DatosCuenta', 'IdTipoUsuario', 'Imagen'));
     }
 
     #endregion

@@ -22,9 +22,6 @@ $min_date = Carbon::now()->addHours(8)->toDateTimeString();
     <input type="hidden" value="false" id="estatus-curso"/>
 @endif
 
-<input type="hidden" value="{{ asset('usuarios/').'/'}}" id="assets-usuarios"/>
-<input type="hidden" value="{{ asset('cursos/').'/'}}" id="assets-cursos"/>
-
 <div class="col-md-12">
     <div class="container">
         <div class="row">
@@ -99,10 +96,10 @@ $min_date = Carbon::now()->addHours(8)->toDateTimeString();
                                 <div class="col-md-6 text-center">
                                     @if(!is_null($DatosCurso))
                                         @if(!is_null($DatosCurso->imagen))
-                                            <img id="imagen-curso" class="img-fluid rounded-circle shadow-lg h-75 mb-1" alt="Imagen del curso" src="{{ asset('cursos/'.$DatosCurso->imagen)}}" />
+                                            <img id="imagen-curso" class="img-fluid rounded-circle shadow-lg h-75 mb-1" alt="Imagen del curso" src="{{$DatosCurso->imagen}}" />
                                         @endif
                                         @if( !is_null($DatosCurso->imagenProfesor))
-                                            <img id="imagen-profesor" class="img-fluid rounded-circle shadow-lg h-75 mb-1" alt="Imagen del profesor" src="{{ asset('usuarios/'.$DatosCurso->imagenProfesor)}}" />
+                                            <img id="imagen-profesor" class="img-fluid rounded-circle shadow-lg h-75 mb-1" alt="Imagen del profesor" src="{{ $DatosCurso->imagenProfesor}}" />
                                         @endif
                                         <p class="titulado fuenteNormal segundo-color-letra">Creada por {{$DatosCurso->nombreProfesor}}</p>
                                         <hr>
@@ -218,7 +215,7 @@ $min_date = Carbon::now()->addHours(8)->toDateTimeString();
                     
                                         <div class="col-md-12 d-flex justify-content-start">
                                             <div class="d-flex justify-content-start mb-4">
-                                                <img src="{{ asset('usuarios/'.$mensaje->imagenEmisor)}}" alt="avatar" class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60">
+                                                <img src="{{ $mensaje->imagenEmisor}}" alt="avatar" class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60">
                                                 <div class="card mask-custom">
                                                     <div class="card-header d-flex justify-content-between p-3" style="border-bottom: 1px solid rgba(255,255,255,.3);">
                                                         <div class="col-md-6 text-center text-wrap">
@@ -237,7 +234,7 @@ $min_date = Carbon::now()->addHours(8)->toDateTimeString();
                                                         @if (is_null($mensaje->archivo))
                                                             <p class="mb-0">{{$mensaje->mensaje}}</p>
                                                         @else
-                                                            <a href="{{ asset('cursos/'.$mensaje->archivo)}}" target="_blank"><i class="fa-solid fa-file-lines"></i>&nbsp;{{$mensaje->mensaje}}</a>
+                                                            <a href="{{ $mensaje->archivo}}" target="_blank"><i class="fa-solid fa-file-lines"></i>&nbsp;{{$mensaje->mensaje}}</a>
                                                         @endif
                                                     
                                                     </div>

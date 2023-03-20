@@ -8,9 +8,6 @@ let PrimerColor = localStorage.getItem("PrimerColor");
 let PrimerColorLetra = localStorage.getItem("PrimerColorLetra");
 let BaseURL = window.location.origin;
 
-let assetsRouteTareas = document.getElementById("assets-tareas").value;
-let assetsRouteUsuarios = document.getElementById("assets-usuarios").value;
-
 let IdTarea = document.getElementById("id-tarea").value;
 let IdUsuario = document.getElementById("id-usuario").value;
 let IdProfesor = document.getElementById("id-profesor").value;
@@ -245,7 +242,7 @@ async function ObtenerArchivosAdjuntos(){
                     data: filas,
                     createdRow: (row, data) => {
                         $('.segundo-color-letra',row).css('color', SegundoColorLetra);
-                        $('.span-detalle', row).html('<a class="fuenteNormal span-detalle text-center text-decoration-underline" href="'.concat(assetsRouteTareas,'/',data.archivo,'">Descargar archivo</a>'));
+                        $('.span-detalle', row).html('<a class="fuenteNormal span-detalle text-center text-decoration-underline" href="'.concat(data.archivo,'">Descargar archivo</a>'));
                         let fechaRegistro = data.fechaRegistro.substring(0, data.fechaRegistro.length -1 );
                         $('.fechaRegistro', row).text(dayjs(fechaRegistro).format('dddd DD MMM YYYY h:mm A'));
                     }
@@ -484,7 +481,7 @@ async function ObtenerArchivosEntregados(){
                     data: filas,
                     createdRow: (row, data) => {
                         $('.segundo-color-letra',row).css('color', SegundoColorLetra);
-                        $('.span-detalle', row).html('<a class="fuenteNormal span-detalle text-center text-decoration-underline" href="'.concat(assetsRouteTareas,'/',data.archivo,'">Descargar archivo</a>'));
+                        $('.span-detalle', row).html('<a class="fuenteNormal span-detalle text-center text-decoration-underline" href="'.concat(data.archivo,'">Descargar archivo</a>'));
                         let fechaRegistro = data.fechaRegistro.substring(0, data.fechaRegistro.length -1 );
                         $('.fechaRegistro', row).text(dayjs(fechaRegistro).format('dddd DD MMM YYYY h:mm A'));
                     }

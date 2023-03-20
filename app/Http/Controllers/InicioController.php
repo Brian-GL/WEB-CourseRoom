@@ -16,6 +16,7 @@ class InicioController extends Controller
         
         $IdUsuario = session('IdUsuario');
         $IdTipoUsuario = session('IdTipoUsuario');
+        $Imagen = session('Imagen');
 
         //Obtener datos del usuario:
         $url = env('COURSEROOM_API');
@@ -58,8 +59,6 @@ class InicioController extends Controller
                 } 
             } 
         } 
-
-        $Imagen = session('Imagen');
 
         return view('inicio.inicio',compact('DatosUsuario', 'DatosCuenta', 'IdTipoUsuario', 'Imagen')); 
     }
