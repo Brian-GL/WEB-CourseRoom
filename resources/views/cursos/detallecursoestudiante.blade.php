@@ -13,7 +13,7 @@ use Carbon\Carbon;
 @section('content')
 
 @if (!is_null($DatosCurso))
-    <input type="hidden" value="{{ $IdTarea}}" id="id-curso"/>
+    <input type="hidden" value="{{ $IdCurso}}" id="id-curso"/>
     <input type="hidden" value="{{ $IdUsuario}}" id="id-usuario"/>
     <input type="hidden" value="{{ $DatosCurso->finalizado}}" id="estatus-curso"/>
 @else
@@ -27,7 +27,7 @@ use Carbon\Carbon;
         <div class="row">
             <div class="col-md-12">
 
-                <div class="row">
+                <div class="row mb-2">
                     <div class="col-md-1 text-center">
                         <a type="button" class="btn fuenteNormal tercer-color-fondo tercer-color-letra" title="Regresar a mis cursos" href="{{route('cursos.inicio')}}">
                             <i class="fa-solid fa-hand-point-left fa-2x"></i>

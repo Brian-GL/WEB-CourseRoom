@@ -142,7 +142,7 @@ class CursosController extends Controller
             } 
         } 
 
-        return view('cursos.detallecursoestudiante', compact('DatosUsuario', 'DatosCuenta','IdTipoUsuario', 'DatosCurso', 'Mensajes', 'IdUsuario', 'Imagen'));
+        return view('cursos.detallecursoestudiante', compact('DatosUsuario', 'DatosCuenta','IdTipoUsuario', 'DatosCurso', 'Mensajes', 'IdUsuario', 'Imagen', 'IdCurso'));
     }
 
     public function detallecursoprofesor(Request $request){
@@ -215,7 +215,7 @@ class CursosController extends Controller
             } 
         } 
 
-        return view('cursos.detallecursoprofesor', compact('DatosUsuario', 'DatosCuenta','IdTipoUsuario', 'DatosCurso', 'Mensajes', 'Imagen'));
+        return view('cursos.detallecursoprofesor', compact('DatosUsuario', 'DatosCuenta','IdTipoUsuario', 'DatosCurso', 'Mensajes', 'Imagen', 'IdCurso'));
     }
 
     #endregion
@@ -295,9 +295,9 @@ class CursosController extends Controller
 
                 if($url != ''){
 
-                    $Nombre = $request->string('Nombre')->trim();
-                    $Descripcion = $request->string('Descripcion')->trim();
-                    $IdProfesor = session('IdUsuario');
+                    $nombre = $request->string('Nombre')->trim();
+                    $descripcion = $request->string('Descripcion')->trim();
+                    $idProfesor = session('IdUsuario');
     
                     $Base64Archivo = null;
                     if($request->has('Base64Imagen')){

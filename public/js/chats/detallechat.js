@@ -22,6 +22,7 @@ async function ObtenerMensajes(){
 
             formData = new FormData();
             formData.append("IdChat", IdChat);
+            formData.append("Leidos", true);
 
             let response = await axios({
                 url: '/chats/mensajesobtener',
@@ -51,7 +52,7 @@ async function ObtenerMensajes(){
                 console.error(result.data);
             }
 
-            await Sleep(2000);
+            await Sleep(5000);
         }
     }
     catch(ex){
@@ -83,6 +84,11 @@ async function EnviarMensaje(mensaje, archivo, base64Archivo) {
         let result = response.data;
 
         switch (result.code) {
+            case 200:{
+                let fechaRegistroFormat = dayjs(result.fecha).format('DD/MM/YYYY h:mm A');
+                GenerarMensajeEmisor(fechaRegistroFormat, mensaje, result.nombreArchivo, document.getElementById("nombre-usuario").innerHTML, result.imagenEmisor);
+            }
+            break;
             case 500: {
                 Swal.fire({
                     title: '¡Error!',
@@ -110,6 +116,7 @@ async function EnviarMensaje(mensaje, archivo, base64Archivo) {
             }
                 break;
         }
+        
     }
     catch (ex) {
 

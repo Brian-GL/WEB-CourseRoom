@@ -171,8 +171,7 @@ dataTableCursoMateriales.column(3).visible(false);
 
 //Curso miembros profesor:
 
-let dataTableCursoMiembrosProfesor;
-dataTableCursoMiembrosProfesor = $("#table-miembros-profesor").DataTable({
+let dataTableCursoMiembrosProfesor = $("#table-miembros-profesor").DataTable({
     pagingType: 'full_numbers',
     dom: 'frtp',
     search: {
@@ -257,10 +256,10 @@ document.addEventListener('DOMContentLoaded',  ObtenerInformacionInicial, false)
 
 async function ObtenerInformacionInicial(){
     ObtenerMateriales();
-    ObtenerMiembros();
     ObtenerTareas();
     ObtenerDesempeno();
     ObtenerGrupos();
+    ObtenerMiembros();
 }
 
 async function ObtenerMateriales(){
@@ -1252,7 +1251,7 @@ $("#enviar-archivo").on("click", async () => {
 
 });
 
-$("#subir-material").addEventListener('click', async () => {
+$("#subir-material").on('click', async () => {
     try {
 
         const { value: file } = await Swal.fire({

@@ -1025,7 +1025,7 @@ $("#enviar-archivo").on("click", async () => {
 
 });
 
-$("#subir-material").addEventListener('click', async () => {
+$("#subir-material").on('click', async () => {
     try {
 
         const { value: file } = await Swal.fire({

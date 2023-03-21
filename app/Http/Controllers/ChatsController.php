@@ -270,6 +270,7 @@ class ChatsController extends Controller
 
                     if ($response->ok()){
                         
+                        $fechaRegistro = Carbon::now()->addHours(-5);
                         $result = json_decode($response->body());
 
                         if($result->codigo > 0){
@@ -294,7 +295,11 @@ class ChatsController extends Controller
                             }
                         }
 
-                        return response()->json(['code' => 200 , 'data' => $result], 200);
+                        return response()->json(['code' => 200 , 
+                        'data' => $result, 
+                        'fecha' => $fechaRegistro, 
+                        'nombreArchivo' => $Base64Archivo,
+                        'imagenEmisor' => session('Imagen')], 200);
 
                     } else{
                         return response()->json(['code' => 400 , 'data' => $response->body()], 200);
@@ -369,7 +374,8 @@ class ChatsController extends Controller
         try {
 
             $validator = Validator::make($request->all(), $rules = [
-                'IdChat' => ['required']
+                'IdChat' => ['required'],
+                'Leidos' => ['required']
             ], $messages = [
                 'required' => 'El campo :attribute es requerido'
             ]);
@@ -381,15 +387,22 @@ class ChatsController extends Controller
                 $url = env('COURSEROOM_API');
 
                 $idChat = $request->integer('IdChat');
+                $idUsuarioLector = session('IdUsuario');
+                $leidos = $request->bool('Leidos');
+
+                if($leidos){
+                    $leidos = null;
+                }
 
                 if($url != ''){
 
-                    $fechaVisualizacion = Carbon::now()->addHours(-5);
+                    $fechaVisualizacion = Carbon::now()->addHours(-4);
                     $response = Http::withHeaders([
                         'Authorization' => env('COURSEROOM_API_KEY'),
                     ])->post($url.'/api/chats/mensajesobtener', [
                         'IdChat' => $idChat,
-                        'FechaVisualizacion' => $fechaVisualizacion
+                        'IdUsuarioLector' => $idUsuarioLector,
+                        'Leidos' => $leidos
                     ]);
 
                     if ($response->ok()){

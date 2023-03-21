@@ -624,31 +624,7 @@ if(idTipoUsuario == 1){
         }
     }
 
-    document.DetalleCurso = async function(IdCurso, NuevoCurso){
-       
-        ShowPreloader();
-
-        if(NuevoCurso){
-
-            $('<form/>', { action: '/cursos/detalle', method: 'POST' }).append(
-                $('<input>', {type: 'hidden', id: '_token', name: '_token', value: document.head.querySelector("[name~=csrf-token][content]").content}),
-                $('<input>', {type: 'hidden', id: 'IdCurso', name: 'IdCurso', value: IdCurso})
-            ).appendTo('body').submit();
-                
-            HidePreloader();
-
-        }else{
-
-            $('<form/>', { action: '/cursos/detalleestudiante', method: 'POST' }).append(
-                $('<input>', {type: 'hidden', id: '_token', name: '_token', value: document.head.querySelector("[name~=csrf-token][content]").content}),
-                $('<input>', {type: 'hidden', id: 'IdCurso', name: 'IdCurso', value: IdCurso})
-            ).appendTo('body').submit();
-                
-            HidePreloader();
-        }
-           
-
-    }
+    
 
 }else{
     
@@ -1009,36 +985,6 @@ if(idTipoUsuario == 1){
             });
         }
     }
-  
-
-    document.DetalleCursoProfesor = async function(IdCurso){
-        try{
-
-            ShowPreloader();
-
-            $('<form/>', { action: '/cursos/detalleprofesor', method: 'POST' }).append(
-                $('<input>', {type: 'hidden', id: '_token', name: '_token', value: document.head.querySelector("[name~=csrf-token][content]").content}),
-                $('<input>', {type: 'hidden', id: 'IdCurso', name: 'IdCurso', value: IdCurso})
-            ).appendTo('body').submit();
-            
-            HidePreloader();
-
-        }
-        catch(ex){
-
-            HidePreloader();
-            Swal.fire({
-                title: '¡Error!',
-                text: ex,
-                imageUrl: window.SadOwl,
-                imageWidth: 100,
-                imageHeight: 123,
-                background: '#000000',
-                color: '#FFFFFF',
-                imageAlt: 'Error Image'
-            });
-        }
-    }
 
     async function RegistrarCurso(base64Image, file){
 
@@ -1051,7 +997,7 @@ if(idTipoUsuario == 1){
             formData.append("Nombre", document.getElementById("nombre-curso").value);
             formData.append("Descripcion", document.getElementById("descripcion-curso").value);
             formData.append("Imagen", file);
-            formData.append("Base64Image", base64Image);
+            formData.append("Base64Imagen", base64Image);
     
             let response = await axios({
                 url: '/cursos/registrar',
@@ -1193,3 +1139,59 @@ if(idTipoUsuario == 1){
 
 
 //#endregion
+
+document.DetalleCurso = async function(IdCurso, NuevoCurso){
+       
+    ShowPreloader();
+
+    if(NuevoCurso){
+
+        $('<form/>', { action: '/cursos/detalle', method: 'POST' }).append(
+            $('<input>', {type: 'hidden', id: '_token', name: '_token', value: document.head.querySelector("[name~=csrf-token][content]").content}),
+            $('<input>', {type: 'hidden', id: 'IdCurso', name: 'IdCurso', value: IdCurso})
+        ).appendTo('body').submit();
+            
+        HidePreloader();
+
+    }else{
+
+        $('<form/>', { action: '/cursos/detalleestudiante', method: 'POST' }).append(
+            $('<input>', {type: 'hidden', id: '_token', name: '_token', value: document.head.querySelector("[name~=csrf-token][content]").content}),
+            $('<input>', {type: 'hidden', id: 'IdCurso', name: 'IdCurso', value: IdCurso})
+        ).appendTo('body').submit();
+            
+        HidePreloader();
+    }
+       
+
+}
+
+
+document.DetalleCursoProfesor = async function(IdCurso){
+    try{
+
+        ShowPreloader();
+
+        $('<form/>', { action: '/cursos/detalleprofesor', method: 'POST' }).append(
+            $('<input>', {type: 'hidden', id: '_token', name: '_token', value: document.head.querySelector("[name~=csrf-token][content]").content}),
+            $('<input>', {type: 'hidden', id: 'IdCurso', name: 'IdCurso', value: IdCurso})
+        ).appendTo('body').submit();
+        
+        HidePreloader();
+
+    }
+    catch(ex){
+
+        HidePreloader();
+        Swal.fire({
+            title: '¡Error!',
+            text: ex,
+            imageUrl: window.SadOwl,
+            imageWidth: 100,
+            imageHeight: 123,
+            background: '#000000',
+            color: '#FFFFFF',
+            imageAlt: 'Error Image'
+        });
+    }
+}
