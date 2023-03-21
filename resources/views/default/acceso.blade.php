@@ -57,7 +57,6 @@
 
 @stop
 
-
 @push('scripts')
 <script type="module" src="{{ asset ('build/assets/acceso.55fd6fa2.js')}}"></script>
 @endpush
