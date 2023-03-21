@@ -5,6 +5,9 @@ import $ from 'jquery'
 window.$ = $;
 window.jQuery = $;
 
+import * as evoCalendar from 'evo-calendar'
+window.evoCalendar = evoCalendar;
+
 import * as Memes from 'random-memes'
 window.Memes = Memes;
 
