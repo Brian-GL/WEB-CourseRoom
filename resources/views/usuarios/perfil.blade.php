@@ -51,7 +51,7 @@
                     <div class="d-flex justify-content-center">
                         <div class="btn btn-rounded tercer-color-letra tercer-color-fondo">
                             <label class="form-label m-1 fuenteNormal" for="imagen">Cambiar imagen</label>
-                            <input type="file" class="form-control d-none fuenteNormal" id="imagen" accept="image/png, imagejpg, image/jpeg"/>
+                            <input type="file" class="form-control d-none fuenteNormal" id="imagen" accept="image/png, image/jpg, image/jpeg"/>
                         </div>
                     </div>
                 </div>

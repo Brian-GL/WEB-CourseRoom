@@ -322,7 +322,7 @@ document.Chatear = async function(IdUsuario){
                             showDenyButton: false,
                             showCancelButton: false,
                         }).then(() => {
-                            DetalleChat(result.data.codigo);
+                            DetalleChat(result.data.codigo, IdUsuario);
                         });
                     }
                     break;

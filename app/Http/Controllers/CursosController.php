@@ -334,7 +334,7 @@ class CursosController extends Controller
                                 $mongoCollection = new CursosImagenes;
 
                                 $mongoCollection->idCurso = $result->codigo;
-                                $mongoCollection->archivo = $Base64Archivo;
+                                $mongoCollection->imagen = $Base64Archivo;
                                 $mongoCollection->extension = $extension;
 
                                 $mongoCollection->save();

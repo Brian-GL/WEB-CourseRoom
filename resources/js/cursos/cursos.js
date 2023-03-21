@@ -279,7 +279,7 @@ if(idTipoUsuario == 1){
                         createdRow: (row, data) => {
                             $('.segundo-color-letra',row).css('color', SegundoColorLetra);
                             $('.span-detalle', row).html('<span class="fuenteNormal span-detalle text-center text-decoration-underline" onclick="DetalleCurso('.concat(data.idCurso,',',false,')">Ver detalle</span>'));
-                            $('.info-curso', row).html('<div class="container"><div class="row"><div class="col-5"><img class="img-fluid" alt="Imagen del curso" src="'.concat(data.imagenCurso,'"/></div><div class="col-7 p-0"><p class="fuenteNormal">',data.nombreCurso,'</p></div></div></div>'));
+                            $('.info-curso', row).html('<div class="container"><div class="row"><div class="col-5"><img class="img-fluid" alt="Imagen del curso" src="'.concat(data.imagenCurso,'"/></div><div class="col-7 p-0"><p class="fuenteNormal">',data.curso,'</p></div></div></div>'));
                             $('.info-profesor', row).html('<div class="container"><div class="row"><div class="col-5"><img class="img-fluid" alt="Imagen del profesor" src="'.concat(data.imagenProfesor,'"/></div><div class="col-7 p-0"><p class="fuenteNormal">',data.profesor,'</p></div></div></div>'));
                             
                             let fechaRegistro = data.fechaRegistro.substring(0, data.fechaRegistro.length -1 );
@@ -421,7 +421,7 @@ if(idTipoUsuario == 1){
                         createdRow: (row, data) => {
                             $('.segundo-color-letra',row).css('color', SegundoColorLetra);
                             $('.span-detalle', row).html('<span class="fuenteNormal span-detalle text-center text-decoration-underline" onclick="DetalleCurso('.concat(data.idCurso,',',false,')">Ver detalle</span>'));
-                            $('.info-curso', row).html('<div class="container"><div class="row"><div class="col-5"><img class="img-fluid" alt="Imagen del curso" src="'.concat(data.imagenCurso,'"/></div><div class="col-7 p-0"><p class="fuenteNormal">',data.nombreCurso,'</p></div></div></div>'));
+                            $('.info-curso', row).html('<div class="container"><div class="row"><div class="col-5"><img class="img-fluid" alt="Imagen del curso" src="'.concat(data.imagenCurso,'"/></div><div class="col-7 p-0"><p class="fuenteNormal">',data.curso,'</p></div></div></div>'));
                             $('.info-profesor', row).html('<div class="container"><div class="row"><div class="col-5"><img class="img-fluid" alt="Imagen del profesor" src="'.concat(data.imagenProfesor,'"/></div><div class="col-7 p-0"><p class="fuenteNormal">',data.profesor,'</p></div></div></div>'));
                             
                             let fechaRegistro = data.fechaRegistro.substring(0, data.fechaRegistro.length -1 );
@@ -560,7 +560,7 @@ if(idTipoUsuario == 1){
                         createdRow: (row, data) => {
                             $('.segundo-color-letra',row).css('color', SegundoColorLetra);
                             $('.span-detalle', row).html('<span class="fuenteNormal span-detalle text-center text-decoration-underline" onclick="DetalleCurso('.concat(data.idCurso,',',true,')">Ver detalle</span>'));
-                            $('.info-curso', row).html('<div class="container"><div class="row"><div class="col-5"><img class="img-fluid" alt="Imagen del curso" src="'.concat(data.imagenCurso,'"/></div><div class="col-7 p-0"><p class="fuenteNormal">',data.nombreCurso,'</p></div></div></div>'));
+                            $('.info-curso', row).html('<div class="container"><div class="row"><div class="col-5"><img class="img-fluid" alt="Imagen del curso" src="'.concat(data.imagenCurso,'"/></div><div class="col-7 p-0"><p class="fuenteNormal">',data.curso,'</p></div></div></div>'));
                             $('.info-profesor', row).html('<div class="container"><div class="row"><div class="col-5"><img class="img-fluid" alt="Imagen del profesor" src="'.concat(data.imagenProfesor,'"/></div><div class="col-7 p-0"><p class="fuenteNormal">',data.profesor,'</p></div></div></div>'));
                             
                             let fechaRegistro = data.fechaRegistro.substring(0, data.fechaRegistro.length -1 );
@@ -822,8 +822,7 @@ if(idTipoUsuario == 1){
                         createdRow: (row, data) => {
                             $('.segundo-color-letra',row).css('color', SegundoColorLetra);
                             $('.span-detalle', row).html('<span class="fuenteNormal span-detalle text-center text-decoration-underline" onclick="DetalleCursoProfesor('.concat(data.idCurso,')">Ver detalle</span>'));
-                            $('.info-curso', row).html('<div class="container"><div class="row"><div class="col-5"><img class="img-fluid" alt="Imagen del curso" src="'.concat(data.imagenCurso,'"/></div><div class="col-7 p-0"><p class="fuenteNormal">',data.nombreCurso,'</p></div></div></div>'));
-                            
+                            $('.info-curso', row).html('<div class="container"><div class="row"><div class="col-5"><img class="img-fluid" alt="Imagen del curso" src="'.concat(data.imagenCurso,'"/></div><div class="col-7 p-0"><p class="fuenteNormal">',data.curso,'</p></div></div></div>'));
                             
                             let fechaRegistro = data.fechaRegistro.substring(0, data.fechaRegistro.length -1 );
                             $('.fechaRegistro', row).text(dayjs(fechaRegistro).format('dddd DD MMM YYYY h:mm A'));
@@ -951,8 +950,7 @@ if(idTipoUsuario == 1){
                         createdRow: (row, data) => {
                             $('.segundo-color-letra',row).css('color', SegundoColorLetra);
                             $('.span-detalle', row).html('<span class="fuenteNormal span-detalle text-center text-decoration-underline" onclick="DetalleCursoProfesor('.concat(data.idCurso,')">Ver detalle</span>'));
-                            $('.info-curso', row).html('<div class="container"><div class="row"><div class="col-5"><img class="img-fluid" alt="Imagen del curso" src="'.concat(data.imagenCurso,'"/></div><div class="col-7 p-0"><p class="fuenteNormal">',data.nombreCurso,'</p></div></div></div>'));
-                            
+                            $('.info-curso', row).html('<div class="container"><div class="row"><div class="col-5"><img class="img-fluid" alt="Imagen del curso" src="'.concat(data.imagenCurso,'"/></div><div class="col-7 p-0"><p class="fuenteNormal">',data.curso,'</p></div></div></div>'));
                             
                             let fechaRegistro = data.fechaRegistro.substring(0, data.fechaRegistro.length -1 );
                             $('.fechaRegistro', row).text(dayjs(fechaRegistro).format('dddd DD MMM YYYY h:mm A'));
@@ -1138,7 +1136,7 @@ if(idTipoUsuario == 1){
 
         let imagen_file = document.getElementById("imagen");
         let imagen_element = document.getElementById("imagen-seleccionada");
-        let base64 = await GetBase64FromUrl(imagen_element.src);
+        let base64 = await window.GetBase64FromUrl(imagen_element.src);
         
         if(imagen_file.files.length > 0){
             RegistrarCurso(base64, imagen_file.files[0]);

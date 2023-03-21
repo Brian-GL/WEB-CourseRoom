@@ -111,7 +111,7 @@ $min_date = Carbon::now()->toDateTimeString();
                                             <button id="actualizar-grupo" type="button" onclick="ActualizarGrupo()" class="btn btn-lg segundo-color-letra segundo-color-fondo">Actualizar grupo</button>
                                             <div class="btn btn-rounded tercer-color-letra tercer-color-fondo">
                                                 <label class="form-label m-1 fuenteNormal" for="imagen">Cambiar imagen</label>
-                                                <input type="file" class="form-control d-none fuenteNormal" id="imagen" accept="image/png, imagejpg, image/jpeg"/>
+                                                <input type="file" class="form-control d-none fuenteNormal" id="imagen" accept="image/png, image/jpg, image/jpeg"/>
                                             </div>
                                         </div>
                                     @endif
