@@ -111,7 +111,7 @@ class ChatsController extends Controller
                                 if(!is_null($element)){
                                     $mensaje->imagenEmisor = $element->imagen;
     
-                                    if(!is_null($element->archivo)){
+                                    if(!is_null($mensaje->archivo)){
                                         $element = ChatsArchivosMensajes::where('idMensaje', '=', $mensaje->idMensaje)->first();
     
                                         if(!is_null($element)){
@@ -404,11 +404,11 @@ class ChatsController extends Controller
                             if(!is_null($element)){
                                 $mensaje->imagenEmisor = $element->imagen;
 
-                                if(!is_null($element->archivo)){
-                                    $element = ChatsArchivosMensajes::where('idMensaje', '=', $mensaje->idMensaje)->first();
+                                if(!is_null($mensaje->archivo) && $mensaje->archivo != ''){
+                                    $elemento = ChatsArchivosMensajes::where('idMensaje', '=', $mensaje->idMensaje)->first();
 
-                                    if(!is_null($element)){
-                                        $mensaje->archivo = $element->archivo;
+                                    if(!is_null($elemento)){
+                                        $mensaje->archivo = $elemento->archivo;
                                     }
                                 }
                             }

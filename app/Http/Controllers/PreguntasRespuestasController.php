@@ -36,70 +36,62 @@ class PreguntasRespuestasController extends Controller
         $IdUsuario = session('IdUsuario');
         $Imagen = session('Imagen');
 
-        $validator = Validator::make($request->all(), $rules = [
-            'IdPreguntaRespuesta' => ['required']
-        ], $messages = [
-            'required' => 'El campo :attribute es requerido'
-        ]);
+        $url = env('COURSEROOM_API');
 
-        if (!$validator->fails()) {
+        $idPreguntaRespuesta = $request->integer('IdPreguntaRespuesta');
 
-            $url = env('COURSEROOM_API');
+        if($url != ''){
 
-            $idPreguntaRespuesta = $request->integer('IdPreguntaRespuesta');
+            //Obtener detalle de la pregunta:
 
-            if($url != ''){
+            $response = Http::withHeaders([
+                'Authorization' => env('COURSEROOM_API_KEY'),
+            ])->post($url.'/api/preguntas/detalle', [
+                'IdPreguntaRespuesta' => $idPreguntaRespuesta
+            ]);
 
-                //Obtener detalle de la pregunta:
+            if ($response->ok()){
+                $DatosPregunta = json_decode($response->body());
 
-                $response = Http::withHeaders([
-                    'Authorization' => env('COURSEROOM_API_KEY'),
-                ])->post($url.'/api/preguntas/detalle', [
-                    'IdPreguntaRespuesta' => $idPreguntaRespuesta
-                ]);
+                //Obtener información imagen desde mongo:
+                $element = UsuariosImagenes::where('idUsuario', '=', $DatosPregunta->idUsuario)->first();
 
-                if ($response->ok()){
-                    $DatosPregunta = json_decode($response->body());
+                if(!is_null($element)){
+                    $DatosPregunta->imagenUsuario = $element->imagen;
+                }
+            } 
+            
+            //Obtener respuestas de la pregunta:
+
+            $response = Http::withHeaders([
+                'Authorization' => env('COURSEROOM_API_KEY'),
+            ])->post($url.'/api/preguntas/mensajeobtener', [
+                'IdPreguntaRespuesta' => $idPreguntaRespuesta
+            ]);
+
+            if($response->ok()){
+                $Respuestas = json_decode($response->body());
+
+                foreach($Respuestas as &$mensaje){
 
                     //Obtener información imagen desde mongo:
-                    $element = UsuariosImagenes::where('idUsuario', '=', $DatosPregunta->idUsuario)->first();
-
+                    $element = UsuariosImagenes::where('idUsuario', '=', $mensaje->idUsuarioEmisor)->first();
+        
                     if(!is_null($element)){
-                        $DatosPregunta->imagenUsuario = $element->imagen;
-                    }
-                } 
-               
-                //Obtener respuestas de la pregunta:
+                        $mensaje->imagenEmisor = $element->imagen;
 
-                $response = Http::withHeaders([
-                    'Authorization' => env('COURSEROOM_API_KEY'),
-                ])->post($url.'/api/preguntas/mensajeobtener', [
-                    'IdPreguntaRespuesta' => $idPreguntaRespuesta
-                ]);
+                        if(!is_null($mensaje->archivo)){
+                            $element = PreguntasRespuestasArchivosMensajes::where('idMensaje', '=', $mensaje->idMensaje)->first();
 
-                if($response->ok()){
-                    $Respuestas = json_decode($response->body());
-
-                    foreach($Respuestas as &$mensaje){
-
-                        //Obtener información imagen desde mongo:
-                        $element = UsuariosImagenes::where('idUsuario', '=', $mensaje->idUsuarioEmisor)->first();
-            
-                        if(!is_null($element)){
-                            $mensaje->imagenEmisor = $element->imagen;
-    
-                            if(!is_null($element->archivo)){
-                                $element = PreguntasRespuestasArchivosMensajes::where('idMensaje', '=', $mensaje->idMensaje)->first();
-    
-                                if(!is_null($element)){
-                                    $mensaje->archivo = $element->archivo;
-                                }
+                            if(!is_null($element)){
+                                $mensaje->archivo = $element->archivo;
                             }
                         }
                     }
                 }
-            } 
-        }
+            }
+        } 
+        
 
         return view('preguntasrespuestas.detallepregunta', compact('DatosPregunta', 'DatosUsuario', 'DatosCuenta', 'IdTipoUsuario', 'Respuestas', 'idPreguntaRespuesta', 'IdUsuario', 'Imagen')); 
     }

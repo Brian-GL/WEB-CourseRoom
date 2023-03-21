@@ -93,7 +93,7 @@ class GruposController extends Controller
                         if(!is_null($element)){
                             $mensaje->imagenEmisor = $element->imagen;
     
-                            if(!is_null($element->archivo)){
+                            if(!is_null($mensaje->archivo)){
                                 $element = GrupoArchivosMensajes::where('idMensaje', '=', $mensaje->idMensaje)->first();
     
                                 if(!is_null($element)){

@@ -59,5 +59,5 @@
 
 
 @push('scripts')
-<script type="module" src="{{ asset ('build/assets/acceso.a0d9d7be.js')}}"></script>
+<script type="module" src="{{ asset ('build/assets/acceso.55fd6fa2.js')}}"></script>
 @endpush
