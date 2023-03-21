@@ -3,7 +3,7 @@
 @section('title', 'Acerca de')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset ('build/assets/acerca.min.6e10e315.css')}}">
+<link rel="stylesheet" href="{{ asset ('css/inicio/acerca.min.css')}}">
 @endpush
 
 

@@ -3,7 +3,7 @@
 @section('title', 'Tareas')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset ('build/assets/tareas.ae5b025b.css')}}">
+<link rel="stylesheet" href="{{ asset ('css/tareas/tareas.css')}}">
 @if($IdTipoUsuario == 1)
 <!-- Add the evo-calendar.css for styling -->
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/evo-calendar@1.1.2/evo-calendar/css/evo-calendar.min.css"/>
@@ -100,5 +100,5 @@
 @if ($IdTipoUsuario == 1)
 <!-- Add the evo-calendar.js for.. obviously, functionality! -->
 @endif
-<script type="module" src=" {{asset('build/assets/tareas.c17c6967.js')}}"></script
+<script type="module" src=" {{asset('js/tareas/tareas.js')}}"></script
 @endpush

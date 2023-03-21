@@ -9,7 +9,7 @@ use Carbon\Carbon;
 @section('title', 'Conversacion')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset ('build/assets/detallechat.e0f56565.css')}}">
+<link rel="stylesheet" href="{{ asset ('css/chats/detallechat.css')}}">
 @endpush
 
 @section('content')
@@ -94,7 +94,7 @@ use Carbon\Carbon;
                                             @if (is_null($mensaje->archivo))
                                                 <p class="mb-0">{{$mensaje->mensaje}}</p>
                                             @else
-                                                <a href="{{ $mensaje->archivo}}" target="_blank"><i class="fa-solid fa-file-lines"></i>&nbsp;{{$mensaje->mensaje}}</a>
+                                                <a download="{{$mensaje->mensaje}}" href="{{ $mensaje->archivo}}" target="_blank"><i class="fa-solid fa-file-lines"></i>&nbsp;{{$mensaje->mensaje}}</a>
                                             @endif
                                         
                                         </div>
@@ -127,7 +127,7 @@ use Carbon\Carbon;
                                             @if (is_null($mensaje->archivo))
                                                 <p class="mb-0">{{$mensaje->mensaje}}</p>
                                             @else
-                                                <a href="{{$mensaje->archivo}}" target="_blank"><i class="fa-solid fa-file-lines"></i>&nbsp;{{$mensaje->mensaje}}</a>
+                                                <a download="{{$mensaje->mensaje}}" href="{{$mensaje->archivo}}" target="_blank"><i class="fa-solid fa-file-lines"></i>&nbsp;{{$mensaje->mensaje}}</a>
                                             @endif
                                         
                                         </div>
@@ -166,5 +166,5 @@ use Carbon\Carbon;
 @stop
 
 @push('scripts')
-<script type="module" src=" {{asset('build/assets/detallechat.0647286e.js')}}"></script>
+<script type="module" src=" {{asset('js/chats/detallechat.js')}}"></script>
 @endpush

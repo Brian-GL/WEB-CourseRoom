@@ -3,7 +3,7 @@
 @section('title', 'Avisos')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset ('build/assets/avisos.ee42dcca.css')}}">
+<link rel="stylesheet" href="{{ asset ('css/avisos/avisos.css')}}">
 @endpush
 
 @section('content')
@@ -34,5 +34,5 @@
 
 
 @push('scripts')
-<script type="module" src="{{asset('build/assets/avisos.291c31c2.js')}}"></script>
+<script type="module" src="{{asset('js/avisos/avisos.js')}}"></script>
 @endpush

@@ -3,7 +3,7 @@
 @section('title', 'Sesiones')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset ('build/assets/sesiones.63892b4b.css')}}">
+<link rel="stylesheet" href="{{ asset ('css/usuarios/sesiones.css')}}">
 @endpush
 
 @section('content')
@@ -34,5 +34,5 @@
 
 
 @push('scripts')
-<script type="module" src=" {{asset('build/assets/sesiones.74794391.js')}}"></script>
+<script type="module" src=" {{asset('js/usuarios/sesiones.js')}}"></script>
 @endpush

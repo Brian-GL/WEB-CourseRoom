@@ -11,7 +11,7 @@
 @section('title', 'Registro')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset ('build/assets/registro.min.eee0e00d.css')}}">
+<link rel="stylesheet" href="{{ asset ('css/default/registro.min.css')}}">
 @endpush
 
 @section('content')
@@ -143,5 +143,5 @@
 @stop
 
 @push('scripts')
-<script type="module" src="{{ asset ('build/assets/registro.d02df0bc.js')}}"></script>
+<script type="module" src="{{ asset ('js/default/registro.js')}}"></script>
 @endpush

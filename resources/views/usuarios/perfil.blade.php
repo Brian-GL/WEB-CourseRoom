@@ -28,7 +28,7 @@
 @section('title', 'Perfil')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset ('build/assets/perfil.min.f58ea1e3.css')}}">
+<link rel="stylesheet" href="{{ asset ('css/usuarios/perfil.min.css')}}">
 @endpush
 
 @section('content')
@@ -42,7 +42,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <div class="d-flex justify-content-center mb-4" id="seleccionar-imagen">
-                        @if(!is_null($Imagen) && &Imagen != '')
+                        @if(!is_null($Imagen) && $Imagen != '')
                             <img id="imagen-seleccionada" class="img-fluid shadow-lg" src="{{ $Imagen}}" class="rounded img-fluid" alt="Imagen de perfil"/>
                         @else
                             <img id="imagen-seleccionada" class="img-fluid shadow-lg" src="https://storage.needpix.com/thumbs/blank-profile-picture-973460_1280.png" class="rounded img-fluid" alt="Imagen de perfil"/>
@@ -228,5 +228,5 @@
 @stop
 
 @push('scripts')
-<script type="module" src="{{ asset ('build/assets/perfil.1ab441a7.js')}}"></script>
+<script type="module" src="{{ asset ('js/usuarios/perfil.js')}}"></script>
 @endpush

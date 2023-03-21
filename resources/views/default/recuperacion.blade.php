@@ -3,7 +3,7 @@
 @section('title', 'Recuperación de credenciales')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset ('build/assets/recuperacion.min.3a775cde.css')}}">
+<link rel="stylesheet" href="{{ asset ('css/default/recuperacion.min.css')}}">
 @endpush
 
 @section('content')
@@ -48,5 +48,5 @@
 @stop
 
 @push('scripts')
-<script type="module" src="{{ asset ( 'build/assets/recuperacion.1fe9c643.js')}}"></script>
+<script type="module" src="{{ asset ( 'js/default/recuperacion.js')}}"></script>
 @endpush

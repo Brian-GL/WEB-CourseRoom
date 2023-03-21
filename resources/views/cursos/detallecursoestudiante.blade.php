@@ -7,7 +7,7 @@ use Carbon\Carbon;
 @section('title', 'Detalle Curso')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset ('build/assets/detallecursoestudiante.ec9fe6e4.css')}}">
+<link rel="stylesheet" href="{{ asset ('css/cursos/detallecursoestudiante.css')}}">
 @endpush
 
 @section('content')
@@ -196,7 +196,7 @@ use Carbon\Carbon;
                                                         @if (is_null($mensaje->archivo))
                                                             <p class="mb-0">{{$mensaje->mensaje}}</p>
                                                         @else
-                                                            <a href="{{ $mensaje->archivo}}" target="_blank"><i class="fa-solid fa-file-lines"></i>&nbsp;{{$mensaje->mensaje}}</a>
+                                                            <a download="{{$mensaje->mensaje}}" href="{{ $mensaje->archivo}}" target="_blank"><i class="fa-solid fa-file-lines"></i>&nbsp;{{$mensaje->mensaje}}</a>
                                                         @endif
                                                     
                                                     </div>
@@ -525,5 +525,5 @@ use Carbon\Carbon;
 @stop
 
 @push('scripts')
-<script type="module" src=" {{asset('build/assets/detallecursoestudiante.a0de70fa.js')}}"></script>
+<script type="module" src=" {{asset('js/cursos/detallecursoestudiante.js')}}"></script>
 @endpush

@@ -3,7 +3,7 @@
 @section('title', 'Preguntas & Respuestas')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset ('build/assets/preguntas.min.f8a004fb.css')}}">
+<link rel="stylesheet" href="{{ asset ('css/preguntas/preguntas.min.css')}}">
 @endpush
 
 @section('content')
@@ -83,5 +83,5 @@
 @stop
 
 @push('scripts')
-<script type="module" src=" {{asset('build/assets/preguntas.57b9c256.js')}}"></script>
+<script type="module" src=" {{asset('js/preguntas/preguntas.js')}}"></script>
 @endpush

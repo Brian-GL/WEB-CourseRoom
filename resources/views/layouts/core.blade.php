@@ -14,8 +14,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
+    <link rel="icon" href="{{ asset('build/assets/Course_Room_Logo.282e379a.ico')}}">
+
     <!-- Styles -->
-    <link rel="stylesheet" href="{{ asset('build/assets/core.db3e91cd.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/layout/core.css') }}">
     @stack('styles')
 
     <!-- Scripts -->
@@ -36,7 +38,7 @@
         </div>
     </div>
 
-    <script type="module" src="{{ asset ('build/assets/core.2a1dee95.js')}}"></script>
+    <script type="module" src="{{ asset ('js/layout/core.js')}}"></script>
     @stack('scripts')
 </body>
 </html>

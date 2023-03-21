@@ -3,7 +3,7 @@
 @section('title', 'Inicio')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset ('build/assets/inicio.min.bb23fbdb.css')}}">
+<link rel="stylesheet" href="{{ asset ('css/inicio/inicio.min.css')}}">
 @endpush
 
 
@@ -26,5 +26,5 @@
 @stop
 
 @push('scripts')
-<script type="module" src="{{ asset ('build/assets/inicio.min.4f6949ad.js')}}"></script>
+<script type="module" src="{{ asset ('js/inicio/inicio.min.js')}}"></script>
 @endpush

@@ -3,7 +3,7 @@
 @section('title', 'Reproductor de música')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset ('build/assets/musica.min.0b29d228.css')}}">
+<link rel="stylesheet" href="{{ asset ('css/herramientas/musica.min.css')}}">
 @endpush
 
 @section('content')
@@ -104,5 +104,5 @@
 @stop
 
 @push('scripts')
-<script type="module" src=" {{asset('build/assets/musica.min.e53759b3.js')}}"></script>
+<script type="module" src=" {{asset('js/herramientas/musica.min.js')}}"></script>
 @endpush

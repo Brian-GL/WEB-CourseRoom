@@ -3,7 +3,7 @@
 @section('title', 'Grupos')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset ('build/assets/grupos.581234ad.css')}}">
+<link rel="stylesheet" href="{{ asset ('css/grupos/grupos.css')}}">
 @endpush
 
 @section('content')
@@ -31,5 +31,5 @@
 @stop
 
 @push('scripts')
-<script type="module" src=" {{asset('build/assets/grupos.a4a23f48.js')}}"></script>
+<script type="module" src=" {{asset('js/grupos/grupos.js')}}"></script>
 @endpush
