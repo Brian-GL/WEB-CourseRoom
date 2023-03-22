@@ -219,13 +219,13 @@ dataTableCursoEstudianteDesempeno.column(0).visible(false);
 document.addEventListener('DOMContentLoaded',  ObtenerInformacionInicial, false);
 
 async function ObtenerInformacionInicial(){
-    ObtenerMateriales();
+    document.ObtenerMateriales();
     ObtenerMiembros();
     ObtenerTareas();
     ObtenerDesempeno();
 }
 
-async function ObtenerMateriales(){
+document.ObtenerMateriales = async function(){
     try{
 
         ShowPreloader();
@@ -874,7 +874,7 @@ async function EnviarMaterial(filename, base64, file) {
                     background: '#000000',
                     color: '#FFFFFF'
                 }).then(() => {
-                    ObtenerMateriales();
+                    document.ObtenerMateriales();
                 });
             }
             break;

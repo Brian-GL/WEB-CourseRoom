@@ -88,10 +88,10 @@ dataTableTareaArchivosAdjuntos.column(2).visible(false);
 document.addEventListener('DOMContentLoaded',  ObtenerInformacionInicial, false);
 
 async function ObtenerInformacionInicial(){
-    ObtenerArchivosAdjuntos();
+    document.ObtenerArchivosAdjuntos();
 }
 
-async function ObtenerArchivosAdjuntos(){
+document.ObtenerArchivosAdjuntos = async function (){
     try{
 
         ShowPreloader();
@@ -250,7 +250,7 @@ async function SubirArchivoAdjunto(filename, base64, file) {
                     background: '#000000',
                     color: '#FFFFFF'
                 }).then(() => {
-                    ObtenerArchivosAdjuntos();
+                    document.ObtenerArchivosAdjuntos();
                 });
             }
             break;

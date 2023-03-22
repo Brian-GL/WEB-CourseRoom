@@ -321,7 +321,7 @@ if(idTipoUsuario == 1){
 
                     $("#tareas-calendario").on('selectEvent', (event, activeMonth, monthIndex) => {
                         let idTarea = activeMonth.data;
-                        DetalleTareaEstudiante(idTarea);
+                        document.DetalleTareaEstudiante(idTarea);
                     });
     
                 }

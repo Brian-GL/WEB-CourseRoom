@@ -255,14 +255,14 @@ dataTableTareasProfesorCurso.column(0).visible(false);
 document.addEventListener('DOMContentLoaded',  ObtenerInformacionInicial, false);
 
 async function ObtenerInformacionInicial(){
-    ObtenerMateriales();
-    ObtenerTareas();
+    document.ObtenerMateriales();
+    document.ObtenerTareas();
     ObtenerDesempeno();
-    ObtenerGrupos();
+    document.ObtenerGrupos();
     ObtenerMiembros();
 }
 
-async function ObtenerMateriales(){
+document.ObtenerMateriales = async function(){
     try{
 
         ShowPreloader();
@@ -383,7 +383,7 @@ async function ObtenerMateriales(){
     }
 }
 
-async function ObtenerMiembros(){
+ async function ObtenerMiembros(){
     try{
 
         ShowPreloader();
@@ -502,7 +502,7 @@ async function ObtenerMiembros(){
     }
 }
 
-async function ObtenerTareas(){
+document.ObtenerTareas = async function (){
     try{
 
         ShowPreloader();
@@ -741,7 +741,7 @@ async function ObtenerDesempeno(){
     }
 }
 
-async function ObtenerGrupos(){
+document.ObtenerGrupos = async function (){
     try{
 
         ShowPreloader();
@@ -985,7 +985,7 @@ async function EnviarMaterial(filename, base64, file) {
                     background: '#000000',
                     color: '#FFFFFF'
                 }).then(() => {
-                    ObtenerMateriales();
+                    document.ObtenerMateriales();
                 });
             }
             break;
@@ -1370,7 +1370,7 @@ $("#form-agregar-grupo").on("submit", async (e) => {
                     background: '#000000',
                     color: '#FFFFFF'
                 }).then(() => {
-                    ObtenerGrupos();
+                    document.ObtenerGrupos();
                     $("#agregar-grupo-modal").hide();
                 });
             }
@@ -1464,7 +1464,7 @@ $("#form-agregar-tarea").on("submit", async (e) => {
                     background: '#000000',
                     color: '#FFFFFF'
                 }).then(() => {
-                    ObtenerTareas();
+                    document.ObtenerTareas();
                     $("#agregar-tarea-modal").hide();
                 });
             }
@@ -1552,7 +1552,7 @@ $("#form-agregar-usuario-grupo").on("submit", async (e) => {
                     background: '#000000',
                     color: '#FFFFFF'
                 }).then(() => {
-                    ObtenerGrupos();
+                    document.ObtenerGrupos();
                     $("#agregar-usuario-grupo-modal").hide();
                 });
             }

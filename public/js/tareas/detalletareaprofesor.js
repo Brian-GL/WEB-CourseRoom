@@ -174,12 +174,12 @@ dataTableTareaRetroalimentaciones.column(0).visible(false);
 document.addEventListener('DOMContentLoaded',  ObtenerInformacionInicial, false);
 
 async function ObtenerInformacionInicial(){
-    ObtenerArchivosAdjuntos();
-    ObtenerRetroalimentaciones();
+    document.ObtenerArchivosAdjuntos();
+    document.ObtenerRetroalimentaciones();
     ObtenerArchivosEntregados();
 }
 
-async function ObtenerArchivosAdjuntos(){
+document.ObtenerArchivosAdjuntos = async function (){
     try{
 
         ShowPreloader();
@@ -300,7 +300,7 @@ async function ObtenerArchivosAdjuntos(){
     }
 }
 
-async function ObtenerRetroalimentaciones(){
+document.ObtenerRetroalimentaciones = async function (){
     try{
 
         ShowPreloader();
@@ -576,7 +576,7 @@ async function SubirArchivoAdjunto(filename, base64, file) {
                     background: '#000000',
                     color: '#FFFFFF'
                 }).then(() => {
-                    ObtenerArchivosAdjuntos();
+                    document.ObtenerArchivosAdjuntos();
                 });
             }
             break;
@@ -1082,7 +1082,7 @@ document.getElementById("form-agregar-retroalimentacion").addEventListener("subm
                     background: '#000000',
                     color: '#FFFFFF'
                 }).then(() => {
-                    ObtenerRetroalimentaciones();
+                    document.ObtenerRetroalimentaciones();
                     $("#agregar-retroalimentacion-modal").hide();
                 });
             }

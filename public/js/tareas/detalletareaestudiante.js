@@ -177,7 +177,7 @@ document.addEventListener('DOMContentLoaded',  ObtenerInformacionInicial, false)
 async function ObtenerInformacionInicial(){
     ObtenerArchivosAdjuntos();
     ObtenerRetroalimentaciones();
-    ObtenerArchivosEntregados();
+    document.ObtenerArchivosEntregados();
 }
 
 async function ObtenerArchivosAdjuntos(){
@@ -420,7 +420,7 @@ async function ObtenerRetroalimentaciones(){
     }
 }
 
-async function ObtenerArchivosEntregados(){
+document.ObtenerArchivosEntregados = async function (){
     try{
 
         ShowPreloader();
@@ -586,7 +586,7 @@ async function EnviarArchivoEntregado(filename, base64, file) {
                     background: '#000000',
                     color: '#FFFFFF'
                 }).then(() => {
-                    ObtenerArchivosEntregados();
+                    document.ObtenerArchivosEntregados();
                 });
             }
             break;
@@ -669,7 +669,7 @@ document.RemoverArchivoEntregado = async function(IdArchivoEntregado){
                     background: '#000000',
                     color: '#FFFFFF'
                 }).then(() => {
-                    ObtenerArchivosEntregados();
+                    document.ObtenerArchivosEntregados();
                 });
             }
             break;

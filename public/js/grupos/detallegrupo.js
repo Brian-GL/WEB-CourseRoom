@@ -165,12 +165,12 @@ dataTableGrupoTareasPendientes.column(7).visible(false);
 document.addEventListener('DOMContentLoaded',  ObtenerInformacionInicial, false);
 
 async function ObtenerInformacionInicial(){
-    ObtenerArchivosCompartidos();
+    document.ObtenerArchivosCompartidos();
     ObtenerMiembros();
-    ObtenerTareasPendientes();
+    document.ObtenerTareasPendientes();
 }
 
-async function ObtenerArchivosCompartidos(){
+document.ObtenerArchivosCompartidos = async function (){
     try{
 
         ShowPreloader();
@@ -418,7 +418,7 @@ async function ObtenerMiembros(){
     }
 }
 
-async function ObtenerTareasPendientes(){
+document.ObtenerTareasPendientes = async function (){
     try{
 
         ShowPreloader();
@@ -783,7 +783,7 @@ async function EnviarArchivoCompartido(filename, base64, file) {
                     background: '#000000',
                     color: '#FFFFFF'
                 }).then(() => {
-                    ObtenerArchivosCompartidos();
+                    document.ObtenerArchivosCompartidos();
                 });
             }
             break;
@@ -1253,7 +1253,7 @@ document.getElementById("form-agregar-tarea-pendiente").addEventListener("submit
                     background: '#000000',
                     color: '#FFFFFF'
                 }).then(() => {
-                    ObtenerTareasPendientes();
+                    document.ObtenerTareasPendientes();
                     $("#agregar-tarea-pendiente-modal").hide();
                 });
             }
@@ -1341,7 +1341,7 @@ document.getElementById("form-detalle-tarea-pendiente").addEventListener("submit
                     background: '#000000',
                     color: '#FFFFFF'
                 }).then(() => {
-                    ObtenerTareasPendientes();
+                    document.ObtenerTareasPendientes();
                 });
             }
             break;
