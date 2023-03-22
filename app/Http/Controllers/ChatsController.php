@@ -98,7 +98,8 @@ class ChatsController extends Controller
                             'Authorization' => env('COURSEROOM_API_KEY'),
                         ])->post($url.'/api/chats/mensajesobtener', [
                             'IdChat' => $idChat,
-                            'FechaVisualizacion' => null
+                            'IdUsuarioLector' => $IdUsuario,
+                            'Leidos' => null
                         ]);
 
                         if($response->ok()){
@@ -388,12 +389,8 @@ class ChatsController extends Controller
 
                 $idChat = $request->integer('IdChat');
                 $idUsuarioLector = session('IdUsuario');
-                $leidos = $request->bool('Leidos');
-
-                if($leidos){
-                    $leidos = null;
-                }
-
+                $leidos = $request->boolean('Leidos');
+                
                 if($url != ''){
 
                     $fechaVisualizacion = Carbon::now()->addHours(-4);

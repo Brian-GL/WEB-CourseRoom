@@ -22,7 +22,7 @@ async function ObtenerMensajes(){
 
             formData = new FormData();
             formData.append("IdChat", IdChat);
-            formData.append("Leidos", true);
+            formData.append("Leidos", false);
 
             let response = await axios({
                 url: '/chats/mensajesobtener',
@@ -86,7 +86,9 @@ async function EnviarMensaje(mensaje, archivo, base64Archivo) {
         switch (result.code) {
             case 200:{
                 let fechaRegistroFormat = dayjs(result.fecha).format('DD/MM/YYYY h:mm A');
-                GenerarMensajeEmisor(fechaRegistroFormat, mensaje, result.nombreArchivo, document.getElementById("nombre-usuario").innerHTML, result.imagenEmisor);
+
+                let archivo = result.nombreArchivo === "null" ? null : result.nombreArchivo;
+                GenerarMensajeEmisor(fechaRegistroFormat, mensaje, archivo, document.getElementById("nombre-usuario").innerHTML, result.imagenEmisor);
             }
             break;
             case 500: {
@@ -252,7 +254,7 @@ function GenerarMensajeEmisor(fechaRegistro, mensaje, nombreArchivo, nombreUsuar
             `<div class="col-md-12 d-flex justify-content-end"><div class="w-50"><div class="d-flex justify-content-end mb-4"><div class="card mask-custom"><div class="card-header d-flex justify-content-between p-3"style="border-bottom: 1px solid rgba(255,255,255,.3);"><div class="row"><div class="col-md-6 text-center text-wrap"><p class="fw-bold mb-0">${nombreUsuarioEmisor}</p></div><div class="col-md-6 text-center text-wrap"><p class="text-light small mb-0"><i class="far fa-clock"></i> ${fechaRegistro}</p></div></div></div><div class="card-body"><p class="mb-0">${mensaje}</p></div></div><img src="${imagenEmisor}" alt="avatar" class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60"></div></div></div>`;
     } else {
         elemento =
-            `<div class="col-md-12 d-flex justify-content-end"><div class="w-50"><div class="d-flex justify-content-end mb-4"><div class="card mask-custom"><div class="card-header d-flex justify-content-between p-3"style="border-bottom: 1px solid rgba(255,255,255,.3);"><div class="row"><div class="col-md-6 text-center text-wrap"><p class="fw-bold mb-0">${nombreUsuarioEmisor}</p></div><div class="col-md-6 text-center text-wrap"><p class="text-light small mb-0"><i class="far fa-clock"></i> ${fechaRegistro}</p></div></div></div><div class="card-body"><a href="${nombreArchivo}" target="_blank"><i class="fa-solid fa-file-lines"></i>&nbsp;${mensaje}'</a></div></div><img src="${imagenEmisor}" alt="avatar" class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60"></div></div></div>`;
+            `<div class="col-md-12 d-flex justify-content-end"><div class="w-50"><div class="d-flex justify-content-end mb-4"><div class="card mask-custom"><div class="card-header d-flex justify-content-between p-3"style="border-bottom: 1px solid rgba(255,255,255,.3);"><div class="row"><div class="col-md-6 text-center text-wrap"><p class="fw-bold mb-0">${nombreUsuarioEmisor}</p></div><div class="col-md-6 text-center text-wrap"><p class="text-light small mb-0"><i class="far fa-clock"></i> ${fechaRegistro}</p></div></div></div><div class="card-body"><a download="${mensaje}" href="${nombreArchivo}" target="_blank"><i class="fa-solid fa-file-lines"></i>&nbsp;${mensaje}'</a></div></div><img src="${imagenEmisor}" alt="avatar" class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60"></div></div></div>`;
     }
     
     $("#mensajes").append(elemento);
@@ -268,7 +270,7 @@ function GenerarMensajeReceptor(fechaRegistro, mensaje, nombreArchivo, nombreUsu
             `<div class="col-md-12 d-flex justify-content-start"><div class="w-50"><div class="d-flex justify-content-start mb-4"><img src="${imagenEmisor}" alt="avatar" class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60"><div class="card mask-custom"><div class="card-header d-flex justify-content-between p-3"style="border-bottom: 1px solid rgba(255,255,255,.3);"><div class="row"><div class="col-md-6 text-center text-wrap"><p class="fw-bold mb-0">${nombreUsuarioEmisor}</p></div><div class="col-md-6 text-center text-wrap"><p class="text-light small mb-0"><i class="far fa-clock"></i> ${fechaRegistro}</p></div></div></div><div class="card-body"><p class="mb-0">${mensaje}</p></div></div></div></div></div>`;
     } else {
         elemento =
-            `<div class="col-md-12 d-flex justify-content-start"><div class="w-50"><div class="d-flex justify-content-start mb-4"><img src="${imagenEmisor}" alt="avatar" class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60"><div class="card mask-custom"><div class="card-header d-flex justify-content-between p-3"style="border-bottom: 1px solid rgba(255,255,255,.3);"><div class="row"><div class="col-md-6 text-center text-wrap"><p class="fw-bold mb-0">${nombreUsuarioEmisor}</p></div><div class="col-md-6 text-center text-wrap"><p class="text-light small mb-0"><i class="far fa-clock"></i> ${fechaRegistro}</p></div></div></div><div class="card-body"><a href="${nombreArchivo}" target="_blank"><i class="fa-solid fa-file-lines"></i>&nbsp;${mensaje}'</a></div></div></div></div></div>`;
+            `<div class="col-md-12 d-flex justify-content-start"><div class="w-50"><div class="d-flex justify-content-start mb-4"><img src="${imagenEmisor}" alt="avatar" class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60"><div class="card mask-custom"><div class="card-header d-flex justify-content-between p-3"style="border-bottom: 1px solid rgba(255,255,255,.3);"><div class="row"><div class="col-md-6 text-center text-wrap"><p class="fw-bold mb-0">${nombreUsuarioEmisor}</p></div><div class="col-md-6 text-center text-wrap"><p class="text-light small mb-0"><i class="far fa-clock"></i> ${fechaRegistro}</p></div></div></div><div class="card-body"><a download="${mensaje}" href="${nombreArchivo}" target="_blank"><i class="fa-solid fa-file-lines"></i>&nbsp;${mensaje}'</a></div></div></div></div></div>`;
     }
 
     $("#mensajes").append(elemento);
