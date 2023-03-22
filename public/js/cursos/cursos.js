@@ -1025,7 +1025,7 @@ if(idTipoUsuario == 1){
                         background: '#000000',
                         color: '#FFFFFF'
                     }).then(() => {
-                        DetalleCursoProfesor(resultado.data.codigo);
+                        document.DetalleCursoProfesor(resultado.data.codigo);
                     });
                 }
                 break;
