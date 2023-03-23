@@ -11,6 +11,11 @@
     overflow: hidden;
 }
 
+.image{
+    max-width: 500px !important;
+    max-height: 500px !important;
+}
+
 #contenido-curso{
     max-height: 90%;
     height: 87%;

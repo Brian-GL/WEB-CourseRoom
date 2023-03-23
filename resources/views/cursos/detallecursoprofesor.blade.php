@@ -95,13 +95,9 @@ $min_date = Carbon::now()->addHours(8)->toDateTimeString();
                                 <div class="col-md-6 text-center">
                                     @if(!is_null($DatosCurso))
                                         @if(!is_null($DatosCurso->imagen))
-                                            <img id="imagen-curso" class="img-fluid rounded-circle shadow-lg h-75 mb-1" alt="Imagen del curso" src="{{$DatosCurso->imagen}}" />
+                                            <img id="imagen-curso" class="img-fluid rounded-circle shadow-lg mb-1 image" alt="Imagen del curso" src="{{$DatosCurso->imagen}}" />
                                         @endif
-                                        @if( !is_null($DatosCurso->imagenProfesor))
-                                            <img id="imagen-profesor" class="img-fluid rounded-circle shadow-lg h-75 mb-1" alt="Imagen del profesor" src="{{ $DatosCurso->imagenProfesor}}" />
-                                        @endif
-                                        <p class="titulado fuenteNormal segundo-color-letra">Creada por {{$DatosCurso->nombreProfesor}}</p>
-                                        <hr>
+
                                         @php
                                             $fechaRegistro = new Carbon($DatosCurso->fechaRegistro);
                                         @endphp
@@ -133,7 +129,7 @@ $min_date = Carbon::now()->addHours(8)->toDateTimeString();
                                         @if (!is_null($DatosCurso) && !$DatosCurso->finalizado)
                                             <div class="col-md-10"></div>
                                             <div class="col-md-2 d-flex justify-content-center">
-                                                <button type="submit" class="w-100 btn tercer-color-letra tercer-color-fondo" id="crear-tarea">
+                                                <button type="button" data-bs-toggle="modal" data-bs-target="#agregar-tarea-modal" class="w-100 btn tercer-color-letra tercer-color-fondo" id="crear-tarea">
                                                     <i class="fa-solid fa-briefcase"></i>&nbsp;Crear tarea
                                                 </button>
                                             </div>
@@ -189,7 +185,7 @@ $min_date = Carbon::now()->addHours(8)->toDateTimeString();
                                         @if (!is_null($DatosCurso) && !$DatosCurso->finalizado)
                                             <div class="col-md-10"></div>
                                             <div class="col-md-2 d-flex justify-content-center">
-                                                <button type="submit" class="w-100 btn tercer-color-letra tercer-color-fondo" id="crear-grupo">
+                                                <button type="button" data-bs-toggle="modal" data-bs-target="#agregar-grupo-modal" class="w-100 btn tercer-color-letra tercer-color-fondo" id="crear-grupo">
                                                     <i class="fa-solid fa-people-line"></i>&nbsp;Crear grupo
                                                 </button>
                                             </div>
@@ -279,7 +275,7 @@ $min_date = Carbon::now()->addHours(8)->toDateTimeString();
 </div>
 
 <!-- Modal Crear Grupo -->
-<div class="modal fade text-center" id="agregar-grupo-modal" tabindex="-1" role="dialog" aria-labelledby="titulo-modal-agregar-grupo" aria-hidden="true">
+<div class="modal fade text-center" id="agregar-grupo-modal" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content primer-color-letra primer-color-fondo">
             <div class="modal-header">
@@ -307,7 +303,7 @@ $min_date = Carbon::now()->addHours(8)->toDateTimeString();
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn segundo-color-letra segundo-color-fondo" data-bs-dismiss="modal">❌ Cancelar</button>
-                    <button type="submit" class="btn tercer-color-letra tercer-color-fondo" id="crear-grupo">✅ Crear grupo</button>
+                    <button type="submit" class="btn tercer-color-letra tercer-color-fondo" >✅ Crear grupo</button>
                 </div>
             </form>
         </div>
@@ -315,7 +311,7 @@ $min_date = Carbon::now()->addHours(8)->toDateTimeString();
 </div>
 
 <!-- Modal Crear Tarea -->
-<div class="modal fade text-center" id="agregar-tarea-modal" tabindex="-1" role="dialog" aria-labelledby="titulo-modal-agregar-tarea" aria-hidden="true">
+<div class="modal fade text-center" id="agregar-tarea-modal" role="dialog" >
     <div class="modal-dialog" role="document">
         <div class="modal-content primer-color-letra primer-color-fondo">
             <div class="modal-header">
@@ -350,7 +346,7 @@ $min_date = Carbon::now()->addHours(8)->toDateTimeString();
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn segundo-color-letra segundo-color-fondo" data-bs-dismiss="modal">❌ Cancelar</button>
-                    <button type="submit" class="btn tercer-color-letra tercer-color-fondo" id="crear-tarea">✅ Crear tarea</button>
+                    <button type="submit" class="btn tercer-color-letra tercer-color-fondo" >✅ Crear tarea</button>
                 </div>
             </form>
         </div>
@@ -358,7 +354,7 @@ $min_date = Carbon::now()->addHours(8)->toDateTimeString();
 </div>
 
 <!-- Modal Asignar Usuario Grupo -->
-<div class="modal fade text-center" id="agregar-usuario-grupo-modal" tabindex="-1" role="dialog" aria-labelledby="titulo-modal-agregar-usuario-grupo" aria-hidden="true">
+<div class="modal fade text-center" id="agregar-usuario-grupo-modal" role="dialog" >
     <div class="modal-dialog" role="document">
         <div class="modal-content primer-color-letra primer-color-fondo">
             <div class="modal-header">

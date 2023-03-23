@@ -42,6 +42,50 @@ $(".nav-link").on("click",  (e) => {
 
 //#endregion
 
+
+//Curso miembros profesor:
+
+let dataTableCursoMiembrosProfesor;
+dataTableCursoMiembrosProfesor = $("#table-miembros-profesor").DataTable({
+    pagingType: 'full_numbers',
+    dom: 'frtp',
+    search: {
+        return: true,
+    },
+    scrollX: false,
+    language: {
+        search: "_INPUT_",
+        searchPlaceholder: "Buscar algún integrante...",
+        paginate: {
+            "first":      "Primero",
+            "last":       "Último",
+            "next":       "Siguiente",
+            "previous":   "Anterior"
+        },
+        zeroRecords: "Sin resultados encontrados",
+        emptyTable: "Sin datos en la tabla",
+        infoEmpty: "Sin entradas",
+        loadingRecords: "Cargando..."
+    },
+    columns: [
+        { title: "IdUsuario"},
+        { title: "Integrante"},
+        { title: "Imagen"},
+        { title: "Fecha de incorporación"},
+        { title: "Fecha de actualización"},
+        { title: "Estatus"}
+    ],
+    columnDefs:[
+        {className: "text-center fuenteNormal segundo-color-letra", defaultContent: "-", targets: "_all"},
+    ],
+    rowCallback: (row) => {
+        $(row).css('color', SegundoColorLetra);
+    }
+});
+
+dataTableCursoMiembrosProfesor.column(0).visible(false);
+dataTableCursoMiembrosProfesor.column(2).visible(false);
+
 let dataTableCursoDesempeno;
 dataTableCursoDesempeno = $("#table-curso-desempeno").DataTable({
     pagingType: 'full_numbers',
@@ -168,49 +212,6 @@ dataTableCursoMateriales = $("#table-materiales").DataTable({
 dataTableCursoMateriales.column(0).visible(false);
 dataTableCursoMateriales.column(2).visible(false);
 dataTableCursoMateriales.column(3).visible(false);
-
-//Curso miembros profesor:
-
-let dataTableCursoMiembrosProfesor = $("#table-miembros-profesor").DataTable({
-    pagingType: 'full_numbers',
-    dom: 'frtp',
-    search: {
-        return: true,
-    },
-    scrollX: false,
-    language: {
-        search: "_INPUT_",
-        searchPlaceholder: "Buscar algún integrante...",
-        paginate: {
-            "first":      "Primero",
-            "last":       "Último",
-            "next":       "Siguiente",
-            "previous":   "Anterior"
-        },
-        zeroRecords: "Sin resultados encontrados",
-        emptyTable: "Sin datos en la tabla",
-        infoEmpty: "Sin entradas",
-        loadingRecords: "Cargando..."
-    },
-    columns: [
-        { title: "IdUsuario"},
-        { title: "Integrante"},
-        { title: "Imagen"},
-        { title: "Fecha de incorporación"},
-        { title: "Fecha de actualización"},
-        { title: "Estatus"},
-        { title: "Expulsar ❌"},
-    ],
-    columnDefs:[
-        {className: "text-center fuenteNormal segundo-color-letra", defaultContent: "-", targets: "_all"},
-    ],
-    rowCallback: (row) => {
-        $(row).css('color', SegundoColorLetra);
-    }
-});
-
-dataTableCursoMiembrosProfesor.column(0).visible(false);
-dataTableCursoMiembrosProfesor.column(2).visible(false);
 
 // Tareas curso profesor:
 
@@ -407,6 +408,8 @@ document.ObtenerMateriales = async function(){
         switch (result.code) {
             case 200:{
                 let filas = result.data;
+
+                dataTableCursoMiembrosProfesor.destroy();
 
                 dataTableCursoMiembrosProfesor = $("#table-miembros-profesor").DataTable({
                     pagingType: 'full_numbers',
@@ -766,6 +769,8 @@ document.ObtenerGrupos = async function (){
             case 200:{
                 let filas = result.data;
 
+                dataTableGruposCurso.destroy();
+
                 dataTableGruposCurso = $("#table-grupos-curso").DataTable({
                     pagingType: 'full_numbers',
                     dom: 'rtp',
@@ -800,8 +805,8 @@ document.ObtenerGrupos = async function (){
                     data: filas,
                     createdRow: (row, data) => {
                         $('.segundo-color-letra',row).css('color', SegundoColorLetra);
-                        $('.enrolar-estudiante', row).html('<span class="fuenteNormal span-detalle text-center text-decoration-underline" onclick="EnrolarEstudiante('.concat(data.idGrupo,')">👩🏽‍🎓 Enrolar</span>'));
-                        $('.info-grupo', row).html('<div class="container"><div class="row"><div class="col-5"><img class="img-fluid" alt="Imagen del usuario" src="'.concat(data.imagen,'"/></div><div class="col-7 p-0"><p class="fuenteNormal">',data.nombre,'</p></div></div></div>'));        
+                        $('.enrolar-estudiante', row).html('<button type="button" data-bs-toggle="modal" data-bs-target="#agregar-usuario-grupo-modal" class="fuenteNormal span-detalle text-center text-decoration-underline bg-transparent border-0" onclick="EnrolarEstudiante('.concat(data.idGrupo,',\'',data.nombre,'\')">👩🏽‍🎓 Enrolar</button>'));
+                        $('.info-grupo', row).html('<div class="container"><div class="row"><div class="col-5"><img class="img-fluid" alt="Imagen del grupo" src="'.concat(data.imagen,'"/></div><div class="col-7 p-0"><p class="fuenteNormal">',data.nombre,'</p></div></div></div>'));        
                         let fechaRegistro = data.fechaRegistro.substring(0, data.fechaRegistro.length -1 );
                         $('.fechaRegistro', row).text(dayjs(fechaRegistro).format('dddd DD MMM YYYY h:mm A'));
                     }
@@ -1060,14 +1065,95 @@ document.DetalleTareaCreada = async function(IdTarea){
     }
 }
 
-document.EnrolarEstudiante = async function(IdGrupo){
+$("#agregar-usuario-grupo-modal").on("shown.bs.modal", async () => {
     try {
 
         ShowPreloader();
 
-        $("#agregar-usuario-grupo-modal").show();
+        let formData = new FormData();
+
+        formData.append('IdCurso', IdCurso);
+
+        let response = await axios({
+            url: '/cursos/estudiantessingrupoobtener',
+            baseURL: BaseURL,
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
+            },
+            data: formData
+        });
+
+        HidePreloader();
+
+        let resultado = response.data;
+
+        switch (resultado.code) {
+            case 200:{
+               
+                let data = resultado.data;
+
+                let select = $("#select-usuario-agregar");
+                select.empty();
+
+                for(let value of data){
+                    select.append($('<option>', {
+                        value: value.idUsuario,
+                        text: value.estudiante
+                    }));
+                }
+            }
+            break;
+            case 500: {
+                Swal.fire({
+                    title: '¡Error!',
+                    text: resultado.data,
+                    imageUrl: window.SadOwl,
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    background: '#000000',
+                    color: '#FFFFFF',
+                    imageAlt: 'Error Image'
+                });
+            }
+                break;
+            default: {
+                Swal.fire({
+                    title: '¡Alerta!',
+                    text: resultado.data,
+                    imageUrl: window.IndifferentOwl,
+                    imageWidth: 100,
+                    imageHeight: 123,
+                    imageAlt: 'Alert Image',
+                    background: '#000000',
+                    color: '#FFFFFF'
+                });
+            }
+                break;
+        }
+    }
+    catch (ex) {
+        HidePreloader();
+        Swal.fire({
+            title: '¡Error!',
+            text: ex,
+            imageUrl: window.SadOwl,
+            imageWidth: 100,
+            imageHeight: 123,
+            background: '#000000',
+            color: '#FFFFFF',
+            imageAlt: 'Error Image'
+        });
+    }
+});
+
+document.EnrolarEstudiante = async function(IdGrupo, NombreGrupo){
+    try {
+
+        ShowPreloader();
 
         document.getElementById("id-grupo").value = IdGrupo;
+        document.getElementById("nombre-grupo-agregar-usuario").value = NombreGrupo;
 
         let formData = new FormData();
 
@@ -1325,9 +1411,9 @@ $("#subir-material").on('click', async () => {
     }
 });
 
-$("#crear-grupo").on("click", () => {
-    $("#agregar-grupo-modal").show();
-});
+// $("#crear-grupo").on("click", () => {
+//     $("#agregar-grupo-modal").show();
+// });
 
 $("#form-agregar-grupo").on("submit", async (e) => {
     
@@ -1417,10 +1503,6 @@ $("#form-agregar-grupo").on("submit", async (e) => {
         });
     }
 
-});
-
-$("#crear-tarea").on("click", async () => {
-    $("#agregar-tarea-modal").show();
 });
 
 $("#form-agregar-tarea").on("submit", async (e) => {

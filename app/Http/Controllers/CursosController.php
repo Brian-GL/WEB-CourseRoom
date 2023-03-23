@@ -170,13 +170,6 @@ class CursosController extends Controller
             if ($response->ok()){
                 $DatosCurso = json_decode($response->body());
 
-                //Obtener información imagen desde mongo:
-                $element = UsuariosImagenes::where('idUsuario', '=', $DatosCurso->idProfesor)->first();
-
-                if(!is_null($element)){
-                    $DatosCurso->imagenProfesor = $element->imagen;
-                }
-
                 $element = CursosImagenes::where('idCurso', '=', $IdCurso)->first();
 
                 if(!is_null($element)){
@@ -1118,6 +1111,15 @@ class CursosController extends Controller
 
                         $result = json_decode($response->body());
 
+                        foreach($result as &$miembro){
+                            $element = UsuariosImagenes::where('idUsuario', '=', $miembro->idUsuario)->first();
+
+                            if(!is_null($element)){
+                                $miembro->imagen = $element->imagen;
+                            }
+                        }
+
+
                         return response()->json(['code' => 200 , 'data' => $result], 200);
 
                     } else{
@@ -1286,9 +1288,9 @@ class CursosController extends Controller
                                 $curso->imagenProfesor = $element->imagen;
                             }
 
-                            $element = CursosImagenes::where('idCurso', '=', $curso->idCurso)->first();
+                            $elemento = CursosImagenes::where('idCurso', '=', $curso->idCurso)->first();
 
-                            if(!is_null($element)){
+                            if(!is_null($elemento)){
                                 $curso->imagenCurso = $element->imagen;
                             }
                         }
