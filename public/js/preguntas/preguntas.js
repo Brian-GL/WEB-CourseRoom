@@ -408,6 +408,8 @@ document.getElementById("form-buscar-preguntas").addEventListener('submit', asyn
             case 200:{
                 let filas = result.data;
                 dataTableBuscarPreguntas.destroy();
+                
+                let fechaRegistro;
 
                 dataTableBuscarPreguntas = $("#table-buscar-preguntas").DataTable({
                     pagingType: 'full_numbers',
@@ -444,13 +446,12 @@ document.getElementById("form-buscar-preguntas").addEventListener('submit', asyn
                     createdRow: (row, data) => {
                         $('.segundo-color-letra',row).css('color', SegundoColorLetra);
                         $('.span-detalle', row).html('<span class="fuenteNormal span-detalle text-center text-decoration-underline" onclick="DetallePregunta('.concat(data.IdPregunta,')">Ver detalle</span>'));
-                        let fechaRegistro = data.fechaRegistro.substring(0, data.fechaRegistro.length -1 );
+                        fechaRegistro = data.fechaRegistro.substring(0, data.fechaRegistro.length -1 );
                         $('.fechaRegistro', row).text(dayjs(fechaRegistro).format('dddd DD MMM YYYY h:mm A'));
                         $('.info-usuario', row).html('<div class="container"><div class="row"><div class="col-5"><img class="img-fluid" alt="Imagen del usuario" src="'.concat(data.imagenUsuario,'"/></div><div class="col-7 p-0"><p class="fuenteNormal">',data.nombreUsuario,'</p></div></div></div>'));
                     }
                 });
-
-                                
+           
                 dataTableBuscarPreguntas.column(0).visible(false);
                 dataTableBuscarPreguntas.column(1).visible(false);
                 dataTableBuscarPreguntas.column(2).visible(false);

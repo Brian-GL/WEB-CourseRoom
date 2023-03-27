@@ -6,7 +6,6 @@
 <link rel="stylesheet" href="{{ asset ('css/inicio/acerca.min.css')}}">
 @endpush
 
-
 @section('content')
 
 <div class="col-md-12">

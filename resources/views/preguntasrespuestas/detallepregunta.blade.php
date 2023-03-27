@@ -26,25 +26,23 @@ use Carbon\Carbon;
         <div class="row">
             <div class="col-md-12">
 
-                <div class="row">
-                    <div class="col-md-1 text-center">
-                        <a type="button" class="btn fuenteNormal tercer-color-fondo tercer-color-letra" title="Regresar a mis preguntas" href="{{route('preguntasrespuestas.inicio')}}">
+                <div class="row my-2">
+                    <div class="col-md-12 d-flex">
+                        <a type="button" class="btn fuenteNormal tercer-color-fondo tercer-color-letra align-items-center" title="Regresar a mis preguntas" href="{{route('preguntasrespuestas.inicio')}}">
                             <i class="fa-solid fa-hand-point-left fa-2x"></i>
                         </a> 
-                    </div>
-                    <div class="col-md-11">
-                        <h2 class="d-inline my-3 display-6 text-start fw-bolder primer-color-letra">Detalle de la pregunta</h2>
+                        <span class="ps-1 d-inline fs-2 text-start fw-bolder primer-color-letra">Detalle de la pregunta</h2>
                     </div>
                 </div>
                 
 
                 <div class="row">
                     <div class="col-md-12">
-                        <ul class="nav nav-pills my-0-5 nav-fill" role="tablist">
-                            <li class="nav-item btn" role="presentation">
+                        <ul class="nav nav-tabs my-1" role="tablist">
+                            <li class="nav-item" role="presentation">
                                 <button class="nav-link active fuenteNormal primer-color-letra primer-color-fondo" id="datos-generales-tab" data-bs-toggle="tab" data-bs-target="#datos-generales" type="button" role="tab" aria-controls="datos-generales" aria-selected="true">Datos generales</button>
                             </li>
-                            <li class="nav-item btn" role="presentation">
+                            <li class="nav-item" role="presentation">
                                 <button class="nav-link fuenteNormal tercer-color-letra tercer-color-fondo" id="respuestas-tab" data-bs-toggle="tab" data-bs-target="#respuestas" type="button" role="tab" aria-controls="respuestas" aria-selected="false">Respuestas</button>
                             </li>
                         </ul>
@@ -53,7 +51,7 @@ use Carbon\Carbon;
 
                 <div class="box row pt-1">
 
-                    <div class="tab-content">
+                    <div class="tab-content my-3">
 
                         <div class="tab-pane fade show active" id="datos-generales" role="tabpanel" aria-labelledby="datos-generales-tab">
                             <div class="row">
@@ -100,13 +98,13 @@ use Carbon\Carbon;
         
                                 <div class="col-md-6 text-center">
                                     @if(!is_null($DatosPregunta) && !is_null($DatosPregunta->imagenUsuario))
-                                        <img id="imagen-receptor" class="img-fluid rounded-circle shadow-lg h-75 mb-1" alt="Imagen del usuario receptor" src="{{ $DatosPregunta->imagenUsuario}}" />
+                                        <img id="imagen-receptor" class="img-fluid rounded-circle shadow-lg image mb-1" alt="Imagen del usuario receptor" src="{{ $DatosPregunta->imagenUsuario}}" />
                                     @else
-                                        <img id="imagen-receptor" class="img-fluid rounded-circle shadow-lg h-75 mb-1" alt="Imagen del usuario receptor" src="https://raw.githubusercontent.com/Brian-GL/CourseRoom/main/src/recursos/imagenes/Course_Room_Brand_Readme.png"/>
+                                        <img id="imagen-receptor" class="img-fluid rounded-circle shadow-lg image mb-1" alt="Imagen del usuario receptor" src="https://raw.githubusercontent.com/Brian-GL/CourseRoom/main/src/recursos/imagenes/Course_Room_Brand_Readme.png"/>
                                     @endif
 
                                     @if (!is_null($DatosPregunta) && !is_null($IdUsuario) && $IdUsuario = $DatosPregunta->idUsuario && $DatosPregunta->estatusPregunta == 'Abierta')
-                                        <div class="d-block mt-1 mx-2">
+                                        <div class="d-block mt-4 mx-2">
                                             <button id="actualizar-pregunta" type="button" onclick="ActualizarPregunta()" class="btn btn-lg segundo-color-letra segundo-color-fondo">Actualizar pregunta</button>
                                             <button id="solucionar-pregunta" type="button" onclick="SolucionarPregunta()" class="btn btn-lg primer-color-letra primer-color-fondo">Marcar solucionada</button>
                                         </div>

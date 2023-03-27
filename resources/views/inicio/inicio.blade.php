@@ -6,9 +6,7 @@
 <link rel="stylesheet" href="{{ asset ('css/inicio/inicio.min.css')}}">
 @endpush
 
-
 @section('content')
-
 <div class="col-md-12">
     <div class="container">
         <div class="row">
@@ -17,7 +15,7 @@
             @else
                 <h2 class="display-5 text-center primer-color-letra" id="titulo-inicio">¡Bienvenid@! </h2>
             @endif
-            <div class="text-center">
+            <div class="text-center mt-1">
                 <img id="imagen-meme" class="img-fluid shadow-lg" alt="Meme image">
             </div>
         </div>

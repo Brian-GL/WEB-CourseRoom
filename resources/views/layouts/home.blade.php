@@ -22,7 +22,7 @@
     <link rel="icon" href="{{ asset('build/assets/Course_Room_Logo.282e379a.ico')}}">
     
     <!-- Styles -->
-    <link rel="stylesheet" href="{{asset('css/layout/home.css')}}">
+    <link rel="stylesheet" href="{{asset('css/layout/home.min.css')}}">
     @stack('styles')
 
     <!-- Scripts -->
@@ -68,6 +68,7 @@
             <div class="components my-2">
                 <div class="row justify-content-center">
 
+                    @if ($IdTipoUsuario == 1)
                     <div class="col-5">
                         <a type="button" class="btn btn-lg segundo-color-letra" href="{{route('cursos.inicio')}}" title="Ir a mis cursos">
                             <i class="fa-solid fa-chalkboard-user"></i> Cursos
@@ -75,12 +76,19 @@
                     </div>
 
                     <div class="col-5">
-                        @if ($IdTipoUsuario == 1)
-                            <a type="button" class="btn btn-lg segundo-color-letra" href="{{route('grupos.inicio')}}" title="Ir a mis grupos">
-                                <i class="fa-solid fa-users-rectangle"></i> Grupos
-                            </a>
-                        @endif
+                        <a type="button" class="btn btn-lg segundo-color-letra" href="{{route('grupos.inicio')}}" title="Ir a mis grupos">
+                            <i class="fa-solid fa-users-rectangle"></i> Grupos
+                        </a>
                     </div>
+
+                    @else
+                        <div class="col-10 text-center">
+                            <a type="button" class="btn btn-lg segundo-color-letra" href="{{route('cursos.inicio')}}" title="Ir a mis cursos">
+                                <i class="fa-solid fa-chalkboard-user"></i> Cursos
+                            </a>
+                        </div>
+
+                    @endif
 
                 </div>
 
@@ -144,18 +152,18 @@
 
     <div class="container-fluid min-vh-100">
         <nav class="navbar shadow mt-2 mb-3 mx-3 rounded navbar-expand-md segundo-color-fondo">
-            <div class="container-fluid">
-                <div class="row d-flex w-100">
-                    <div class="col justify-content-start">
+            <div class="container-fluid ms-3">
+                <div class="row w-100">
+                    <div class="col-sm-3 d-flex justify-content-start align-items-center">
                         <button class="btn primer-color-letra primer-color-fondo" type="button" data-bs-toggle="offcanvas" data-bs-target="#inicio-offcanvas" aria-controls="inicio-offcanvas-label">
                             <i class="fa fa-bars fa-xl"></i>
                         </button>
                     </div>
-                    <div class="col justify-content-center text-center">
+                    <div class="col-sm-6 d-flex justify-content-center align-items-center">
                         <span class="fuenteMediana segundo-color-letra" id="reloj"></span>
                     </div>
-                    <div class="col d-flex justify-content-md-end">
-                        <div class="dropdown dropstart justify-content-md-end">
+                    <div class="col-sm-3 d-flex justify-content-end align-items-center">
+                        <div class="dropdown justify-content-end">
                             <button class="btn dropdown-toggle primer-color-letra primer-color-fondo" type="button" id="boton-perfil" data-bs-toggle="dropdown" aria-expanded="false">
                                 <!-- Nombre usuario -->
                                 @if(!is_null($DatosUsuario))
@@ -184,7 +192,7 @@
         </div>
     </div>
 
-    <script type="module" src="{{ asset('js/layout/home.js')}}"></script>
+    <script type="module" src="{{ asset('js/layout/home.min.js')}}"></script>
     @stack('scripts')
 
 </body>

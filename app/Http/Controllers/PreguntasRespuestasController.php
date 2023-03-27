@@ -450,46 +450,52 @@ class PreguntasRespuestasController extends Controller
     {
         try {
 
-            $url = env('COURSEROOM_API');
+            $validator = Validator::make($request->all(), $rules = [
+                'Busqueda' => ['required']
+            ], $messages = [
+                'required' => 'El campo :attribute es requerido'
+            ]);
 
-            $busqueda = null;
-            
-            if($request->has('Busqueda')){
-                $busqueda = $request->string('Nombre')->trim();
-            }
+            if ($validator->fails()) {
+                return response()->json(['code' => 404 , 'data' => $validator->errors()->first()], 200);
+            } else {
 
-            if($url != ''){
+                $url = env('COURSEROOM_API');
 
-                $response = Http::withHeaders([
-                    'Authorization' => env('COURSEROOM_API_KEY'),
-                ])->post($url.'/api/preguntas/buscar', [
-                    'Busqueda' => $busqueda,
-                ]);
+                if($url != ''){
 
-                if ($response->ok()){
+                    $busqueda = $request->string('Busqueda')->trim();
 
-                    $result = json_decode($response->body());
+                    $response = Http::withHeaders([
+                        'Authorization' => env('COURSEROOM_API_KEY'),
+                    ])->post($url.'/api/preguntas/buscar', [
+                        'Busqueda' => $busqueda,
+                    ]);
 
-                    foreach($result as &$value){
+                    if ($response->ok()){
 
-                        //Obtener información imagen desde mongo:
-                        $element = UsuariosImagenes::where('idUsuario', '=', $value->idUsuario)->first();
-            
-                        if(!is_null($element)){
-                            $value->imagenUsuario = $element->imagen;
+                        $result = json_decode($response->body());
+
+                        foreach($result as &$value){
+
+                            //Obtener información imagen desde mongo:
+                            $element = UsuariosImagenes::where('idUsuario', '=', $value->idUsuario)->first();
+                
+                            if(!is_null($element)){
+                                $value->imagenUsuario = $element->imagen;
+                            }
                         }
+
+                        return response()->json(['code' => 200 , 'data' => $result], 200);
+
+                    } else{
+                        return response()->json(['code' => 400 , 'data' => $response->body()], 200);
                     }
-
-                    return response()->json(['code' => 200 , 'data' => $result], 200);
-
-                } else{
-                    return response()->json(['code' => 400 , 'data' => $response->body()], 200);
                 }
-
-            } else{
-                return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
+                else{
+                    return response()->json(['code' => 404 , 'data' => 'Empty url'], 200);
+                }
             }
-
         } catch (\Throwable $th) {
             return response()->json(['code' => 500 , 'data' => $th->getMessage()], 200);
         }

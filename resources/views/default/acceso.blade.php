@@ -11,7 +11,7 @@
 <div class="col-md-12">
     <div class="container shadow-lg rounded-4">
         <div class="row">
-            <div class="col-md-7 p-5" id="login">
+            <div class="col-lg-7 p-5" id="login">
                 <div class="row justify-content-center px-3 mb-3">
                     <img id="logo" class="img-fluid" src="{{ asset ('build/assets/Course_Room_Brand.9000409b.png')}}">
                 </div>
@@ -47,16 +47,13 @@
                     </span>
                 </div>
             </div>
-            <div class="col-md-5 h-auto" id="presentation-image" title="Powered By Lorem Picsum"></div>
+            <div class="col-lg-5 h-auto" id="presentation-image" title="Powered By Lorem Picsum"></div>
         </div>
-
     </div>
-
-
 </div>
 
 @stop
 
 @push('scripts')
-<script type="module" src="{{ asset ('js/default/acceso.js')}}"></script>
+<script type="module" src="{{ asset ('js/default/acceso.min.js')}}"></script>
 @endpush

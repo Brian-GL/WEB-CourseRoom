@@ -31,7 +31,6 @@
                 <form id="form-recuperacion" method="HEAD">
                     @csrf
                     <div class="form-group">
-                        <label class="form-control-label text-black fuenteNormal" for="correo-electronico">Correo Electrónico De Recuperación</label>
                         <input class="form-control fuenteNormal emailing" type="email" id="correo-electronico" name="correo-electronico" placeholder="Correo electrónico de recuperación" maxlength="150" required>
                     </div>
 
@@ -48,5 +47,5 @@
 @stop
 
 @push('scripts')
-<script type="module" src="{{ asset ( 'js/default/recuperacion.js')}}"></script>
+<script type="module" src="{{ asset ( 'js/default/recuperacion.min.js')}}"></script>
 @endpush
