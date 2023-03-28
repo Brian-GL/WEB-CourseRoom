@@ -328,7 +328,7 @@ class PreguntasRespuestasController extends Controller
                 $mensaje = $request->string('Mensaje')->trim();
 
                 $Base64Archivo = null;
-                if($request->has('Base64Archivo')){
+                if($request->has('Base64Archivo') && $request->input('Base64Archivo') != 'null'){
                     $Base64Archivo = $request->input('Base64Archivo');
                 }
                 
@@ -377,7 +377,7 @@ class PreguntasRespuestasController extends Controller
                         'data' => $result, 
                         'fecha' => $fechaRegistro, 
                         'nombreArchivo' => $Base64Archivo,
-                        'imagenEmisor' => session('DatosCuenta')->imagen], 200);
+                        'imagenEmisor' => session('Imagen')], 200);
 
                     } else{
                         return response()->json(['code' => 400 , 'data' => $response->body()], 200);

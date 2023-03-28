@@ -35,7 +35,6 @@ use Carbon\Carbon;
                     </div>
                 </div>
                 
-
                 <div class="row">
                     <div class="col-md-12">
                         <ul class="nav nav-tabs my-1" role="tablist">
@@ -122,18 +121,18 @@ use Carbon\Carbon;
                     
                                         <div class="col-md-12 d-flex justify-content-start">
                                             <div class="d-flex justify-content-start mb-4">
-                                                <img src="{{ $mensaje->imagenEmisor}}" alt="avatar" class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60">
+                                                <img src="{{ $mensaje->imagenEmisor}}" alt="avatar" class="me-2 rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60">
                                                 <div class="card mask-custom">
-                                                    <div class="card-header d-flex justify-content-between p-3" style="border-bottom: 1px solid rgba(255,255,255,.3);">
+                                                    <div class="card-header d-flex justify-content-between p-2" style="border-bottom: 1px solid rgba(255,255,255,.3);">
                                                         <div class="col-md-6 text-center text-wrap">
-                                                            <p class="fw-bold mb-0">{{$mensaje->nombreUsuarioEmisor}}</p>
+                                                            <p class="text-start fw-bold mb-0 me-1">{{$mensaje->nombreUsuarioEmisor}}</p>
                                                         </div>
                                                         <div class="col-md-6 text-center text-wrap">
                                                             @php
                                                                 $fechaRegistro = new Carbon($mensaje->fechaRegistro);
                                                                 $fechaRegistroFormat = $fechaRegistro->format('d/m/Y h:i A'); 
                                                             @endphp
-                                                            <p class="text-light small mb-0"><i class="far fa-clock"></i>&nbsp;{{$fechaRegistroFormat}}</p>
+                                                            <p class="text-light small mb-0 text-end"><i class="far fa-clock"></i>&nbsp;{{$fechaRegistroFormat}}</p>
                                                         </div>
                                                     </div>
                                                     <div class="card-body">

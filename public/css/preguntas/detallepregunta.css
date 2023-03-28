@@ -17,11 +17,6 @@
     overflow-y: scroll !important;
 }
 
-.image{
-    max-width: 500px !important;
-    max-height: 500px !important;
-}
-
 .mask-custom {
     background: rgba(24, 24, 16, 0.2) !important;
     border-radius: 2em;

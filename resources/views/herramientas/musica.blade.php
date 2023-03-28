@@ -8,11 +8,11 @@
 
 @section('content')
 
-<div class="col-md-12">
+<div class="col-md-12 d-flex align-items-center">
     <div class="container-fluid mx-3">
-        <div class="row g-5 mx-1">
+        <div class="row mx-1">
 
-            <div class="col-md-4 m-auto justify-content-center align-items-center">
+            <div class="col-md-3 m-auto">
 
                 <div class="row">
                     <div class="col-12 p-1">
@@ -92,7 +92,7 @@
 
             </div>
 
-            <div class="col-md-8" style="filter: brightness(85%);">
+            <div class="col-md-9" style="filter: brightness(80%);">
                 <div class="row h-100 m-auto">
                     <iframe id="video-frame" frameborder="0"></iframe>
                 </div>
