@@ -62,7 +62,7 @@ $("#enrolar-curso").on("click", async () => {
                             background: '#000000',
                             color: '#FFFFFF'
                         }).then(() => {
-                            window.href = "/mis-cursos";
+                            window.location.href = "/mis-cursos";
                         });
                     }
                     break;

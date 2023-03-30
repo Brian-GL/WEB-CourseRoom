@@ -45,7 +45,7 @@ class CursosController extends Controller
             $response = Http::withHeaders([
                 'Authorization' => env('COURSEROOM_API_KEY'),
             ])->post($url.'/api/cursos/detalleobtener', [
-                'IdCurso' => $IdTarea
+                'IdCurso' => $IdCurso
             ]);
 
             if ($response->ok()){
@@ -66,7 +66,7 @@ class CursosController extends Controller
             } 
         } 
 
-        return view('cursos.detallecurso', compact('DatosUsuario', 'DatosCuenta','IdTipoUsuario', 'DatosCurso'. 'Imagen'));
+        return view('cursos.detallecurso', compact('DatosUsuario', 'DatosCuenta','IdTipoUsuario', 'DatosCurso', 'Imagen', 'IdCurso'));
     }
 
     public function detallecursoestudiante(Request $request){
@@ -1265,7 +1265,7 @@ class CursosController extends Controller
                 $url = env('COURSEROOM_API');
 
                 $idUsuario = session('IdUsuario');
-                $idEstatusUsuario = $request->integer('IdEstatusUsuario');
+                $IdEstatusCurso = $request->integer('IdEstatusCurso');
 
                 if($url != ''){
 
@@ -1273,7 +1273,7 @@ class CursosController extends Controller
                         'Authorization' => env('COURSEROOM_API_KEY'),
                     ])->post($url.'/api/cursos/obtener', [
                         'IdUsuario' => $idUsuario,
-                        'IdEstatusUsuario' => $idEstatusUsuario,
+                        'IdEstatusCurso' => $IdEstatusCurso,
                     ]);
 
                     if ($response->ok()){

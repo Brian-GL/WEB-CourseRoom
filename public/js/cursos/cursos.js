@@ -218,7 +218,7 @@ if(idTipoUsuario == 1){
                     'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
                 },
                 data: {
-                    "IdEstatusUsuario": 1
+                    "IdEstatusCurso": 1
                 }
             });
 
@@ -360,7 +360,7 @@ if(idTipoUsuario == 1){
                     'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
                 },
                 data: {
-                    "IdEstatusUsuario": 2
+                    "IdEstatusCurso": 2
                 }
             });
 
