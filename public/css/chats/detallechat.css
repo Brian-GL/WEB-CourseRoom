@@ -30,3 +30,5 @@
     box-shadow: 10px 10px 10px rgba(46, 54, 68, 0.03) !important;
     color: white !important;
 }
+
+.mini-image{max-width: 150px !important;max-height: 150px !important;}

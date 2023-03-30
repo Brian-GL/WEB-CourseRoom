@@ -53,9 +53,9 @@ use Carbon\Carbon;
 
                     <div class="col-md-2 text-center h-75">
                         @if(!is_null($DatosCuenta) && !is_null($DatosCuenta->imagen))
-                            <img id="imagen-receptor" class="img-fluid rounded-circle shadow-lg h-75" alt="Imagen del usuario receptor" src="{{$DatosChat->ImagenReceptor}}" />
+                            <img id="imagen-receptor" class="img-fluid rounded-circle shadow-lg h-75 mini-image" alt="Imagen del usuario receptor" src="{{$DatosChat->ImagenReceptor}}" />
                         @else
-                            <img id="imagen-receptor" class="img-fluid rounded-circle shadow-lg h-75" alt="Imagen del usuario receptor" src="https://raw.githubusercontent.com/Brian-GL/CourseRoom/main/src/recursos/imagenes/Course_Room_Brand_Readme.png"/>
+                            <img id="imagen-receptor" class="img-fluid rounded-circle shadow-lg h-75 mini-image" alt="Imagen del usuario receptor" src="https://raw.githubusercontent.com/Brian-GL/CourseRoom/main/src/recursos/imagenes/Course_Room_Brand_Readme.png"/>
                         @endif
                     </div>
 
@@ -72,65 +72,59 @@ use Carbon\Carbon;
                         
                         <!-- Usuario actual -->
                         <div class="col-md-12 d-flex justify-content-end">
-                            <div class="w-50">
-                                <div class="d-flex justify-content-end mb-4">
-                                    <div class="card mask-custom">
-                                        <div class="card-header d-flex justify-content-betweem p-3"style="border-bottom: 1px solid rgba(255,255,255,.3);">
-                                            <div class="row">
-                                                <div class="col-md-6 text-center text-wrap">
-                                                    <p class="fw-bold mb-0">{{$mensaje->nombreUsuarioEmisor}}</p>
-                                                </div>
-                                                <div class="col-md-6 text-center text-wrap">
-                                                    @php
-                                                        $fechaRegistro = new Carbon($mensaje->fechaRegistro);
-                                                        $fechaRegistroFormat = $fechaRegistro->format('d/m/Y h:i A'); 
-                                                    @endphp
-                                                    <p class="text-light small mb-0"><i class="far fa-clock"></i>&nbsp;{{$fechaRegistroFormat}}</p>
-                                                </div>
-                                            </div>
+                            <div class="d-flex justify-content-start mb-4">
+                                <div class="card mask-custom">
+                                    <div class="card-header d-flex justify-content-between p-2" style="border-bottom: 1px solid rgba(255,255,255,.3);">
+                                        <div class="col-md-6 text-center text-wrap">
+                                            <p class="text-start fw-bold mb-0 me-1">{{$mensaje->nombreUsuarioEmisor}}</p>
                                         </div>
-                                        <div class="card-body">
-
-                                            @if (is_null($mensaje->archivo))
-                                                <p class="mb-0">{{$mensaje->mensaje}}</p>
-                                            @else
-                                                <a download="{{$mensaje->mensaje}}" href="{{ $mensaje->archivo}}" target="_blank"><i class="fa-solid fa-file-lines"></i>&nbsp;{{$mensaje->mensaje}}</a>
-                                            @endif
-                                        
+                                        <div class="col-md-6 text-center text-wrap">
+                                            @php
+                                                $fechaRegistro = new Carbon($mensaje->fechaRegistro);
+                                                $fechaRegistroFormat = $fechaRegistro->format('d/m/Y h:i A'); 
+                                            @endphp
+                                            <p class="text-light small mb-0 text-end"><i class="far fa-clock"></i>&nbsp;{{$fechaRegistroFormat}}</p>
                                         </div>
                                     </div>
-                                    <img src="{{ $mensaje->imagenEmisor}}" alt="avatar" class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60">
+                                    <div class="card-body">
+
+                                        @if (is_null($mensaje->archivo))
+                                            <p class="mb-0">{{$mensaje->mensaje}}</p>
+                                        @else
+                                            <a download="{{$mensaje->mensaje}}" href="{{ $mensaje->archivo}}" target="_blank"><i class="fa-solid fa-file-lines"></i>&nbsp;{{$mensaje->mensaje}}</a>
+                                        @endif
+                                    
+                                    </div>
                                 </div>
+                                <img src="{{ $mensaje->imagenEmisor}}" alt="avatar" class="m-2 rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60" height="60">
                             </div>
-                        </div>  
+                        </div>
 
                     @else
                         <div class="col-md-12 d-flex justify-content-start">
-                            <div class="w-50">
-                                <div class="d-flex justify-content-start mb-4">
-                                    <img src="{{$mensaje->imagenEmisor}}" alt="avatar" class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60">
-                                    <div class="card mask-custom">
-                                        <div class="card-header d-flex justify-content-between p-3" style="border-bottom: 1px solid rgba(255,255,255,.3);">
-                                            <div class="col-md-6 text-center text-wrap">
-                                                <p class="fw-bold mb-0">{{$mensaje->nombreUsuarioEmisor}}</p>
-                                            </div>
-                                            <div class="col-md-6 text-center text-wrap">
-                                                @php
-                                                    $fechaRegistro = new Carbon($mensaje->fechaRegistro);
-                                                    $fechaRegistroFormat = $fechaRegistro->format('d/m/Y h:i A'); 
-                                                @endphp
-                                                <p class="text-light small mb-0"><i class="far fa-clock"></i>&nbsp;{{$fechaRegistroFormat}}</p>
-                                            </div>
+                            <div class="d-flex justify-content-start mb-4">
+                                <img src="{{ $mensaje->imagenEmisor}}" alt="avatar" class="me-2 rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60" height="60">
+                                <div class="card mask-custom">
+                                    <div class="card-header d-flex justify-content-between p-2" style="border-bottom: 1px solid rgba(255,255,255,.3);">
+                                        <div class="col-md-6 text-center text-wrap">
+                                            <p class="text-start fw-bold mb-0 me-1">{{$mensaje->nombreUsuarioEmisor}}</p>
                                         </div>
-                                        <div class="card-body">
+                                        <div class="col-md-6 text-center text-wrap">
+                                            @php
+                                                $fechaRegistro = new Carbon($mensaje->fechaRegistro);
+                                                $fechaRegistroFormat = $fechaRegistro->format('d/m/Y h:i A'); 
+                                            @endphp
+                                            <p class="text-light small mb-0 text-end"><i class="far fa-clock"></i>&nbsp;{{$fechaRegistroFormat}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
 
-                                            @if (is_null($mensaje->archivo))
-                                                <p class="mb-0">{{$mensaje->mensaje}}</p>
-                                            @else
-                                                <a download="{{$mensaje->mensaje}}" href="{{$mensaje->archivo}}" target="_blank"><i class="fa-solid fa-file-lines"></i>&nbsp;{{$mensaje->mensaje}}</a>
-                                            @endif
-                                        
-                                        </div>
+                                        @if (is_null($mensaje->archivo))
+                                            <p class="mb-0">{{$mensaje->mensaje}}</p>
+                                        @else
+                                            <a download="{{$mensaje->mensaje}}" href="{{ $mensaje->archivo}}" target="_blank"><i class="fa-solid fa-file-lines"></i>&nbsp;{{$mensaje->mensaje}}</a>
+                                        @endif
+                                    
                                     </div>
                                 </div>
                             </div>

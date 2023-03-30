@@ -121,7 +121,7 @@ use Carbon\Carbon;
                     
                                         <div class="col-md-12 d-flex justify-content-start">
                                             <div class="d-flex justify-content-start mb-4">
-                                                <img src="{{ $mensaje->imagenEmisor}}" alt="avatar" class="me-2 rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60">
+                                                <img src="{{ $mensaje->imagenEmisor}}" alt="avatar" class="me-2 rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60" height="60">
                                                 <div class="card mask-custom">
                                                     <div class="card-header d-flex justify-content-between p-2" style="border-bottom: 1px solid rgba(255,255,255,.3);">
                                                         <div class="col-md-6 text-center text-wrap">
