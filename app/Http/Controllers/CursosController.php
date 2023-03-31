@@ -1253,7 +1253,7 @@ class CursosController extends Controller
         try {
 
             $validator = Validator::make($request->all(), $rules = [
-                'IdEstatusUsuario' => ['required'],           
+                'IdEstatusCurso' => ['required'],           
             ], $messages = [
                 'required' => 'El campo :attribute es requerido'
             ]);
