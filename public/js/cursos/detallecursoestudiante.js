@@ -250,6 +250,7 @@ document.ObtenerMateriales = async function(){
             case 200:{
                 let filas = result.data;
 
+                dataTableCursoMateriales.destroy();
                 dataTableCursoMateriales = $("#table-materiales").DataTable({
                     pagingType: 'full_numbers',
                     dom: 'frtp',
@@ -370,6 +371,8 @@ async function ObtenerMiembros(){
         switch (result.code) {
             case 200:{
                 let filas = result.data;
+
+                dataTableCursoMiembrosEstudiante.destroy();
 
                 dataTableCursoMiembrosEstudiante = $("#table-miembros-estudiante").DataTable({
                     pagingType: 'full_numbers',
@@ -823,18 +826,18 @@ async function EnviarMensaje(mensaje, archivo, base64Archivo) {
 
 function GenerarMensaje(fechaRegistro, mensaje, nombreArchivo, nombreUsuarioEmisor, imagenEmisor) {
 
+    
     let elemento;
 
     if (nombreArchivo === undefined || nombreArchivo === null || nombreArchivo === '') {
         elemento =
-            `<div class="col-md-12 d-flex justify-content-start"><div class="d-flex justify-content-start mb-4"><img src="${imagenEmisor}" alt="avatar" class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60"><div class="card mask-custom"><div class="card-header d-flex justify-content-between p-3"style="border-bottom: 1px solid rgba(255,255,255,.3);"><div class="row"><div class="col-md-6 text-center text-wrap"><p class="fw-bold mb-0">${nombreUsuarioEmisor}</p></div><div class="col-md-6 text-center text-wrap"><p class="text-light small mb-0"><i class="far fa-clock"></i> ${fechaRegistro}</p></div></div></div><div class="card-body"><p class="mb-0">${mensaje}</p></div></div></div></div>`;
+            `<div class="col-md-12 d-flex justify-content-start"><div class="d-flex justify-content-start mb-4"><img src="${imagenEmisor}" alt="avatar" class="me-2 rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60" height="60"><div class="card mask-custom"><div class="card-header d-flex justify-content-between p-2" style="border-bottom: 1px solid rgba(255,255,255,.3);"><div class="row"><div class="col-md-6 text-center text-wrap"><p class="text-start me-1 fw-bold mb-0">${nombreUsuarioEmisor}</p></div><div class="col-md-6 text-center text-wrap"><p class="text-end text-light small mb-0"><i class="far fa-clock"></i> ${fechaRegistro}</p></div></div></div><div class="card-body"><p class="mb-0">${mensaje}</p></div></div></div></div>`;
     } else {
         elemento =
-            `<div class="col-md-12 d-flex justify-content-start"><div class="d-flex justify-content-start mb-4"><img src="${imagenEmisor}" alt="avatar" class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60"><div class="card mask-custom"><div class="card-header d-flex justify-content-between p-3"style="border-bottom: 1px solid rgba(255,255,255,.3);"><div class="row"><div class="col-md-6 text-center text-wrap"><p class="fw-bold mb-0">${nombreUsuarioEmisor}</p></div><div class="col-md-6 text-center text-wrap"><p class="text-light small mb-0"><i class="far fa-clock"></i> ${fechaRegistro}</p></div></div></div><div class="card-body"><a href="${assestRouteCursos}${nombreArchivo}" target="_blank"><i class="fa-solid fa-file-lines"></i>&nbsp;${mensaje}'</a></div></div></div></div>`;
+            `<div class="col-md-12 d-flex justify-content-start"><div class="d-flex justify-content-start mb-4"><img src="${imagenEmisor}" alt="avatar" class="me-2 rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60" height="60"><div class="card mask-custom"><div class="card-header d-flex justify-content-between p-2" style="border-bottom: 1px solid rgba(255,255,255,.3);"><div class="row"><div class="col-md-6 text-center text-wrap"><p class="text-start me-1 fw-bold mb-0">${nombreUsuarioEmisor}</p></div><div class="col-md-6 text-center text-wrap"><p class="text-end text-light small mb-0"><i class="far fa-clock"></i> ${fechaRegistro}</p></div></div></div><div class="card-body"><a download= "${mensaje}" href="${nombreArchivo}" target="_blank"><i class="fa-solid fa-file-lines"></i>&nbsp;${mensaje}'</a></div></div></div></div>`;
     }
 
     $("#mensajes").append(elemento);
-
 }
 
 async function EnviarMaterial(filename, base64, file) {
@@ -1109,9 +1112,14 @@ $("#form-cuestionario").on('submit', async (e) => {
 
         let error = false;
 
+        let formData;
         for(let i = 1; i < 21; i++){
 
-            let formData = new FormData();
+            if(error){
+                break;
+            }
+
+            formData = new FormData();
             formData.append('IdCurso', IdCurso);
             formData.append('IdUsuario', IdUsuario);
             formData.append('IdPregunta', i);
@@ -1161,107 +1169,110 @@ $("#form-cuestionario").on('submit', async (e) => {
                 }
                     break;
             }
+            
         }
        
-        HidePreloader();
+        if(!error){
+            HidePreloader();
 
-        Swal.fire({
-            title: 'Contestar cuestionario',
-            text: "Se ha contestado el cuestionario correctamente. Se procederá ahora con la finalización del mismo.",
-            imageUrl: window.HappyOwl,
-            imageWidth: 100,
-            imageHeight: 123,
-            imageAlt: 'Ok Image',
-            background: '#000000',
-            color: '#FFFFFF'
-        }).then(async () => {
-           
-            // Finalizar curso estudiante:
+            Swal.fire({
+                title: 'Contestar cuestionario',
+                text: "Se ha contestado el cuestionario correctamente. Se procederá ahora con la finalización del mismo.",
+                imageUrl: window.HappyOwl,
+                imageWidth: 100,
+                imageHeight: 123,
+                imageAlt: 'Ok Image',
+                background: '#000000',
+                color: '#FFFFFF'
+            }).then(async () => {
+            
+                // Finalizar curso estudiante:
 
-            try {
+                try {
 
-                ShowPreloader();
-        
-                let formData = new FormData();
-        
-                formData.append('IdCurso', IdCurso);
-                formData.append('IdUsuario', IdUsuario);
-        
-                let response = await axios({
-                    url: '/cursos/estudiantefinalizaractualizar',
-                    baseURL: BaseURL,
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
-                    },
-                    data: formData
-                });
-        
-                HidePreloader();
-        
-                let result = response.data;
-        
-                switch (result.code) {
-                    case 200:{
-                        
-                        Swal.fire({
-                            title: 'Finalizar curso',
-                            text: result.data,
-                            imageUrl: window.HappyOwl,
-                            imageWidth: 100,
-                            imageHeight: 123,
-                            imageAlt: 'Ok Image',
-                            background: '#000000',
-                            color: '#FFFFFF'
-                        }).then(() => {
-                            window.location.href = "/mis-cursos";
-                        });
-                    }
-                    break;
-                    case 500: {
-                        Swal.fire({
-                            title: '¡Error!',
-                            text: result.data,
-                            imageUrl: window.SadOwl,
-                            imageWidth: 100,
-                            imageHeight: 123,
-                            background: '#000000',
-                            color: '#FFFFFF',
-                            imageAlt: 'Error Image'
-                        });
-                    }
+                    ShowPreloader();
+            
+                    let formData = new FormData();
+            
+                    formData.append('IdCurso', IdCurso);
+                    formData.append('IdUsuario', IdUsuario);
+            
+                    let response = await axios({
+                        url: '/cursos/estudiantefinalizaractualizar',
+                        baseURL: BaseURL,
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
+                        },
+                        data: formData
+                    });
+            
+                    HidePreloader();
+            
+                    let result = response.data;
+            
+                    switch (result.code) {
+                        case 200:{
+                            
+                            Swal.fire({
+                                title: 'Finalizar curso',
+                                text: result.data,
+                                imageUrl: window.HappyOwl,
+                                imageWidth: 100,
+                                imageHeight: 123,
+                                imageAlt: 'Ok Image',
+                                background: '#000000',
+                                color: '#FFFFFF'
+                            }).then(() => {
+                                window.location.href = "/mis-cursos";
+                            });
+                        }
                         break;
-                    default: {
-                        Swal.fire({
-                            title: '¡Alerta!',
-                            text: result.data,
-                            imageUrl: window.IndifferentOwl,
-                            imageWidth: 100,
-                            imageHeight: 123,
-                            imageAlt: 'Alert Image',
-                            background: '#000000',
-                            color: '#FFFFFF'
-                        });
+                        case 500: {
+                            Swal.fire({
+                                title: '¡Error!',
+                                text: result.data,
+                                imageUrl: window.SadOwl,
+                                imageWidth: 100,
+                                imageHeight: 123,
+                                background: '#000000',
+                                color: '#FFFFFF',
+                                imageAlt: 'Error Image'
+                            });
+                        }
+                            break;
+                        default: {
+                            Swal.fire({
+                                title: '¡Alerta!',
+                                text: result.data,
+                                imageUrl: window.IndifferentOwl,
+                                imageWidth: 100,
+                                imageHeight: 123,
+                                imageAlt: 'Alert Image',
+                                background: '#000000',
+                                color: '#FFFFFF'
+                            });
+                        }
+                            break;
                     }
-                        break;
                 }
-            }
-            catch (ex) {
-                HidePreloader();
-                Swal.fire({
-                    title: '¡Error!',
-                    text: ex,
-                    imageUrl: window.SadOwl,
-                    imageWidth: 100,
-                    imageHeight: 123,
-                    background: '#000000',
-                    color: '#FFFFFF',
-                    imageAlt: 'Error Image'
-                });
-            }
+                catch (ex) {
+                    HidePreloader();
+                    Swal.fire({
+                        title: '¡Error!',
+                        text: ex,
+                        imageUrl: window.SadOwl,
+                        imageWidth: 100,
+                        imageHeight: 123,
+                        background: '#000000',
+                        color: '#FFFFFF',
+                        imageAlt: 'Error Image'
+                    });
+                }
 
-            window.location.href = "/mis-cursos";
-        });
+                window.location.href = "/mis-cursos";
+            });
+        }
 
     }
     catch (ex) {
