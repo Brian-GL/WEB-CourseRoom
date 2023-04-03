@@ -1,7 +1,7 @@
 @php
 use Carbon\Carbon;
-$max_date = Carbon::now()->addMonths(6)->toDateTimeString();
-$min_date = Carbon::now()->addHours(8)->toDateTimeString();
+$max_date = Carbon::now()->addMonths(6)->format('Y-m-d\T00:00');
+$min_date = Carbon::now()->addHours(12)->format('Y-m-d\T00:00');
 @endphp
 
 @extends('layouts.home')
@@ -40,7 +40,7 @@ $min_date = Carbon::now()->addHours(8)->toDateTimeString();
                 
                 <div class="row">
                     <div class="col-md-12">
-                        <ul class="nav nav-pills my-0-5 nav-fill" role="tablist">
+                        <ul class="nav nav-tabs my-0-5" role="tablist">
                             <li class="nav-item btn" role="presentation">
                                 <button class="nav-link active fuenteNormal primer-color-letra primer-color-fondo" id="datos-generales-tab" data-bs-toggle="tab" data-bs-target="#datos-generales" type="button" role="tab" aria-controls="datos-generales" aria-selected="true">Datos Generales</button>
                             </li>
@@ -60,7 +60,7 @@ $min_date = Carbon::now()->addHours(8)->toDateTimeString();
                                 <button class="nav-link fuenteNormal tercer-color-letra tercer-color-fondo" id="grupos-tab" data-bs-toggle="tab" data-bs-target="#grupos" type="button" role="tab" aria-controls="grupos" aria-selected="false">Grupos</button>
                             </li>
                             <li class="nav-item btn" role="presentation">
-                                <button class="nav-link fuenteNormal tercer-color-letra tercer-color-fondo" id="mensajes-tab" data-bs-toggle="tab" data-bs-target="#mensajes" type="button" role="tab" aria-controls="mensajes" aria-selected="false">Mensajes</button>
+                                <button class="nav-link fuenteNormal tercer-color-letra tercer-color-fondo" id="mensajes-curso-tab" data-bs-toggle="tab" data-bs-target="#mensajes-curso" type="button" role="tab" aria-controls="mensajes-curso" aria-selected="false">Mensajes</button>
                             </li>
                         </ul>
                     </div>
@@ -71,6 +71,13 @@ $min_date = Carbon::now()->addHours(8)->toDateTimeString();
                     <div class="tab-content">
 
                         <div class="tab-pane fade show active" id="datos-generales" role="tabpanel" aria-labelledby="datos-generales-tab">
+                            <div class="row">
+                                <div class="col-md-12 text-center">
+                                    @if (!is_null($DatosCurso))
+                                        <img id="imagen-curso" class="image img-fluid rounded-circle shadow-lg h-75 mb-1" alt="Imagen del curso" src="{{ $DatosCurso->imagen}}" />
+                                    @endif
+                                </div>
+                            </div>
                             <div class="row">
                                 <div class="col-md-6">
                                     @if (!is_null($DatosCurso))
@@ -94,10 +101,6 @@ $min_date = Carbon::now()->addHours(8)->toDateTimeString();
         
                                 <div class="col-md-6 text-center">
                                     @if(!is_null($DatosCurso))
-                                        @if(!is_null($DatosCurso->imagen))
-                                            <img id="imagen-curso" class="img-fluid rounded-circle shadow-lg mb-1 image" alt="Imagen del curso" src="{{$DatosCurso->imagen}}" />
-                                        @endif
-
                                         @php
                                             $fechaRegistro = new Carbon($DatosCurso->fechaRegistro);
                                         @endphp
@@ -124,7 +127,7 @@ $min_date = Carbon::now()->addHours(8)->toDateTimeString();
 
                         <div class="tab-pane fade" id="tareas" role="tabpanel" aria-labelledby="tareas-tab">
                             <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-md-12 mt-1">
                                     <div class="row">
                                         @if (!is_null($DatosCurso) && !$DatosCurso->finalizado)
                                             <div class="col-md-10"></div>
@@ -156,8 +159,7 @@ $min_date = Carbon::now()->addHours(8)->toDateTimeString();
 
                         <div class="tab-pane fade" id="materiales" role="tabpanel" aria-labelledby="materiales-tab">
                             <div class="row">
-                                <div class="col-md-12">
-                                    
+                                <div class="col-md-12 mt-1">
                                     <div class="row">
                                         @if (!is_null($DatosCurso) && !$DatosCurso->finalizado)
                                             <div class="col-md-10"></div>
@@ -179,8 +181,7 @@ $min_date = Carbon::now()->addHours(8)->toDateTimeString();
 
                         <div class="tab-pane fade" id="grupos" role="tabpanel" aria-labelledby="grupos-tab">
                             <div class="row">
-                                <div class="col-md-12">
-                                    
+                                <div class="col-md-12 mt-1">
                                     <div class="row">
                                         @if (!is_null($DatosCurso) && !$DatosCurso->finalizado)
                                             <div class="col-md-10"></div>
@@ -200,7 +201,7 @@ $min_date = Carbon::now()->addHours(8)->toDateTimeString();
                             </div>
                         </div>
 
-                        <div class="tab-pane fade" id="mensajes" role="tabpanel" aria-labelledby="mensajes-tab">
+                        <div class="tab-pane fade" id="mensajes-curso" role="tabpanel" aria-labelledby="mensajes-curso-tab">
                             
                             <div class="row border-bottom-0 shadow-lg" id="contenido-curso">
                                 <div class="col-md-12 mt-5 mb-2" id="mensajes">
@@ -209,18 +210,18 @@ $min_date = Carbon::now()->addHours(8)->toDateTimeString();
                     
                                         <div class="col-md-12 d-flex justify-content-start">
                                             <div class="d-flex justify-content-start mb-4">
-                                                <img src="{{ $mensaje->imagenEmisor}}" alt="avatar" class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60">
+                                                <img src="{{ $mensaje->imagenEmisor}}" alt="avatar" class="me-2 rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60" height="60">
                                                 <div class="card mask-custom">
-                                                    <div class="card-header d-flex justify-content-between p-3" style="border-bottom: 1px solid rgba(255,255,255,.3);">
+                                                    <div class="card-header d-flex justify-content-between p-2" style="border-bottom: 1px solid rgba(255,255,255,.3);">
                                                         <div class="col-md-6 text-center text-wrap">
-                                                            <p class="fw-bold mb-0">{{$mensaje->nombreUsuarioEmisor}}</p>
+                                                            <p class="text-start fw-bold mb-0 me-1">{{$mensaje->nombreUsuarioEmisor}}</p>
                                                         </div>
                                                         <div class="col-md-6 text-center text-wrap">
                                                             @php
                                                                 $fechaRegistro = new Carbon($mensaje->fechaRegistro);
                                                                 $fechaRegistroFormat = $fechaRegistro->format('d/m/Y h:i A'); 
                                                             @endphp
-                                                            <p class="text-light small mb-0"><i class="far fa-clock"></i>&nbsp;{{$fechaRegistroFormat}}</p>
+                                                            <p class="text-light small mb-0 text-end"><i class="far fa-clock"></i>&nbsp;{{$fechaRegistroFormat}}</p>
                                                         </div>
                                                     </div>
                                                     <div class="card-body">
@@ -339,7 +340,7 @@ $min_date = Carbon::now()->addHours(8)->toDateTimeString();
                         <div class="row mt-4">
                             <div class="col-md-12 form-group">
                                 <label for="fecha-entrega-tarea" class="form-label">Fecha de entrega</label>
-                                <input class="fuenteNormal form-control tercer-color-fondo tercer-color-letra" type="datetime" name="fecha-entrega-tarea" id="fecha-entrega-tarea" min="{{$min_date}}" max="{{$max_date}}" required>
+                                <input type="datetime-local" class="fuenteNormal form-control tercer-color-fondo tercer-color-letra" name="fecha-entrega-tarea" id="fecha-entrega-tarea" min="{{$min_date}}" max="{{$max_date}}" required>
                             </div>
                         </div>
                     </div>

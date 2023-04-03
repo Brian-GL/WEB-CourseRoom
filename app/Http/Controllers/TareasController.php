@@ -548,7 +548,7 @@ class TareasController extends Controller
                 $url = env('COURSEROOM_API');
 
                 $idCurso = $request->integer('IdCurso');
-                $idProfesor = session('IdProfesor');
+                $idProfesor = session('IdUsuario');
                 $nombre = $request->string('Nombre')->trim();
                 $descripcion = $request->string('Descripcion')->trim();
                 $fechaEntrega = $request->date('FechaEntrega');

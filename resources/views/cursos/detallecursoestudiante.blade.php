@@ -59,7 +59,7 @@ use Carbon\Carbon;
                             <li class="nav-item btn" role="presentation">
                                 <button class="nav-link fuenteNormal tercer-color-letra tercer-color-fondo" id="mensajes-curso-tab" data-bs-toggle="tab" data-bs-target="#mensajes-curso" type="button" role="tab" aria-controls="mensajes-curso" aria-selected="false">Mensajes</button>
                             </li>
-                            @if (!is_null($DatosCurso) && $DatosCurso->finalizado)
+                            @if (!is_null($DatosCurso) && !$DatosCurso->finalizado)
                                 <li class="nav-item btn" role="presentation">
                                     <button class="nav-link fuenteNormal tercer-color-letra tercer-color-fondo" id="cuestionario-tab" data-bs-toggle="tab" data-bs-target="#cuestionario" type="button" role="tab" aria-controls="cuestionario" aria-selected="false">Cuestionario</button>
                                 </li>
@@ -239,7 +239,7 @@ use Carbon\Carbon;
                            
                         </div>
 
-                        @if (!is_null($DatosCurso) && $DatosCurso->finalizado)
+                        @if (!is_null($DatosCurso) && !$DatosCurso->finalizado)
                             <div class="tab-pane fade" id="cuestionario" role="tabpanel" aria-labelledby="cuestionario-tab">
                                 <div class="row">
                                     <div class="col-md-12">

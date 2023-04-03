@@ -825,8 +825,6 @@ async function EnviarMensaje(mensaje, archivo, base64Archivo) {
 }
 
 function GenerarMensaje(fechaRegistro, mensaje, nombreArchivo, nombreUsuarioEmisor, imagenEmisor) {
-
-    
     let elemento;
 
     if (nombreArchivo === undefined || nombreArchivo === null || nombreArchivo === '') {

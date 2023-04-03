@@ -2,18 +2,13 @@
     margin-bottom: 0 !important;
 }
 
-#mensajes{
+#mensajes-curso{
     max-height: 71vh;
     height: 71vh;
 }
 
 #mensajear-curso{
     overflow: hidden;
-}
-
-.image{
-    max-width: 500px !important;
-    max-height: 500px !important;
 }
 
 #contenido-curso{
