@@ -40,27 +40,27 @@ use Carbon\Carbon;
 
                 <div class="row">
                     <div class="col-md-12">
-                        <ul class="nav nav-tabs my-1" role="tablist">
-                            <li class="nav-item btn" role="presentation">
+                        <ul class="nav nav-tabs my-0-5 justify-content-center" role="tablist">
+                            <li class="nav-item mx-1" role="presentation">
                                 <button class="nav-link active fuenteNormal primer-color-letra primer-color-fondo" id="datos-generales-tab" data-bs-toggle="tab" data-bs-target="#datos-generales" type="button" role="tab" aria-controls="datos-generales" aria-selected="true">Datos Generales</button>
                             </li>
-                            <li class="nav-item btn" role="presentation">
+                            <li class="nav-item mx-1" role="presentation">
                                 <button class="nav-link fuenteNormal tercer-color-letra tercer-color-fondo" id="miembros-tab" data-bs-toggle="tab" data-bs-target="#miembros" type="button" role="tab" aria-controls="miembros" aria-selected="false">Miembros</button>
                             </li>
-                            <li class="nav-item btn" role="presentation">
+                            <li class="nav-item mx-1" role="presentation">
                                 <button class="nav-link fuenteNormal tercer-color-letra tercer-color-fondo" id="tareas-tab" data-bs-toggle="tab" data-bs-target="#tareas" type="button" role="tab" aria-controls="tareas" aria-selected="false">Tareas</button>
                             </li>
-                            <li class="nav-item btn" role="presentation">
+                            <li class="nav-item mx-1" role="presentation">
                                 <button class="nav-link fuenteNormal tercer-color-letra tercer-color-fondo" id="desempeno-tab" data-bs-toggle="tab" data-bs-target="#desempeno" type="button" role="tab" aria-controls="desempeno" aria-selected="false">Desempeño</button>
                             </li>
-                            <li class="nav-item btn" role="presentation">
+                            <li class="nav-item mx-1" role="presentation">
                                 <button class="nav-link fuenteNormal tercer-color-letra tercer-color-fondo" id="materiales-tab" data-bs-toggle="tab" data-bs-target="#materiales" type="button" role="tab" aria-controls="materiales" aria-selected="false">Materiales</button>
                             </li>
-                            <li class="nav-item btn" role="presentation">
+                            <li class="nav-item mx-1" role="presentation">
                                 <button class="nav-link fuenteNormal tercer-color-letra tercer-color-fondo" id="mensajes-curso-tab" data-bs-toggle="tab" data-bs-target="#mensajes-curso" type="button" role="tab" aria-controls="mensajes-curso" aria-selected="false">Mensajes</button>
                             </li>
-                            @if (!is_null($DatosCurso) && !$DatosCurso->finalizado)
-                                <li class="nav-item btn" role="presentation">
+                            @if (!is_null($DatosCurso) && $DatosCurso->finalizado)
+                                <li class="nav-item mx-1" role="presentation">
                                     <button class="nav-link fuenteNormal tercer-color-letra tercer-color-fondo" id="cuestionario-tab" data-bs-toggle="tab" data-bs-target="#cuestionario" type="button" role="tab" aria-controls="cuestionario" aria-selected="false">Cuestionario</button>
                                 </li>
                             @endif
@@ -76,7 +76,7 @@ use Carbon\Carbon;
                             <div class="row">
                                 <div class="col-md-12 text-center">
                                     @if (!is_null($DatosCurso))
-                                        <img id="imagen-curso" class="image img-fluid rounded-circle shadow-lg h-75 mb-1" alt="Imagen del curso" src="{{ $DatosCurso->imagen}}" />
+                                        <img id="imagen-curso" class="image img-fluid rounded-circle shadow-lg h-75 mt-2" alt="Imagen del curso" src="{{ $DatosCurso->imagen}}" />
                                     @endif
                                 </div>
                             </div>
@@ -110,7 +110,7 @@ use Carbon\Carbon;
                                 <div class="col-md-6 text-center">
                                     @if(!is_null($DatosCurso))
                                         @if( !is_null($DatosCurso->imagenProfesor))
-                                            <img id="imagen-profesor" class="image img-fluid rounded-circle shadow-lg h-75 mb-1" alt="Imagen del profesor" src="{{$DatosCurso->imagenProfesor}}" />
+                                            <img id="imagen-profesor" class="image img-fluid shadow-lg h-75 mb-1" alt="Imagen del profesor" src="{{$DatosCurso->imagenProfesor}}" />
                                         @endif
                                         <p class="titulado fuenteNormal segundo-color-letra">Creada por {{$DatosCurso->nombreProfesor}}</p>
                                         <hr>
@@ -239,7 +239,7 @@ use Carbon\Carbon;
                            
                         </div>
 
-                        @if (!is_null($DatosCurso) && !$DatosCurso->finalizado)
+                        @if (!is_null($DatosCurso) && $DatosCurso->finalizado)
                             <div class="tab-pane fade" id="cuestionario" role="tabpanel" aria-labelledby="cuestionario-tab">
                                 <div class="row">
                                     <div class="col-md-12">

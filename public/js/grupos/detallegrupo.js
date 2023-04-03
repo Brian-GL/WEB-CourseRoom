@@ -235,7 +235,7 @@ document.ObtenerArchivosCompartidos = async function (){
                     data: filas,
                     createdRow: (row, data) => {
                         $('.segundo-color-letra',row).css('color', SegundoColorLetra);
-                        $('.span-detalle', row).html('<a class="fuenteNormal span-detalle text-center text-decoration-underline" href="'.concat(data.archivo,'">Descargar archivo</a>'));
+                        $('.span-detalle', row).html('<a class="fuenteNormal span-detalle text-center text-decoration-underline" href="'.concat(data.archivo,'"  download="',data.nombre,'" target="_blank">Descargar archivo</a>'));
                         let fechaRegistro = data.fechaRegistro.substring(0, data.fechaRegistro.length -1 );
                         $('.fechaRegistro', row).text(dayjs(fechaRegistro).format('dddd DD MMM YYYY h:mm A'));
                     }
@@ -318,7 +318,7 @@ async function ObtenerMiembros(){
             case 200:{
                 let filas = result.data;
 
-                dataTableGrupoArchivosCompartidos.destroy();
+                dataTableGrupoMiembros.destroy();
 
                 dataTableGrupoMiembros = $("#table-miembros").DataTable({
                     pagingType: 'full_numbers',
@@ -662,6 +662,7 @@ async function EnviarMensaje(mensaje, archivo, base64Archivo) {
 
         ShowPreloader();
         let formData = new FormData();
+
         formData.append("IdGrupo", IdGrupo);
         formData.append("Mensaje", mensaje);
         formData.append("Base64Archivo", base64Archivo);
@@ -731,19 +732,17 @@ async function EnviarMensaje(mensaje, archivo, base64Archivo) {
 }
 
 function GenerarMensaje(fechaRegistro, mensaje, nombreArchivo, nombreUsuarioEmisor, imagenEmisor) {
-
     let elemento;
 
     if (nombreArchivo === undefined || nombreArchivo === null || nombreArchivo === '') {
         elemento =
-            `<div class="col-md-12 d-flex justify-content-start"><div class="d-flex justify-content-start mb-4"><img src="${imagenEmisor}" alt="avatar" class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60"><div class="card mask-custom"><div class="card-header d-flex justify-content-between p-3"style="border-bottom: 1px solid rgba(255,255,255,.3);"><div class="row"><div class="col-md-6 text-center text-wrap"><p class="fw-bold mb-0">${nombreUsuarioEmisor}</p></div><div class="col-md-6 text-center text-wrap"><p class="text-light small mb-0"><i class="far fa-clock"></i> ${fechaRegistro}</p></div></div></div><div class="card-body"><p class="mb-0">${mensaje}</p></div></div></div></div>`;
+            `<div class="col-md-12 d-flex justify-content-start"><div class="d-flex justify-content-start mb-4"><img src="${imagenEmisor}" alt="avatar" class="me-2 rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60" height="60"><div class="card mask-custom"><div class="card-header d-flex justify-content-between p-2" style="border-bottom: 1px solid rgba(255,255,255,.3);"><div class="row"><div class="col-md-6 text-center text-wrap"><p class="text-start me-1 fw-bold mb-0">${nombreUsuarioEmisor}</p></div><div class="col-md-6 text-center text-wrap"><p class="text-end text-light small mb-0"><i class="far fa-clock"></i> ${fechaRegistro}</p></div></div></div><div class="card-body"><p class="mb-0">${mensaje}</p></div></div></div></div>`;
     } else {
         elemento =
-            `<div class="col-md-12 d-flex justify-content-start"><div class="d-flex justify-content-start mb-4"><img src="${imagenEmisor}" alt="avatar" class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60"><div class="card mask-custom"><div class="card-header d-flex justify-content-between p-3"style="border-bottom: 1px solid rgba(255,255,255,.3);"><div class="row"><div class="col-md-6 text-center text-wrap"><p class="fw-bold mb-0">${nombreUsuarioEmisor}</p></div><div class="col-md-6 text-center text-wrap"><p class="text-light small mb-0"><i class="far fa-clock"></i> ${fechaRegistro}</p></div></div></div><div class="card-body"><a href="${nombreArchivo}" target="_blank"><i class="fa-solid fa-file-lines"></i>&nbsp;${mensaje}'</a></div></div></div></div>`;
+            `<div class="col-md-12 d-flex justify-content-start"><div class="d-flex justify-content-start mb-4"><img src="${imagenEmisor}" alt="avatar" class="me-2 rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60" height="60"><div class="card mask-custom"><div class="card-header d-flex justify-content-between p-2" style="border-bottom: 1px solid rgba(255,255,255,.3);"><div class="row"><div class="col-md-6 text-center text-wrap"><p class="text-start me-1 fw-bold mb-0">${nombreUsuarioEmisor}</p></div><div class="col-md-6 text-center text-wrap"><p class="text-end text-light small mb-0"><i class="far fa-clock"></i> ${fechaRegistro}</p></div></div></div><div class="card-body"><a download= "${mensaje}" href="${nombreArchivo}" target="_blank"><i class="fa-solid fa-file-lines"></i>&nbsp;${mensaje}'</a></div></div></div></div>`;
     }
 
     $("#mensajes").append(elemento);
-
 }
 
 async function EnviarArchivoCompartido(filename, base64, file) {
@@ -1306,6 +1305,8 @@ document.getElementById("form-detalle-tarea-pendiente").addEventListener("submit
     e.preventDefault();
 
     try{
+
+        document.getElementById("cerrar-agregar-tarea-pendiente-modal").click();
 
         ShowPreloader();
 

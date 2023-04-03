@@ -522,6 +522,14 @@ class CursosController extends Controller
                                 $mongoCursosImagenes->update(
                                     ['imagen' => $Base64Image,
                                     'extension' => $extension]);
+                            } else{
+                                $mongoCollection = new CursosImagenes;
+
+                                $mongoCollection->idCurso = $idCurso;
+                                $mongoCollection->imagen = $Base64Image;
+                                $mongoCollection->extension = $extension;
+
+                                $mongoCollection->save();
                             }
 
                             Storage::delete('cursos/'.$ImagenAnterior);
@@ -574,8 +582,6 @@ class CursosController extends Controller
                     ])->put($url.'/api/cursos/abandonaractualizar', [
                         'IdCurso' => $idCurso,
                         'IdUsuario' => $idUsuario,
-                        'Codigo' => $codigo,
-                        'Mensaje' => $mensaje
                     ]);
 
                     if ($response->ok()){
@@ -626,8 +632,6 @@ class CursosController extends Controller
                     ])->put($url.'cuestionarioabandonaractualizar', [
                         'IdCurso' => $idCurso,
                         'IdUsuario' => $ddUsuario,
-                        'Codigo' => $codigo,
-                        'Mensaje' => $mensaje
                     ]);
 
                     if ($response->ok()){
@@ -900,8 +904,6 @@ class CursosController extends Controller
                 $idMaterial = $request -> input('IdMaterial');
                 $idCurso = $request -> input('IdCurso');
                 $idUsuario = $request -> input('IdUsuario');
-                $codigo  = input ('Codigo');
-                $mensaje  = input ('Mensaje');
 
                 if($url != ''){
 
@@ -911,8 +913,6 @@ class CursosController extends Controller
                         'IdMaterial' => $idMaterial,
                         'IdCurso' => $idCurso,
                         'IdUsuario' => $idUsuario,
-                        'Codigo' => $codigo,
-                        'Mensaje' => $mensaje,
                     ]);
 
                     if ($response->ok()){

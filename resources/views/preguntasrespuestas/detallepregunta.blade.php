@@ -37,11 +37,11 @@ use Carbon\Carbon;
                 
                 <div class="row">
                     <div class="col-md-12">
-                        <ul class="nav nav-tabs my-1" role="tablist">
-                            <li class="nav-item" role="presentation">
+                        <ul class="nav nav-tabs my-0-5 justify-content-center" role="tablist">
+                            <li class="nav-item mx-1" role="presentation">
                                 <button class="nav-link active fuenteNormal primer-color-letra primer-color-fondo" id="datos-generales-tab" data-bs-toggle="tab" data-bs-target="#datos-generales" type="button" role="tab" aria-controls="datos-generales" aria-selected="true">Datos generales</button>
                             </li>
-                            <li class="nav-item" role="presentation">
+                            <li class="nav-item mx-1" role="presentation">
                                 <button class="nav-link fuenteNormal tercer-color-letra tercer-color-fondo" id="respuestas-tab" data-bs-toggle="tab" data-bs-target="#respuestas" type="button" role="tab" aria-controls="respuestas" aria-selected="false">Respuestas</button>
                             </li>
                         </ul>

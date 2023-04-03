@@ -170,7 +170,17 @@ class UsuariosController extends Controller
                                         'extension' => $extension]);
 
                                     session(['Imagen' => $Base64Image]);
+                                } else{
+                                    $mongoCollection = new UsuariosImagenes;
+
+                                    $mongoCollection->idUsuario = $IdUsuario;
+                                    $mongoCollection->imagen = $Base64Image;
+                                    $mongoCollection->extension = $extension;
+    
+                                    $mongoCollection->save();
                                 }
+
+                                session(['Imagen' => $Base64Image]);
 
                                 Storage::delete('usuarios/'.$ImagenAnterior);
                                 //Guardar imagen en storage:

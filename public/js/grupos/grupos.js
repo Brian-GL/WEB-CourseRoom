@@ -131,7 +131,7 @@ async function ObtenerMisGrupos(){
                         {className: "text-center fuenteNormal segundo-color-letra", defaultContent: "-", targets: "_all"},
                         {className: "span-detalle", target: 7},
                         {className: "info-grupo", target: 1},
-                        {className: "info-curso", target: 1},
+                        {className: "info-curso", target: 4},
                         {className: "fechaRegistro", target: 6},
                     ],
                     data: filas,
@@ -146,8 +146,9 @@ async function ObtenerMisGrupos(){
                 });
 
                 dataTableMisGrupos.column(0).visible(false);
-                dataTableMisGrupos.column(1).visible(false);
+                dataTableMisGrupos.column(2).visible(false);
                 dataTableMisGrupos.column(3).visible(false);
+                dataTableMisGrupos.column(5).visible(false);
 
             }
             break;

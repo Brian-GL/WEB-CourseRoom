@@ -328,7 +328,7 @@ document.ObtenerMateriales = async function(){
                     data: filas,
                     createdRow: (row, data) => {
                         $('.segundo-color-letra',row).css('color', SegundoColorLetra);
-                        $('.span-detalle', row).html('<a class="fuenteNormal span-detalle text-center text-decoration-underline" href="'.concat(data.archivo,'">Descargar archivo</a>'));
+                        $('.span-detalle', row).html('<a class="fuenteNormal span-detalle text-center text-decoration-underline" href="'.concat(data.archivo,'" download="',data.nombre,'" target="_blank">Descargar archivo</a>'));
                         let fechaRegistro = data.fechaRegistro.substring(0, data.fechaRegistro.length -1 );
                         $('.fechaRegistro', row).text(dayjs(fechaRegistro).format('dddd DD MMM YYYY h:mm A'));
                     }
@@ -1421,6 +1421,8 @@ $("#form-agregar-grupo").on("submit", async (e) => {
 
     try {
 
+        document.getElementById("cerrar-agregar-grupo-modal").click();
+
         ShowPreloader();
 
         let formData = new FormData();
@@ -1457,7 +1459,6 @@ $("#form-agregar-grupo").on("submit", async (e) => {
                     color: '#FFFFFF'
                 }).then(() => {
                     document.ObtenerGrupos();
-                    $("#agregar-grupo-modal").hide();
                 });
             }
             break;
@@ -1511,7 +1512,7 @@ $("#form-agregar-tarea").on("submit", async (e) => {
 
     try {
 
-        $(".modal-backdrop").removeClass("show");
+        document.getElementById("cerrar-agregar-tarea-modal").click();
 
         ShowPreloader();
 
@@ -1600,6 +1601,8 @@ $("#form-agregar-usuario-grupo").on("submit", async (e) => {
 
     try {
 
+        document.getElementById("cerrar-agregar-usuario-grupo-modal").click();
+        
         ShowPreloader();
 
         let formData = new FormData();
@@ -1636,7 +1639,6 @@ $("#form-agregar-usuario-grupo").on("submit", async (e) => {
                     color: '#FFFFFF'
                 }).then(() => {
                     document.ObtenerGrupos();
-                    $("#agregar-usuario-grupo-modal").hide();
                 });
             }
             break;

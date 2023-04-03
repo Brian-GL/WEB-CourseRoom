@@ -289,7 +289,7 @@ document.ObtenerMateriales = async function(){
                     data: filas,
                     createdRow: (row, data) => {
                         $('.segundo-color-letra',row).css('color', SegundoColorLetra);
-                        $('.span-detalle', row).html('<a class="fuenteNormal span-detalle text-center text-decoration-underline" href="'.concat(data.archivo,'">Descargar archivo</a>'));
+                        $('.span-detalle', row).html('<a class="fuenteNormal span-detalle text-center text-decoration-underline" href="'.concat(data.archivo,'" download="',data.nombre,'" target="_blank">Descargar archivo</a>'));
                         let fechaRegistro = data.fechaRegistro.substring(0, data.fechaRegistro.length -1 );
                         $('.fechaRegistro', row).text(dayjs(fechaRegistro).format('dddd DD MMM YYYY h:mm A'));
                     }
@@ -494,6 +494,8 @@ async function ObtenerTareas(){
             case 200:{
                 let filas = result.data;
 
+                dataTableTareasEstudianteCurso.destroy();
+                
                 dataTableTareasEstudianteCurso = $("#table-tareas-estudiante-curso").DataTable({
                     pagingType: 'full_numbers',
                     dom: 'rtp',

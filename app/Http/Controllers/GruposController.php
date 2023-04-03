@@ -9,6 +9,7 @@ use App\Models\GruposArchivosMensajes;
 use App\Models\GrupoArchivosCompartidos;
 use App\Models\GruposImagenes;
 use App\Models\CursosImagenes;
+use App\Models\UsuariosImagenes;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 
@@ -29,84 +30,78 @@ class GruposController extends Controller
     public function gruposdetalle_obtener(Request $request)
     {
         $DatosGrupo = null;
-        $Mensajes = null;
+        $Mensajes = array();
         $idGrupo = null;
         $DatosUsuario = session('DatosUsuario');
         $DatosCuenta = session('DatosCuenta');
         $IdTipoUsuario = session('IdTipoUsuario');
         $Imagen = session('Imagen');
 
-        $validator = Validator::make($request->all(), $rules = [
-            'IdGrupo' => ['required']
-        ], $messages = [
-            'required' => 'El campo :attribute es requerido'
-        ]);
+        $url = env('COURSEROOM_API');
 
-        if (!$validator->fails()) {
-            $url = env('COURSEROOM_API');
+        $IdGrupo = $request->integer('IdGrupo');
 
-            $idGrupo = $request->integer('IdGrupo');
+        if($url != ''){
 
-            if($url != ''){
+            //Obtener datos grupo:
+            $response = Http::withHeaders([
+                'Authorization' => env('COURSEROOM_API_KEY'),
+            ])->post($url.'/api/grupos/detalleobtener', [
+                'IdGrupo' => $IdGrupo
+            ]);
 
-                //Obtener datos grupo:
-                $response = Http::withHeaders([
-                    'Authorization' => env('COURSEROOM_API_KEY'),
-                ])->post($url.'/api/grupos/detalleobtener', [
-                    'IdGrupo' => $idGrupo
-                ]);
+            if ($response->ok()){
 
-                if ($response->ok()){
-                    $DatosGrupo = json_decode($response->body());
+                $DatosGrupo = json_decode($response->body());
+
+                //Obtener información imagen desde mongo:
+                $element = GruposImagenes::where('idGrupo', '=', $IdGrupo)->first();
+
+                if(!is_null($element)){
+                    $DatosGrupo->imagen = $element->imagen;
+                }
+
+                $element = CursosImagenes::where('idCurso', '=', $DatosGrupo->idCurso)->first();
+
+                if(!is_null($element)){
+                    $DatosGrupo->imagenCurso = $element->imagen;
+                }
+
+            } 
+
+            //Obtener mensajes grupo:
+            $response = Http::withHeaders([
+                'Authorization' => env('COURSEROOM_API_KEY'),
+            ])->post($url.'/api/grupos/mensajes', [
+                'IdGrupo' => $IdGrupo
+            ]);
+
+            if ($response->ok()){
+
+                $Mensajes = json_decode($response->body());
+
+                foreach($Mensajes as &$mensaje){
 
                     //Obtener información imagen desde mongo:
-                    $element = GruposImagenes::where('idGrupo', '=', $idGrupo)->first();
-
+                    $element = UsuariosImagenes::where('idUsuario', '=', $mensaje->idUsuarioEmisor)->first();
+        
                     if(!is_null($element)){
-                        $DatosGrupo->imagen = $element->imagen;
-                    }
+                        $mensaje->imagenEmisor = $element->imagen;
 
-                    $element = CursosImagenes::where('idCurso', '=', $DatosGrupo->idCurso)->first();
+                        if(!is_null($mensaje->archivo)){
+                            $element = GrupoArchivosMensajes::where('idMensaje', '=', $mensaje->idMensaje)->first();
 
-                    if(!is_null($element)){
-                        $DatosGrupo->imagenCurso = $element->imagen;
-                    }
-
-                } 
-
-                //Obtener mensajes grupo:
-                $response = Http::withHeaders([
-                    'Authorization' => env('COURSEROOM_API_KEY'),
-                ])->post($url.'/api/grupos/mensajes', [
-                    'IdGrupo' => $idGrupo
-                ]);
-
-                if ($response->ok()){
-
-                    $Mensajes = json_decode($response->body());
-
-                    foreach($Mensajes as &$mensaje){
-
-                        //Obtener información imagen desde mongo:
-                        $element = UsuariosImagenes::where('idUsuario', '=', $mensaje->idUsuarioEmisor)->first();
-            
-                        if(!is_null($element)){
-                            $mensaje->imagenEmisor = $element->imagen;
-    
-                            if(!is_null($mensaje->archivo)){
-                                $element = GrupoArchivosMensajes::where('idMensaje', '=', $mensaje->idMensaje)->first();
-    
-                                if(!is_null($element)){
-                                    $mensaje->archivo = $element->archivo;
-                                }
+                            if(!is_null($element)){
+                                $mensaje->archivo = $element->archivo;
                             }
                         }
                     }
-                } 
+                }
             } 
-        }
+        } 
+    
             
-        return view('grupos.detallegrupo', compact('DatosUsuario', 'DatosCuenta', 'IdTipoUsuario', 'DatosGrupo','idGrupo', 'Mensajes', 'Imagen'));
+        return view('grupos.detallegrupo', compact('DatosUsuario', 'DatosCuenta', 'IdTipoUsuario', 'DatosGrupo','IdGrupo', 'Mensajes', 'Imagen'));
     }
 
     #endregion
@@ -130,6 +125,7 @@ class GruposController extends Controller
                 $url = env('COURSEROOM_API');
 
                 $idGrupo = $request->integer('IdGrupo');
+
                 $nombre = $request->string('Nombre')->trim();
                 $descripcion = $request->string('Descripcion')->trim();
                 
@@ -147,7 +143,6 @@ class GruposController extends Controller
                         'Authorization' => env('COURSEROOM_API_KEY'),
                     ])->put($url.'/api/grupos/actualizar', [
                         'IdGrupo' => $idGrupo,
-                        'IdCurso' => $idCurso,
                         'Nombre' => $nombre,
                         'Descripcion' => $descripcion,
                         'Imagen' => $filename
@@ -172,9 +167,19 @@ class GruposController extends Controller
                                 $mongoImagenes->update(
                                     ['imagen' => $Base64Image,
                                     'extension' => $extension]);
+                            } else{
+                                //Registrar:
+                                $mongoCollection = new GruposImagenes;
+
+                                $mongoCollection->idGrupo = $idGrupo;
+                                $mongoCollection->imagen = $Base64Image;
+                                $mongoCollection->extension = $extension;
+
+                                $mongoCollection->save();
                             }
 
                             Storage::delete('grupos/'.$ImagenAnterior);
+                            
                             //Guardar imagen en storage:
                             Storage::putFileAs('grupos', $file, $filename);
                         }
@@ -606,7 +611,7 @@ class GruposController extends Controller
                         'IdGrupo' => $idGrupo,
                         'IdProfesor' => $idProfesor,
                         'IdCurso' => $idCurso,
-                        'IdUsuario' => $idUsuario
+                        'IdUsuario' => $IdUsuario
                     ]);
 
                     if ($response->ok()){
@@ -1086,10 +1091,10 @@ class GruposController extends Controller
                 
                 $idGrupo = $request->integer('IdGrupo');
                 $idUsuarioEmisor = session('IdUsuario');
-                $mensaje = $request->integer('Mensaje');
+                $mensaje = $request->string('Mensaje')->trim();
                 
                 $Base64Archivo = null;
-                if($request->has('Base64Archivo')){
+                if($request->has('Base64Archivo') && $request->input('Base64Archivo') != 'null'){
                     $Base64Archivo = $request->input('Base64Archivo');
                 }
                 
@@ -1139,7 +1144,7 @@ class GruposController extends Controller
                         'data' => $result, 
                         'fecha' => $fechaRegistro, 
                         'nombreArchivo' => $Base64Archivo,
-                        'imagenEmisor' => session('DatosCuenta')->imagen], 200);
+                        'imagenEmisor' => session('Imagen')], 200);
 
                     } else{
                         return response()->json(['code' => 400 , 'data' => $response->body()], 200);

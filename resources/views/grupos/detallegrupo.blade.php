@@ -1,7 +1,7 @@
 @php
 use Carbon\Carbon;
-$max_date = Carbon::now()->addMonths(6)->toDateTimeString();
-$min_date = Carbon::now()->toDateTimeString();
+$max_date = Carbon::now()->addMonths(6)->format('Y-m-d\T00:00');
+$min_date = Carbon::now()->addHours(12)->format('Y-m-d\T00:00');
 @endphp
 
 @extends('layouts.home')
@@ -15,8 +15,8 @@ $min_date = Carbon::now()->toDateTimeString();
 @section('content')
 
 @if (!is_null($DatosGrupo))
-    <input type="hidden" value="{{ $idGrupo}}" id="id-grupo"/>
-    <input type="hidden" value="{{$DatosGrupo->imagen}}" id="imagen-anterior">
+    <input type="hidden" value="{{ $IdGrupo}}" id="id-grupo"/>
+    <input type="hidden" value="{{ $DatosGrupo->imagen}}" id="imagen-anterior">
 @else
     <input type="hidden" value="0" id="id-grupo"/>
     <input type="hidden" value="" id="imagen-anterior">
@@ -27,34 +27,32 @@ $min_date = Carbon::now()->toDateTimeString();
         <div class="row">
             <div class="col-md-12">
 
-                <div class="row">
-                    <div class="col-md-1 text-center">
-                        <a type="button" class="btn fuenteNormal tercer-color-fondo tercer-color-letra" title="Regresar a mis grupos" href="{{route('grupos.inicio')}}">
+                <div class="row my-2">
+                    <div class="col-md-12 d-flex">
+                        <a type="button" class="btn fuenteNormal tercer-color-fondo tercer-color-letra align-items-center" title="Regresar a mis grupos" href="{{route('grupos.inicio')}}">
                             <i class="fa-solid fa-hand-point-left fa-2x"></i>
                         </a> 
-                    </div>
-                    <div class="col-md-11">
-                        <h2 class="d-inline my-3 display-6 text-start fw-bolder primer-color-letra">Detalle del grupo</h2>
+                        <span class="ps-1 d-inline fs-2 text-start fw-bolder primer-color-letra">Detalle del grupo</h2>
                     </div>
                 </div>
                 
 
                 <div class="row">
                     <div class="col-md-12">
-                        <ul class="nav nav-pills my-0-5 nav-fill" role="tablist">
-                            <li class="nav-item btn" role="presentation">
+                        <ul class="nav nav-tabs my-0-5 justify-content-center" role="tablist">
+                            <li class="nav-item mx-1" role="presentation">
                                 <button class="nav-link active fuenteNormal primer-color-letra primer-color-fondo" id="datos-generales-tab" data-bs-toggle="tab" data-bs-target="#datos-generales" type="button" role="tab" aria-controls="datos-generales" aria-selected="true">Datos generales</button>
                             </li>
-                            <li class="nav-item btn" role="presentation">
+                            <li class="nav-item mx-1" role="presentation">
                                 <button class="nav-link fuenteNormal tercer-color-letra tercer-color-fondo" id="miembros-tab" data-bs-toggle="tab" data-bs-target="#miembros" type="button" role="tab" aria-controls="miembros" aria-selected="false">Miembros</button>
                             </li>
-                            <li class="nav-item btn" role="presentation">
-                                <button class="nav-link fuenteNormal tercer-color-letra tercer-color-fondo" id="mensajes-tab" data-bs-toggle="tab" data-bs-target="#mensajes" type="button" role="tab" aria-controls="mensajes" aria-selected="false">Mensajes</button>
+                            <li class="nav-item mx-1" role="presentation">
+                                <button class="nav-link fuenteNormal tercer-color-letra tercer-color-fondo" id="mensajes-grupo-tab" data-bs-toggle="tab" data-bs-target="#mensajes-grupo" type="button" role="tab" aria-controls="mensajes-grupo" aria-selected="false">Mensajes</button>
                             </li>
-                            <li class="nav-item btn" role="presentation">
+                            <li class="nav-item mx-1" role="presentation">
                                 <button class="nav-link fuenteNormal tercer-color-letra tercer-color-fondo" id="archivos-compartidos-tab" data-bs-toggle="tab" data-bs-target="#archivos-compartidos" type="button" role="tab" aria-controls="archivos-compartidos" aria-selected="false">Archivos compartidos</button>
                             </li>
-                            <li class="nav-item btn" role="presentation">
+                            <li class="nav-item mx-1" role="presentation">
                                 <button class="nav-link fuenteNormal tercer-color-letra tercer-color-fondo" id="tareas-pendientes-tab" data-bs-toggle="tab" data-bs-target="#tareas-pendientes" type="button" role="tab" aria-controls="tareas-pendientes" aria-selected="false">Tareas pendientes</button>
                             </li>
                         </ul>
@@ -66,6 +64,16 @@ $min_date = Carbon::now()->toDateTimeString();
                     <div class="tab-content">
 
                         <div class="tab-pane fade show active" id="datos-generales" role="tabpanel" aria-labelledby="datos-generales-tab">
+                            
+                            <div class="row">
+                                <div class="col-md-12 text-center">
+                                    @if (!is_null($DatosGrupo))
+                                        <img id="imagen-grupo" class="image img-fluid shadow-lg mt-2" alt="Imagen del grupo" src="{{ $DatosGrupo->imagen}}" />
+                                    @else
+                                        <img id="imagen-grupo" class="image img-fluid shadow-lg mt-2" alt="Imagen del grupo" src="" />
+                                    @endif
+                                </div>
+                            </div>
                             <div class="row">
                                 <div class="col-md-6">
                                     @if (!is_null($DatosGrupo))
@@ -92,7 +100,6 @@ $min_date = Carbon::now()->toDateTimeString();
                                             <p class="fuenteNormal segundo-color-letra d-inline"><i class="fa-solid fa-pen-to-square"></i></p>
                                         </div>
                                         <p class="titulado fuenteNormal segundo-color-letra">Creado el {{$fechaRegistroFormat}}</p>
-                                        <p class="titulado fuenteNormal segundo-color-letra text-wrap">Del curso: <b>{{$DatosGrupo->curso}}</b></p>
                                         <p class="titulado fuenteNormal segundo-color-letra text-wrap">Actualizada: {{$fechaActualizacionFormat}}</p>
                                     @else
                                         <p class="fuenteGrande segundo-color-letra">Grupo desconocido</p>
@@ -100,13 +107,15 @@ $min_date = Carbon::now()->toDateTimeString();
                                 </div>
         
                                 <div class="col-md-6 text-center">
-                                    @if(!is_null($DatosGrupo) && !is_null($DatosGrupo->imagen))
-                                        <img id="imagen-grupo" class="img-fluid rounded-circle shadow-lg h-75 mb-1" alt="Imagen del grupo" src="{{ $DatosGrupo->imagen}}" />
-                                    @else
-                                        <img id="imagen-grupo" class="img-fluid rounded-circle shadow-lg h-75 mb-1" alt="Imagen del grupo" src="https://raw.githubusercontent.com/Brian-GL/CourseRoom/main/src/recursos/imagenes/Course_Room_Brand_Readme.png"/>
-                                    @endif
-
+                                   
                                     @if (!is_null($DatosGrupo))
+
+                                        @if( !is_null($DatosGrupo->imagenCurso))
+                                            <img id="imagen-curso" class="image img-fluid rounded-circle shadow-lg h-75 mb-1" alt="Imagen del curso" src="{{$DatosGrupo->imagenCurso}}" />
+                                        @endif
+
+                                        <p class="titulado fuenteNormal segundo-color-letra text-wrap">Del curso: <b>{{$DatosGrupo->curso}}</b></p>
+
                                         <div class="d-block mt-1 mx-2">
                                             <button id="actualizar-grupo" type="button" onclick="ActualizarGrupo()" class="btn btn-lg segundo-color-letra segundo-color-fondo">Actualizar grupo</button>
                                             <div class="btn btn-rounded tercer-color-letra tercer-color-fondo">
@@ -129,7 +138,7 @@ $min_date = Carbon::now()->toDateTimeString();
                             </div>
                         </div>
 
-                        <div class="tab-pane fade" id="mensajes" role="tabpanel" aria-labelledby="mensajes-tab">
+                        <div class="tab-pane fade" id="mensajes-grupo" role="tabpanel" aria-labelledby="mensajes-grupo-tab">
                             
                             <div class="row border-bottom-0 shadow-lg" id="contenido-grupo">
                                 <div class="col-md-12 mt-5 mb-2" id="mensajes">
@@ -138,18 +147,18 @@ $min_date = Carbon::now()->toDateTimeString();
                     
                                         <div class="col-md-12 d-flex justify-content-start">
                                             <div class="d-flex justify-content-start mb-4">
-                                                <img src="{{ $mensaje->imagenEmisor}}" alt="avatar" class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60">
+                                                <img src="{{ $mensaje->imagenEmisor}}" alt="avatar" class="me-2 rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60" height="60">
                                                 <div class="card mask-custom">
-                                                    <div class="card-header d-flex justify-content-between p-3" style="border-bottom: 1px solid rgba(255,255,255,.3);">
+                                                    <div class="card-header d-flex justify-content-between p-2" style="border-bottom: 1px solid rgba(255,255,255,.3);">
                                                         <div class="col-md-6 text-center text-wrap">
-                                                            <p class="fw-bold mb-0">{{$mensaje->nombreUsuarioEmisor}}</p>
+                                                            <p class="text-start fw-bold mb-0 me-1">{{$mensaje->nombreUsuarioEmisor}}</p>
                                                         </div>
                                                         <div class="col-md-6 text-center text-wrap">
                                                             @php
                                                                 $fechaRegistro = new Carbon($mensaje->fechaRegistro);
                                                                 $fechaRegistroFormat = $fechaRegistro->format('d/m/Y h:i A'); 
                                                             @endphp
-                                                            <p class="text-light small mb-0"><i class="far fa-clock"></i>&nbsp;{{$fechaRegistroFormat}}</p>
+                                                            <p class="text-light small mb-0 text-end"><i class="far fa-clock"></i>&nbsp;{{$fechaRegistroFormat}}</p>
                                                         </div>
                                                     </div>
                                                     <div class="card-body">
@@ -219,8 +228,8 @@ $min_date = Carbon::now()->toDateTimeString();
                                     <div class="row">
                                         <div class="col-md-10"></div>
                                         <div class="col-md-2 d-flex justify-content-center">
-                                            <button type="submit" class="w-100 btn tercer-color-letra tercer-color-fondo" id="crear-tarea-pendiente">
-                                                <i class="fa-solid fa-upload"></i>&nbsp;Crear tarea
+                                            <button type="button" class="w-100 btn tercer-color-letra tercer-color-fondo" id="crear-tarea-pendiente" data-bs-toggle="modal" data-bs-target="#agregar-tarea-pendiente-modal">
+                                                <i class="fa-solid fa-upload"></i>&nbsp;Crear tarea pendiente
                                             </button>
                                         </div>
                                     </div>
@@ -241,12 +250,12 @@ $min_date = Carbon::now()->toDateTimeString();
 </div>
 
 <!-- Modal Crear Tarea Pendiente -->
-<div class="modal fade text-center" id="agregar-tarea-pendiente-modal" tabindex="-1" role="dialog" aria-labelledby="titulo-modal-agregar-tarea-pendiente" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<div class="modal fade text-center" id="agregar-tarea-pendiente-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content primer-color-letra primer-color-fondo">
             <div class="modal-header">
                 <h5 class="modal-title" id="titulo-modal-agregar-tarea-pendiente">Agregar tarea pendiente</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" id="cerrar-agregar-tarea-pendiente-modal" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form method="HEAD" id="form-agregar-tarea-pendiente">
                 <div class="modal-body">
@@ -269,7 +278,7 @@ $min_date = Carbon::now()->toDateTimeString();
                         <div class="row mt-4">
                             <div class="col-md-12 form-group">
                                 <label for="fecha-finalizacion-tarea-pendiente" class="form-label">Fecha de finalización</label>
-                                <input class="fuenteNormal form-control tercer-color-fondo tercer-color-letra" type="datetime" name="fecha-finalizacion-tarea-pendiente" id="fecha-finalizacion-tarea-pendiente" min="{{$min_date}}" max="{{$max_date}}" required>
+                                <input class="fuenteNormal form-control tercer-color-fondo tercer-color-letra" type="datetime-local" name="fecha-finalizacion-tarea-pendiente" id="fecha-finalizacion-tarea-pendiente" min="{{$min_date}}" max="{{$max_date}}" required>
                             </div>
                         </div>
 
@@ -292,12 +301,12 @@ $min_date = Carbon::now()->toDateTimeString();
 
 
 <!-- Modal Detalle Tarea Pendiente -->
-<div class="modal fade text-center" id="detalle-tarea-pendiente-modal" tabindex="-1" role="dialog" aria-labelledby="titulo-modal-detalle-tarea-pendiente" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<div class="modal fade text-center" id="detalle-tarea-pendiente-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content primer-color-letra primer-color-fondo">
             <div class="modal-header">
                 <h5 class="modal-title" id="titulo-modal-detalle-tarea-pendiente">Detalle tarea pendiente</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" id="cerrar-detalle-tarea-pendiente-modal" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form method="HEAD" id="form-detalle-tarea-pendiente">
                 <div class="modal-body">

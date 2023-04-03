@@ -40,26 +40,26 @@ $min_date = Carbon::now()->addHours(12)->format('Y-m-d\T00:00');
                 
                 <div class="row">
                     <div class="col-md-12">
-                        <ul class="nav nav-tabs my-0-5" role="tablist">
-                            <li class="nav-item btn" role="presentation">
+                        <ul class="nav nav-tabs my-0-5 justify-content-center" role="tablist">
+                            <li class="nav-item mx-1" role="presentation">
                                 <button class="nav-link active fuenteNormal primer-color-letra primer-color-fondo" id="datos-generales-tab" data-bs-toggle="tab" data-bs-target="#datos-generales" type="button" role="tab" aria-controls="datos-generales" aria-selected="true">Datos Generales</button>
                             </li>
-                            <li class="nav-item btn" role="presentation">
+                            <li class="nav-item mx-1" role="presentation">
                                 <button class="nav-link fuenteNormal tercer-color-letra tercer-color-fondo" id="miembros-tab" data-bs-toggle="tab" data-bs-target="#miembros" type="button" role="tab" aria-controls="miembros" aria-selected="false">Miembros</button>
                             </li>
-                            <li class="nav-item btn" role="presentation">
+                            <li class="nav-item mx-1" role="presentation">
                                 <button class="nav-link fuenteNormal tercer-color-letra tercer-color-fondo" id="tareas-tab" data-bs-toggle="tab" data-bs-target="#tareas" type="button" role="tab" aria-controls="tareas" aria-selected="false">Tareas</button>
                             </li>
-                            <li class="nav-item btn" role="presentation">
+                            <li class="nav-item mx-1" role="presentation">
                                 <button class="nav-link fuenteNormal tercer-color-letra tercer-color-fondo" id="desempeno-tab" data-bs-toggle="tab" data-bs-target="#desempeno" type="button" role="tab" aria-controls="desempeno" aria-selected="false">Desempeño</button>
                             </li>
-                            <li class="nav-item btn" role="presentation">
+                            <li class="nav-item mx-1" role="presentation">
                                 <button class="nav-link fuenteNormal tercer-color-letra tercer-color-fondo" id="materiales-tab" data-bs-toggle="tab" data-bs-target="#materiales" type="button" role="tab" aria-controls="materiales" aria-selected="false">Materiales</button>
                             </li>
-                            <li class="nav-item btn" role="presentation">
+                            <li class="nav-item mx-1" role="presentation">
                                 <button class="nav-link fuenteNormal tercer-color-letra tercer-color-fondo" id="grupos-tab" data-bs-toggle="tab" data-bs-target="#grupos" type="button" role="tab" aria-controls="grupos" aria-selected="false">Grupos</button>
                             </li>
-                            <li class="nav-item btn" role="presentation">
+                            <li class="nav-item mx-1" role="presentation">
                                 <button class="nav-link fuenteNormal tercer-color-letra tercer-color-fondo" id="mensajes-curso-tab" data-bs-toggle="tab" data-bs-target="#mensajes-curso" type="button" role="tab" aria-controls="mensajes-curso" aria-selected="false">Mensajes</button>
                             </li>
                         </ul>
@@ -74,7 +74,7 @@ $min_date = Carbon::now()->addHours(12)->format('Y-m-d\T00:00');
                             <div class="row">
                                 <div class="col-md-12 text-center">
                                     @if (!is_null($DatosCurso))
-                                        <img id="imagen-curso" class="image img-fluid rounded-circle shadow-lg h-75 mb-1" alt="Imagen del curso" src="{{ $DatosCurso->imagen}}" />
+                                        <img id="imagen-curso" class="image img-fluid shadow-lg mt-2" alt="Imagen del curso" src="{{ $DatosCurso->imagen}}" />
                                     @endif
                                 </div>
                             </div>
@@ -276,12 +276,12 @@ $min_date = Carbon::now()->addHours(12)->format('Y-m-d\T00:00');
 </div>
 
 <!-- Modal Crear Grupo -->
-<div class="modal fade text-center" id="agregar-grupo-modal" role="dialog">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="agregar-grupo-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content primer-color-letra primer-color-fondo">
             <div class="modal-header">
                 <h5 class="modal-title" id="titulo-modal-agregar-grupo">Agregar grupo</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button id="cerrar-agregar-grupo-modal" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form method="HEAD" id="form-agregar-grupo">
                 <div class="modal-body">
@@ -312,12 +312,12 @@ $min_date = Carbon::now()->addHours(12)->format('Y-m-d\T00:00');
 </div>
 
 <!-- Modal Crear Tarea -->
-<div class="modal fade text-center" id="agregar-tarea-modal" role="dialog" >
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="agregar-tarea-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content primer-color-letra primer-color-fondo">
             <div class="modal-header">
                 <h5 class="modal-title" id="titulo-modal-agregar-tarea">Agregar tarea</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" id="cerrar-agregar-tarea-modal" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form method="HEAD" id="form-agregar-tarea">
                 <div class="modal-body">
@@ -355,12 +355,12 @@ $min_date = Carbon::now()->addHours(12)->format('Y-m-d\T00:00');
 </div>
 
 <!-- Modal Asignar Usuario Grupo -->
-<div class="modal fade text-center" id="agregar-usuario-grupo-modal" role="dialog" >
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="agregar-usuario-grupo-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content primer-color-letra primer-color-fondo">
             <div class="modal-header">
                 <h5 class="modal-title" id="titulo-modal-agregar-grupo">Agregar usuario a grupo</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" id="cerrar-agregar-usuario-grupo-modal" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form method="HEAD" id="form-agregar-usuario-grupo">
                 <div class="modal-body">
@@ -378,7 +378,7 @@ $min_date = Carbon::now()->addHours(12)->format('Y-m-d\T00:00');
                         <div class="row mt-4">
                             <div class="col-md-12 form-group">
                                 <label for="descripcion-grupo" class="form-label">Estudiante*</label>
-                                <select id="select-usuario-agregar" class="form-control segundo-color-letra segundo-color-fondo" required>
+                                <select id="select-usuario-agregar" class="form-select segundo-color-letra segundo-color-fondo" required>
                                 </select>
                             </div>
                         </div>

@@ -1,9 +1,9 @@
-import Swal from 'sweetalert2'
-window.Swal = Swal;
-
 import $ from 'jquery'
 window.$ = $;
 window.jQuery = $;
+
+import Swal from 'sweetalert2'
+window.Swal = Swal;
 
 import * as evoCalendar from 'evo-calendar'
 window.evoCalendar = evoCalendar;
@@ -33,14 +33,16 @@ dayjs.extend(plugin);
 dayjs.locale('es-mx');
 window.dayjs = dayjs;
 
-import platform from 'platform';
+import platform from 'platform'
 window.platform = platform;
 
-import Chart from 'chart.js/auto';
+import Chart from 'chart.js/auto'
 window.Chart = Chart;
 
-
 import 'bootstrap';
+
+import * as bootstrap from 'bootstrap' 
+window.bootstrap =  bootstrap;
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
