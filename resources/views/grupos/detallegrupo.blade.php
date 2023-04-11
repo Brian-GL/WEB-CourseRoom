@@ -337,14 +337,14 @@ $min_date = Carbon::now()->addHours(12)->format('Y-m-d\T00:00');
                         <div class="row mt-4">
                             <div class="col-md-12 form-group">
                                 <label for="miembro-creador-detalle-tarea-pendiente" class="form-label">Creada por</label>
-                                <input type="text" class="form-control fuenteNormal tercer-color-fondo tercer-color-letra" name="miembro-creador-detalle-tarea-pendiente" id="miembro-creador-detalle-tarea-pendiente" placeholder="Ingrese el nombre de la tarea pendiente" maxlength="150" minlength="3" readonly>
+                                <input type="text" class="form-control fuenteNormal tercer-color-fondo tercer-color-letra" name="miembro-creador-detalle-tarea-pendiente" id="miembro-creador-detalle-tarea-pendiente" maxlength="150" minlength="3" readonly>
                             </div>
                         </div>
 
                         <div class="row mt-4">
                             <div class="col-md-12 form-group">
                                 <label for="miembro-a-cargo-detalle-tarea-pendiente" class="form-label">Miembro a cargo</label>
-                                <input type="text" class="form-control fuenteNormal tercer-color-fondo tercer-color-letra" name="miembro-a-cargo-detalle-tarea-pendiente" id="nombre-detalle-tarea-pendiente" placeholder="Ingrese el nombre de la tarea pendiente" maxlength="150" minlength="3" readonly>
+                                <input type="text" class="form-control fuenteNormal tercer-color-fondo tercer-color-letra" name="miembro-a-cargo-detalle-tarea-pendiente" id="miembro-a-cargo-detalle-tarea-pendiente"  maxlength="150" minlength="3" readonly>
                             </div>
                         </div>
 

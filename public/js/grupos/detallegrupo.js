@@ -487,7 +487,7 @@ document.ObtenerTareasPendientes = async function (){
                     data: filas,
                     createdRow: (row, data) => {
                         $('.segundo-color-letra',row).css('color', SegundoColorLetra);
-                        $('.span-detalle', row).html('<span class="fuenteNormal span-detalle text-center text-decoration-underline" onclick="DetalleTareaPendiente('.concat(data.idTareaPendiente,')">Ver detalle</span>'));
+                        $('.span-detalle', row).html('<button type="button" data-bs-toggle="modal" data-bs-target="#detalle-tarea-pendiente-modal" class="fuenteNormal segundo-color-letra text-center text-decoration-underline bg-transparent border-0" onclick="DetalleTareaPendiente('.concat(data.idTareaPendiente,')">Ver detalle</button>'));
                         let fechaRegistro = data.fechaRegistro.substring(0, data.fechaRegistro.length -1 );
                         $('.fechaRegistro', row).text(dayjs(fechaRegistro).format('dddd DD MMM YYYY h:mm A'));
                 
@@ -888,7 +888,7 @@ document.DetalleTareaPendiente = async function(IdTareaPendiente){
 
                 document.getElementById("nombre-detalle-tarea-pendiente").value = tarea_pendiente.nombre;
                 document.getElementById("descripcion-detalle-tarea-pendiente").value = tarea_pendiente.descripcion;
-                document.getElementById("fecha-finalizacion-detalle-tarea-pendiente").value = tarea_pendiente.fechaFinalizacion;
+                document.getElementById("fecha-finalizacion-detalle-tarea-pendiente").value = dayjs(tarea_pendiente.fechaFinalizacion).format('dddd DD MMM YYYY h:mm A');
                 document.getElementById("miembro-creador-detalle-tarea-pendiente").value = tarea_pendiente.nombreUsuarioCreador;
                 document.getElementById("miembro-a-cargo-detalle-tarea-pendiente").value = tarea_pendiente.nombreUsuarioResponsable;
                 document.getElementById("fecha-registro-detalle-tarea-pendiente").value = tarea_pendiente.fechaRegistro;
@@ -1219,7 +1219,11 @@ document.getElementById("form-agregar-tarea-pendiente").addEventListener("submit
     try {
 
         ShowPreloader();
+
+        document.getElementById("cerrar-agregar-tarea-pendiente-modal").click();
+
         let formData = new FormData();
+
         formData.append("IdGrupo", IdGrupo);
         formData.append("IdUsuarioReceptor", $( "#miembro-a-cargo-tarea-pendiente option:selected" ).val());
         formData.append("Nombre", document.getElementById("nombre-tarea-pendiente").value);
@@ -1253,7 +1257,6 @@ document.getElementById("form-agregar-tarea-pendiente").addEventListener("submit
                     color: '#FFFFFF'
                 }).then(() => {
                     document.ObtenerTareasPendientes();
-                    $("#agregar-tarea-pendiente-modal").hide();
                 });
             }
             break;
@@ -1306,7 +1309,7 @@ document.getElementById("form-detalle-tarea-pendiente").addEventListener("submit
 
     try{
 
-        document.getElementById("cerrar-agregar-tarea-pendiente-modal").click();
+        document.getElementById("cerrar-detalle-tarea-pendiente-modal").click();
 
         ShowPreloader();
 
