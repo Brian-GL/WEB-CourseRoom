@@ -36,7 +36,6 @@ $min_date = Carbon::now()->addHours(12)->format('Y-m-d\T00:00');
                     </div>
                 </div>
                 
-
                 <div class="row">
                     <div class="col-md-12">
                         <ul class="nav nav-tabs my-0-5 justify-content-center" role="tablist">

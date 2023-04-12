@@ -8,3 +8,5 @@ import '@fortawesome/fontawesome-free/scss/solid.scss';
 import '@fortawesome/fontawesome-free/scss/v4-shims.scss';
 import '@sweetalert2/theme-dark/dark.min.css';
 import 'toastr/toastr.scss';
+
+import '@event-calendar/core/index.css';

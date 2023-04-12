@@ -4,16 +4,11 @@
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset ('css/tareas/tareas.css')}}">
-@if($IdTipoUsuario == 1)
-<!-- Add the evo-calendar.css for styling -->
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/evo-calendar@1.1.2/evo-calendar/css/evo-calendar.min.css"/>
-@endif
 @endpush
 
 @section('content')
 
 <input type="hidden" value="{{$IdTipoUsuario}}" id="id-tipo-usuario"/>
-
 
 <div class="col-md-12">
     <div class="container">
@@ -97,8 +92,5 @@
 @stop
 
 @push('scripts')
-@if ($IdTipoUsuario == 1)
-<!-- Add the evo-calendar.js for.. obviously, functionality! -->
-@endif
-<script type="module" src=" {{asset('js/tareas/tareas.js')}}"></script
+<script type="module" src=" {{asset('js/tareas/tareas.js')}}"></script>
 @endpush

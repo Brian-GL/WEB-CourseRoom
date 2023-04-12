@@ -26,7 +26,7 @@
     @stack('styles')
 
     <!-- Scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
+    <script src="{{asset('js/general/color-thief.min.js')}}"></script>
     @vite(['resources/js/app.js'])
 
 </head>

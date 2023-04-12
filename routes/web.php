@@ -125,7 +125,7 @@ Route::post('/tareas/profesordetalle',  [TareasController::class, 'tareaprofesor
 Route::post('/tareas/detalle',  [TareasController::class, 'tareadetalle_obtener'])->middleware('session.token');
 
 Route::post('/tareas/archivosadjuntos',  [TareasController::class, 'tareaarchivosadjuntos_obtener'])->middleware('session.token');
-Route::post('/tareas/mes',  [TareasController::class, 'tareasmes_obtener'])->middleware('session.token');
+Route::post('/tareas/delmes',  [TareasController::class, 'tareasmes_obtener'])->middleware('session.token');
 Route::post('/tareas/retroalimentaciondetalle',  [TareasController::class, 'tarearetroalimentaciondetalle_obtener'])->middleware('session.token');
 Route::post('/tareas/actualizar',  [TareasController::class, 'tarea_actualizar'])->middleware('session.token');
 Route::post('/tareas/calificar',  [TareasController::class, 'tareacalificar_actualizar'])->middleware('session.token');

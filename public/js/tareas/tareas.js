@@ -252,13 +252,12 @@ if(idTipoUsuario == 1){
 
     async function ObtenerTareasMes(){
        
-        
         try{
 
             ShowPreloader();
 
             let response = await axios({
-                url: '/tareas/mes',
+                url: '/tareas/delmes',
                 baseURL: BaseURL,
                 method: 'POST',
                 headers: {
@@ -276,54 +275,66 @@ if(idTipoUsuario == 1){
                     
                     let filas = result.data;
                     let eventos = [];
-                    let counter = 0;
+                    let fechaEntregaEnd;
                     let fechaEntrega;
-                    let tipoEvento;
 
                     for(let data of filas)
                     {
                         if(data.fechaEntrega !== null && data.fechaEntrega !== undefined && data.fechaEntrega !== ''){
-                            fechaEntrega = data.fechaEntrega.substring(0, data.fechaEntrega.length -1 );
-
-                            if(data.estatus == 'Entregada'){
-                                tipoEvento = 'holiday';
-                            }
-                            else if(data.estatus == 'Calificada'){
-                                tipoEvento = 'birthday';
-                            }else{
-                                tipoEvento = 'event';
-                            }
+                            fechaEntrega = dayjs(data.fechaEntrega.substring(0, data.fechaEntrega.length -1 ));
+                            fechaEntregaEnd = fechaEntrega.toDate();
 
                             eventos.push(
                                 {
-                                    id: 'evento'.concat(counter),
-                                    name: data.estatus,
-                                    date: dayjs(fechaEntrega).format('MMMM/D/YYYY'),
-                                    type: tipoEvento,
-                                    everyYear: false,
-                                    description:  data.nombre,
-                                    data: data.idTarea
+                                    id: data.idTarea,
+                                    allDay: false,
+                                    title: data.nombre,
+                                    color: PrimerColor,
+                                    backgroundColor: PrimerColor,
+                                    editable: false,
+                                    start:fechaEntregaEnd,
+                                    end: fechaEntregaEnd
                                 }
                             );
-
-                            counter = counter + 1;
                         }
                     }
-                    $('#tareas-calendario').evoCalendar({
-                        theme: 'Midnight Blue',
-                        language: 'es',
-                        todayHighlight: true,
-                        titleFormat: 'MM yyyy',
-                        sidebarDisplayDefault: false,
-                        sidebarToggler: false,
-                        calendarEvents: eventos
-                    });
 
-                    $("#tareas-calendario").on('selectEvent', (event, activeMonth, monthIndex) => {
-                        let idTarea = activeMonth.data;
-                        document.DetalleTareaEstudiante(idTarea);
+                    let calendar =  new window.Calendar({
+                        target: document.getElementById('tareas-calendario'),
+                        props: {
+                            plugins: [window.DayGrid],
+                            options: {
+                                view: 'dayGridMonth',
+                                events: eventos,
+                                height: '90%',
+                                eventClick: (event) => {
+                                    document.DetalleTareaEstudiante(event.event.id);
+                                },
+                                eventMouseEnter: (eventInfo) => {
+                                    eventInfo.el.style.setProperty('color',SegundoColorLetra,'important');
+                                    eventInfo.el.style.setProperty('background-color',SegundoColor,'important');
+                                    eventInfo.event.color = SegundoColor;
+                                    eventInfo.event.backgroundColor = SegundoColor;
+                                },
+                                eventMouseLeave: (eventInfo) => {
+                                    eventInfo.el.style.setProperty('color',PrimerColorLetra,'important');
+                                    eventInfo.el.style.setProperty('background-color',PrimerColor,'important');
+                                    eventInfo.event.color = PrimerColor;
+                                    eventInfo.event.backgroundColor = PrimerColor;
+                                }
+                            }
+                        }
                     });
     
+                    let ec_heads = document.getElementsByClassName('ec-day-head');
+                    for(let elemento of ec_heads){
+                        elemento.style.setProperty('color',TercerColorLetra,'important');
+                    }
+
+                    ec_heads = document.getElementsByClassName('ec-title');
+                    for(let elemento of ec_heads){
+                        elemento.style.setProperty('color',TercerColorLetra,'important');
+                    }
                 }
                 break;
                 case 500:{
@@ -341,14 +352,25 @@ if(idTipoUsuario == 1){
                 break;
                 default:
                     {
-                        $('#tareas-calendario').evoCalendar({
-                            theme: 'Midnight Blue',
-                            language: 'es',
-                            todayHighlight: true,
-                            titleFormat: 'MM yyyy',
-                            sidebarDisplayDefault: false,
-                            sidebarToggler: false
+                        let calendar =  new window.Calendar({
+                            target: document.getElementById('tareas-calendario'),
+                            props: {
+                                plugins: [window.DayGrid],
+                                options: {
+                                    view: 'dayGridMonth'
+                                }
+                            }
                         });
+
+                        let ec_heads = document.getElementsByClassName('ec-day-head');
+                        for(let elemento of ec_heads){
+                            elemento.style.setProperty('color',TercerColorLetra,'important');
+                        }
+    
+                        ec_heads = document.getElementsByClassName('ec-title');
+                        for(let elemento of ec_heads){
+                            elemento.style.setProperty('color',TercerColorLetra,'important');
+                        }
                     }
                 break;
             }

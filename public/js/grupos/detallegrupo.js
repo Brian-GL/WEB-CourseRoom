@@ -895,8 +895,6 @@ document.DetalleTareaPendiente = async function(IdTareaPendiente){
 
                 $("#estatus-detalle-tarea-pendiente option:contains('".concat(tarea_pendiente.estatus,"')")).prop("selected", true);
 
-                $("#detalle-tarea-pendiente-modal").show();
-
             }
             break;
             case 500:{
