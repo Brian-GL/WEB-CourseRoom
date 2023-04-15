@@ -25,7 +25,7 @@ use Carbon\Carbon;
         <div class="row">
             <div class="col-md-12">
 
-                <div class="row">
+                <div class="row mb-2">
                     <div class="col-md-1 text-center">
                         <a type="button" class="btn fuenteNormal tercer-color-fondo tercer-color-letra" title="Regresar a mis tareas" href="{{route('tareas.inicio')}}">
                             <i class="fa-solid fa-hand-point-left fa-2x"></i>
@@ -35,20 +35,20 @@ use Carbon\Carbon;
                         <h2 class="d-inline my-3 display-6 text-start fw-bolder primer-color-letra">Detalle de la tarea</h2>
                     </div>
                 </div>
-                
 
                 <div class="row">
                     <div class="col-md-12">
-                        <ul class="nav nav-pills my-0-5 nav-fill" role="tablist">
-                            <li class="nav-item btn" role="presentation">
+                        <ul class="nav nav-tabs my-0-5 justify-content-center" role="tablist">
+                            <li class="nav-item mx-1" role="presentation">
                                 <button class="nav-link active fuenteNormal primer-color-letra primer-color-fondo" id="datos-generales-tab" data-bs-toggle="tab" data-bs-target="#datos-generales" type="button" role="tab" aria-controls="datos-generales" aria-selected="true">Datos Generales</button>
                             </li>
-                            <li class="nav-item btn" role="presentation">
+                            <li class="nav-item mx-1" role="presentation">
                                 <button class="nav-link fuenteNormal tercer-color-letra tercer-color-fondo" id="archivos-adjuntos-tab" data-bs-toggle="tab" data-bs-target="#archivos-adjuntos" type="button" role="tab" aria-controls="archivos-adjuntos" aria-selected="false">Archivos Adjuntos</button>
                             </li>
                         </ul>
                     </div>
                 </div>
+                
 
                 <div class="box row pt-1">
 
@@ -86,7 +86,7 @@ use Carbon\Carbon;
                                 <div class="col-md-6 text-center">
                                     @if(!is_null($DatosTarea))
                                         @if(!is_null($DatosTarea->imagenCurso))
-                                            <img id="imagen-curso" class="img-fluid rounded-circle shadow-lg h-75 mb-1" alt="Imagen del curso" src="{{ $DatosTarea->imagenCurso}}" />
+                                            <img id="imagen-curso" class="image img-fluid shadow-lg mt-2" alt="Imagen del curso" src="{{ $DatosTarea->imagenCurso}}" />
                                         @endif
                                         <p class="titulado fuenteNormal segundo-color-letra text-wrap">Del curso <b>{{$DatosTarea->curso}}</b></p>
 

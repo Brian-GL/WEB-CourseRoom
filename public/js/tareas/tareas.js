@@ -157,7 +157,7 @@ if(idTipoUsuario == 1){
                             { data: "fechaEntrega", title: "Fecha de entrega"},
                             { data: "fechaEntregada", title: "Fecha de entregada"},
                             { data: "puntualidad", title: "Puntualidad"},
-                            { data: "calificiacion", title: "Calificación"},
+                            { data: "calificacion", title: "Calificación"},
                             { data: "fechaCalificacion", title: "Fecha de calificación"},
                             { data: "estatus", title: "Estatus"},
                             { data: "", title: "Detalle"}
@@ -185,15 +185,20 @@ if(idTipoUsuario == 1){
                                 $('.fechaEntrega', row).text(fechaEntrega.format('LLLL'));
                             }
 
-                            let fechaEntregada = dayjs(data.fechaEntregada?.substring(0,data.fechaEntregada?.length-1));
-                            if(fechaEntregada.isValid()){
-                                $('.fechaEntregada', row).text(fechaEntregada.format('LLLL'));
+                            if(data.fechaEntregada != null){
+                                let fechaEntregada = dayjs(data.fechaEntregada?.substring(0,data.fechaEntregada?.length-1));
+                                if(fechaEntregada.isValid()){
+                                    $('.fechaEntregada', row).text(fechaEntregada.format('LLLL'));
+                                }
                             }
 
-                            let fechaCalificacion = dayjs(data.fechaCalificacion?.substring(0,data.fechaCalificacion?.length-1));
-                            if(fechaCalificacion.isValid()){
-                                $('.fechaCalificacion', row).text(fechaCalificacion.format('LLLL'));
+                            if(data.fechaCalificacion != null){
+                                let fechaCalificacion = dayjs(data.fechaCalificacion?.substring(0,data.fechaCalificacion?.length-1));
+                                if(fechaCalificacion.isValid()){
+                                    $('.fechaCalificacion', row).text(fechaCalificacion.format('LLLL'));
+                                }
                             }
+                            
                         }
                     });
 

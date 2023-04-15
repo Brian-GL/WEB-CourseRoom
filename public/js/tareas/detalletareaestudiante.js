@@ -243,7 +243,7 @@ async function ObtenerArchivosAdjuntos(){
                     data: filas,
                     createdRow: (row, data) => {
                         $('.segundo-color-letra',row).css('color', SegundoColorLetra);
-                        $('.span-detalle', row).html('<a class="fuenteNormal span-detalle text-center text-decoration-underline" href="'.concat(data.archivo,'">Descargar archivo</a>'));
+                        $('.span-detalle', row).html('<a class="fuenteNormal segundo-color-letra text-center text-decoration-underline" href="'.concat(data.archivo,'" download="',data.nombre,'" target="_blank">Descargar archivo</a>'));
                         let fechaRegistro = data.fechaRegistro.substring(0, data.fechaRegistro.length -1 );
                         $('.fechaRegistro', row).text(dayjs(fechaRegistro).format('dddd DD MMM YYYY h:mm A'));
                     }
@@ -446,6 +446,8 @@ document.ObtenerArchivosEntregados = async function (){
             case 200:{
                 let filas = result.data;
 
+                dataTableTareaArchivosEntregadosEstudiante.destroy();
+
                 dataTableTareaArchivosEntregadosEstudiante = $("#table-archivos-entregados-estudiante").DataTable({
                     pagingType: 'full_numbers',
                     dom: 'frtp',
@@ -484,14 +486,16 @@ document.ObtenerArchivosEntregados = async function (){
                     data: filas,
                     createdRow: (row, data) => {
                         $('.segundo-color-letra',row).css('color', SegundoColorLetra);
+                        
+                        $('.span-detalle', row).html('<a class="fuenteNormal text-center text-decoration-underline" href="'.concat(data.archivo,'" download="',data.nombre,'" target="_blank">Descargar archivo</a>'));
+
                         if(EstatusTarea != "Calificada"){
-                            $('.span-remover', row).html('<span class="fuenteNormal span-detalle text-center text-decoration-underline" onclick="RemoverArchivoEntregado('.concat(data.idArchivoEntregado,')">¿Remover archivo?</span>'));
+                            $('.span-remover', row).html('<span class="fuenteNormal text-center text-decoration-underline" onclick="RemoverArchivoEntregado('.concat(data.idArchivoEntregado,',\'',data.nombreArchivo,'\')">¿Remover archivo?</span>'));
                         }
                         else{
-                            $('.span-remover', row).html('<span class="fuenteNormal span-detalle text-center text-decoration-underline">⛔ No Permisible</span>');
+                            $('.span-remover', row).html('<span class="fuenteNormal text-center text-decoration-underline">⛔ No Permisible</span>');
                         }
 
-                        $('.span-detalle', row).html('<a class="fuenteNormal span-detalle text-center text-decoration-underline" href="'.concat(data.archivo,'">Descargar archivo</a>'));
                         let fechaRegistro = data.fechaRegistro.substring(0, data.fechaRegistro.length -1 );
                         $('.fechaRegistro', row).text(dayjs(fechaRegistro).format('dddd DD MMM YYYY h:mm A'));
                     }
@@ -633,73 +637,94 @@ async function EnviarArchivoEntregado(filename, base64, file) {
     }
 }
 
-document.RemoverArchivoEntregado = async function(IdArchivoEntregado){
+document.RemoverArchivoEntregado = async function(IdArchivoEntregado, NombreArchivoEntregado){
     try {
 
-        ShowPreloader();
+
+        Swal.fire({
+            title:"Remover archivo entregado",
+            text: "¿Está segur@ de quitar este archivo para entrega de tarea?",
+            imageUrl: window.SadOwl,
+            imageWidth: 100, 
+            imageHeight: 123,
+            background: "#000000", 
+            color:"#FFFFFF",
+            imageAlt: "Alert Image",
+            showCloseButton:true,
+            showDenyButton:false,
+            showCancelButton:true,
+            confirmButtonText: "Sí, no hay problema 😄",
+            cancelButtonText:"No por favor, me equivoqué de botón 🙃"})
+        .then(async (respuesta) => {
+            if(respuesta.isConfirmed){
+                ShowPreloader();
         
-        let formData = new FormData();
-        formData.append("IdArchivoEntregado", IdArchivoEntregado);
-        formData.append("IdTarea", IdTarea);
-        formData.append("IdUsuario", IdUsuario);
+                let formData = new FormData();
+                formData.append("IdArchivoEntregado", IdArchivoEntregado);
+                formData.append("IdTarea", IdTarea);
+                formData.append("IdUsuario", IdUsuario);
+                formData.append("NombreArchivoEntregado", NombreArchivoEntregado);
 
-        let response = await axios({
-            url: '/tareas/archivoentregadoremover',
-            baseURL: BaseURL,
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
-            },
-            data: formData
+                let response = await axios({
+                    url: '/tareas/archivoentregadoremover',
+                    baseURL: BaseURL,
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
+                    },
+                    data: formData
+                });
+
+                HidePreloader();
+
+                let resultado = response.data;
+
+                switch (resultado.code) {
+                    case 200:{
+                        Swal.fire({
+                            title: 'Remover archivo entregado',
+                            text: resultado.data,
+                            imageUrl: window.HappyOwl,
+                            imageWidth: 100,
+                            imageHeight: 123,
+                            imageAlt: 'Ok Image',
+                            background: '#000000',
+                            color: '#FFFFFF'
+                        }).then(() => {
+                            document.ObtenerArchivosEntregados();
+                        });
+                    }
+                    break;
+                    case 500: {
+                        Swal.fire({
+                            title: '¡Error!',
+                            text: resultado.data,
+                            imageUrl: window.SadOwl,
+                            imageWidth: 100,
+                            imageHeight: 123,
+                            background: '#000000',
+                            color: '#FFFFFF',
+                            imageAlt: 'Error Image'
+                        });
+                    }
+                        break;
+                    default: {
+                        Swal.fire({
+                            title: '¡Alerta!',
+                            text: resultado.data,
+                            imageUrl: window.IndifferentOwl,
+                            imageWidth: 100,
+                            imageHeight: 123,
+                            imageAlt: 'Alert Image',
+                            background: '#000000',
+                            color: '#FFFFFF'
+                        });
+                    }
+                        break;
+                }
+            }
         });
-
-        HidePreloader();
-
-        let resultado = response.data;
-
-        switch (resultado.code) {
-            case 200:{
-                Swal.fire({
-                    title: 'Remover archivo entregado',
-                    text: resultado.data,
-                    imageUrl: window.HappyOwl,
-                    imageWidth: 100,
-                    imageHeight: 123,
-                    imageAlt: 'Ok Image',
-                    background: '#000000',
-                    color: '#FFFFFF'
-                }).then(() => {
-                    document.ObtenerArchivosEntregados();
-                });
-            }
-            break;
-            case 500: {
-                Swal.fire({
-                    title: '¡Error!',
-                    text: resultado.data,
-                    imageUrl: window.SadOwl,
-                    imageWidth: 100,
-                    imageHeight: 123,
-                    background: '#000000',
-                    color: '#FFFFFF',
-                    imageAlt: 'Error Image'
-                });
-            }
-                break;
-            default: {
-                Swal.fire({
-                    title: '¡Alerta!',
-                    text: resultado.data,
-                    imageUrl: window.IndifferentOwl,
-                    imageWidth: 100,
-                    imageHeight: 123,
-                    imageAlt: 'Alert Image',
-                    background: '#000000',
-                    color: '#FFFFFF'
-                });
-            }
-                break;
-        }
+        
     }
     catch (ex) {
         HidePreloader();

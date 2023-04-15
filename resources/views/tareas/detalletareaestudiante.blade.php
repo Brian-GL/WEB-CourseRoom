@@ -28,7 +28,7 @@ use Carbon\Carbon;
         <div class="row">
             <div class="col-md-12">
 
-                <div class="row">
+                <div class="row mb-2">
                     <div class="col-md-1 text-center">
                         <a type="button" class="btn fuenteNormal tercer-color-fondo tercer-color-letra" title="Regresar a mis tareas" href="{{route('tareas.inicio')}}">
                             <i class="fa-solid fa-hand-point-left fa-2x"></i>
@@ -38,21 +38,20 @@ use Carbon\Carbon;
                         <h2 class="d-inline my-3 display-6 text-start fw-bolder primer-color-letra">Detalle de la tarea</h2>
                     </div>
                 </div>
-                
 
                 <div class="row">
                     <div class="col-md-12">
-                        <ul class="nav nav-pills my-0-5 nav-fill" role="tablist">
-                            <li class="nav-item btn" role="presentation">
+                        <ul class="nav nav-tabs my-0-5 justify-content-center" role="tablist">
+                            <li class="nav-item mx-1" role="presentation">
                                 <button class="nav-link active fuenteNormal primer-color-letra primer-color-fondo" id="datos-generales-tab" data-bs-toggle="tab" data-bs-target="#datos-generales" type="button" role="tab" aria-controls="datos-generales" aria-selected="true">Datos Generales</button>
                             </li>
-                            <li class="nav-item btn" role="presentation">
+                            <li class="nav-item mx-1" role="presentation">
                                 <button class="nav-link fuenteNormal tercer-color-letra tercer-color-fondo" id="archivos-adjuntos-tab" data-bs-toggle="tab" data-bs-target="#archivos-adjuntos" type="button" role="tab" aria-controls="archivos-adjuntos" aria-selected="false">Archivos Adjuntos</button>
                             </li>
-                            <li class="nav-item btn" role="presentation">
+                            <li class="nav-item mx-1" role="presentation">
                                 <button class="nav-link fuenteNormal tercer-color-letra tercer-color-fondo" id="archivos-entregados-tab" data-bs-toggle="tab" data-bs-target="#archivos-entregados" type="button" role="tab" aria-controls="archivos-entregados" aria-selected="false">Archivos Entregados</button>
                             </li>
-                            <li class="nav-item btn" role="presentation">
+                            <li class="nav-item mx-1" role="presentation">
                                 <button class="nav-link fuenteNormal tercer-color-letra tercer-color-fondo" id="retroalimentaciones-tab" data-bs-toggle="tab" data-bs-target="#retroalimentaciones" type="button" role="tab" aria-controls="retroalimentaciones" aria-selected="false">Retroalimentaciones</button>
                             </li>
                         </ul>
@@ -64,6 +63,16 @@ use Carbon\Carbon;
                     <div class="tab-content">
 
                         <div class="tab-pane fade show active" id="datos-generales" role="tabpanel" aria-labelledby="datos-generales-tab">
+                            
+                            <div class="row">
+                                <div class="col-md-12 text-center">
+                                    @if (!is_null($DatosTarea))
+                                        <img id="imagen-curso" class="image img-fluid rounded-circle shadow-lg mt-2" alt="Imagen del curso" src="{{ $DatosTarea->imagenCurso}}" />
+                                        <p class="titulado fuenteNormal segundo-color-letra text-wrap">Del curso <b>{{$DatosTarea->curso}}</b></p>
+                                    @endif
+                                </div>
+                            </div>
+
                             <div class="row">
                                 <div class="col-md-6">
                                     @if (!is_null($DatosTarea))
@@ -100,14 +109,11 @@ use Carbon\Carbon;
                                         <div class="mt-2 mb-4">
                                             <p class="titulado fuenteNormal segundo-color-letra text-wrap">{{$DatosTarea->descripcion}}</p> 
                                         </div>
+                                        
                                         <p class="titulado fuenteNormal segundo-color-letra">Creada el {{$fechaRegistroFormat}}</p>
                                         <p class="titulado fuenteNormal segundo-color-letra">Para entrega el <b>{{$fechaEntregaFormat}}</b></p>
-                                        <p class="titulado fuenteNormal segundo-color-letra">Entregada el {{$fechaEntregadaFormat}}</p>
-                                        <p class="titulado fuenteNormal segundo-color-letra">Calificada el <b>{{$fechaCalificacionFormat}}</b></p>
-                                        <br>
-                                        <hr>
-                                        <p class="titulado fuenteNormal segundo-color-letra">Calificación: <b>{{$DatosTarea->calificacion}}</b></p>
-                                        <p class="titulado fuenteNormal segundo-color-letra">Puntualidad: <b>{{$DatosTarea->puntualidad}}</b></p>
+                                       
+                                       
                                     @else
                                         <p class="fuenteGrande segundo-color-letra">Tarea desconocida</p>
                                     @endif
@@ -116,14 +122,14 @@ use Carbon\Carbon;
                                 <div class="col-md-6 text-center">
                                     @if(!is_null($DatosTarea))
                                         @if( !is_null($DatosTarea->imagenProfesor))
-                                            <img id="imagen-profesor" class="img-fluid rounded-circle shadow-lg h-75 mb-1" alt="Imagen del profesor" src="{{ $DatosTarea->imagenProfesor}}" />
+                                            <img id="imagen-profesor" class="image img-fluid rounded-circle shadow-lg h-75 mb-1" alt="Imagen del profesor" src="{{ $DatosTarea->imagenProfesor}}" />
                                         @endif
                                         <p class="titulado fuenteNormal segundo-color-letra">Creada por {{$DatosTarea->nombreProfesor}}</p>
-                                        <hr>
-                                        @if(!is_null($DatosTarea->imagenCurso))
-                                            <img id="imagen-curso" class="img-fluid rounded-circle shadow-lg h-75 mb-1" alt="Imagen del curso" src="{{ $DatosTarea->imagenCurso}}" />
-                                        @endif
-                                        <p class="titulado fuenteNormal segundo-color-letra text-wrap">Del curso <b>{{$DatosTarea->curso}}</b></p>
+                                        <br><hr>
+                                        <p class="titulado fuenteNormal segundo-color-letra">Entregada el {{$fechaEntregadaFormat}}</p>
+                                        <p class="titulado fuenteNormal segundo-color-letra">Calificada el <b>{{$fechaCalificacionFormat}}</b></p>
+                                        <p class="titulado fuenteNormal segundo-color-letra">Calificación: <b>{{$DatosTarea->calificacion}}</b></p>
+                                        <p class="titulado fuenteNormal segundo-color-letra">Puntualidad: <b>{{$DatosTarea->puntualidad}}</b></p>
                                     @endif
                                 </div>
                             </div>
@@ -143,16 +149,16 @@ use Carbon\Carbon;
                             <div class="row">
                                 <div class="col-md-12">
                                     
-                                    <div class="row">
+                                    <div class="row mt-3">
                                         @if (!is_null($DatosTarea) && $DatosTarea->estatus != 'Calificada')
                                             <div class="col-md-2 d-flex justify-content-center">
-                                                <button type="submit" class="w-100 btn primer-color-letra primer-color-fondo" id="entregar-tarea">
+                                                <button type="button" class="w-100 btn primer-color-letra primer-color-fondo" id="entregar-tarea">
                                                     <i class="fa-solid fa-house-laptop"></i>&nbsp;Entregar tarea
                                                 </button>
                                             </div>
                                             <div class="col-md-8"></div>
                                             <div class="col-md-2 d-flex justify-content-center">
-                                                <button type="submit" class="w-100 btn tercer-color-letra tercer-color-fondo" id="subir-archivo-entregado">
+                                                <button type="button" class="w-100 btn tercer-color-letra tercer-color-fondo" id="subir-archivo-entregado">
                                                     <i class="fa-solid fa-upload"></i>&nbsp;Subir archivo para entrega
                                                 </button>
                                             </div>

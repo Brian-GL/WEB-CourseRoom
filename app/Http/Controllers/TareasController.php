@@ -434,7 +434,7 @@ class TareasController extends Controller
                         'Authorization' => env('COURSEROOM_API_KEY'),
                     ])->post($url.'/api/tareas/archivoentregado', [
                         'IdTarea' => $idTarea,
-                        'IdUsuario' => $idUsuario,
+                        'IdUsuario' => $IdUsuario,
                         'NombreArchivo' => $nombreArchivo,
                         'Archivo' => $filename
                     ]);
@@ -709,15 +709,29 @@ class TareasController extends Controller
 
                         $result = json_decode($response->body());
 
-                        foreach($result as &$material){
-                            $element = TareaArchivosEntregados::where('idArchivoEntregado', '=', $material->idArchivoEntregado)->first();
+                        $ArchivosEntregados = array();
 
+                        foreach($result as &$archivoEntregado){
+
+                            $element = TareaArchivosEntregados::where('idArchivoEntregado', '=', $archivoEntregado->idArchivoEntregado)->first();
+
+                            $archivo = '';
                             if(!is_null($element)){
-                                $material->archivo = $element->archivo;
+                                $archivo = $element->archivo;
                             }
+
+                            array_push($ArchivosEntregados, [
+                                'idArchivoEntregado' => $archivoEntregado->idArchivoEntregado,
+                                'nombre' => $archivoEntregado->nombre,
+                                'archivo' => $archivo,
+                                'fechaRegistro' => $archivoEntregado->fechaRegistro,
+                                'fechaActualizacion' => $archivoEntregado->fechaActualizacion,
+                                'nombreArchivo' => $archivoEntregado->archivo
+                            ]);
+                           
                         }
 
-                        return response()->json(['code' => 200 , 'data' => $result], 200);
+                        return response()->json(['code' => 200 , 'data' => $ArchivosEntregados], 200);
 
                     } else{
                         return response()->json(['code' => 400 , 'data' => $response->body()], 200);
@@ -1011,18 +1025,15 @@ class TareasController extends Controller
 
                         $result = json_decode($response->body());
 
-                        if($result->codigo > 0)
-                        {
-                            //Remover imagen en mongo:
-                            $mongoTareaArchivosEntregados = TareaArchivosEntregados::where('idArchivoEntregado', $idArchivoEntregado)->first();
+                        //Remover archivo en mongo:
+                        $mongoTareaArchivosEntregados = TareaArchivosEntregados::where('idArchivoEntregado', $idArchivoEntregado)->first();
 
-                            if(!is_null($mongoTareaArchivosEntregados)){
-                                $mongoTareaArchivosEntregados->delete();
-                            }
-
-                            Storage::delete('tareas/'.$nombreArchivoEntregado);
+                        if(!is_null($mongoTareaArchivosEntregados)){
+                            $mongoTareaArchivosEntregados->delete();
                         }
 
+                        Storage::delete('tareas/'.$nombreArchivoEntregado);
+                        
                         return response()->json(['code' => 200 , 'data' => $result], 200);
 
                     } else{

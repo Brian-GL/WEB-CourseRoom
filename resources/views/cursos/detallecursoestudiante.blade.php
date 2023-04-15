@@ -76,7 +76,7 @@ use Carbon\Carbon;
                             <div class="row">
                                 <div class="col-md-12 text-center">
                                     @if (!is_null($DatosCurso))
-                                        <img id="imagen-curso" class="image img-fluid rounded-circle shadow-lg h-75 mt-2" alt="Imagen del curso" src="{{ $DatosCurso->imagen}}" />
+                                        <img id="imagen-curso" class="image img-fluid rounded-circle shadow-lg mt-2" alt="Imagen del curso" src="{{ $DatosCurso->imagen}}" />
                                     @endif
                                 </div>
                             </div>
