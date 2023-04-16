@@ -14,10 +14,8 @@ use Carbon\Carbon;
 
 @if (!is_null($DatosTarea))
     <input type="hidden" value="{{ $IdTarea}}" id="id-tarea"/>
-    <input type="hidden" value="{{ $DatosTarea->estatus}}" id="estatus-tarea"/>
 @else
     <input type="hidden" value="0" id="id-tarea"/>
-    <input type="hidden" value="" id="estatus-tarea"/>
 @endif
 
 <div class="col-md-12">
@@ -55,6 +53,7 @@ use Carbon\Carbon;
                     <div class="tab-content">
 
                         <div class="tab-pane fade show active" id="datos-generales" role="tabpanel" aria-labelledby="datos-generales-tab">
+                            
                             <div class="row">
                                 <div class="col-md-6">
                                     @if (!is_null($DatosTarea))
@@ -69,30 +68,32 @@ use Carbon\Carbon;
                                         @endphp
 
                                         <div class="mt-1">
-                                            <p class="titulado fuenteGrande segundo-color-letra" contenteditable="true" id="nombre-tarea"> {{$DatosTarea->tarea}}</p> 
+                                            <p class="titulado fuenteGrande segundo-color-letra" contenteditable="true" id="nombre-tarea"> {{$DatosTarea->nombre}}</p> 
                                             <p class="fuenteNormal segundo-color-letra d-inline"><i class="fa-solid fa-pen-to-square"></i></p>
                                         </div>
                                         <div class="mt-2 mb-4">
                                             <p class="titulado fuenteNormal segundo-color-letra text-wrap" contenteditable="true" id="descripcion-tarea">{{$DatosTarea->descripcion}}</p> 
                                             <p class="fuenteNormal segundo-color-letra d-inline"><i class="fa-solid fa-pen-to-square"></i></p>
                                         </div>
-                                        <p class="titulado fuenteNormal segundo-color-letra">Creada el {{$fechaRegistroFormat}}</p>
-                                        <p class="titulado fuenteNormal segundo-color-letra">Para entrega el <b>{{$fechaEntregaFormat}}</b></p>
                                     @else
                                         <p class="fuenteGrande segundo-color-letra">Tarea desconocida</p>
                                     @endif
                                 </div>
         
                                 <div class="col-md-6 text-center">
-                                    @if(!is_null($DatosTarea))
-                                        @if(!is_null($DatosTarea->imagenCurso))
-                                            <img id="imagen-curso" class="image img-fluid shadow-lg mt-2" alt="Imagen del curso" src="{{ $DatosTarea->imagenCurso}}" />
-                                        @endif
-                                        <p class="titulado fuenteNormal segundo-color-letra text-wrap">Del curso <b>{{$DatosTarea->curso}}</b></p>
 
-                                        <div class="d-block mt-1 mx-2">
-                                            <button id="actualizar-tarea" type="button" class="btn btn-lg segundo-color-letra segundo-color-fondo">Actualizar tarea</button>
-                                        </div>
+                                    @if (!is_null($DatosTarea))
+                                        <img id="imagen-curso" class="image img-fluid rounded-circle shadow-lg mt-2" alt="Imagen del curso" src="{{ $DatosTarea->imagenCurso}}" />
+                                        <p class="titulado fuenteNormal segundo-color-letra text-wrap">Del curso <b>{{$DatosTarea->curso}}</b></p>
+                                        <hr><br>
+                                        <p class="titulado fuenteNormal segundo-color-letra">Creada el {{$fechaRegistroFormat}}</p>
+                                        <p class="titulado fuenteNormal segundo-color-letra">Para entrega el <b>{{$fechaEntregaFormat}}</b></p>
+                                        <br>
+                                        @if($DatosTarea->modificable)
+                                            <div class="d-block mt-1 mx-2">
+                                                <button id="actualizar-tarea" type="button" class="btn btn-lg primer-color-letra primer-color-fondo">Actualizar tarea</button>
+                                            </div>
+                                        @endif
                                     @endif
                                 </div>
                             </div>

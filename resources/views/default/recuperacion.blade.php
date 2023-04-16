@@ -21,7 +21,7 @@
                     <img id="logo" class="img-fluid" src="{{asset('build/assets/Course_Room_Brand.9000409b.png')}}">
                 </div>
 
-                <h3 class="mb-1 text-center heading display-6">¡Recupera Tu Credenciales!</h3>
+                <h3 class="mb-1 text-center heading display-6">¡Recupera Tus Credenciales!</h3>
 
                 <div class="row my-3 text-center">
                     <span class="text-light fuente">¿Hás Olvidado Tu Contraseña?</span>

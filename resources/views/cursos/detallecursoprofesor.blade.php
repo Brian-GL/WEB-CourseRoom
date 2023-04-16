@@ -71,13 +71,7 @@ $min_date = Carbon::now()->addHours(12)->format('Y-m-d\T00:00');
                     <div class="tab-content">
 
                         <div class="tab-pane fade show active" id="datos-generales" role="tabpanel" aria-labelledby="datos-generales-tab">
-                            <div class="row">
-                                <div class="col-md-12 text-center">
-                                    @if (!is_null($DatosCurso))
-                                        <img id="imagen-curso" class="image img-fluid shadow-lg mt-2" alt="Imagen del curso" src="{{ $DatosCurso->imagen}}" />
-                                    @endif
-                                </div>
-                            </div>
+
                             <div class="row">
                                 <div class="col-md-6">
                                     @if (!is_null($DatosCurso))
@@ -101,13 +95,14 @@ $min_date = Carbon::now()->addHours(12)->format('Y-m-d\T00:00');
         
                                 <div class="col-md-6 text-center">
                                     @if(!is_null($DatosCurso))
+                                        <img id="imagen-curso" class="image img-fluid shadow-lg mt-2" alt="Imagen del curso" src="{{ $DatosCurso->imagen}}" />
                                         @php
                                             $fechaRegistro = new Carbon($DatosCurso->fechaRegistro);
                                         @endphp
 
                                         @if ($fechaRegistro->floatDiffInMonths(Carbon::now()) > 3)
                                             <div class="d-block mt-1 mx-2">
-                                                <button id="finalizar-curso" type="button" onclick="ActualizarGrupo()" class="btn btn-lg segundo-color-letra segundo-color-fondo">Finalizar curso</button>
+                                                <button id="finalizar-curso" type="button" onclick="FinalizarCurso()" class="btn btn-lg segundo-color-letra segundo-color-fondo">Finalizar curso</button>
                                             </div>
                                         @endif
                                     @endif

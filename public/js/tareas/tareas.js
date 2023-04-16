@@ -469,11 +469,7 @@ if(idTipoUsuario == 1){
         ],
         columnDefs:[
             {className: "text-center fuenteNormal segundo-color-letra", targets: "_all"},
-            {className: "span-detalle", target: [12]}
-        ],
-        rowCallback: function(row, data, index){
-            $(row).css('color', SegundoColorLetra);
-        }
+        ]
     });
 
     dataTableTareasCalificar.column(0).visible(false);
@@ -607,7 +603,7 @@ if(idTipoUsuario == 1){
                         data: filas,
                         createdRow: (row, data) => {
                             $('.segundo-color-letra',row).css('color', SegundoColorLetra);
-                            $('.span-detalle', row).html('<span class="fuenteNormal span-detalle text-center text-decoration-underline" onclick="DetalleTareaProfesor('.concat(data.idTarea,',',idUsuario,')">Ver detalle</span>'));
+                            $('.span-detalle', row).html('<span class="fuenteNormal span-detalle text-center text-decoration-underline" onclick="DetalleTareaProfesor('.concat(data.idTarea,',',data.idUsuario,')">Ver detalle</span>'));
                             $('.info-curso', row).html('<div class="container"><div class="row"><div class="col-5"><img class="img-fluid" alt="Imagen del curso" src="'.concat(data.imagenCurso,'"/></div><div class="col-7 p-0"><p class="fuenteNormal">',data.nombreCurso,'</p></div></div></div>'));
                             $('.info-usuario', row).html('<div class="container"><div class="row"><div class="col-5"><img class="img-fluid" alt="Imagen del usuario" src="'.concat(data.imagenEstudiante,'"/></div><div class="col-7 p-0"><p class="fuenteNormal">',data.nombreEstudiante,'</p></div></div></div>'));
                             let fechaRegistro = data.fechaRegistro.substring(0, data.fechaRegistro.length -1 );
@@ -618,9 +614,11 @@ if(idTipoUsuario == 1){
                                 $('.fechaEntrega', row).text(fechaEntrega.format('LLLL'));
                             }
 
-                            let fechaEntregada = dayjs(data.fechaEntregada?.substring(0,data.fechaEntregada?.length-1));
-                            if(fechaEntregada.isValid()){
-                                $('.fechaEntregada', row).text(fechaEntregada.format('LLLL'));
+                            if(data.fechaEntregada != null){
+                                let fechaEntregada = dayjs(data.fechaEntregada?.substring(0,data.fechaEntregada?.length-1));
+                                if(fechaEntregada.isValid()){
+                                    $('.fechaEntregada', row).text(fechaEntregada.format('LLLL'));
+                                }
                             }
                         }
                     });

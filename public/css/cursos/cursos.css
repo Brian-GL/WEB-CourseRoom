@@ -19,7 +19,6 @@ table {
     height: 2rem !important;
 }
 
-
 #table-cursos-actuales-profesor_filter {
     display: grid !important;
     place-content: end !important;
@@ -203,6 +202,3 @@ table {
 }
 
 #imagen-seleccionada{max-width:250px;max-height:250px;}
-
-input{border-top:none!important;border-left:none!important;border-right:none!important;text-align:center!important}
-.form-group{text-align:center}

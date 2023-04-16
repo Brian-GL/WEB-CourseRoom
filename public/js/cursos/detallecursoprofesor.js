@@ -1685,7 +1685,7 @@ $("#form-agregar-usuario-grupo").on("submit", async (e) => {
     }
 });
 
-$("#finalizar-curso").on("click", async () => {
+async function FinalizarCurso() {
    
 
     Swal.fire({
@@ -1785,6 +1785,6 @@ $("#finalizar-curso").on("click", async () => {
             }
         }
     }); 
-});
+}
 
 //#endregion

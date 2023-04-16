@@ -10,7 +10,6 @@ let BaseURL = window.location.origin;
 
 let IdTarea = document.getElementById("id-tarea").value;
 let IdUsuario = document.getElementById("id-usuario").value;
-let IdProfesor = document.getElementById("id-profesor").value;
 
 let elementos = document.querySelectorAll('input[type="search"]');
 for(let elemento of elementos){
@@ -242,7 +241,7 @@ document.ObtenerArchivosAdjuntos = async function (){
                     data: filas,
                     createdRow: (row, data) => {
                         $('.segundo-color-letra',row).css('color', SegundoColorLetra);
-                        $('.span-detalle', row).html('<a class="fuenteNormal span-detalle text-center text-decoration-underline" href="'.concat(data.archivo,'">Descargar archivo</a>'));
+                        $('.span-detalle', row).html('<a class="fuenteNormal segundo-color-letra text-center text-decoration-underline" href="'.concat(data.archivo,'" download="',data.nombre,'" target="_blank">Descargar archivo</a>'));
                         let fechaRegistro = data.fechaRegistro.substring(0, data.fechaRegistro.length -1 );
                         $('.fechaRegistro', row).text(dayjs(fechaRegistro).format('dddd DD MMM YYYY h:mm A'));
                     }

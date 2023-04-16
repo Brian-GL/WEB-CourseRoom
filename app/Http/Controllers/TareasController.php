@@ -89,7 +89,7 @@ class TareasController extends Controller
             $response = Http::withHeaders([
                 'Authorization' => env('COURSEROOM_API_KEY'),
             ])->post($url.'/api/tareas/profesordetalle', [
-                'IdProfesor' => $IdUsuario,
+                'IdUsuario' => $IdUsuario,
                 'IdTarea' => $IdTarea,
             ]);
 
@@ -132,7 +132,7 @@ class TareasController extends Controller
             if ($response->ok()){
                 $DatosTarea = json_decode($response->body());
 
-                 //Obtener información imagen desde mongo:
+                //Obtener información imagen desde mongo:
                    
                 $element = CursosImagenes::where('idCurso', '=', $DatosTarea->idCurso)->first();
 
@@ -906,19 +906,18 @@ class TareasController extends Controller
 
                     $result = json_decode($response->body());
 
-
-                    foreach($result as &$curso){
+                    foreach($result as &$tarea){
                         //Obtener información imagen desde mongo:
-                        $element = UsuariosImagenes::where('idUsuario', '=', $curso->idUsuario)->first();
+                        $element = UsuariosImagenes::where('idUsuario', '=', $tarea->idUsuario)->first();
 
                         if(!is_null($element)){
-                            $curso->imagenEstudiante = $element->imagen;
+                            $tarea->imagenEstudiante = $element->imagen;
                         }
 
-                        $element = CursosImagenes::where('idCurso', '=', $curso->idCurso)->first();
+                        $element = CursosImagenes::where('idCurso', '=', $tarea->idCurso)->first();
 
                         if(!is_null($element)){
-                            $curso->imagenCurso = $element->imagen;
+                            $tarea->imagenCurso = $element->imagen;
                         }
                     }
 
@@ -1124,6 +1123,7 @@ class TareasController extends Controller
 
                 $idTarea = $request->integer('IdTarea');
                 $idProfesor = session('IdUsuario');
+                $nombreArchivo = $request->string('NombreArchivo');
                
                 $Base64Archivo = null;
                 if($request->has('Base64Archivo')){
@@ -1142,7 +1142,7 @@ class TareasController extends Controller
                     ])->post($url.'/api/tareas/archivoadjuntoregistrar', [
                         'IdTarea' => $idTarea,
                         'IdProfesor' => $idProfesor,
-                        'Nombre' => $nombreArchivo,
+                        'NombreArchivo' => $nombreArchivo,
                         'Archivo' => $filename
                     ]);
 

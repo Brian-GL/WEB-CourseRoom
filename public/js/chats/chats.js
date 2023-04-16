@@ -18,7 +18,7 @@ dataTableMisChats = $("#table-mis-chats").DataTable({
     scrollX: false,
     language: {
         search: "_INPUT_",
-        searchPlaceholder: "Buscar algún chats...",
+        searchPlaceholder: "Buscar algún chat...",
         paginate: {
             "first":      "Primero",
             "last":       "Último",
@@ -138,7 +138,7 @@ async function ObtenerMisChats(){
                     scrollX: false,
                     language: {
                         search: "_INPUT_",
-                        searchPlaceholder: "Buscar alguna de mis chats...",
+                        searchPlaceholder: "Buscar algún chat...",
                         paginate: {
                             "first":      "Primero",
                             "last":       "Último",
