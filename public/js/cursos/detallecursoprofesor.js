@@ -1233,7 +1233,6 @@ document.EnrolarEstudiante = async function(IdGrupo, NombreGrupo){
             imageAlt: 'Error Image'
         });
     }
-
 }
 
 //#endregion
@@ -1261,7 +1260,6 @@ $("#mensaje").on("keypress", (e) => {
             document.getElementById("mensaje").value = "";
         }
     }
-
 });
 
 $("#enviar-archivo").on("click", async () => {

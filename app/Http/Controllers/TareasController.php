@@ -268,10 +268,13 @@ class TareasController extends Controller
 
                         $result = json_decode($response->body());
 
-                        $element = TareaArchivosRetroalimentaciones::where('idRetroalimentacion', '=', $idRetroalimentacion)->first();
+                        if(!is_null($result->archivo)){
 
-                        if(!is_null($element)){
-                            $result->archivo = $element->archivo;
+                            $element = TareaArchivosRetroalimentaciones::where('idRetroalimentacion', '=', $idRetroalimentacion)->first();
+
+                            if(!is_null($element)){
+                                $result->archivo = $element->archivo;
+                            }
                         }
 
                         return response()->json(['code' => 200 , 'data' => $result], 200);
@@ -605,11 +608,14 @@ class TareasController extends Controller
 
                 $idTarea = $request->integer('IdTarea');
                 $idProfesor = session('IdUsuario');
-                $IdUsuario = $request->integer('IdUsuario');
+                $idUsuario = $request->integer('IdUsuario');
                 $nombre = $request->string('Nombre')->trim();
                 $retroalimentacion = $request->string('Retroalimentacion')->trim();
                 
-                $nombreArchivo = $request->string('NombreArchivo');
+                $nombreArchivo = null;
+                if($request->has('NombreArchivo')){
+                    $nombreArchivo = $request->string('NombreArchivo');
+                }
 
                 $Base64Archivo = null;
                 if($request->has('Base64Archivo')){

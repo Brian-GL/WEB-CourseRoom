@@ -38,18 +38,18 @@ table {
     place-content: center !important;
 }
 
-#archivos-entregados-profesor_filter {
+#table-archivos-entregados-profesor_filter {
     display: grid !important;
     place-content: end !important;
     padding-bottom: 1rem !important;
 }
 
-#archivos-entregados-profesor_filter input {
+#table-archivos-entregados-profesor_filter input {
     width: 560px !important;
     height: 2rem !important;
 }
 
-#archivos-entregados-profesor_paginate {
+#table-archivos-entregados-profesor_paginate {
     display: grid !important;
     place-content: center !important;
 }
@@ -80,7 +80,7 @@ table {
         height: 2rem !important;
     }
 
-    #archivos-entregados-profesor_filter input {
+    #table-archivos-entregados-profesor_filter input {
         width: 500px !important;
         height: 2rem !important;
     }
@@ -97,7 +97,7 @@ table {
         height: 2rem !important;
     }
 
-    #archivos-entregados-profesor_filter input {
+    #table-archivos-entregados-profesor_filter input {
         width: 400px !important;
         height: 2rem !important;
     }
@@ -114,7 +114,7 @@ table {
         height: 2rem !important;
     }
 
-    #archivos-entregados-profesor_filter input {
+    #table-archivos-entregados-profesor_filter input {
         width: 300px !important;
         height: 2rem !important;
     }
@@ -131,7 +131,7 @@ table {
         height: 2rem !important;
     }
 
-    #archivos-entregados-profesor_filter input {
+    #table-archivos-entregados-profesor_filter input {
         width: 200px !important;
         height: 2rem !important;
     }

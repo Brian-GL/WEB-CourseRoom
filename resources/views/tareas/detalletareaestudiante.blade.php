@@ -192,12 +192,12 @@ use Carbon\Carbon;
 </div>
 
 <!-- Modal Detalle Retroalimentacion -->
-<div class="modal fade text-center" id="detalle-retroalimentacion-modal" tabindex="-1" role="dialog" aria-labelledby="titulo-modal-detalle-retroalimentacion" aria-hidden="true">
+<div class="modal fade text-center" id="detalle-retroalimentacion-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content primer-color-letra primer-color-fondo">
             <div class="modal-header">
                 <h5 class="modal-title" id="titulo-modal-detalle-retroalimentacion">Detalle de la retroalimentación</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" id="cerrar-detalle-retroalimentacion-modal" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="container-fluid g-5">
@@ -219,9 +219,9 @@ use Carbon\Carbon;
 
                     <div class="row mt-4">
                         <div class="col-md-12 form-group">
-                            <label for="archivo-detalle-retroalimentacion" class="form-label">Archivo de retroalimentación</label>
-                            <input type="text" class="form-control fuenteNormal tercer-color-fondo tercer-color-letra" name="archivo-detalle-retroalimentacion" id="archivo-detalle-retroalimentacion" readonly>
-                            <a href="" id="descargar-archivo-detalle-retroalimentacion" target="_blank" class="segundo-color-fondo segundo-color-letra">
+                            <label for="nombre-archivo-detalle-retroalimentacion" class="form-label">Archivo de retroalimentación</label>
+                            <input type="text" class="form-control fuenteNormal tercer-color-fondo tercer-color-letra" name="nombre-archivo-detalle-retroalimentacion" id="nombre-archivo-detalle-retroalimentacion" readonly>
+                            <a type="button" href="" id="descargar-archivo-detalle-retroalimentacion" target="_blank" class="segundo-color-fondo segundo-color-letra btn fuenteNormal mt-1">
                                 <i class="fa-solid fa-file-arrow-down"></i>&nbsp;Descargar archivo
                             </a>
                         </div>
@@ -241,6 +241,7 @@ use Carbon\Carbon;
         </div>
     </div>
 </div>
+
 
 @stop
 

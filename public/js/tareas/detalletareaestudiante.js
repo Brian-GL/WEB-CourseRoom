@@ -327,6 +327,8 @@ async function ObtenerRetroalimentaciones(){
             case 200:{
                 let filas = result.data;
 
+                dataTableTareaRetroalimentaciones.destroy();
+
                 dataTableTareaRetroalimentaciones = $("#table-retroalimentaciones").DataTable({
                     pagingType: 'full_numbers',
                     dom: 'frtp',
@@ -363,7 +365,7 @@ async function ObtenerRetroalimentaciones(){
                     data: filas,
                     createdRow: (row, data) => {
                         $('.segundo-color-letra',row).css('color', SegundoColorLetra);
-                        $('.span-detalle', row).html('<span class="fuenteNormal span-detalle text-center text-decoration-underline" onclick="DetalleRetroalimentacion('.concat(data.idRetroalimentacion,')">Ver detalle</span>'));
+                        $('.span-detalle', row).html('<button data-bs-toggle="modal" data-bs-target="#detalle-retroalimentacion-modal" class="fuenteNormal segundo-color-letra text-center text-decoration-underline bg-transparent border-0" onclick="DetalleRetroalimentacion('.concat(data.idRetroalimentacion,')">Ver detalle</button>'));
                         let fechaRegistro = data.fechaRegistro.substring(0, data.fechaRegistro.length -1 );
                         $('.fechaRegistro', row).text(dayjs(fechaRegistro).format('dddd DD MMM YYYY h:mm A'));
                     }
@@ -770,11 +772,22 @@ document.DetalleRetroalimentacion = async function(IdRetroalimentacion){
 
                document.getElementById("nombre-detalle-retroalimentacion").value = retroalimentacion.nombre;
                document.getElementById("descripcion-detalle-retroalimentacion").value = retroalimentacion.retroalimentacion;
-               document.getElementById("archivo-detalle-retroalimentacion").value = retroalimentacion.nombreArchivo;
-               document.getElementById("descargar-archivo-detalle-retroalimentacion").href = retroalimentacion.archivo;
-               document.getElementById("fecha-registro-detalle-retroalimentacion").value = retroalimentacion.fechaRegistro;
+               
+               let elementoArchivo = $("#descargar-archivo-detalle-retroalimentacion");
 
-               $("#detalle-retroalimentacion-modal").show();
+               if(retroalimentacion.archivo == null) {
+                    elementoArchivo.hide();
+                    document.getElementById("nombre-archivo-detalle-retroalimentacion").value = "No disponible";
+               } else{
+                    elementoArchivo.show();
+                    elementoArchivo.attr('href',retroalimentacion?.archivo);
+                    elementoArchivo.attr('download', retroalimentacion?.nombreArchivo);
+                    document.getElementById("nombre-archivo-detalle-retroalimentacion").value = retroalimentacion?.nombreArchivo;
+               }
+
+               let fechaRegistro = retroalimentacion.fechaRegistro.substring(0, retroalimentacion.fechaRegistro.length -1 );
+
+               document.getElementById("fecha-registro-detalle-retroalimentacion").value = dayjs(fechaRegistro).format('dddd DD MMM YYYY h:mm A');
 
             }
             break;
@@ -782,7 +795,7 @@ document.DetalleRetroalimentacion = async function(IdRetroalimentacion){
 
                 document.getElementById("nombre-detalle-retroalimentacion").value = "";
                 document.getElementById("descripcion-detalle-retroalimentacion").value = "";
-                document.getElementById("archivo-detalle-retroalimentacion").value = "";
+                document.getElementById("nombre-archivo-detalle-retroalimentacion").value = "";
                 document.getElementById("descargar-archivo-detalle-retroalimentacion").href =  "";
                 document.getElementById("fecha-registro-detalle-retroalimentacion").value = "";
 
@@ -802,7 +815,7 @@ document.DetalleRetroalimentacion = async function(IdRetroalimentacion){
 
                 document.getElementById("nombre-detalle-retroalimentacion").value = "";
                 document.getElementById("descripcion-detalle-retroalimentacion").value = "";
-                document.getElementById("archivo-detalle-retroalimentacion").value = "";
+                document.getElementById("nombre-archivo-detalle-retroalimentacion").value = "";
                 document.getElementById("descargar-archivo-detalle-retroalimentacion").href =  "";
                 document.getElementById("fecha-registro-detalle-retroalimentacion").value = "";
 
@@ -825,7 +838,7 @@ document.DetalleRetroalimentacion = async function(IdRetroalimentacion){
 
         document.getElementById("nombre-detalle-retroalimentacion").value = "";
         document.getElementById("descripcion-detalle-retroalimentacion").value = "";
-        document.getElementById("archivo-detalle-retroalimentacion").value = "";
+        document.getElementById("nombre-archivo-detalle-retroalimentacion").value = "";
         document.getElementById("descargar-archivo-detalle-retroalimentacion").href =  "";
         document.getElementById("fecha-registro-detalle-retroalimentacion").value = "";
 
@@ -841,6 +854,7 @@ document.DetalleRetroalimentacion = async function(IdRetroalimentacion){
         });
     }
 }
+
 
 //#endregion
 

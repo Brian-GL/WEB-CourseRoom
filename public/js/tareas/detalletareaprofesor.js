@@ -325,6 +325,8 @@ document.ObtenerRetroalimentaciones = async function (){
             case 200:{
                 let filas = result.data;
 
+                dataTableTareaRetroalimentaciones.destroy();
+
                 dataTableTareaRetroalimentaciones = $("#table-retroalimentaciones").DataTable({
                     pagingType: 'full_numbers',
                     dom: 'frtp',
@@ -361,7 +363,7 @@ document.ObtenerRetroalimentaciones = async function (){
                     data: filas,
                     createdRow: (row, data) => {
                         $('.segundo-color-letra',row).css('color', SegundoColorLetra);
-                        $('.span-detalle', row).html('<span class="fuenteNormal span-detalle text-center text-decoration-underline" onclick="DetalleRetroalimentacion('.concat(data.idRetroalimentacion,')">Ver detalle</span>'));
+                        $('.span-detalle', row).html('<button data-bs-toggle="modal" data-bs-target="#detalle-retroalimentacion-modal" class="fuenteNormal segundo-color-letra text-center text-decoration-underline bg-transparent border-0" onclick="DetalleRetroalimentacion('.concat(data.idRetroalimentacion,')">Ver detalle</button>'));
                         let fechaRegistro = data.fechaRegistro.substring(0, data.fechaRegistro.length -1 );
                         $('.fechaRegistro', row).text(dayjs(fechaRegistro).format('dddd DD MMM YYYY h:mm A'));
                     }
@@ -538,90 +540,6 @@ async function ObtenerArchivosEntregados(){
     }
 }
 
-async function SubirArchivoAdjunto(filename, base64, file) {
-
-    try {
-
-        ShowPreloader();
-        let formData = new FormData();
-        formData.append("IdTarea", IdTarea);
-        formData.append("NombreArchivo", filename);
-        formData.append("Base64Archivo", base64);
-        formData.append("Archivo", file);
-
-        let response = await axios({
-            url: '/tareas/archivoadjuntoregistrar',
-            baseURL: BaseURL,
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
-            },
-            data: formData
-        });
-
-        HidePreloader();
-
-        let resultado = response.data;
-
-        switch (resultado.code) {
-            case 200:{
-                Swal.fire({
-                    title: 'Subir archivo adjunto',
-                    text: resultado.data.mensaje,
-                    imageUrl: window.HappyOwl,
-                    imageWidth: 100,
-                    imageHeight: 123,
-                    imageAlt: 'Ok Image',
-                    background: '#000000',
-                    color: '#FFFFFF'
-                }).then(() => {
-                    document.ObtenerArchivosAdjuntos();
-                });
-            }
-            break;
-            case 500: {
-                Swal.fire({
-                    title: '¡Error!',
-                    text: resultado.data,
-                    imageUrl: window.SadOwl,
-                    imageWidth: 100,
-                    imageHeight: 123,
-                    background: '#000000',
-                    color: '#FFFFFF',
-                    imageAlt: 'Error Image'
-                });
-            }
-                break;
-            default: {
-                Swal.fire({
-                    title: '¡Alerta!',
-                    text: resultado.data,
-                    imageUrl: window.IndifferentOwl,
-                    imageWidth: 100,
-                    imageHeight: 123,
-                    imageAlt: 'Alert Image',
-                    background: '#000000',
-                    color: '#FFFFFF'
-                });
-            }
-                break;
-        }
-    }
-    catch (ex) {
-        HidePreloader();
-        Swal.fire({
-            title: '¡Error!',
-            text: ex,
-            imageUrl: window.SadOwl,
-            imageWidth: 100,
-            imageHeight: 123,
-            background: '#000000',
-            color: '#FFFFFF',
-            imageAlt: 'Error Image'
-        });
-    }
-}
-
 document.DetalleRetroalimentacion = async function(IdRetroalimentacion){
     try {
 
@@ -651,11 +569,22 @@ document.DetalleRetroalimentacion = async function(IdRetroalimentacion){
 
                document.getElementById("nombre-detalle-retroalimentacion").value = retroalimentacion.nombre;
                document.getElementById("descripcion-detalle-retroalimentacion").value = retroalimentacion.retroalimentacion;
-               document.getElementById("archivo-detalle-retroalimentacion").value = retroalimentacion.nombreArchivo;
-               document.getElementById("descargar-archivo-detalle-retroalimentacion").href =  assetsRouteTareas.concat("/",retroalimentacion.archivo);
-               document.getElementById("fecha-registro-detalle-retroalimentacion").value = retroalimentacion.fechaRegistro;
+               
+               let elementoArchivo = $("#descargar-archivo-detalle-retroalimentacion");
 
-               $("#detalle-retroalimentacion-modal").show();
+               if(retroalimentacion.archivo == null) {
+                    elementoArchivo.hide();
+                    document.getElementById("nombre-archivo-detalle-retroalimentacion").value = "No disponible";
+               } else{
+                    elementoArchivo.show();
+                    elementoArchivo.attr('href',retroalimentacion?.archivo);
+                    elementoArchivo.attr('download', retroalimentacion?.nombreArchivo);
+                    document.getElementById("nombre-archivo-detalle-retroalimentacion").value = retroalimentacion?.nombreArchivo;
+               }
+
+               let fechaRegistro = retroalimentacion.fechaRegistro.substring(0, retroalimentacion.fechaRegistro.length -1 );
+
+               document.getElementById("fecha-registro-detalle-retroalimentacion").value = dayjs(fechaRegistro).format('dddd DD MMM YYYY h:mm A');
 
             }
             break;
@@ -663,7 +592,7 @@ document.DetalleRetroalimentacion = async function(IdRetroalimentacion){
 
                 document.getElementById("nombre-detalle-retroalimentacion").value = "";
                 document.getElementById("descripcion-detalle-retroalimentacion").value = "";
-                document.getElementById("archivo-detalle-retroalimentacion").value = "";
+                document.getElementById("nombre-archivo-detalle-retroalimentacion").value = "";
                 document.getElementById("descargar-archivo-detalle-retroalimentacion").href =  "";
                 document.getElementById("fecha-registro-detalle-retroalimentacion").value = "";
 
@@ -683,7 +612,7 @@ document.DetalleRetroalimentacion = async function(IdRetroalimentacion){
 
                 document.getElementById("nombre-detalle-retroalimentacion").value = "";
                 document.getElementById("descripcion-detalle-retroalimentacion").value = "";
-                document.getElementById("archivo-detalle-retroalimentacion").value = "";
+                document.getElementById("nombre-archivo-detalle-retroalimentacion").value = "";
                 document.getElementById("descargar-archivo-detalle-retroalimentacion").href =  "";
                 document.getElementById("fecha-registro-detalle-retroalimentacion").value = "";
 
@@ -706,7 +635,7 @@ document.DetalleRetroalimentacion = async function(IdRetroalimentacion){
 
         document.getElementById("nombre-detalle-retroalimentacion").value = "";
         document.getElementById("descripcion-detalle-retroalimentacion").value = "";
-        document.getElementById("archivo-detalle-retroalimentacion").value = "";
+        document.getElementById("nombre-archivo-detalle-retroalimentacion").value = "";
         document.getElementById("descargar-archivo-detalle-retroalimentacion").href =  "";
         document.getElementById("fecha-registro-detalle-retroalimentacion").value = "";
 
@@ -727,165 +656,6 @@ document.DetalleRetroalimentacion = async function(IdRetroalimentacion){
 
 //#region events
 
-$("#actualizar-tarea").on("click", async () => {
-    try {
-
-        ShowPreloader();
-
-        let formData = new FormData();
-
-        formData.append('IdTarea', IdTarea);
-        formData.append('Nombre', document.getElementById("nombre-tarea").value);
-        formData.append('Descripcion', document.getElementById("descripcion-tarea").value);
-
-        let response = await axios({
-            url: '/tareas/actualizar',
-            baseURL: BaseURL,
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': document.head.querySelector("[name~=csrf-token][content]").content
-            },
-            data: formData
-        });
-
-        HidePreloader();
-
-        let result = response.data;
-
-        switch (result.code) {
-            case 200:{
-               
-                Swal.fire({
-                    title: 'Actualizar tarea',
-                    text: result.data,
-                    imageUrl: window.HappyOwl,
-                    imageWidth: 100,
-                    imageHeight: 123,
-                    imageAlt: 'Ok Image',
-                    background: '#000000',
-                    color: '#FFFFFF'
-                });
-            }
-            break;
-            case 500: {
-                Swal.fire({
-                    title: '¡Error!',
-                    text: result.data,
-                    imageUrl: window.SadOwl,
-                    imageWidth: 100,
-                    imageHeight: 123,
-                    background: '#000000',
-                    color: '#FFFFFF',
-                    imageAlt: 'Error Image'
-                });
-            }
-                break;
-            default: {
-                Swal.fire({
-                    title: '¡Alerta!',
-                    text: result.data,
-                    imageUrl: window.IndifferentOwl,
-                    imageWidth: 100,
-                    imageHeight: 123,
-                    imageAlt: 'Alert Image',
-                    background: '#000000',
-                    color: '#FFFFFF'
-                });
-            }
-                break;
-        }
-    }
-    catch (ex) {
-        HidePreloader();
-        Swal.fire({
-            title: '¡Error!',
-            text: ex,
-            imageUrl: window.SadOwl,
-            imageWidth: 100,
-            imageHeight: 123,
-            background: '#000000',
-            color: '#FFFFFF',
-            imageAlt: 'Error Image'
-        });
-    }
-});
-
-
-$("#subir-archivo-adjunto").on("click", async () => {
-    try {
-
-        const { value: file } = await Swal.fire({
-            title: 'Subir archivo adjunto',
-            text: "Selecciona un archivo para adjuntar en la tarea",
-            imageUrl: 'https://freesvg.org/img/file_server.png',
-            imageWidth: 100,
-            imageHeight: 123,
-            background: '#000000',
-            color: '#FFFFFF',
-            imageAlt: 'File image',
-            input: 'file',
-            inputAttributes: {
-                'class': 'form-control',
-                'aria-label': 'Sube tu archivo',
-            },
-            showCloseButton: true,
-            showConfirmButton: true,
-            confirmButtonText: 'Subir Archivo 📄'
-        });
-
-        if (file) {
-
-            if (file.size < 15000000) { //MAX 15 MB
-                const reader = new FileReader();
-                reader.onload = async (e) => {
-
-                    let base64 = await GetBase64FromUrl(e.target.result);
-                    let filename = file.name;
-
-                    SubirArchivoAdjunto(filename, base64, file);
-                }
-                reader.readAsDataURL(file);
-            } else {
-                Swal.fire({
-                    title: '¡Alerta!',
-                    text: 'El archivo supera el tamaño máximo permitido 😐',
-                    imageUrl: window.IndifferentOwl,
-                    imageWidth: 100,
-                    imageHeight: 123,
-                    imageAlt: 'Alert Image',
-                    background: '#000000',
-                    color: '#FFFFFF'
-                });
-            }
-        } else {
-            Swal.fire({
-                title: '¡Alerta!',
-                text: 'Es necesario subir archivo 😐',
-                imageUrl: window.IndifferentOwl,
-                imageWidth: 100,
-                imageHeight: 123,
-                imageAlt: 'Alert Image',
-                background: '#000000',
-                color: '#FFFFFF'
-            });
-        }
-    }
-    catch (ex) {
-
-        Swal.fire({
-            title: '¡Error!',
-            text: ex,
-            imageUrl: window.SadOwl,
-            imageWidth: 100,
-            imageHeight: 123,
-            background: '#000000',
-            color: '#FFFFFF',
-            imageAlt: 'Error Image'
-        });
-    }
-});
-
-
 $("#calificar-tarea").on("click", async () => {
 
 
@@ -895,7 +665,6 @@ $("#calificar-tarea").on("click", async () => {
         padding: '0.5em',
         background: '#000000',
         color: '#FFFFFF',
-        width: 300,
         html: `<input type=" number" id="calificacion" class="swal2-input" placeholder="Ingrese el valor de la calificación" min="0" max="100" required>`,
         confirmButtonText: '💾 Calificar',
         showCancelButton: true,
@@ -1001,27 +770,27 @@ $("#calificar-tarea").on("click", async () => {
 
 });
 
-$("#agregar-retroalimentacion").on("click", async () => {
-    $("#agregar-retroalimentacion-modal").show();
-});
-
 document.getElementById("form-agregar-retroalimentacion").addEventListener("submit", async (e) => {
 
     e.preventDefault();
 
     try {
 
+        document.getElementById("cerrar-agregar-retroalimentacion-modal").click();
+
         ShowPreloader();
+
         let formData = new FormData();
+
         formData.append("IdTarea", IdTarea);
-        formData.append("IdUsuario", document.getElementById("id-usuario").value);
+        formData.append("IdUsuario", IdUsuario);
         formData.append("Nombre", document.getElementById("nombre-retroalimentacion").value);
         formData.append("Retroalimentacion", document.getElementById("descripcion-retroalimentacion").value);
 
         let archivo_retroalimentacion = document.getElementById("archivo-retroalimentacion");
         
         if(archivo_retroalimentacion.files.length > 0){
-            file = archivo_retroalimentacion.files[0];
+            let file = archivo_retroalimentacion.files[0];
 
             if (file.size < 15000000) { //MAX 15 MB
                 const reader = new FileReader();
@@ -1033,6 +802,8 @@ document.getElementById("form-agregar-retroalimentacion").addEventListener("subm
                     formData.append("NombreArchivo", filename);
                     formData.append("Archivo", file);
                     formData.append("Base64Archivo", base64);
+
+                    AgregarRetroalimentacion(formData);
 
                 }
                 reader.readAsDataURL(file);
@@ -1050,11 +821,28 @@ document.getElementById("form-agregar-retroalimentacion").addEventListener("subm
                 return;
             }
         }else{
-            formData.append("NombreArchivo", "");
-            formData.append("Archivo", null);
-            formData.append("Base64Archivo", "");
+            AgregarRetroalimentacion(formData);
         }
+    }
+    catch (ex) {
+        HidePreloader();
+        Swal.fire({
+            title: '¡Error!',
+            text: ex,
+            imageUrl: window.SadOwl,
+            imageWidth: 100,
+            imageHeight: 123,
+            background: '#000000',
+            color: '#FFFFFF',
+            imageAlt: 'Error Image'
+        });
+    }
+   
+});
 
+async function AgregarRetroalimentacion(formData){
+
+    try{
         let response = await axios({
             url: '/tareas/retroalimentacion',
             baseURL: BaseURL,
@@ -1082,7 +870,6 @@ document.getElementById("form-agregar-retroalimentacion").addEventListener("subm
                     color: '#FFFFFF'
                 }).then(() => {
                     document.ObtenerRetroalimentaciones();
-                    $("#agregar-retroalimentacion-modal").hide();
                 });
             }
             break;
@@ -1127,7 +914,6 @@ document.getElementById("form-agregar-retroalimentacion").addEventListener("subm
             imageAlt: 'Error Image'
         });
     }
-   
-});
+}
 
 //#endregion

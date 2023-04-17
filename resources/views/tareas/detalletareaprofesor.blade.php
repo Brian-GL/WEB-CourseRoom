@@ -125,16 +125,6 @@ use Carbon\Carbon;
                         <div class="tab-pane fade" id="archivos-adjuntos" role="tabpanel" aria-labelledby="archivos-adjuntos-tab">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div class="row">
-                                        @if (!is_null($DatosTarea) && $DatosTarea->modificable)
-                                            <div class="col-md-10"></div>
-                                            <div class="col-md-2 d-flex justify-content-center">
-                                                <button type="submit" class="w-100 btn primer-color-letra primer-color-fondo" id="subir-archivo-adjunto">
-                                                    <i class="fa-solid fa-file-pen"></i>&nbsp;Subir archivo adjunto
-                                                </button>
-                                            </div>
-                                        @endif
-                                    </div>
                                     <div class="table-responsive mt-3">
                                         <table class="table table-striped display order-column hover nowrap" id="table-archivos-adjuntos"> </table>
                                     </div>
@@ -170,7 +160,7 @@ use Carbon\Carbon;
                                         @if (!is_null($DatosTarea) && $DatosTarea->modificable)
                                             <div class="col-md-10"></div>
                                             <div class="col-md-2 d-flex justify-content-center">
-                                                <button type="submit" class="w-100 btn primer-color-letra primer-color-fondo" id="agregar-retroalimentacion">
+                                                <button type="button" data-bs-toggle="modal" data-bs-target="#agregar-retroalimentacion-modal" class="w-100 btn primer-color-letra primer-color-fondo" id="agregar-retroalimentacion">
                                                     <i class="fa-solid fa-graduation-cap"></i>&nbsp;Agregar retroalimentación
                                                 </button>
                                             </div>
@@ -194,12 +184,12 @@ use Carbon\Carbon;
 
 
 <!-- Modal Agregar Retroalimentación -->
-<div class="modal fade text-center" id="agregar-retroalimentacion-modal" tabindex="-1" role="dialog" aria-labelledby="titulo-modal-agregar-retroalimentacion" aria-hidden="true">
+<div class="modal fade text-center" id="agregar-retroalimentacion-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content primer-color-letra primer-color-fondo">
             <div class="modal-header">
                 <h5 class="modal-title" id="titulo-modal-agregar-retroalimentacion">Agregar retroalimentación</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" id="cerrar-agregar-retroalimentacion-modal" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form method="HEAD" id="form-agregar-retroalimentacion">
                 <div class="modal-body">
@@ -222,7 +212,7 @@ use Carbon\Carbon;
                         <div class="row mt-4">
                             <div class="col-md-12 form-group">
                                 <label for="archivo-retroalimentacio" class="form-label">Archivo de retroalimentación</label>
-                                <input type="file" class="form-control d-none fuenteNormal" id="archivo-retroalimentacion" />
+                                <input type="file" class="form-control fuenteNormal" id="archivo-retroalimentacion" />
                             </div>
                         </div>
                         
@@ -230,7 +220,7 @@ use Carbon\Carbon;
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn segundo-color-letra segundo-color-fondo" data-bs-dismiss="modal">❌ Cancelar</button>
-                    <button type="submit" class="btn tercer-color-letra tercer-color-fondo" id="crear-retroalimentacion">✅ Crear tarea pendiente</button>
+                    <button type="submit" class="btn tercer-color-letra tercer-color-fondo" id="crear-retroalimentacion">✅ Generar retroalimentación</button>
                 </div>
             </form>
         </div>
@@ -238,12 +228,12 @@ use Carbon\Carbon;
 </div>
 
 <!-- Modal Detalle Retroalimentacion -->
-<div class="modal fade text-center" id="detalle-retroalimentacion-modal" tabindex="-1" role="dialog" aria-labelledby="titulo-modal-detalle-retroalimentacion" aria-hidden="true">
+<div class="modal fade text-center" id="detalle-retroalimentacion-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content primer-color-letra primer-color-fondo">
             <div class="modal-header">
                 <h5 class="modal-title" id="titulo-modal-detalle-retroalimentacion">Detalle de la retroalimentación</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" id="cerrar-detalle-retroalimentacion-modal" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="container-fluid g-5">
@@ -265,9 +255,9 @@ use Carbon\Carbon;
 
                     <div class="row mt-4">
                         <div class="col-md-12 form-group">
-                            <label for="archivo-detalle-retroalimentacion" class="form-label">Archivo de retroalimentación</label>
-                            <input type="text" class="form-control fuenteNormal tercer-color-fondo tercer-color-letra" name="archivo-detalle-retroalimentacion" id="archivo-detalle-retroalimentacion" readonly>
-                            <a href="" id="descargar-archivo-detalle-retroalimentacion" target="_blank" class="segundo-color-fondo segundo-color-letra">
+                            <label for="nombre-archivo-detalle-retroalimentacion" class="form-label">Archivo de retroalimentación</label>
+                            <input type="text" class="form-control fuenteNormal tercer-color-fondo tercer-color-letra" name="nombre-archivo-detalle-retroalimentacion" id="nombre-archivo-detalle-retroalimentacion" readonly>
+                            <a type="button" href="" id="descargar-archivo-detalle-retroalimentacion" target="_blank" class="segundo-color-fondo segundo-color-letra btn fuenteNormal mt-1">
                                 <i class="fa-solid fa-file-arrow-down"></i>&nbsp;Descargar archivo
                             </a>
                         </div>
@@ -287,7 +277,6 @@ use Carbon\Carbon;
         </div>
     </div>
 </div>
-
 
 @stop
 
