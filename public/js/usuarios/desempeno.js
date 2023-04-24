@@ -120,6 +120,8 @@ async function ObtenerDesempeno(){
             case 200:{
                 let filas = result.data;
 
+                dataTableEstudianteDesempeno.destroy();
+
                 dataTableEstudianteDesempeno = $("#table-mi-desempeno").DataTable({
                     pagingType: 'full_numbers',
                     dom: 'rtp',
@@ -139,10 +141,10 @@ async function ObtenerDesempeno(){
                     },
                     columns: [
                         { data: "idCurso", title: "IdCurso"},
-                        { data: "curso", title: "Curso"},
+                        { data: "curso", title: "Curso referente"},
                         { data: "imagenCurso", title: "ImagenCurso"},
                         { data: "idTarea", title: "IdTarea"},
-                        { data: "tarea", title: "Tarea"},
+                        { data: "tarea", title: "Tarea calificada"},
                         { data: "calificacion", title: "Calificación"},
                         { data: "promedioCalificacionCurso", title: "Promedio de calificacion"},
                         { data: "medianaCalificacionCurso", title: "Mediana de calificación"},
@@ -231,7 +233,7 @@ async function GenerarGraficaDesempeno()
         ShowPreloader();
 
         let response = await axios({
-            url: '/usuarios/desempeno',
+            url: '/usuarios/informacioncalculator',
             baseURL: BaseURL,
             method: 'POST',
             headers: {
@@ -258,18 +260,23 @@ async function GenerarGraficaDesempeno()
                         options: {
                             responsive: true,
                             plugins: {
-                              title: {
-                                display: true,
-                                text: (ctx) => 'Point Style: ' + ctx.chart.data.datasets[0].pointStyle,
-                              }
+                                legend: {
+                                    labels: {
+                                        usePointStyle: true,
+                                    },
+                                }
+                            },
+                            parsing: {
+                                xAxisKey: 'Indice',
+                                yAxisKey: 'Resultado'
                             }
                           },
                         data: {
-                            labels: data.map(row => row.year),
+                            labels: ['# Tarea', 'Resultado'],
                             datasets: [
                                 {
                                     label: 'Resultados de calificaciones',
-                                    data: data.map(row => row.count)
+                                    data: data
                                 }
                             ]
                         }

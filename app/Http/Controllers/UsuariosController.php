@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Http;
 use App\Models\UsuariosImagenes;
+use App\Models\CursosImagenes;
 use Illuminate\Support\Facades\Storage;
 
 class UsuariosController extends Controller
@@ -419,6 +420,15 @@ class UsuariosController extends Controller
                 if ($response->ok()){
 
                     $result = json_decode($response->body());
+
+                    foreach($result as &$desempeno){
+                        //Obtener información imagen desde mongo:
+                        $element = CursosImagenes::where('idCurso', '=', $desempeno->idCurso)->first();
+
+                        if(!is_null($element)){
+                            $desempeno->imagenCurso = $element->imagen;
+                        } 
+                    }
 
                     return response()->json(['code' => 200 , 'data' => $result], 200);
 

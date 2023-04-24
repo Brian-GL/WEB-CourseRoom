@@ -375,7 +375,7 @@ class TareasController extends Controller
                     ])->put($url.'/api/tareas/calificar', [
                         'IdTarea' => $idTarea,
                         'IdProfesor' => $idProfesor,
-                        'IdUsuario' => $idUsuario,
+                        'IdUsuario' => $IdUsuario,
                         'Calificacion' => $calificacion
                     ]);
 

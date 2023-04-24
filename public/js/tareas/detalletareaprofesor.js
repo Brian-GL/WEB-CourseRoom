@@ -446,6 +446,8 @@ async function ObtenerArchivosEntregados(){
             case 200:{
                 let filas = result.data;
 
+                dataTableTareaArchivosEntregadosProfesor.destroy();
+
                 dataTableTareaArchivosEntregadosProfesor = $("#table-archivos-entregados-profesor").DataTable({
                     pagingType: 'full_numbers',
                     dom: 'frtp',
