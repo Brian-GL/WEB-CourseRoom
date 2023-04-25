@@ -250,6 +250,21 @@ async function GenerarGraficaDesempeno()
             case 200:{
                 const data = result.data;
 
+                let desempeno = [];
+                let predicciones = [];
+
+                for(let prediccion of data)
+                {
+                    if(prediccion.Prediccion != null && prediccion.Prediccion != undefined){
+                        predicciones.push(prediccion.Prediccion);
+                    }
+
+                    desempeno.push({
+                        'Indice': prediccion.Indice,
+                        'Resultado': prediccion.Resultado
+                    });
+                }
+
                 window.Chart.defaults.borderColor = TercerColorLetra;
                 window.Chart.defaults.color = TercerColorLetra;
 
@@ -266,17 +281,26 @@ async function GenerarGraficaDesempeno()
                                     },
                                 }
                             },
+                            hover: {
+                                intersect: false
+                            },
                             parsing: {
                                 xAxisKey: 'Indice',
                                 yAxisKey: 'Resultado'
                             }
-                          },
+                        },
                         data: {
-                            labels: ['# Tarea', 'Resultado'],
+                            labels: ['Resultado', '# Tarea'],
                             datasets: [
                                 {
                                     label: 'Resultados de calificaciones',
-                                    data: data
+                                    data: desempeno,
+                                    pointRadius: 8
+                                },
+                                {
+                                    label: 'Predicciones',
+                                    data: predicciones,
+                                    pointRadius: 8,
                                 }
                             ]
                         }
