@@ -118,7 +118,19 @@ async function ObtenerDesempeno(){
 
         switch (result.code) {
             case 200:{
+
                 let filas = result.data;
+
+                let calificaciones = [];
+                let indice = 1;
+
+                for(let data of filas){
+                    calificaciones.push({
+                        'Indice': indice,
+                        'Calificacion': data.calificacion
+                    });
+                    indice = indice + 1 ;
+                }
 
                 dataTableEstudianteDesempeno.destroy();
 
@@ -170,12 +182,43 @@ async function ObtenerDesempeno(){
 
                         let fechaRegistro = data.fechaRegistro.substring(0, data.fechaRegistro.length -1 );
                         $('.fechaRegistro', row).text(dayjs(fechaRegistro).format('dddd DD MMM YYYY h:mm A'));
+
+                        
                     }
                 });
                 
                 dataTableEstudianteDesempeno.column(0).visible(false);
                 dataTableEstudianteDesempeno.column(2).visible(false);
                 dataTableEstudianteDesempeno.column(3).visible(false);
+
+                //Calificaciones:
+                new window.Chart(
+                    document.getElementById('canvas-calificaciones'),
+                    {
+                        type: 'line',
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: {
+                                    labels: {
+                                        usePointStyle: true,
+                                    },
+                                }
+                            },
+                        },
+                        data: {
+                            labels: calificaciones.map(row => row.Indice),
+                            datasets: [
+                                {
+                                    label: 'Calificaciones',
+                                    data: calificaciones.map(row => row.Calificacion),
+                                    pointRadius: 8
+                                }
+                            ]
+                        }
+                    }
+                );
+
             }
             break;
             case 500:{
@@ -256,7 +299,10 @@ async function GenerarGraficaDesempeno()
                 for(let prediccion of data)
                 {
                     if(prediccion.Prediccion != null && prediccion.Prediccion != undefined){
-                        predicciones.push(prediccion.Prediccion);
+                        predicciones.push({
+                            'Indice': prediccion.Indice,
+                            'Prediccion': prediccion.Prediccion
+                        });
                     }
 
                     desempeno.push({
@@ -268,6 +314,7 @@ async function GenerarGraficaDesempeno()
                 window.Chart.defaults.borderColor = TercerColorLetra;
                 window.Chart.defaults.color = TercerColorLetra;
 
+                //Desempeno:
                 new window.Chart(
                     document.getElementById('canvas-desempeno'),
                     {
@@ -281,25 +328,22 @@ async function GenerarGraficaDesempeno()
                                     },
                                 }
                             },
-                            hover: {
-                                intersect: false
-                            },
                             parsing: {
                                 xAxisKey: 'Indice',
                                 yAxisKey: 'Resultado'
                             }
                         },
                         data: {
-                            labels: ['Resultado', '# Tarea'],
+                            labels: desempeno.map(row => row.Indice),
                             datasets: [
                                 {
                                     label: 'Resultados de calificaciones',
-                                    data: desempeno,
+                                    data: desempeno.map(row => row.Resultado),
                                     pointRadius: 8
                                 },
                                 {
                                     label: 'Predicciones',
-                                    data: predicciones,
+                                    data: predicciones.map(row => row.Prediccion),
                                     pointRadius: 8,
                                 }
                             ]

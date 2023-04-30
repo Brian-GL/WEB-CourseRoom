@@ -43,7 +43,16 @@
                         <div class="tab-pane fade" id="grafica-desempeno" role="tabpanel" aria-labelledby="grafica-desempeno-tab">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <canvas id="canvas-desempeno"></canvas>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <canvas id="canvas-calificaciones"></canvas>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <canvas id="canvas-desempeno"></canvas>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

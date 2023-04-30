@@ -684,6 +684,15 @@ class CursosController extends Controller
 
                         $result = json_decode($response->body());
 
+                        foreach($result as &$curso){
+                            //Obtener información imagen desde mongo:
+                            $element = UsuariosImagenes::where('idUsuario', '=', $curso->idUsuario)->first();
+
+                            if(!is_null($element)){
+                                $curso->imagen = $element->imagen;
+                            }
+                        }
+
                         return response()->json(['code' => 200 , 'data' => $result], 200);
 
                     } else{
