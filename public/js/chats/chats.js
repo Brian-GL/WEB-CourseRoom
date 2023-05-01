@@ -175,7 +175,7 @@ async function ObtenerMisChats(){
                         let fechaRegistro = data.fechaRegistro.substring(0, data.fechaRegistro.length -1 );
                         $('.fechaRegistro', row).text(dayjs(fechaRegistro).format('dddd DD MMM YYYY h:mm A'));
                         let fechaEnvio = dayjs(data.fechaEnvio?.substring(0,data.fechaEnvio?.length-1));
-                        if(fechaEnvio.isValid()){
+                        if(fechaEnvio.isValid() && data.fechaEnvio != null){
                             $('.fechaEnvio', row).text(fechaEnvio.format('LLLL'));
                         }
                     }

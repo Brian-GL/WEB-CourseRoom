@@ -632,6 +632,8 @@ async function ObtenerDesempeno(){
             case 200:{
                 let filas = result.data;
 
+                dataTableCursoEstudianteDesempeno.destroy();
+
                 dataTableCursoEstudianteDesempeno = $("#table-curso-estudiante-desempeno").DataTable({
                     pagingType: 'full_numbers',
                     dom: 'rtp',
